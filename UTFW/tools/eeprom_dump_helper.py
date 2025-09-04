@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+
 """
 EEPROM Dump Helper
 
@@ -19,6 +19,8 @@ Notes:
         0x0000 53 4E 2D ...
     * If you already have the dump text in a file, you can skip serial I/O:
         python eeprom_dump_helper.py --from-file raw_input.log -o parsed
+
+Author: DvidMakesThings
 """
 
 import argparse

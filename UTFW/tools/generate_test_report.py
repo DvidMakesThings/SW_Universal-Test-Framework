@@ -1,5 +1,5 @@
 # generate_test_report.py
-# -*- coding: utf-8 -*-
+
 """
 ================================================================================
 ENERGIS UART Test Report Generator
@@ -31,6 +31,8 @@ Notes:
         [2025-08-22 22:48:34] [PASS] HELP command lists all required tokens.
         [2025-08-22 22:48:39] ===== RESULT: PASS =====
     - It will group events into "steps" and compute pass/fail statistics.
+
+Author: DvidMakesThings
 ================================================================================
 """
 

@@ -110,4 +110,30 @@ echo          Interpreter : %PY_CALL%
 echo          Site-packages: %PURELIB%
 echo          .pth file    : %PTH_FILE%
 echo.
+
+REM --- Download and install sigrok-cli (Windows) ---------------
+set "SIGROK_DIR=G:\_Development"
+set "SIGROK_INSTALLER=%SIGROK_DIR%\sigrok-cli-installer.exe"
+set "SIGROK_URL=https://sigrok.org/download/binary/sigrok-cli/sigrok-cli-NIGHTLY-x86_64-release-installer.exe"
+
+echo [INFO] Downloading sigrok-cli installer...
+if not exist "%SIGROK_DIR%" (
+  mkdir "%SIGROK_DIR%"
+)
+powershell -Command "Invoke-WebRequest -Uri '%SIGROK_URL%' -OutFile '%SIGROK_INSTALLER%'"
+if not exist "%SIGROK_INSTALLER%" (
+  echo [ERROR] Failed to download sigrok-cli installer.
+  exit /b 1
+)
+
+echo [INFO] Running sigrok-cli installer...
+start "" "%SIGROK_INSTALLER%"
+if errorlevel 1 (
+  echo [ERROR] sigrok-cli installer failed.
+  exit /b 1
+)
+
+echo [INFO] sigrok-cli installed. You may need to restart your terminal for PATH changes to take effect.
+REM Optional: del "%SIGROK_INSTALLER%" to clean up installer file
+
 ENDLOCAL

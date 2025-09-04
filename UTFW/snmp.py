@@ -8,6 +8,7 @@ helpers for common outlet control tests. It integrates with the framework's
 reporter to emit rich logs (command, rc, stdout/stderr; semantic SNMP GET/SET
 lines).
 
+Author: DvidMakesThings
 """
 
 import subprocess

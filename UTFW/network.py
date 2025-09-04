@@ -2,6 +2,8 @@
 UTFW Network Module
 ===================
 High-level network test functions for universal testing
+
+Author: DvidMakesThings
 """
 
 import platform

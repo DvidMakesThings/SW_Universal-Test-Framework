@@ -4,6 +4,8 @@
 UTSW Core Framework
 ==================
 Clean framework for class-based test execution
+
+Author: DvidMakesThings
 """
 
 import time

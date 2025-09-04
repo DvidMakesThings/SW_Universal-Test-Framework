@@ -2,6 +2,8 @@
 UTFW Validation Module
 ======================
 High-level validation and regex test functions for universal testing
+
+Author: DvidMakesThings
 """
 
 import re

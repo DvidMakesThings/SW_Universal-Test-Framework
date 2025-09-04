@@ -2,6 +2,8 @@
 UTFW Utilities Module
 =====================
 Common utility functions for universal testing
+
+Author: DvidMakesThings
 """
 
 import time

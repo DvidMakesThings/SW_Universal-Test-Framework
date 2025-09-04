@@ -3,6 +3,8 @@
 UTFW Serial Module
 ==================
 High-level serial/UART test functions for universal testing
+
+Author: DvidMakesThings
 """
 
 import time
