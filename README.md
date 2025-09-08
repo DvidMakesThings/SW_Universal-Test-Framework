@@ -103,8 +103,25 @@ making substantial changes:
 
 ## License
 
-This project is licensed under the **GPL-3.0 License**. See the [LICENSE](LICENSE)
-file for details.
+This project is licensed under the **GNU Affero General Public License v3.0 (AGPL-3.0)**.
+See the [LICENSE](LICENSE) file for details.
+
+### What this license means:
+
+- ✅ **You can** freely use, modify, and distribute this software
+- ✅ **You can** use this project for personal, educational, or internal purposes
+- ✅ **You can** contribute improvements back to this project
+
+- ⚠️ **You must** share any modifications you make if you distribute the software
+- ⚠️ **You must** release the source code if you run a modified version on a server that others interact with
+- ⚠️ **You must** keep all copyright notices intact
+
+- ❌ **You cannot** incorporate this code into proprietary software without sharing your source code
+- ❌ **You cannot** use this project in a commercial product without either complying with AGPL or obtaining a different license
+
+### Commercial & Enterprise Use
+
+Dual licensing options are available for commercial and enterprise users who require different terms. Please contact me through any of the channels listed in the [Contact](#contact) section to discuss commercial licensing arrangements.
 
 ## Contact
 
