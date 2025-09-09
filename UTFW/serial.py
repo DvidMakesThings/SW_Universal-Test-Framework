@@ -263,30 +263,287 @@ def validate_sysinfo_data(sysinfo: Dict[str, str], validation: Dict[str, Any]):
         raise SerialTestError(f"SYSINFO validation failed: {'; '.join(failures)}")
 
 
-def send_command_uart(
+def parse_get_ch_all(response: str) -> Dict[int, bool]:
+    """
+    Parse a multi-line response of 'GET_CH ALL' into a channel->state map.
+
+    Expected input example:
+        [ECHO] Received CMD: "GET_CH ALL"
+        [ECHO] CH1: OFF
+        [ECHO] CH2: OFF
+        ...
+        [ECHO] CH8: OFF
+
+    Returns:
+        Dict[int, bool]: {1: False, 2: False, ..., 8: False} (True for ON)
+    """
+    lines = response.replace("\r\n", "\n").replace("\r", "\n").splitlines()
+    ch_map: Dict[int, bool] = {}
+    pat = re.compile(r"CH\s*([1-8])\s*:\s*(ON|OFF)", re.IGNORECASE)
+
+    for raw in lines:
+        s = raw.strip()
+        # strip optional "[ECHO]" prefix if present
+        if s.startswith("[ECHO]"):
+            s = s[6:].strip()
+
+        m = pat.search(s)
+        if not m:
+            continue
+        ch = int(m.group(1))
+        on = m.group(2).upper() == "ON"
+        ch_map[ch] = on
+
+    return ch_map
+
+#################################################################################################################
+#                                       TESTACTION FACTORIES
+#################################################################################################################
+
+def wait_for_reboot(
         name: str, 
         port: str, 
-        command: str, 
+        banner: str = "SYSTEM READY",
         baudrate: int = 115200, 
+        timeout: float = 15.0
+        ) -> "TestAction":
+    """
+    Wait for device reboot and the READY banner over UART, as a TestAction.
+
+    Internally calls the existing reboot-wait helper and wraps it so it can be
+    scheduled directly inside STE(...) without defining any extra functions in
+    the test file.
+
+    Args:
+        name (str): Step name shown in the report (e.g., "Wait for reboot & SYSTEM READY").
+        port (str): Serial port (e.g., "COM11", "/dev/ttyACM0").
+        banner (str): Ready marker to wait for (default: "SYSTEM READY").
+        baudrate (int): UART baud rate (default: 115200).
+        timeout (float): Overall wait budget in seconds (default: 15.0).
+
+    Returns:
+        TestAction: Returns True when the banner is observed within the timeout.
+
+    Raises:
+        SerialTestError: If the device does not become ready within the timeout
+                         or any serial error occurs.
+    """
+    def execute():
+        ok = wait_for_reboot_and_ready(port, banner, baudrate, timeout)
+        if not ok:
+            raise SerialTestError(f"Device did not become ready (banner='{banner}', timeout={timeout}s)")
+        return True
+
+    return TestAction(name, execute)
+
+
+def validate_all_channels_state(
+        name: str,
+        response: str,
+        expected: Union[bool, List[bool], Dict[int, bool]]
+        ) -> TestAction:
+    """
+    Validate that the parsed 'GET_CH ALL' response matches the expected states.
+
+    Args:
+        name: Test action name.
+        response: Full text to parse (or leave empty "" to use last cached response).
+        expected:
+            - bool            -> all 8 channels must be this state
+            - List[bool]      -> len == 8, channel i -> expected[i-1]
+            - Dict[int, bool] -> per-channel expectation (1..8). Missing keys are ignored.
+
+    Raises:
+        SerialTestError on mismatch with a detailed diff.
+    """
+    def execute():
+        text = _use_response(response)
+        actual = parse_get_ch_all(text)  # Dict[int,bool]
+
+        # Build expected map
+        if isinstance(expected, bool):
+            exp_map = {i: expected for i in range(1, 9)}
+        elif isinstance(expected, list) or isinstance(expected, tuple):
+            if len(expected) != 8:
+                raise SerialTestError(f"Expected list must have 8 items, got {len(expected)}")
+            exp_map = {i: bool(expected[i-1]) for i in range(1, 9)}
+        elif isinstance(expected, dict):
+            # Only validate provided keys
+            exp_map = {int(k): bool(v) for k, v in expected.items()}
+        else:
+            raise SerialTestError("Unsupported 'expected' type; use bool, List[bool], or Dict[int,bool]")
+
+        # Compute mismatches
+        mismatches = []
+        missing = []
+        for ch, want in exp_map.items():
+            got = actual.get(ch)
+            if got is None:
+                missing.append(ch)
+            elif got != want:
+                mismatches.append((ch, want, got))
+
+        if missing or mismatches:
+            parts = []
+            if missing:
+                parts.append("missing: " + ", ".join(f"CH{c}" for c in sorted(missing)))
+            if mismatches:
+                parts.append("mismatch: " + ", ".join(
+                    f"CH{c}=expected {'ON' if w else 'OFF'} got {'ON' if g else 'OFF'}"
+                    for (c, w, g) in mismatches
+                ))
+            raise SerialTestError("GET_CH ALL validation failed: " + "; ".join(parts))
+
+        return True
+
+    return TestAction(name, execute)
+
+def get_all_channels(
+        name: str,
+        port: str,
+        expected: Optional[Union[bool, List[bool], Dict[int, bool]]] = None,
+        baudrate: int = 115200,
         timeout: float = 2.0
         ) -> TestAction:
     """
-    Creates a TestAction that sends a command via UART/serial and returns the response.
-    When executed, this action sends the specified command to the device and stores the response for later validation.
+    Send "GET_CH ALL" over UART, parse the response into channel states, and
+    optionally validate against expected values.
+
+    The device returns lines like:
+        [ECHO] Received CMD: "GET_CH ALL"
+        [ECHO] CH1: ON
+        [ECHO] CH2: OFF
+        ...
+        [ECHO] CH8: OFF
+
     Args:
-        name (str): Name of the test action.
-        port (str): Serial port to use.
-        command (str): Command to send.
-        baudrate (int, optional): Baud rate for serial communication. Defaults to 115200.
-        timeout (float, optional): Timeout for response. Defaults to 2.0 seconds.
+        name (str):
+            Name of the test action.
+        port (str):
+            Serial port to use (e.g. "COM5" or "/dev/ttyACM0").
+        expected (optional):
+            - None (default): Only parse and return states, no validation.
+            - bool: Require all 8 channels to be this state.
+                True  -> all must be ON
+                False -> all must be OFF
+            - List[bool]: A list of 8 booleans, one per channel.
+                Example: [True, False, ..., True] → CH1=ON, CH2=OFF, ..., CH8=ON
+            - Dict[int,bool]: Explicit mapping {channel_number: state}.
+                Example: {1: True, 3: False} → require CH1=ON, CH3=OFF;
+                other channels are ignored.
+        baudrate (int, optional):
+            Baud rate for serial communication. Defaults to 115200.
+        timeout (float, optional):
+            Timeout for reading the response. Defaults to 2.0 seconds.
+
     Returns:
-        TestAction: Action to send the command and capture the response.
+        TestAction:
+            On execution, sends "GET_CH ALL" and returns a dict:
+                {1: bool, 2: bool, ..., 8: bool}
+            where each bool is True for ON, False for OFF.
+
+    Raises:
+        SerialTestError:
+            If validation fails when `expected` is provided.
     """
+
     def execute():
-        resp = send_command(port, command, baudrate, timeout)
-        _set_last_response(resp)   # store it for later validation
-        return resp
+        resp = send_command(port, "GET_CH ALL", baudrate, timeout)
+        _set_last_response(resp)
+        states = parse_get_ch_all(resp)
+        if expected is not None:
+            # Reuse validator to report detailed diff
+            validate_all_channels_state(
+                name=f"{name} – validate",
+                response=resp,
+                expected=expected
+            ).execute_func()
+        return states
+
     return TestAction(name, execute)
+
+def send_command_uart(
+        name: str, 
+        port: str, 
+        command,   # str or list[str]
+        baudrate: int = 115200, 
+        timeout: float = 2.0
+        ):
+    """
+    Creates one or more TestActions that send command(s) via UART/serial and return the response(s).
+
+    This function is flexible:  
+    - If a **string** is provided for `command`, it behaves exactly like the original
+      `send_command_uart` and returns a single TestAction.  
+    - If a **list of strings** is provided, it returns a list of TestActions, each
+      corresponding to one command in the list.  
+
+    When executed, each action sends the specified command to the device via UART,
+    captures the response, and stores it for later validation.
+
+    Args:
+        name (str): 
+            Base name of the test action(s). If multiple commands are provided, 
+            the name is suffixed with an index and the actual command for clarity.
+        port (str): 
+            Serial port to use (e.g., "COM3" or "/dev/ttyACM0").
+        command (str | list[str]): 
+            The command (or list of commands) to send.
+        baudrate (int, optional): 
+            Baud rate for serial communication. Defaults to 115200.
+        timeout (float, optional): 
+            Timeout in seconds to wait for a response. Defaults to 2.0 seconds.
+
+    Returns:
+        TestAction | list[TestAction]:
+            - A single TestAction if `command` is a string.  
+            - A list of TestActions if `command` is a list of strings.  
+
+    Raises:
+        TypeError: If `command` is neither a string nor a list/tuple of strings.
+
+    Usage Examples:
+        # Single command (legacy behavior, unchanged)
+        action = send_command_uart(
+            name="Read NETINFO",
+            port="COM5",
+            command="NETINFO",
+            baudrate=115200
+        )
+
+        # Multiple commands (new functionality)
+        actions = send_command_uart(
+            name="Run GET_CH on all channels",
+            port="COM5",
+            command=[f"GET_CH {i}" for i in range(1, 9)],
+            baudrate=115200
+        )
+
+    Notes:
+        - The last response is cached globally for use with later validation 
+          functions such as `Serial.validate_tokens`.
+        - Use descriptive `name` values to make log outputs clear, especially 
+          when sending multiple commands.
+    """
+    def make_execute(cmd):
+        def execute():
+            resp = send_command(port, cmd, baudrate, timeout)
+            _set_last_response(resp)   # store it for later validation
+            return resp
+        return execute
+
+    if isinstance(command, str):
+        return TestAction(name, make_execute(command))
+    elif isinstance(command, (list, tuple)):
+        actions = []
+        for idx, cmd in enumerate(command, start=1):
+            actions.append(
+                TestAction(f"{name} [{idx}] {cmd}", make_execute(cmd))
+            )
+        return actions
+    else:
+        raise TypeError("command must be str or list[str]")
+
 
 
 def test_sysinfo_complete(
@@ -624,14 +881,14 @@ def validate_eeprom_markers(name: str, response: str) -> TestAction:
 
 
 def analyze_eeprom_dump(name: str, port: str, baudrate: int, checks: str, reports_dir: Optional[str] = None) -> TestAction:
-    """Capture, parse, and validate an EEPROM dump; write artifacts under TestCases/Reports.
+    """Capture, parse, and validate an EEPROM dump; write artifacts under the active report directory.
 
     This action:
       1) Runs the helper via `utilities.parse_eeprom_data(port, baudrate, save_to_dir=...)`
       2) Loads checks from a JSON file path (`checks`)
       3) Parses the ASCII hexdump into a contiguous byte image
       4) Executes validations (ascii/hex, pattern/regex/expect/contains)
-      5) Writes `<TestCases>/Reports/<testcase>/EEPROM/eeprom_summary.txt`
+      5) Writes 'eeprom_summary.txt' under '<reports_dir>/EEPROM'
       6) Returns paths and findings
 
     Args:
@@ -639,8 +896,8 @@ def analyze_eeprom_dump(name: str, port: str, baudrate: int, checks: str, report
         port: Serial port (e.g., "COM10").
         baudrate: Serial baudrate (e.g., 115200).
         checks: Path to `eeprom_checks.json`.
-        reports_dir: Optional base reports directory. If omitted, uses
-            `<TestCases>/Reports`.
+        reports_dir: Optional base reports directory. If omitted, uses the active reporter's
+            directory when available; otherwise falls back to the legacy TestCases/Reports path.
 
     Returns:
         TestAction: Executable test action.
@@ -651,6 +908,7 @@ def analyze_eeprom_dump(name: str, port: str, baudrate: int, checks: str, report
         import inspect
         from pathlib import Path
         from . import utilities
+        from .reporting import get_active_reporter
 
         def _find_testcases_root() -> Path:
             """Return nearest 'TestCases' directory from stack or CWD."""
@@ -684,20 +942,27 @@ def analyze_eeprom_dump(name: str, port: str, baudrate: int, checks: str, report
         def _fmt_hex_bytes(b: bytes) -> str:
             return " ".join(f"{x:02X}" for x in b)
 
-        # Resolve testcase name (tc_*.py) and base Reports under <TestCases>
-        stack = inspect.stack()
-        testcase_file = None
-        for frame in stack:
-            fn = Path(frame.filename)
-            if fn.name.startswith("tc_") and fn.suffix == ".py":
-                testcase_file = fn
-                break
-        if testcase_file is None:
-            testcase_file = Path(__file__)
-        testcase_name = testcase_file.stem
+        # ---- Resolve save_dir to align with the active reporter (preferred) ----
+        rep = get_active_reporter()
+        if rep is not None:
+            base_reports = Path(rep.reports_dir)
+        elif reports_dir:
+            base_reports = Path(reports_dir)
+        else:
+            # Legacy fallback: <TestCases>/Reports/<testcase>
+            stack = inspect.stack()
+            testcase_file = None
+            for frame in stack:
+                fn = Path(frame.filename)
+                if fn.name.startswith("tc_") and fn.suffix == ".py":
+                    testcase_file = fn
+                    break
+            if testcase_file is None:
+                testcase_file = Path(__file__)
+            testcase_name = testcase_file.stem
+            base_reports = (_find_testcases_root() / "Reports" / testcase_name)
 
-        base_reports = Path(reports_dir) if reports_dir else (_find_testcases_root() / "Reports")
-        save_dir = base_reports / testcase_name / "EEPROM"
+        save_dir = base_reports / "EEPROM"
         save_dir.mkdir(parents=True, exist_ok=True)
 
         # 1) Run helper to capture raw/ascii dumps (over serial)
@@ -848,7 +1113,7 @@ def analyze_eeprom_dump(name: str, port: str, baudrate: int, checks: str, report
                     sf.write(f"    Notes: {item['notes']}\n")
             def _get(label):
                 for it in findings:
-                    if it["label"] == label:
+                    if "label" in it and it["label"] == label:
                         return it
                 return None
             sn = _get("Device Serial"); ver = _get("FW Version")
@@ -869,7 +1134,6 @@ def analyze_eeprom_dump(name: str, port: str, baudrate: int, checks: str, report
         }
 
     return TestAction(name, execute)
-
 
 def load_eeprom_checks_from_json(json_path: str) -> list:
     """

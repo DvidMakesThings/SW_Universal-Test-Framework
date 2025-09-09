@@ -97,6 +97,20 @@ class ReportModel:
 
 
 # ---------------------------------- Parsing ------------------------------------
+def _rel_href(target: Path, base_dir: Path) -> str:
+    """
+    Return a POSIX-style relative path from base_dir to target.
+    Falls back to filename if a relative path cannot be computed (e.g., different drive).
+    """
+    try:
+        rel = target.resolve().relative_to(base_dir.resolve())
+    except Exception:
+        try:
+            rel = Path(os.path.relpath(str(target), str(base_dir)))
+        except Exception:
+            rel = Path(target.name)
+    return rel.as_posix()
+
 
 def _discover_images_and_artifacts(reports_dir: Path, out_html: Path) -> Tuple[Optional[Path], Optional[Path], Dict[str, List[Path]]]:
     """
@@ -172,21 +186,23 @@ def _discover_images_and_artifacts(reports_dir: Path, out_html: Path) -> Tuple[O
 
     return eeprom_ascii, eeprom_raw, images
 
+
 def _render_img_grid(images: List[Path], base_dir: Path) -> str:
     if not images:
         return ""
     rows = ["<div class='img-grid'>"]
     for p in images:
         try:
-            rel = os.path.relpath(str(p), str(base_dir))
+            rel = _rel_href(p, base_dir)
         except Exception:
-            rel = str(p)
+            rel = p.name
         cap = html.escape(p.name)
         rows.append(
             f"<figure><img src='{html.escape(rel)}' alt='{cap}' /><figcaption>{cap}</figcaption></figure>"
         )
     rows.append("</div>")
     return "\n".join(rows)
+
 
 def parse_log(log_path: Path) -> ReportModel:
     model = ReportModel(log_path=log_path)
@@ -558,16 +574,16 @@ def render_html(model: "ReportModel", out_html: Path) -> None:
         html_lines.append(_render_img_grid(general_imgs, out_html.parent))
         html_lines.append("</section>")
 
-    # EEPROM artifacts
+    # EEPROM artifacts (use POSIX-style relative links)
     if eeprom_ascii or eeprom_raw:
         html_lines.append("<section>")
         html_lines.append("<h3>EEPROM Artifacts</h3>")
         html_lines.append("<ul>")
         if eeprom_ascii:
-            rel = os.path.relpath(str(eeprom_ascii), str(out_html.parent))
+            rel = _rel_href(eeprom_ascii, out_html.parent)
             html_lines.append(f"<li><a href='{html.escape(rel)}' target='_blank'>ASCII dump</a></li>")
         if eeprom_raw:
-            rel = os.path.relpath(str(eeprom_raw), str(out_html.parent))
+            rel = _rel_href(eeprom_raw, out_html.parent)
             html_lines.append(f"<li><a href='{html.escape(rel)}' target='_blank'>Hex dump</a></li>")
         html_lines.append("</ul>")
         html_lines.append("</section>")
@@ -577,7 +593,7 @@ def render_html(model: "ReportModel", out_html: Path) -> None:
 
     out_html.parent.mkdir(parents=True, exist_ok=True)
     out_html.write_text("\n".join(html_lines), encoding="utf-8")
-    
+ 
 # ------------------------------- JUnit XML (opt) -------------------------------
 
 def render_junit_xml(model: ReportModel, out_xml: Path) -> None:
@@ -598,11 +614,11 @@ def render_junit_xml(model: ReportModel, out_xml: Path) -> None:
 
     lines = []
     lines.append('<?xml version="1.0" encoding="UTF-8"?>')
-    lines.append(f'<testsuite name="ENERGIS UART Functional Test Suite" tests="{total}" failures="{failures}" time="{time_placeholder}">')
+    lines.append(f'<testsuite name="ENERGIS Functional Test " tests="{total}" failures="{failures}" time="{time_placeholder}">')
 
     for idx, s in enumerate(model.steps, 1):
         case_name = s.name or f"Step {idx}"
-        lines.append(f'  <testcase classname="ENERGIS.UART" name="{x(case_name)}" time="{time_placeholder}">')
+        lines.append(f'  <testcase classname="UTFW" name="{x(case_name)}" time="{time_placeholder}">')
         if s.status == "FAIL":
             # Include last FAIL line or a generic message
             msg = "Step failed"

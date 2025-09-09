@@ -24,6 +24,7 @@ from . import network as Network
 from . import fx2LA as FX2
 from . import validation as Validation
 from . import utilities
+from . import ethernet
 
 __version__ = "2.0.0"
 __all__ = [

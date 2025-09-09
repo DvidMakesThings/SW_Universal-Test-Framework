@@ -76,7 +76,7 @@ class TestReporter:
         test_name: Logical test suite name used for filenames and folder name.
         reports_dir: Optional base directory for reports. If None, uses
             '<TestCases>/Reports/<test_name>/'. If provided, final path becomes
-            '<reports_dir>/<test_name>/'.
+            '<reports_dir>/'.
         rx_preview_max: Maximum characters shown from RX text preview.
         tx_preview_max: Maximum characters shown from TX text preview.
         hex_dump: If True, also log a formatted hex dump for TX/RX payloads.
@@ -96,7 +96,7 @@ class TestReporter:
         self.test_name = test_name
 
         base_reports = Path(reports_dir) if reports_dir else (_find_testcases_root() / "Reports")
-        self.reports_dir = base_reports / test_name
+        self.reports_dir = base_reports
         self.reports_dir.mkdir(parents=True, exist_ok=True)
 
         self.log_file = self.reports_dir / f"{test_name}_results.log"

@@ -200,16 +200,16 @@ def parse_eeprom_data(port: str, baudrate: int, save_to_dir: Optional[str] = Non
     """
     Capture & parse EEPROM dump via the helper tool.
 
-    This function invokes UTFW/tools/eeprom_dump_helper.py directly:
+    Invokes UTFW/tools/eeprom_dump_helper.py:
         python eeprom_dump_helper.py -p <port> -b <baudrate> -o eeprom_dump -v
 
-    Output files are written into:
-        Report/<testcase_name>/EEPROM
-    (or 'save_to_dir' if explicitly provided)
+    Output files are written into the SAME directory used by the active TestReporter
+    (i.e., the 'reports_dir' you passed to run_test_with_teardown), with NO extra
+    subfolders. If 'save_to_dir' is provided, that directory is used instead.
 
     Args:
-        port (str): Serial port (e.g. "COM10", "/dev/ttyACM0").
-        baudrate (int): Baud rate for the serial port.
+        port (str): Serial port (e.g., "COM10", "/dev/ttyACM0").
+        baudrate (int): Serial baud rate.
         save_to_dir (str, optional): Override output directory.
 
     Returns:
@@ -221,23 +221,19 @@ def parse_eeprom_data(port: str, baudrate: int, save_to_dir: Optional[str] = Non
     try:
         import sys
         import subprocess
-        import inspect
         from pathlib import Path
+        from .reporting import get_active_reporter
 
-        # Determine testcase name from the call stack (prefer first file starting with 'tc_')
-        testcase_file = None
-        for frame in inspect.stack():
-            p = Path(frame.filename)
-            if p.name.startswith("tc_") and p.suffix == ".py":
-                testcase_file = p
-                break
-        testcase_name = testcase_file.stem if testcase_file else Path.cwd().stem
-
-        # Compute output directory
+        # Resolve output directory:
         if save_to_dir:
             output_dir = Path(save_to_dir)
         else:
-            output_dir = Path("Report") / testcase_name / "EEPROM"
+            rep = get_active_reporter()
+            if not rep:
+                raise UtilitiesError("No active reporter; cannot resolve reports directory.")
+            # EXACTLY the reporter directory (e.g., "report_tc_serial_utfw"), no extra subfolders
+            output_dir = rep.reports_dir
+
         output_dir.mkdir(parents=True, exist_ok=True)
 
         # Locate helper
@@ -245,28 +241,26 @@ def parse_eeprom_data(port: str, baudrate: int, save_to_dir: Optional[str] = Non
         if not helper_script.exists():
             raise UtilitiesError(f"EEPROM dump helper not found at: {helper_script}")
 
-        # Build command
+        # Build command (pass --outdir explicitly; do not use cwd tricks)
         cmd = [
             sys.executable, str(helper_script),
             "-p", str(port),
             "-b", str(baudrate),
             "-o", "eeprom_dump",
+            "--outdir", str(output_dir),
             "-v",
         ]
 
-        # Run helper
-        result = subprocess.run(cmd, cwd=str(output_dir), capture_output=True, text=True)
-
+        result = subprocess.run(cmd, capture_output=True, text=True)
         if result.returncode != 0:
             raise UtilitiesError(
                 "EEPROM helper failed:\n"
                 f"  CMD : {' '.join(cmd)}\n"
-                f"  CWD : {output_dir}\n"
                 f"  STDOUT:\n{result.stdout}\n"
                 f"  STDERR:\n{result.stderr}"
             )
 
-        # Read generated files
+        # Read generated files (exact filenames from helper)
         raw_file = output_dir / "eeprom_dump_raw.log"
         ascii_file = output_dir / "eeprom_dump_ascii.log"
 
@@ -274,9 +268,7 @@ def parse_eeprom_data(port: str, baudrate: int, save_to_dir: Optional[str] = Non
         ascii_data = ascii_file.read_text(encoding="utf-8") if ascii_file.exists() else ""
 
         if not raw_data and not ascii_data:
-            raise UtilitiesError(
-                f"EEPROM helper succeeded but no outputs found in {output_dir}"
-            )
+            raise UtilitiesError(f"EEPROM helper succeeded but no outputs found in {output_dir}")
 
         return {"raw": raw_data, "ascii": ascii_data}
 
@@ -284,6 +276,7 @@ def parse_eeprom_data(port: str, baudrate: int, save_to_dir: Optional[str] = Non
         raise
     except Exception as e:
         raise UtilitiesError(f"EEPROM parsing failed: {e}")
+
 
 
 def create_example_hardware_config(config_path: str) -> Dict[str, Any]:
