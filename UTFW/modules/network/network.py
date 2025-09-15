@@ -27,7 +27,7 @@ from ...core.core import TestAction
 
 class NetworkTestError(Exception):
     """Exception raised when network operations or validations fail.
-    
+
     This exception is raised by network test functions when connectivity
     issues occur, HTTP requests fail, validation fails, or other network-related
     operations cannot be completed successfully.
@@ -35,12 +35,13 @@ class NetworkTestError(Exception):
     Args:
         message (str): Description of the error.
     """
+
     pass
 
 
 def ping_host(ip: str, count: int = 1, timeout: int = 1) -> bool:
     """Ping a host using the system ping utility.
-    
+
     This function executes the system ping command to test basic network
     connectivity to a target host. It handles both Windows and Unix-like
     systems with appropriate command-line arguments.
@@ -54,12 +55,12 @@ def ping_host(ip: str, count: int = 1, timeout: int = 1) -> bool:
         bool: True if all ping packets succeed, False otherwise.
     """
     system = platform.system().lower()
-    
+
     if "windows" in system:
         cmd = ["ping", "-n", str(count), "-w", str(timeout * 1000), ip]
     else:
         cmd = ["ping", "-c", str(count), "-W", str(timeout), ip]
-    
+
     try:
         result = subprocess.run(cmd, capture_output=True, timeout=timeout + 3)
         return result.returncode == 0
@@ -67,9 +68,11 @@ def ping_host(ip: str, count: int = 1, timeout: int = 1) -> bool:
         return False
 
 
-def http_get(url: str, timeout: float = 3.0, headers: Optional[Dict[str, str]] = None) -> Dict[str, Any]:
+def http_get(
+    url: str, timeout: float = 3.0, headers: Optional[Dict[str, str]] = None
+) -> Dict[str, Any]:
     """Perform an HTTP GET request with error handling.
-    
+
     This function performs an HTTP GET request and returns a structured
     response dictionary containing status, headers, content, and success
     information. It handles both successful responses and various error
@@ -91,43 +94,47 @@ def http_get(url: str, timeout: float = 3.0, headers: Optional[Dict[str, str]] =
     """
     try:
         req = urllib.request.Request(url)
-        
+
         if headers:
             for key, value in headers.items():
                 req.add_header(key, value)
-        
+
         with urllib.request.urlopen(req, timeout=timeout) as response:
-            content = response.read().decode('utf-8')
-            
+            content = response.read().decode("utf-8")
+
             return {
-                'status_code': response.getcode(),
-                'headers': dict(response.headers),
-                'content': content,
-                'success': True
+                "status_code": response.getcode(),
+                "headers": dict(response.headers),
+                "content": content,
+                "success": True,
             }
-            
+
     except urllib.error.HTTPError as e:
         return {
-            'status_code': e.code,
-            'headers': dict(e.headers) if hasattr(e, 'headers') else {},
-            'content': e.read().decode('utf-8') if hasattr(e, 'read') else str(e),
-            'success': False,
-            'error': str(e)
+            "status_code": e.code,
+            "headers": dict(e.headers) if hasattr(e, "headers") else {},
+            "content": e.read().decode("utf-8") if hasattr(e, "read") else str(e),
+            "success": False,
+            "error": str(e),
         }
     except Exception as e:
         return {
-            'status_code': 0,
-            'headers': {},
-            'content': '',
-            'success': False,
-            'error': str(e)
+            "status_code": 0,
+            "headers": {},
+            "content": "",
+            "success": False,
+            "error": str(e),
         }
 
 
-def http_post(url: str, data: Dict[str, Any], timeout: float = 3.0, 
-              headers: Optional[Dict[str, str]] = None) -> Dict[str, Any]:
+def http_post(
+    url: str,
+    data: Dict[str, Any],
+    timeout: float = 3.0,
+    headers: Optional[Dict[str, str]] = None,
+) -> Dict[str, Any]:
     """Perform an HTTP POST request with form data.
-    
+
     This function performs an HTTP POST request with form-encoded data
     and returns a structured response dictionary. It handles both successful
     responses and various error conditions gracefully.
@@ -143,46 +150,46 @@ def http_post(url: str, data: Dict[str, Any], timeout: float = 3.0,
         Dict[str, Any]: Response dictionary with same structure as http_get().
     """
     if headers is None:
-        headers = {'Content-Type': 'application/x-www-form-urlencoded'}
-    
+        headers = {"Content-Type": "application/x-www-form-urlencoded"}
+
     try:
-        post_data = urllib.parse.urlencode(data).encode('utf-8')
-        req = urllib.request.Request(url, data=post_data, method='POST')
-        
+        post_data = urllib.parse.urlencode(data).encode("utf-8")
+        req = urllib.request.Request(url, data=post_data, method="POST")
+
         for key, value in headers.items():
             req.add_header(key, value)
-        
+
         with urllib.request.urlopen(req, timeout=timeout) as response:
-            content = response.read().decode('utf-8')
-            
+            content = response.read().decode("utf-8")
+
             return {
-                'status_code': response.getcode(),
-                'headers': dict(response.headers),
-                'content': content,
-                'success': True
+                "status_code": response.getcode(),
+                "headers": dict(response.headers),
+                "content": content,
+                "success": True,
             }
-            
+
     except urllib.error.HTTPError as e:
         return {
-            'status_code': e.code,
-            'headers': dict(e.headers) if hasattr(e, 'headers') else {},
-            'content': e.read().decode('utf-8') if hasattr(e, 'read') else str(e),
-            'success': False,
-            'error': str(e)
+            "status_code": e.code,
+            "headers": dict(e.headers) if hasattr(e, "headers") else {},
+            "content": e.read().decode("utf-8") if hasattr(e, "read") else str(e),
+            "success": False,
+            "error": str(e),
         }
     except Exception as e:
         return {
-            'status_code': 0,
-            'headers': {},
-            'content': '',
-            'success': False,
-            'error': str(e)
+            "status_code": 0,
+            "headers": {},
+            "content": "",
+            "success": False,
+            "error": str(e),
         }
 
 
 def test_connectivity(ip: str, timeout: int = 1) -> bool:
     """Test basic network connectivity using ping with error handling.
-    
+
     This function tests network connectivity to a host using ICMP ping
     and raises an exception if the host is not reachable. It's designed
     for use in test scenarios where connectivity is a prerequisite.
@@ -199,15 +206,19 @@ def test_connectivity(ip: str, timeout: int = 1) -> bool:
     """
     if not ping_host(ip, timeout=timeout):
         raise NetworkTestError(f"Host {ip} is not reachable via ping")
-    
+
     return True
 
 
-def test_http_endpoint(base_url: str, path: str = "/", 
-                      expected_content: Optional[str] = None,
-                      expected_status: int = 200, timeout: float = 3.0) -> str:
+def test_http_endpoint(
+    base_url: str,
+    path: str = "/",
+    expected_content: Optional[str] = None,
+    expected_status: int = 200,
+    timeout: float = 3.0,
+) -> str:
     """Test HTTP endpoint availability and validate response.
-    
+
     This function tests an HTTP endpoint by performing a GET request
     and validating both the status code and optionally the response
     content. It's useful for verifying web service availability and
@@ -230,28 +241,36 @@ def test_http_endpoint(base_url: str, path: str = "/",
     """
     url = f"{base_url.rstrip('/')}{path}"
     response = http_get(url, timeout)
-    
-    if not response['success']:
-        raise NetworkTestError(f"HTTP GET {url} failed: {response.get('error', 'Unknown error')}")
-    
-    if response['status_code'] != expected_status:
+
+    if not response["success"]:
+        raise NetworkTestError(
+            f"HTTP GET {url} failed: {response.get('error', 'Unknown error')}"
+        )
+
+    if response["status_code"] != expected_status:
         raise NetworkTestError(
             f"HTTP GET {url} returned status {response['status_code']}, expected {expected_status}"
         )
-    
-    if expected_content and expected_content not in response['content']:
+
+    if expected_content and expected_content not in response["content"]:
         raise NetworkTestError(
             f"HTTP GET {url} response missing expected content: '{expected_content}'"
         )
-    
-    return response['content']
+
+    return response["content"]
 
 
-def test_web_form_submission(base_url: str, form_path: str, form_data: Dict[str, Any],
-                           expected_status: int = 200, verification_path: Optional[str] = None,
-                           verify_content: Optional[str] = None, timeout: float = 3.0) -> bool:
+def test_web_form_submission(
+    base_url: str,
+    form_path: str,
+    form_data: Dict[str, Any],
+    expected_status: int = 200,
+    verification_path: Optional[str] = None,
+    verify_content: Optional[str] = None,
+    timeout: float = 3.0,
+) -> bool:
     """Test web form submission with optional result verification.
-    
+
     This function submits form data to a web endpoint and optionally
     verifies the result by checking another endpoint for expected content.
     It's useful for testing web-based configuration interfaces.
@@ -275,36 +294,45 @@ def test_web_form_submission(base_url: str, form_path: str, form_data: Dict[str,
             or verification fails.
     """
     form_url = f"{base_url.rstrip('/')}{form_path}"
-    
+
     # Submit form
     response = http_post(form_url, form_data, timeout)
-    
-    if not response['success']:
-        raise NetworkTestError(f"Form submission to {form_url} failed: {response.get('error')}")
-    
-    if response['status_code'] != expected_status:
+
+    if not response["success"]:
+        raise NetworkTestError(
+            f"Form submission to {form_url} failed: {response.get('error')}"
+        )
+
+    if response["status_code"] != expected_status:
         raise NetworkTestError(
             f"Form submission returned status {response['status_code']}, expected {expected_status}"
         )
-    
+
     # Optional verification
     if verification_path and verify_content:
         verify_url = f"{base_url.rstrip('/')}{verification_path}"
         verify_response = http_get(verify_url, timeout)
-        
-        if not verify_response['success']:
+
+        if not verify_response["success"]:
             raise NetworkTestError(f"Verification GET {verify_url} failed")
-        
-        if verify_content not in verify_response['content']:
-            raise NetworkTestError(f"Verification failed: '{verify_content}' not found in response")
-    
+
+        if verify_content not in verify_response["content"]:
+            raise NetworkTestError(
+                f"Verification failed: '{verify_content}' not found in response"
+            )
+
     return True
 
 
-def test_outlet_control_via_web(base_url: str, channel: int, state: bool,
-                               form_path: str = "/control", timeout: float = 3.0) -> bool:
+def test_outlet_control_via_web(
+    base_url: str,
+    channel: int,
+    state: bool,
+    form_path: str = "/control",
+    timeout: float = 3.0,
+) -> bool:
     """Test outlet control via web interface form submission.
-    
+
     This function tests outlet control functionality through a web interface
     by submitting form data to control individual outlet channels. The exact
     form field format may need adjustment based on the specific device's
@@ -327,22 +355,23 @@ def test_outlet_control_via_web(base_url: str, channel: int, state: bool,
     """
     if not 1 <= channel <= 8:
         raise NetworkTestError(f"Invalid channel: {channel}. Must be 1-8")
-    
+
     # Prepare form data (this may need adjustment based on actual web interface)
-    form_data = {f'channel{channel}': '1' if state else '0'}
-    
+    form_data = {f"channel{channel}": "1" if state else "0"}
+
     return test_web_form_submission(
-        base_url=base_url,
-        form_path=form_path,
-        form_data=form_data,
-        timeout=timeout
+        base_url=base_url, form_path=form_path, form_data=form_data, timeout=timeout
     )
 
 
-def test_network_config_via_web(base_url: str, config_changes: Dict[str, str],
-                               form_path: str = "/settings", timeout: float = 3.0) -> bool:
+def test_network_config_via_web(
+    base_url: str,
+    config_changes: Dict[str, str],
+    form_path: str = "/settings",
+    timeout: float = 3.0,
+) -> bool:
     """Test network configuration changes via web interface.
-    
+
     This function tests network configuration functionality through a web
     interface by submitting configuration changes via form data. It's
     useful for testing web-based network management interfaces.
@@ -365,13 +394,13 @@ def test_network_config_via_web(base_url: str, config_changes: Dict[str, str],
         base_url=base_url,
         form_path=form_path,
         form_data=config_changes,
-        timeout=timeout
+        timeout=timeout,
     )
 
 
 def ping_host(name: str, ip: str, count: int = 1, timeout: int = 1) -> TestAction:
     """Create a TestAction that tests network connectivity via ping.
-    
+
     This TestAction factory creates an action that performs ICMP ping
     operations to test basic network connectivity to a target host.
     The action will fail if any ping packets are lost.
@@ -388,13 +417,15 @@ def ping_host(name: str, ip: str, count: int = 1, timeout: int = 1) -> TestActio
     Raises:
         NetworkTestError: When executed, raises this exception if any
             ping packets fail or if the host is unreachable.
-    
+
     Example:
         >>> ping_action = ping_host("Test connectivity", "192.168.1.1", count=3)
         >>> # Use in STE: STE(ping_action, other_actions, ...)
     """
+
     def execute():
         if not ping_host(ip, count, timeout):
             raise NetworkTestError(f"Ping to {ip} failed")
         return True
+
     return TestAction(name, execute)
