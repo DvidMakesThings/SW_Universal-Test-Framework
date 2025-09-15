@@ -15,7 +15,7 @@ from typing import Dict, Any, Optional, List, Callable, Union
 # Import TestStep from core module
 from .core import TestStep
 from .substep import SubStepExecutor
-from UTFW import REPORT_HELPER
+from UTFW.modules import REPORT_HELPER
 
 
 # ------------------------ Active reporter hook (added) ------------------------
@@ -180,10 +180,10 @@ class TestReporter:
         self.test_start_time = _now_ts()
         self._write_line(f"===== {test_name}: START =====")
 
-    def log_test_end(self, result: str) -> None:
+    def log_test_end(self, test_name: str, result: str) -> None:
         """Mark test suite end in the log."""
         self.test_end_time = _now_ts()
-        self._write_line(f"===== RESULT: {result} =====")
+        self._write_line(f"===== {test_name}: RESULT: {result} =====")
 
     def log_step_start(self, step_id: str, description: str) -> None:
         """Log test step start line."""

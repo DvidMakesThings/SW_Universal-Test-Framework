@@ -2,7 +2,16 @@
 """
 UTFW Serial Module
 ==================
-High-level serial/UART test functions for universal testing
+High-level serial/UART test functions and TestAction factories for universal testing
+
+This module provides comprehensive serial communication testing capabilities with
+detailed logging integration. All functions that perform actual communication
+integrate with the UTFW logging system to provide detailed TX/RX logging with
+hex dumps and printable previews.
+
+The module includes TestAction factories for common serial operations, making
+it easy to build complex test scenarios using the STE (Sub-step Test Executor)
+system.
 
 Author: DvidMakesThings
 """
@@ -12,17 +21,37 @@ import re
 from pathlib import Path
 from typing import Optional, Dict, List, Tuple, Any, Union
 
-from .reporting import get_active_reporter  # (added) for detailed TX/RX logging
+from ...core.logger import get_active_logger
+from ...core.core import TestAction
 
+DEBUG = False  # Set to True to enable debug prints
 
-# at top of serial.py (where you added EEPROM helpers)
+# Global response caching for validation chaining
 _LAST_RESPONSE: Optional[str] = None
 
+
 def _set_last_response(text: str) -> None:
+    """Store the last response for use in validation functions.
+    
+    Args:
+        text (str): Response text to cache.
+    """
     global _LAST_RESPONSE
     _LAST_RESPONSE = text
 
+
 def _use_response(explicit: str) -> str:
+    """Get response text, either explicit or from cache.
+    
+    Args:
+        explicit (str): Explicitly provided response text.
+        
+    Returns:
+        str: Response text to use for validation.
+        
+    Raises:
+        SerialTestError: If no response is available.
+    """
     if explicit:
         return explicit
     if _LAST_RESPONSE:
@@ -31,30 +60,51 @@ def _use_response(explicit: str) -> str:
 
 
 class SerialTestError(Exception):
-    """Serial test specific error"""
+    """Exception raised when serial communication or validation fails.
+    
+    This exception is raised by serial test functions when communication
+    errors occur, validation fails, or other serial-related operations
+    cannot be completed successfully.
+    
+    Args:
+        message (str): Description of the error that occurred.
+    """
     pass
 
 
-class TestAction:
-    """Test action that can be executed"""
-    def __init__(self, name: str, execute_func):
-        self.name = name
-        self.execute_func = execute_func
-
-
 def _ensure_pyserial():
-    """Ensure pyserial is available"""
+    """Ensure pyserial library is available for import.
+    
+    Raises:
+        ImportError: If pyserial is not installed.
+    """
     try:
-        import serial
+        import serial  # noqa: F401
     except ImportError:
         raise ImportError("pyserial is required. Install with: pip install pyserial")
 
 
 def _open_connection(port: str, baudrate: int = 115200, timeout: float = 2.0):
-    """Open serial connection"""
+    """Open a serial connection with proper configuration and logging.
+    
+    This function opens a serial port with the specified parameters and
+    configures it for reliable communication. It also logs the connection
+    event using the active logger.
+    
+    Args:
+        port (str): Serial port identifier (e.g., "COM3", "/dev/ttyUSB0").
+        baudrate (int, optional): Communication baud rate. Defaults to 115200.
+        timeout (float, optional): Read timeout in seconds. Defaults to 2.0.
+        
+    Returns:
+        serial.Serial: Configured and opened serial port object.
+        
+    Raises:
+        SerialTestError: If the port cannot be opened or configured.
+    """
     _ensure_pyserial()
     import serial
-    
+
     try:
         ser = serial.Serial(
             port=port,
@@ -69,10 +119,10 @@ def _open_connection(port: str, baudrate: int = 115200, timeout: float = 2.0):
         ser.reset_input_buffer()
         ser.reset_output_buffer()
 
-        # Added: log serial open
-        rep = get_active_reporter()
-        if rep:
-            rep.log_serial_open(port, baudrate)
+        # Log serial connection opening
+        logger = get_active_logger()
+        if logger:
+            logger.serial_open(port, baudrate)
 
         return ser
     except Exception as e:
@@ -80,25 +130,42 @@ def _open_connection(port: str, baudrate: int = 115200, timeout: float = 2.0):
 
 
 def send_command(port: str, command: str, baudrate: int = 115200, timeout: float = 2.0) -> str:
-    """Send command via serial and return response"""
-    ser = _open_connection(port, baudrate, timeout)
-    rep = get_active_reporter()
+    """Send a command via serial port and return the complete response.
     
+    This function opens a serial connection, sends the specified command,
+    waits for and captures the response, then closes the connection. All
+    communication is logged using the active logger with TX/RX details.
+    
+    Args:
+        port (str): Serial port identifier (e.g., "COM3", "/dev/ttyUSB0").
+        command (str): Command string to send (CR+LF will be appended).
+        baudrate (int, optional): Communication baud rate. Defaults to 115200.
+        timeout (float, optional): Response timeout in seconds. Defaults to 2.0.
+        
+    Returns:
+        str: Complete response received from the device.
+        
+    Raises:
+        SerialTestError: If communication fails or times out.
+    """
+    ser = _open_connection(port, baudrate, timeout)
+    logger = get_active_logger()
+
     try:
         # Send command
         payload = (command.strip() + "\r\n")
-        if rep:
-            rep.log_serial_tx(payload)
+        if logger:
+            logger.serial_tx(payload)
         cmd_bytes = payload.encode('utf-8')
         ser.write(cmd_bytes)
         ser.flush()
         time.sleep(0.05)
-        
+
         # Read response
         response_bytes = bytearray()
         start_time = time.time()
         last_data_time = start_time
-        
+
         while (time.time() - start_time) < timeout:
             if ser.in_waiting > 0:
                 chunk = ser.read(ser.in_waiting)
@@ -107,91 +174,115 @@ def send_command(port: str, command: str, baudrate: int = 115200, timeout: float
             elif (time.time() - last_data_time) > 0.5:
                 break
             time.sleep(0.01)
-        
+
         text = response_bytes.decode('utf-8', errors='ignore')
-        if rep:
-            rep.log_serial_rx(text)
+        if logger:
+            logger.serial_rx(text)
         return text
-        
+
     finally:
         try:
             ser.close()
         finally:
-            # Added: log serial close
-            if rep:
-                rep.log_serial_close(port)
+            # Log serial connection closing
+            if logger:
+                logger.serial_close(port)
 
 
-def wait_for_reboot_and_ready(port: str, ready_token: str = "SYSTEM READY", 
-                             baudrate: int = 115200, timeout: float = 10.0) -> bool:
-    """Wait for device to reboot and show ready signal"""
+def wait_for_reboot_and_ready(port: str, ready_token: str = "SYSTEM READY",
+                              baudrate: int = 115200, timeout: float = 10.0) -> bool:
+    """Wait for device to reboot and display the ready signal.
+    
+    This function monitors a serial port for a device reboot sequence and
+    waits for the specified ready token to appear in the output. It handles
+    connection retries and logs all received data during the wait period.
+    
+    Args:
+        port (str): Serial port identifier to monitor.
+        ready_token (str, optional): Text token indicating device is ready.
+            Defaults to "SYSTEM READY".
+        baudrate (int, optional): Communication baud rate. Defaults to 115200.
+        timeout (float, optional): Maximum time to wait in seconds. Defaults to 10.0.
+        
+    Returns:
+        bool: True if the ready token was detected within the timeout,
+            False otherwise.
+    """
     _ensure_pyserial()
     import serial
-    
+
     deadline = time.time() + timeout
     time.sleep(0.2)  # Give device time to start rebooting
-    rep = get_active_reporter()
-    
+    logger = get_active_logger()
+
     while time.time() < deadline:
         try:
             ser = serial.Serial(port=port, baudrate=baudrate, timeout=1.0)
             try:
                 time.sleep(0.1)
-                remaining_time = max(0.5, deadline - time.time())
                 response_bytes = bytearray()
-                read_deadline = time.time() + min(remaining_time, 2.0)
-                
-                while time.time() < read_deadline:
+                banner_found = False
+                while time.time() < deadline:
                     if ser.in_waiting > 0:
                         chunk = ser.read(ser.in_waiting)
                         response_bytes.extend(chunk)
+                        text_chunk = chunk.decode('utf-8', errors='ignore')
+                        if DEBUG: print(f"[DEBUG] Received during reboot: {text_chunk}")
+                        # Check for banner in the latest chunk
+                        if ready_token.lower() in text_chunk.lower():
+                            banner_found = True
+                            break
                     time.sleep(0.05)
-                
                 response = response_bytes.decode('utf-8', errors='ignore')
-
-                # Added: log reconnect RX preview
-                if rep and response:
-                    rep.log_serial_rx(response, note="reconnect")
-                
-                if ready_token.lower() in response.lower():
+                if logger and response:
+                    logger.serial_rx(response, note="reconnect")
+                if banner_found:
                     return True
-                    
             finally:
                 try:
                     ser.close()
                 finally:
-                    if rep:
-                        rep.log_serial_close(port)
-                
+                    if logger:
+                        logger.serial_close(port)
         except Exception:
             pass
-            
         time.sleep(0.2)
-    
     return False
 
 
 def parse_sysinfo_response(response: str) -> Dict[str, str]:
-    """Parse SYSINFO response into key-value dict"""
+    """Parse SYSINFO command response into a structured dictionary.
+    
+    This function parses the multi-line response from a SYSINFO command
+    and extracts key system information into a dictionary with standardized
+    key names.
+    
+    Args:
+        response (str): Raw SYSINFO command response text.
+        
+    Returns:
+        Dict[str, str]: Dictionary containing parsed system information
+            with keys like "Serial", "Firmware", "Core Voltage", etc.
+    """
     sysinfo = {}
     lines = response.replace("\r\n", "\n").replace("\r", "\n").splitlines()
-    
+
     for line in lines:
         line = line.strip()
         if not line or line in ["SYSTEM INFORMATION:", "Clock Sources :"]:
             continue
-        
+
         if line.startswith("[ECHO]"):
             line = line[6:].strip()
-        
+
         if not line or line in ["SYSTEM INFORMATION:", "Clock Sources :"]:
             continue
-        
+
         if ":" in line:
             key, value = line.split(":", 1)
             key = key.strip()
             value = value.strip()
-            
+
             if "Device Serial" in key:
                 sysinfo["Serial"] = value
             elif "Firmware Ver" in key:
@@ -208,20 +299,33 @@ def parse_sysinfo_response(response: str) -> Dict[str, str]:
                 sysinfo["ADC Frequency"] = value
             else:
                 sysinfo[key] = value
-    
+
     return sysinfo
 
 
 def validate_sysinfo_data(sysinfo: Dict[str, str], validation: Dict[str, Any]):
-    """Validate SYSINFO data against validation rules"""
-    failures = []
+    """Validate parsed SYSINFO data against specified validation rules.
     
+    This function checks parsed system information against a set of validation
+    rules including firmware version format, voltage ranges, and frequency
+    expectations.
+    
+    Args:
+        sysinfo (Dict[str, str]): Parsed system information dictionary.
+        validation (Dict[str, Any]): Validation rules dictionary containing
+            rules for firmware_regex, core_voltage_range, frequencies, etc.
+            
+    Raises:
+        SerialTestError: If any validation rules fail.
+    """
+    failures = []
+
     # Firmware regex validation
     if 'firmware_regex' in validation:
         firmware = sysinfo.get("Firmware", "")
         if not re.match(validation['firmware_regex'], firmware):
             failures.append(f"Invalid firmware format: {firmware}")
-    
+
     # Core voltage range validation
     if 'core_voltage_range' in validation:
         core_voltage_str = sysinfo.get("Core Voltage", "0")
@@ -236,12 +340,12 @@ def validate_sysinfo_data(sysinfo: Dict[str, str], validation: Dict[str, Any]):
                 failures.append(f"Could not parse core voltage: {core_voltage_str}")
         except ValueError:
             failures.append(f"Invalid core voltage value: {core_voltage_str}")
-    
+
     # Frequency validations
     freq_validations = validation.get('frequencies', {})
     for freq_type, expected_hz in freq_validations.items():
         freq_field = f"{freq_type.replace('_hz_min', '').replace('_hz_expect', '').upper()} Frequency"
-        
+
         if freq_field in sysinfo:
             try:
                 freq_str = sysinfo[freq_field]
@@ -258,24 +362,33 @@ def validate_sysinfo_data(sysinfo: Dict[str, str], validation: Dict[str, Any]):
                     failures.append(f"Could not parse frequency: {freq_str}")
             except ValueError:
                 failures.append(f"Invalid frequency value for {freq_field}: {sysinfo[freq_field]}")
-    
+
     if failures:
         raise SerialTestError(f"SYSINFO validation failed: {'; '.join(failures)}")
 
 
 def parse_get_ch_all(response: str) -> Dict[int, bool]:
-    """
-    Parse a multi-line response of 'GET_CH ALL' into a channel->state map.
+    """Parse a multi-line 'GET_CH ALL' response into a channel state mapping.
+    
+    This function parses the response from a 'GET_CH ALL' command and extracts
+    the state (ON/OFF) of each channel into a dictionary.
 
-    Expected input example:
+    Args:
+        response (str): Raw response text from 'GET_CH ALL' command.
+        
+    Returns:
+        Dict[int, bool]: Dictionary mapping channel numbers (1-8) to their
+            states (True for ON, False for OFF).
+    
+    Example:
+        Input response:
         [ECHO] Received CMD: "GET_CH ALL"
         [ECHO] CH1: OFF
         [ECHO] CH2: OFF
         ...
         [ECHO] CH8: OFF
-
-    Returns:
-        Dict[int, bool]: {1: False, 2: False, ..., 8: False} (True for ON)
+        
+        Returns: {1: False, 2: False, ..., 8: False}
     """
     lines = response.replace("\r\n", "\n").replace("\r", "\n").splitlines()
     ch_map: Dict[int, bool] = {}
@@ -296,37 +409,52 @@ def parse_get_ch_all(response: str) -> Dict[int, bool]:
 
     return ch_map
 
-#################################################################################################################
-#                                       TESTACTION FACTORIES
-#################################################################################################################
+
+# ======================== TestAction Factories ========================
 
 def wait_for_reboot(
-        name: str, 
-        port: str, 
+        name: str,
+        port: str,
         banner: str = "SYSTEM READY",
-        baudrate: int = 115200, 
+        baudrate: int = 115200,
         timeout: float = 15.0
         ) -> "TestAction":
-    """
-    Wait for device reboot and the READY banner over UART, as a TestAction.
+    """Create a TestAction that waits for device reboot and ready banner.
+    
+    This TestAction factory creates an action that monitors a serial port
+    for a device reboot sequence and waits for the specified ready banner
+    to appear. It's designed to be used in test steps where device reboots
+    are expected.
 
-    Internally calls the existing reboot-wait helper and wraps it so it can be
-    scheduled directly inside STE(...) without defining any extra functions in
-    the test file.
+    The action will continuously monitor the serial port, handling connection
+    retries and logging all received data until the banner appears or the
+    timeout is reached.
 
     Args:
-        name (str): Step name shown in the report (e.g., "Wait for reboot & SYSTEM READY").
-        port (str): Serial port (e.g., "COM11", "/dev/ttyACM0").
-        banner (str): Ready marker to wait for (default: "SYSTEM READY").
-        baudrate (int): UART baud rate (default: 115200).
-        timeout (float): Overall wait budget in seconds (default: 15.0).
+        name (str): Human-readable name for the test step shown in reports.
+            Should describe what reboot/ready state is being waited for.
+        port (str): Serial port identifier (e.g., "COM11", "/dev/ttyACM0").
+        banner (str, optional): Text banner indicating device is ready.
+            Defaults to "SYSTEM READY".
+        baudrate (int, optional): Serial communication baud rate.
+            Defaults to 115200.
+        timeout (float, optional): Maximum time to wait for ready banner
+            in seconds. Defaults to 15.0.
 
     Returns:
-        TestAction: Returns True when the banner is observed within the timeout.
+        TestAction: TestAction that returns True when the banner is detected
+            within the timeout period.
 
     Raises:
-        SerialTestError: If the device does not become ready within the timeout
-                         or any serial error occurs.
+        SerialTestError: When executed, raises this exception if the device
+            does not become ready within the timeout or if serial communication
+            errors occur.
+    
+    Example:
+        >>> reboot_action = wait_for_reboot(
+        ...     "Wait for device reboot", "COM3", "SYSTEM READY", timeout=30.0
+        ... )
+        >>> # Use in STE: STE(reboot_action, next_action, ...)
     """
     def execute():
         ok = wait_for_reboot_and_ready(port, banner, baudrate, timeout)
@@ -342,19 +470,39 @@ def validate_all_channels_state(
         response: str,
         expected: Union[bool, List[bool], Dict[int, bool]]
         ) -> TestAction:
-    """
-    Validate that the parsed 'GET_CH ALL' response matches the expected states.
+    """Create a TestAction that validates channel states from GET_CH ALL response.
+    
+    This TestAction factory creates an action that parses a 'GET_CH ALL' response
+    and validates that the channel states match the expected configuration. It
+    supports multiple formats for specifying expected states.
 
     Args:
-        name: Test action name.
-        response: Full text to parse (or leave empty "" to use last cached response).
-        expected:
-            - bool            -> all 8 channels must be this state
-            - List[bool]      -> len == 8, channel i -> expected[i-1]
-            - Dict[int, bool] -> per-channel expectation (1..8). Missing keys are ignored.
+        name (str): Human-readable name for the test action.
+        response (str): Full response text to parse. If empty, uses the last
+            cached response from a previous send_command_uart call.
+        expected (Union[bool, List[bool], Dict[int, bool]]): Expected channel
+            states in one of these formats:
+            - bool: All 8 channels must be this state (True=ON, False=OFF)
+            - List[bool]: List of 8 booleans, one per channel (index 0 = CH1)
+            - Dict[int, bool]: Per-channel expectations {channel: state}.
+              Only specified channels are validated.
+
+    Returns:
+        TestAction: TestAction that returns True if all validations pass.
 
     Raises:
-        SerialTestError on mismatch with a detailed diff.
+        SerialTestError: When executed, raises this exception if any channel
+            states don't match expectations, with detailed mismatch information.
+    
+    Example:
+        >>> # Validate all channels are OFF
+        >>> validate_action = validate_all_channels_state(
+        ...     "Verify all channels OFF", "", False
+        ... )
+        >>> # Validate specific channels
+        >>> validate_action = validate_all_channels_state(
+        ...     "Verify CH1=ON, CH2=OFF", "", {1: True, 2: False}
+        ... )
     """
     def execute():
         text = _use_response(response)
@@ -398,6 +546,7 @@ def validate_all_channels_state(
 
     return TestAction(name, execute)
 
+
 def get_all_channels(
         name: str,
         port: str,
@@ -405,46 +554,45 @@ def get_all_channels(
         baudrate: int = 115200,
         timeout: float = 2.0
         ) -> TestAction:
-    """
-    Send "GET_CH ALL" over UART, parse the response into channel states, and
-    optionally validate against expected values.
+    """Create a TestAction that retrieves and optionally validates all channel states.
+    
+    This TestAction factory creates an action that sends a 'GET_CH ALL' command
+    via UART, parses the response to extract channel states, and optionally
+    validates them against expected values. The response is cached for use
+    by subsequent validation actions.
 
-    The device returns lines like:
+    Args:
+        name (str): Human-readable name for the test action.
+        port (str): Serial port identifier (e.g., "COM5", "/dev/ttyACM0").
+        expected (Optional[Union[bool, List[bool], Dict[int, bool]]], optional):
+            Expected channel states for validation. If None, only retrieval
+            is performed. Formats:
+            - bool: All channels must be this state
+            - List[bool]: 8 booleans, one per channel
+            - Dict[int, bool]: Per-channel expectations
+        baudrate (int, optional): Serial communication baud rate.
+            Defaults to 115200.
+        timeout (float, optional): Response timeout in seconds.
+            Defaults to 2.0.
+
+    Returns:
+        TestAction: TestAction that returns a dictionary mapping channel
+            numbers (1-8) to their states (True=ON, False=OFF).
+
+    Raises:
+        SerialTestError: When executed, raises this exception if communication
+            fails or if validation fails (when expected values are provided).
+    
+    Example:
         [ECHO] Received CMD: "GET_CH ALL"
         [ECHO] CH1: ON
         [ECHO] CH2: OFF
         ...
         [ECHO] CH8: OFF
-
-    Args:
-        name (str):
-            Name of the test action.
-        port (str):
-            Serial port to use (e.g. "COM5" or "/dev/ttyACM0").
-        expected (optional):
-            - None (default): Only parse and return states, no validation.
-            - bool: Require all 8 channels to be this state.
-                True  -> all must be ON
-                False -> all must be OFF
-            - List[bool]: A list of 8 booleans, one per channel.
-                Example: [True, False, ..., True] → CH1=ON, CH2=OFF, ..., CH8=ON
-            - Dict[int,bool]: Explicit mapping {channel_number: state}.
-                Example: {1: True, 3: False} → require CH1=ON, CH3=OFF;
-                other channels are ignored.
-        baudrate (int, optional):
-            Baud rate for serial communication. Defaults to 115200.
-        timeout (float, optional):
-            Timeout for reading the response. Defaults to 2.0 seconds.
-
-    Returns:
-        TestAction:
-            On execution, sends "GET_CH ALL" and returns a dict:
-                {1: bool, 2: bool, ..., 8: bool}
-            where each bool is True for ON, False for OFF.
-
-    Raises:
-        SerialTestError:
-            If validation fails when `expected` is provided.
+        
+        Usage:
+        >>> get_action = get_all_channels("Get channel states", "COM5")
+        >>> states = get_action.execute()  # Returns {1: True, 2: False, ...}
     """
 
     def execute():
@@ -462,47 +610,39 @@ def get_all_channels(
 
     return TestAction(name, execute)
 
+
 def send_command_uart(
-        name: str, 
-        port: str, 
+        name: str,
+        port: str,
         command,   # str or list[str]
-        baudrate: int = 115200, 
+        baudrate: int = 115200,
         timeout: float = 2.0
         ):
-    """
-    Creates one or more TestActions that send command(s) via UART/serial and return the response(s).
-
-    This function is flexible:  
-    - If a **string** is provided for `command`, it behaves exactly like the original
-      `send_command_uart` and returns a single TestAction.  
-    - If a **list of strings** is provided, it returns a list of TestActions, each
-      corresponding to one command in the list.  
-
-    When executed, each action sends the specified command to the device via UART,
-    captures the response, and stores it for later validation.
+    """Create TestAction(s) for sending command(s) via UART with response caching.
+    
+    This function creates TestAction instances for sending commands via UART.
+    It supports both single commands and multiple commands, with automatic
+    response caching for use by subsequent validation actions.
 
     Args:
-        name (str): 
-            Base name of the test action(s). If multiple commands are provided, 
-            the name is suffixed with an index and the actual command for clarity.
-        port (str): 
-            Serial port to use (e.g., "COM3" or "/dev/ttyACM0").
-        command (str | list[str]): 
-            The command (or list of commands) to send.
-        baudrate (int, optional): 
-            Baud rate for serial communication. Defaults to 115200.
-        timeout (float, optional): 
-            Timeout in seconds to wait for a response. Defaults to 2.0 seconds.
+        name (str): Base name for the test action(s). For multiple commands,
+            each action gets a numbered suffix with the command text.
+        port (str): Serial port identifier (e.g., "COM3", "/dev/ttyACM0").
+        command (Union[str, List[str]]): Command string or list of command
+            strings to send via UART.
+        baudrate (int, optional): Serial communication baud rate.
+            Defaults to 115200.
+        timeout (float, optional): Response timeout in seconds.
+            Defaults to 2.0.
 
     Returns:
-        TestAction | list[TestAction]:
-            - A single TestAction if `command` is a string.  
-            - A list of TestActions if `command` is a list of strings.  
+        Union[TestAction, List[TestAction]]: Single TestAction if command
+            is a string, or list of TestActions if command is a list.
 
     Raises:
-        TypeError: If `command` is neither a string nor a list/tuple of strings.
+        TypeError: If command is neither a string nor a list/tuple of strings.
 
-    Usage Examples:
+    Example:
         # Single command (legacy behavior, unchanged)
         action = send_command_uart(
             name="Read NETINFO",
@@ -518,12 +658,6 @@ def send_command_uart(
             command=[f"GET_CH {i}" for i in range(1, 9)],
             baudrate=115200
         )
-
-    Notes:
-        - The last response is cached globally for use with later validation 
-          functions such as `Serial.validate_tokens`.
-        - Use descriptive `name` values to make log outputs clear, especially 
-          when sending multiple commands.
     """
     def make_execute(cmd):
         def execute():
@@ -545,25 +679,46 @@ def send_command_uart(
         raise TypeError("command must be str or list[str]")
 
 
-
 def test_sysinfo_complete(
-        name: str, 
-        port: str, 
-        validation: Dict[str, Any], 
+        name: str,
+        port: str,
+        validation: Dict[str, Any],
         baudrate: int = 115200
         ) -> TestAction:
-    """
-    Creates a TestAction that performs a complete SYSINFO test.
-    When executed, this action sends the SYSINFO command, parses the response, and validates the data against provided rules.
+    """Create a TestAction that performs complete SYSINFO testing and validation.
+    
+    This TestAction factory creates an action that sends a SYSINFO command,
+    parses the response into structured data, and validates it against
+    comprehensive validation rules including firmware format, voltage ranges,
+    and frequency expectations.
+    
     Args:
-        name (str): Name of the test action.
-        port (str): Serial port to use.
-        validation (Dict[str, Any]): Validation rules for SYSINFO data.
-        baudrate (int, optional): Baud rate for serial communication. Defaults to 115200.
+        name (str): Human-readable name for the test action.
+        port (str): Serial port identifier to use for communication.
+        validation (Dict[str, Any]): Dictionary containing validation rules:
+            - firmware_regex: Regex pattern for firmware version format
+            - core_voltage_range: [min, max] voltage range in volts
+            - frequencies: Dict of frequency expectations (e.g., sys_hz_min)
+        baudrate (int, optional): Serial communication baud rate.
+            Defaults to 115200.
+            
     Returns:
-        TestAction: Action to perform SYSINFO test and validation.
+        TestAction: TestAction that returns the parsed SYSINFO dictionary
+            if all validations pass.
+            
     Raises:
-        SerialTestError: If validation fails.
+        SerialTestError: When executed, raises this exception if communication
+            fails or if any validation rules fail.
+    
+    Example:
+        >>> validation_rules = {
+        ...     "firmware_regex": r"^\d+\.\d+\.\d+$",
+        ...     "core_voltage_range": [3.0, 3.6],
+        ...     "frequencies": {"sys_hz_min": 100000000}
+        ... }
+        >>> sysinfo_action = test_sysinfo_complete(
+        ...     "Validate system information", "COM3", validation_rules
+        ... )
     """
     def execute():
         response = send_command(port, "SYSINFO", baudrate)
@@ -574,21 +729,31 @@ def test_sysinfo_complete(
 
 
 def validate_single_token(
-        name: str, 
-        response: str, 
+        name: str,
+        response: str,
         token: str
         ) -> TestAction:
-    """
-    Creates a TestAction that validates the presence of a single token in a response.
-    When executed, this action checks if the specified token is present in the response string.
+    """Create a TestAction that validates the presence of a single token.
+    
+    This TestAction factory creates an action that checks if a specific
+    token (substring) is present in the provided response text.
+    
     Args:
-        name (str): Name of the test action.
-        response (str): Response text to check.
-        token (str): Token to validate.
+        name (str): Human-readable name for the test action.
+        response (str): Response text to search within.
+        token (str): Token (substring) that must be present in the response.
+        
     Returns:
-        TestAction: Action to validate the token.
+        TestAction: TestAction that returns True if the token is found.
+        
     Raises:
-        SerialTestError: If the token is missing.
+        SerialTestError: When executed, raises this exception if the token
+            is not found in the response.
+    
+    Example:
+        >>> token_action = validate_single_token(
+        ...     "Check for HELP command", response_text, "HELP"
+        ... )
     """
     def execute():
         if token not in response:
@@ -598,21 +763,34 @@ def validate_single_token(
 
 
 def validate_tokens(
-        name: str, 
-        response: str, 
+        name: str,
+        response: str,
         tokens: List[str]
         ) -> TestAction:
-    """
-    Creates a TestAction that validates the presence of multiple tokens in a response.
-    When executed, this action checks if all specified tokens are present in the response string.
+    """Create a TestAction that validates the presence of multiple tokens.
+    
+    This TestAction factory creates an action that checks if all specified
+    tokens are present in the response text. It uses cached response if
+    the response parameter is empty.
+    
     Args:
-        name (str): Name of the test action.
-        response (str): Response text to check (or uses last response if empty).
-        tokens (List[str]): List of tokens to validate.
+        name (str): Human-readable name for the test action.
+        response (str): Response text to search within. If empty, uses
+            the last cached response from send_command_uart.
+        tokens (List[str]): List of tokens that must all be present.
+        
     Returns:
-        TestAction: Action to validate all tokens.
+        TestAction: TestAction that returns True if all tokens are found.
+        
     Raises:
-        SerialTestError: If any token is missing.
+        SerialTestError: When executed, raises this exception if any tokens
+            are missing from the response.
+    
+    Example:
+        >>> tokens_action = validate_tokens(
+        ...     "Check for required commands", "", 
+        ...     ["HELP", "SYSINFO", "REBOOT", "NETINFO"]
+        ... )
     """
     def execute():
         text = _use_response(response)
@@ -624,27 +802,49 @@ def validate_tokens(
 
 
 def set_network_parameter(
-        name: str, 
-        port: str, 
-        param: str, 
+        name: str,
+        port: str,
+        param: str,
         value: str,
-        baudrate: int = 115200, 
+        baudrate: int = 115200,
         reboot_timeout: float = 10.0
         ) -> TestAction:
-    """
-    Creates a TestAction that sets a network parameter (IP, GW, SN, DNS, or CONFIG_NETWORK) via UART/serial.
-    When executed, this action sends the appropriate command to set the network parameter and waits for device reboot and ready signal.
+    """Create a TestAction that sets network parameters via UART with reboot handling.
+    
+    This TestAction factory creates an action that sends network configuration
+    commands via UART and handles the expected device reboot sequence. It
+    supports individual parameter setting (IP, GW, SN, DNS) and bulk
+    configuration (CONFIG_NETWORK).
+    
     Args:
-        name (str): Name of the test action.
-        port (str): Serial port to use.
-        param (str): Network parameter to set (IP, GW, SN, DNS, CONFIG_NETWORK).
-        value (str): Value to set for the parameter.
-        baudrate (int, optional): Baud rate for serial communication. Defaults to 115200.
-        reboot_timeout (float, optional): Timeout for device reboot. Defaults to 10.0 seconds.
+        name (str): Human-readable name for the test action.
+        port (str): Serial port identifier to use.
+        param (str): Network parameter type to set. Supported values:
+            - "IP", "GW", "SN", "DNS": Individual parameters
+            - "CONFIG_NETWORK": Bulk configuration (value should be "ip gw sn dns")
+        value (str): Value(s) to set. For CONFIG_NETWORK, provide space-separated
+            values or "$"-separated values.
+        baudrate (int, optional): Serial communication baud rate.
+            Defaults to 115200.
+        reboot_timeout (float, optional): Maximum time to wait for device
+            reboot and ready signal. Defaults to 10.0 seconds.
+            
     Returns:
-        TestAction: Action to set the network parameter and verify device readiness.
+        TestAction: TestAction that returns True when the parameter is set
+            and the device is ready.
+            
     Raises:
-        SerialTestError: If device does not become ready after setting parameter.
+        SerialTestError: When executed, raises this exception if the device
+            does not become ready after setting the parameter.
+    
+    Example:
+        >>> ip_action = set_network_parameter(
+        ...     "Set device IP", "COM3", "IP", "192.168.1.100"
+        ... )
+        >>> config_action = set_network_parameter(
+        ...     "Configure network", "COM3", "CONFIG_NETWORK", 
+        ...     "192.168.1.100 192.168.1.1 255.255.255.0 8.8.8.8"
+        ... )
     """
     def _build_command(p: str, v: str) -> str:
         p_up = (p or "").strip().upper()
@@ -691,40 +891,69 @@ def set_network_parameter(
 
     return TestAction(name, execute)
 
+
 def set_network_parameter_simple(
-        name: str, 
-        port: str, 
-        param: str, 
+        name: str,
+        port: str,
+        param: str,
         value: str,
         baudrate: int = 115200,
         reboot_timeout: float = 10.0
         ) -> TestAction:
-    """
-    Backward-compatible wrapper for set_network_parameter().
-    Returns a TestAction that sets a network parameter using the main function.
+    """Create a TestAction for setting network parameters (backward compatibility).
+    
+    This function is a backward-compatible wrapper for set_network_parameter()
+    that provides the same functionality with the same interface.
+    
+    Args:
+        name (str): Human-readable name for the test action.
+        port (str): Serial port identifier to use.
+        param (str): Network parameter type to set.
+        value (str): Value to set for the parameter.
+        baudrate (int, optional): Serial communication baud rate.
+            Defaults to 115200.
+        reboot_timeout (float, optional): Device reboot timeout.
+            Defaults to 10.0 seconds.
+            
+    Returns:
+        TestAction: TestAction that sets the network parameter.
     """
     return set_network_parameter(name, port, param, value, baudrate, reboot_timeout)
 
+
 def verify_network_change(
-        name: str, 
-        port: str, 
-        param: str, 
+        name: str,
+        port: str,
+        param: str,
         expected_value: str,
         baudrate: int = 115200
         ) -> TestAction:
-    """
-    Creates a TestAction that verifies a network parameter change via UART/serial.
-    When executed, this action sends the NETINFO command and checks if the expected value is present in the response.
+    """Create a TestAction that verifies network parameter changes.
+    
+    This TestAction factory creates an action that sends a NETINFO command
+    and verifies that the expected value appears in the response, confirming
+    that a network parameter change was successful.
+    
     Args:
-        name (str): Name of the test action.
-        port (str): Serial port to use.
-        param (str): Network parameter to verify.
-        expected_value (str): Expected value to find in NETINFO response.
-        baudrate (int, optional): Baud rate for serial communication. Defaults to 115200.
+        name (str): Human-readable name for the test action.
+        port (str): Serial port identifier to use.
+        param (str): Network parameter name being verified (used in error messages).
+        expected_value (str): Expected value that should appear in the NETINFO response.
+        baudrate (int, optional): Serial communication baud rate.
+            Defaults to 115200.
+            
     Returns:
-        TestAction: Action to verify the network change.
+        TestAction: TestAction that returns the NETINFO response if
+            verification succeeds.
+            
     Raises:
-        SerialTestError: If expected value is not found in response.
+        SerialTestError: When executed, raises this exception if the expected
+            value is not found in the NETINFO response.
+    
+    Example:
+        >>> verify_action = verify_network_change(
+        ...     "Verify IP change", "COM3", "IP", "192.168.1.100"
+        ... )
     """
     def execute():
         response = send_command(port, "NETINFO", baudrate)
@@ -735,32 +964,46 @@ def verify_network_change(
 
 
 def factory_reset_complete(
-        name: str, 
-        port: str, 
+        name: str,
+        port: str,
         baudrate: int = 115200
         ) -> TestAction:
-    """
-    Creates a TestAction that performs a complete factory reset via UART/serial.
-    When executed, this action sends the RFS command, waits for device reboot, and verifies system info after reset.
+    """Create a TestAction that performs a complete factory reset sequence.
+    
+    This TestAction factory creates an action that sends an RFS (Reset Factory
+    Settings) command, waits for the device to reboot, and verifies that the
+    system information is accessible after the reset.
+    
     Args:
-        name (str): Name of the test action.
-        port (str): Serial port to use.
-        baudrate (int, optional): Baud rate for serial communication. Defaults to 115200.
+        name (str): Human-readable name for the test action.
+        port (str): Serial port identifier to use.
+        baudrate (int, optional): Serial communication baud rate.
+            Defaults to 115200.
+            
     Returns:
-        TestAction: Action to perform factory reset and verify system info.
+        TestAction: TestAction that returns the parsed SYSINFO dictionary
+            after successful factory reset.
+            
     Raises:
-        SerialTestError: If device does not reboot or system info validation fails.
+        SerialTestError: When executed, raises this exception if the device
+            does not reboot properly or if system information cannot be
+            retrieved after reset.
+    
+    Example:
+        >>> reset_action = factory_reset_complete(
+        ...     "Perform factory reset", "COM3"
+        ... )
     """
     def execute():
         # Send RFS and wait for reboot
         try:
             send_command(port, "RFS", baudrate, 1.0)
-        except:
+        except Exception:
             pass  # Connection drops during reboot
-        
+
         if not wait_for_reboot_and_ready(port, "SYSTEM READY", baudrate, 10.0):
             raise SerialTestError("Device did not reboot after RFS")
-        
+
         # Verify system after reset
         response = send_command(port, "SYSINFO", baudrate)
         sysinfo = parse_sysinfo_response(response)
@@ -768,7 +1011,7 @@ def factory_reset_complete(
     return TestAction(name, execute)
 
 
-# -------------------- EEPROM dump helpers (added, no deletions) --------------------
+# ======================== EEPROM Dump Helpers ========================
 
 def _read_until_markers(port: str,
                         baudrate: int,
@@ -778,17 +1021,33 @@ def _read_until_markers(port: str,
                         per_read_timeout: float = 1.0,
                         overall_timeout: float = 20.0,
                         read_grace: float = 1.0) -> str:
-    """
-    Send `command` and read until both `want_start` and `want_end` markers appear.
-    Returns the entire captured text INCLUDING markers.
+    """Send command and read until both start and end markers appear.
+    
+    This internal helper function sends a command and continues reading
+    until both start and end markers are detected in the response. It's
+    used specifically for EEPROM dump operations that have defined
+    start/end boundaries.
+    
+    Args:
+        port (str): Serial port identifier.
+        baudrate (int): Serial communication baud rate.
+        command (str): Command to send.
+        want_start (str): Start marker to wait for.
+        want_end (str): End marker to wait for.
+        per_read_timeout (float, optional): Per-read timeout. Defaults to 1.0.
+        overall_timeout (float, optional): Overall operation timeout. Defaults to 20.0.
+        read_grace (float, optional): Grace period after end marker. Defaults to 1.0.
+        
+    Returns:
+        str: Complete captured text including both markers.
     """
     ser = _open_connection(port, baudrate, per_read_timeout)
-    rep = get_active_reporter()
+    logger = get_active_logger()
     try:
         # Send command
         payload = (command.strip() + "\r\n")
-        if rep:
-            rep.log_serial_tx(payload)
+        if logger:
+            logger.serial_tx(payload)
         ser.write(payload.encode("utf-8"))
         ser.flush()
 
@@ -819,8 +1078,8 @@ def _read_until_markers(port: str,
                     if time.time() - t_end_seen >= read_grace:
                         break
             text = buf.decode("utf-8", errors="replace")
-            if rep:
-                rep.log_serial_rx(text, note="eeprom-dump")
+            if logger:
+                logger.serial_rx(text, note="eeprom-dump")
             return text
         finally:
             ser.timeout = old_timeout
@@ -828,23 +1087,35 @@ def _read_until_markers(port: str,
         try:
             ser.close()
         finally:
-            if rep:
-                rep.log_serial_close(port)
+            if logger:
+                logger.serial_close(port)
 
 
 def send_eeprom_dump_command(
-        name: str, 
-        port: str, 
+        name: str,
+        port: str,
         baudrate: int = 115200) -> TestAction:
-    """
-    Creates a TestAction that sends the EEPROM dump command via UART/serial and captures the full dump including markers.
-    When executed, this action sends the DUMP_EEPROM command and reads until both EE_DUMP_START and EE_DUMP_END markers are present.
+    """Create a TestAction that captures a complete EEPROM dump with markers.
+    
+    This TestAction factory creates an action that sends a DUMP_EEPROM command
+    and captures the complete response including the EE_DUMP_START and
+    EE_DUMP_END markers. The captured data can be used by subsequent
+    validation or analysis actions.
+    
     Args:
-        name (str): Name of the test action.
-        port (str): Serial port to use.
-        baudrate (int, optional): Baud rate for serial communication. Defaults to 115200.
+        name (str): Human-readable name for the test action.
+        port (str): Serial port identifier to use.
+        baudrate (int, optional): Serial communication baud rate.
+            Defaults to 115200.
+            
     Returns:
-        TestAction: Action to send EEPROM dump command and capture output.
+        TestAction: TestAction that returns the complete EEPROM dump text
+            including start and end markers.
+    
+    Example:
+        >>> dump_action = send_eeprom_dump_command(
+        ...     "Capture EEPROM dump", "COM3"
+        ... )
     """
     def execute():
         # IMPORTANT: capture UNTIL both markers are present, and include them.
@@ -862,16 +1133,27 @@ def send_eeprom_dump_command(
 
 
 def validate_eeprom_markers(name: str, response: str) -> TestAction:
-    """
-    Creates a TestAction that validates the presence of EEPROM dump start and end markers in a response.
-    When executed, this action checks if both EE_DUMP_START and EE_DUMP_END markers are present in the response.
+    """Create a TestAction that validates EEPROM dump markers are present.
+    
+    This TestAction factory creates an action that verifies both the
+    EE_DUMP_START and EE_DUMP_END markers are present in an EEPROM dump
+    response, ensuring the dump is complete and properly formatted.
+    
     Args:
-        name (str): Name of the test action.
-        response (str): EEPROM dump response to check.
+        name (str): Human-readable name for the test action.
+        response (str): EEPROM dump response text to validate.
+        
     Returns:
-        TestAction: Action to validate EEPROM dump markers.
+        TestAction: TestAction that returns True if both markers are present.
+        
     Raises:
-        SerialTestError: If either marker is missing.
+        SerialTestError: When executed, raises this exception if either
+            the start or end marker is missing from the response.
+    
+    Example:
+        >>> validate_action = validate_eeprom_markers(
+        ...     "Validate EEPROM markers", dump_response
+        ... )
     """
     def execute():
         if "EE_DUMP_START" not in response or "EE_DUMP_END" not in response:
@@ -881,34 +1163,47 @@ def validate_eeprom_markers(name: str, response: str) -> TestAction:
 
 
 def analyze_eeprom_dump(name: str, port: str, baudrate: int, checks: str, reports_dir: Optional[str] = None) -> TestAction:
-    """Capture, parse, and validate an EEPROM dump; write artifacts under the active report directory.
+    """Create a TestAction that performs comprehensive EEPROM dump analysis.
+    
+    This TestAction factory creates an action that captures an EEPROM dump,
+    parses it according to validation rules from a JSON file, and generates
+    detailed analysis reports. It integrates with the utilities module to
+    handle the actual dump capture and parsing.
 
-    This action:
-      1) Runs the helper via `utilities.parse_eeprom_data(port, baudrate, save_to_dir=...)`
-      2) Loads checks from a JSON file path (`checks`)
-      3) Parses the ASCII hexdump into a contiguous byte image
-      4) Executes validations (ascii/hex, pattern/regex/expect/contains)
-      5) Writes 'eeprom_summary.txt' under '<reports_dir>/EEPROM'
-      6) Returns paths and findings
+    The action performs:
+    1. EEPROM dump capture via utilities.parse_eeprom_data()
+    2. Validation rules loading from JSON file
+    3. ASCII hexdump parsing into byte arrays
+    4. Validation execution (ascii/hex, pattern/regex/expect/contains)
+    5. Summary report generation
 
     Args:
-        name: Step name.
-        port: Serial port (e.g., "COM10").
-        baudrate: Serial baudrate (e.g., 115200).
-        checks: Path to `eeprom_checks.json`.
-        reports_dir: Optional base reports directory. If omitted, uses the active reporter's
-            directory when available; otherwise falls back to the legacy TestCases/Reports path.
+        name (str): Human-readable name for the test action.
+        port (str): Serial port identifier (e.g., "COM10").
+        baudrate (int): Serial communication baud rate.
+        checks (str): Path to JSON file containing validation rules.
+        reports_dir (Optional[str]): Base directory for reports. If None,
+            uses the active logger's directory or falls back to TestCases/Reports.
 
     Returns:
-        TestAction: Executable test action.
+        TestAction: TestAction that returns a dictionary containing analysis
+            results including file paths, address ranges, and validation findings.
+    
+    Example:
+        >>> analysis_action = analyze_eeprom_dump(
+        ...     "Analyze EEPROM content", "COM3", 115200, 
+        ...     "eeprom_checks.json"
+        ... )
+        >>> results = analysis_action.execute()
+        >>> print(results['summary_path'])
     """
     def execute():
         import json
         import re
         import inspect
         from pathlib import Path
-        from . import utilities
-        from .reporting import get_active_reporter
+        from ...core import utilities
+        from ...core.logger import get_active_logger
 
         def _find_testcases_root() -> Path:
             """Return nearest 'TestCases' directory from stack or CWD."""
@@ -943,9 +1238,9 @@ def analyze_eeprom_dump(name: str, port: str, baudrate: int, checks: str, report
             return " ".join(f"{x:02X}" for x in b)
 
         # ---- Resolve save_dir to align with the active reporter (preferred) ----
-        rep = get_active_reporter()
-        if rep is not None:
-            base_reports = Path(rep.reports_dir)
+        logger = get_active_logger()
+        if logger is not None and hasattr(logger, 'log_file') and logger.log_file:
+            base_reports = logger.log_file.parent
         elif reports_dir:
             base_reports = Path(reports_dir)
         else:
@@ -1135,15 +1430,27 @@ def analyze_eeprom_dump(name: str, port: str, baudrate: int, checks: str, report
 
     return TestAction(name, execute)
 
+
 def load_eeprom_checks_from_json(json_path: str) -> list:
-    """
-    Helper to load EEPROM 'checks' from a JSON file.
+    """Load EEPROM validation checks from a JSON file.
+    
+    This utility function loads and validates an EEPROM checks configuration
+    file that defines validation rules for EEPROM content analysis.
 
     Args:
-        json_path (str): Path to eeprom_checks.json
+        json_path (str): Path to the JSON file containing EEPROM validation checks.
 
     Returns:
-        list: Parsed checks list
+        list: List of check dictionaries loaded from the JSON file.
+        
+    Raises:
+        FileNotFoundError: If the JSON file cannot be found.
+        ValueError: If the JSON file doesn't contain a list of checks.
+    
+    Example:
+        >>> checks = load_eeprom_checks_from_json("eeprom_checks.json")
+        >>> print(len(checks))
+        5
     """
     import json
     from pathlib import Path

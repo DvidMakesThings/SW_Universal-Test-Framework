@@ -1,8 +1,12 @@
 # substep.py
 """
-UTSW Sub-Step Execution Module
+UTFW Sub-Step Execution Module
 ==============================
-Handles detailed sub-step execution when needed
+Handles detailed sub-step execution within main test steps
+
+This module provides the SubStepExecutor class which manages the execution
+of multiple actions as numbered sub-steps within a single main test step.
+It integrates with the logging system to provide detailed execution tracking.
 
 Author: DvidMakesThings
 """
@@ -12,7 +16,25 @@ from .core import TestAction
 
 
 class SubStepExecutor:
-    """Executes functions as sub-steps within a main test step"""
+    """Executes TestActions and other callables as numbered sub-steps within a main test step.
+    
+    SubStepExecutor is used internally by the TestFramework to manage the execution
+    of multiple actions within a single test step. Each action becomes a numbered
+    sub-step (e.g., STEP 1.1, STEP 1.2) with individual logging and result tracking.
+    
+    The executor handles different types of action objects including TestActions,
+    module-specific actions, and plain callables, providing a unified interface
+    for sub-step execution.
+    
+    Args:
+        parent_step (str): Identifier of the parent test step (e.g., "STEP 1").
+        reporter: TestReporter instance for logging sub-step execution details.
+    
+    Example:
+        >>> executor = SubStepExecutor("STEP 1", reporter)
+        >>> result = executor.execute(action1, action2, action3)
+        >>> # Executes as STEP 1.1, STEP 1.2, STEP 1.3
+    """
 
     def __init__(self, parent_step: str, reporter):
         self.parent_step = parent_step
