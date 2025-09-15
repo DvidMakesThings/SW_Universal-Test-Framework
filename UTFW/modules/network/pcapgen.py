@@ -56,27 +56,47 @@ ETH_FCS_LEN = 4
 
 def _parse_link_speed_bps(speed: Optional[Union[int, float, str]]) -> Optional[float]:
     """
-    Accepts:
-      - number (int/float) -> used as-is
-      - str: '10M', '100M', '1G', '2.5G', '5G', '10G', etc.
-    Returns float(bps) or None.
+    Accepts link speed in multiple formats:
+      - int/float: treated as bits per second (e.g., 1_000_000_000)
+      - str:
+          * "10M", "100M", "1G", "2.5G", "5G", "10G" etc.
+          * raw integer string like "1000000000"
+    Returns:
+        float: Speed in bits per second, or None if invalid
     """
     if speed is None:
         return None
     if isinstance(speed, (int, float)):
         return float(speed)
+
     s = str(speed).strip().lower().replace(" ", "")
+
+    # Common suffix multipliers
     if s.endswith("g"):
         return float(s[:-1]) * 1_000_000_000.0
     if s.endswith("m"):
         return float(s[:-1]) * 1_000_000.0
     if s.endswith("k"):
         return float(s[:-1]) * 1_000.0
-    # raw int string
+
+    # Named shorthand mappings
+    mapping = {
+        "10m": 10_000_000.0,
+        "100m": 100_000_000.0,
+        "1g": 1_000_000_000.0,
+        "2.5g": 2_500_000_000.0,
+        "5g": 5_000_000_000.0,
+        "10g": 10_000_000_000.0,
+    }
+    if s in mapping:
+        return mapping[s]
+
+    # Raw int string fallback
     try:
         return float(int(s))
     except Exception:
         return None
+
 
 # ======================== Helpers ========================
 
@@ -294,8 +314,6 @@ def _pcap_append_frames_ns(path: str, frames: List[bytes], timestamps_ns: List[i
     for ts, fr in zip(timestamps_ns, frames):
         _pcap_append_record_ns(path, int(ts), fr)
 
-# ======================== New Per-Frame Factory ========================
-
 def pcap_create(name: str,
                 output_path: str,
                 *,
@@ -311,7 +329,7 @@ def pcap_create(name: str,
                 delta_ns: Optional[int] = None,
                 ifg_bytes: Optional[int] = None,
                 start_time_ns: int = 0,
-                link_speed_bps: Optional[float] = None,
+                link_speed_bps: Optional[Union[int, float, str]] = None,
                 # IPv4 (optional)
                 ipv4: bool = False,
                 ip_src: Optional[Union[str, bytes]] = None,
@@ -327,21 +345,64 @@ def pcap_create(name: str,
                 ip_tos: int = 0,
                 ip_auto_fragment_payload_size: Optional[int] = None) -> TestAction:
     """
-    Append one "frame" specification to a PCAP file (created on first call).
+    Create a TestAction that appends one or more Ethernet/IPv4 frames to a PCAP.
 
-    - If the file doesn't exist (or empty), a global header is written and the
-      first packet's timestamp uses start_time_ns (or 0 if omitted).
-    - If the file already has packets, the new timestamp is computed from the last
-      packet using delta_ns or ifg_bytes (converted with link speed), or
-      back-to-back by serialization time if link_speed_bps is provided.
+    This TestAction factory builds a single Ethernet frame or an IPv4 packet
+    (optionally auto-fragmented) wrapped in Ethernet, and appends it/them to a
+    PCAP file (creating the file and global header on first use). It computes
+    timestamps per frame using one of:
+      - explicit `delta_ns`,
+      - `ifg_bytes` converted via the provided `link_speed_bps`,
+      - back-to-back serialization time at `link_speed_bps`,
+      - or reuses the previous timestamp when no timing is specified.
 
-    IPv4:
-    - If ipv4=True and ip_auto_fragment_payload_size is set, multiple packets are
-      appended (correct fragments).
-    - Manual DF/MF/frag offset can be set for a single IPv4 packet.
+    The `link_speed_bps` parameter accepts either a numeric bps value
+    (e.g., 1_000_000_000) or a shorthand string like "10M", "100M", "1G", "2.5G", "10G".
+
+    Args:
+        name (str): Human-readable name for the test action.
+        output_path (str): Target PCAP path; created if missing.
+        dst_mac (Optional[Union[str, bytes]], optional): Destination MAC; defaults to broadcast if None.
+        src_mac (Optional[Union[str, bytes]], optional): Source MAC; defaults to 00:11:22:33:44:55 if None.
+        ethertype (Optional[Union[int, str]], optional): EtherType; defaults to 0x0800 (IPv4).
+        payload (Optional[bytes], optional): Raw Ethernet payload for non-IPv4 mode.
+        payload_len (Optional[int], optional): If `payload` is None, generate random payload of this length.
+        total_size_including_fcs (Optional[int], optional): Enforce exact total frame length (incl. FCS).
+        fcs_xormask (int, optional): XOR mask to apply to computed CRC-32 FCS (for corruption demos). Defaults to 0.
+        delta_ns (Optional[int], optional): Explicit inter-packet time in nanoseconds.
+        ifg_bytes (Optional[int], optional): Inter-frame gap in bytes (converted with link speed).
+        start_time_ns (int, optional): Timestamp for the very first packet when file is empty. Defaults to 0.
+        link_speed_bps (Optional[Union[int, float, str]], optional): Link speed in bps or shorthand ("1G", "100M").
+        ipv4 (bool, optional): When True, build IPv4 over Ethernet instead of raw Ethernet.
+        ip_src (Optional[Union[str, bytes]], optional): IPv4 source address (string "a.b.c.d" or 4-byte value).
+        ip_dst (Optional[Union[str, bytes]], optional): IPv4 destination address (string or 4-byte value).
+        ip_protocol (int, optional): IPv4 protocol number (default 17/UDP for demo purposes).
+        ip_payload (Optional[bytes], optional): IPv4 payload bytes; overrides `ip_payload_len` if provided.
+        ip_payload_len (Optional[int], optional): If `ip_payload` is None, generate random payload of this length.
+        ip_identification (Optional[int], optional): IPv4 Identification field; random if None.
+        ip_df (bool, optional): IPv4 “Dont Fragment” flag. Defaults to False.
+        ip_mf (bool, optional): IPv4 “More Fragments” flag (manual mode). Defaults to False.
+        ip_frag_offset_units8 (int, optional): Fragment offset in 8-byte units (manual mode). Defaults to 0.
+        ip_ttl (int, optional): IPv4 TTL. Defaults to 64.
+        ip_tos (int, optional): IPv4 TOS/DSCP field. Defaults to 0.
+        ip_auto_fragment_payload_size (Optional[int], optional): If set >0, automatically fragment IPv4 payload
+            into multiple packets using this per-fragment payload size (bytes).
 
     Returns:
-        TestAction that writes packet(s) and returns output_path.
+        TestAction: Action that appends frame(s) and returns `output_path` on success.
+
+    Raises:
+        PCAPGenError: If invalid parameters are provided (e.g., missing ip_src/ip_dst for IPv4),
+            or when timing requires `link_speed_bps` but it is not supplied.
+
+    Example:
+        >>> action = pcap_create(
+        ...     "One IPv4 packet @1G serialize timing",
+        ...     "out.pcap",
+        ...     ipv4=True, ip_src="192.168.0.10", ip_dst="192.168.0.11",
+        ...     ip_payload_len=100, link_speed_bps="1G"
+        ... )
+        >>> action()
     """
     def execute():
         logger = get_active_logger()
@@ -499,27 +560,55 @@ def pcap_create(name: str,
 
     return TestAction(name, execute)
 
-# ======================== Spec-List Factory ========================
 
 def pcap_from_spec_action(name: str,
                           output_path: str,
                           frames_spec: List[dict],
                           *,
                           start_time_ns: int = 0,
-                          link_speed_bps: Optional[float] = None) -> TestAction:
-    """
-    Append a list of frames to the PCAP (created on first call).
+                          link_speed_bps: Optional[Union[int, float, str]] = None) -> TestAction:
+    """Create a TestAction that appends frames built from a list of specs to a PCAP.
 
-    Each spec dict can include the same keys used by pcap_create:
-      - Ethernet: dst_mac, src_mac, ethertype, payload, payload_len,
-                  total_size_including_fcs, fcs_xormask
-      - Timing:   delta_ns, ifg_bytes
-      - IPv4:     ipv4, ip_src, ip_dst, ip_protocol, ip_payload, ip_payload_len,
-                  ip_identification, ip_df, ip_mf, ip_frag_offset_units8,
-                  ip_ttl, ip_tos, ip_auto_fragment_payload_size
+    This TestAction factory consumes a list of per-frame specifications and builds
+    raw Ethernet or IPv4-over-Ethernet frames (with optional IPv4 auto-fragmentation),
+    applying per-spec timing (`delta_ns`, `ifg_bytes`, per-spec `link_speed_bps`)
+    and file-level defaults. It appends all resulting frames to the target PCAP,
+    creating the file and global header on first use.
 
-    The first packet in the file uses start_time_ns when the file is empty.
-    Subsequent timestamps are computed using per-spec delta_ns / ifg_bytes rules.
+    The `link_speed_bps` parameter (global default and per-spec override) accepts
+    either numeric bps (e.g., 1_000_000_000) or shorthand strings like "10M",
+    "100M", "1G", "2.5G", "10G".
+
+    Args:
+        name (str): Human-readable name for the test action.
+        output_path (str): Target PCAP path; created if missing.
+        frames_spec (List[dict]): List of frame specs. Each spec may contain:
+            - Ethernet: `dst_mac`, `src_mac`, `ethertype`, `payload`, `payload_len`,
+              `total_size_including_fcs`, `fcs_xormask`
+            - Timing: `delta_ns`, `ifg_bytes`, `link_speed_bps` (per-spec)
+            - IPv4: `ipv4`, `ip_src`, `ip_dst`, `ip_protocol`, `ip_payload`,
+              `ip_payload_len`, `ip_identification`, `ip_df`, `ip_mf`,
+              `ip_frag_offset_units8`, `ip_ttl`, `ip_tos`,
+              `ip_auto_fragment_payload_size`
+        start_time_ns (int, optional): Timestamp for first packet when file is empty. Defaults to 0.
+        link_speed_bps (Optional[Union[int, float, str]], optional): Default link speed in bps or shorthand;
+            used when specs don't provide their own.
+
+    Returns:
+        TestAction: Action that appends all frames and returns `output_path` on success.
+
+    Raises:
+        PCAPGenError: If a spec is invalid (e.g., `ipv4=True` without `ip_src/ip_dst`),
+            or if timing requires a link speed but none is available.
+
+    Example:
+        >>> specs = [
+        ...   {"ipv4": True, "ip_src": "192.168.0.10", "ip_dst": "192.168.0.11",
+        ...    "ip_payload_len": 200, "ifg_bytes": 12},
+        ...   {"payload_len": 46, "ethertype": 0x88cc, "delta_ns": 100_000}
+        ... ]
+        >>> action = pcap_from_spec_action("Burst @1G", "out.pcap", specs, link_speed_bps="1G")
+        >>> action()
     """
     def execute():
         logger = get_active_logger()

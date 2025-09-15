@@ -1,0 +1,487 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<title>ENERGIS Test Report - PASS</title>
+<style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;background:#0f1216;color:#e7eaf0;margin:0}
+    header{padding:20px;background:#151a21;border-bottom:1px solid #2a2f37}
+    h1{margin:0;font-size:20px}
+    .meta{font-size:12px;color:#a6adbb;margin-top:6px}
+    .summary{display:flex;gap:16px;flex-wrap:wrap;margin:16px 0}
+    .chip{padding:8px 12px;border-radius:20px;border:1px solid #2a2f37;background:#151a21}
+    .chip.pass{border-color:#1e7f45;color:#d7ffe6;background:#0e2017}
+    .chip.fail{border-color:#a23b3b;color:#ffe1e1;background:#210e0e}
+    .chip.unknown{border-color:#6b7280;color:#e7eaf0;background:#1b2028}
+    main{padding:20px}
+    details{border:1px solid #2a2f37;border-radius:12px;margin-bottom:12px;overflow:hidden}
+    summary{padding:12px 14px;background:#151a21;cursor:pointer;font-weight:600}
+    .content{padding:12px 14px;background:#11161b}
+    .step-title{display:flex;justify-content:space-between;align-items:center}
+    .status{padding:3px 8px;border-radius:12px;border:1px solid #2a2f37;font-size:12px}
+    .status.pass{border-color:#1e7f45;color:#d7ffe6;background:#0e2017}
+    .status.fail{border-color:#a23b3b;color:#ffe1e1;background:#210e0e}
+    .status.unknown{border-color:#6b7280;background:#1b2028}
+    pre{background:#0b0f14;border:1px solid #2a2f37;border-radius:8px;padding:10px;overflow:auto}
+    table{width:100%;border-collapse:collapse;margin-top:8px}
+    th,td{border-bottom:1px solid #1f2530;padding:8px 6px;text-align:left;font-size:13px}
+    th{color:#a6adbb;font-weight:600;background:#131820}
+    .kv{display:grid;grid-template-columns:180px 1fr;gap:8px}
+    a{color:#9ad0ff;text-decoration:none}
+    a:hover{text-decoration:underline}
+    .img-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:10px}
+    .img-grid figure{margin:0;padding:8px;background:#0b0f14;border:1px solid #2a2f37;border-radius:8px}
+    .img-grid img{max-width:100%;height:auto;display:block;border-radius:6px}
+    .img-grid figcaption{font-size:12px;color:#a6adbb;margin-top:6px}
+    .substeps{margin-top:10px}
+    .substeps details{margin-bottom:8px}
+    </style></head><body>
+<header>
+<h1>ENERGIS Test Report</h1>
+<div class='meta'>
+Overall: <b class='chip pass'>PASS</b> &nbsp;
+Started: 2025-09-16 01:14:35 &nbsp;
+</div>
+</header>
+<main>
+<section class='summary'>
+<div class='chip pass'>Passed steps: 4</div>
+<div class='chip fail'>Failed steps: 0</div>
+<div class='chip unknown'>Unknown steps: 0</div>
+<div class='chip'>Total steps: 4</div>
+</section>
+<section>
+<h3>Environment</h3>
+<div class='kv'>
+<div>Hostname</div><div>DPC</div>
+<div>Os</div><div>Windows 11 (10.0.26100)</div>
+<div>Python</div><div>3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]</div>
+<div>Generated_at</div><div>2025-09-16 01:14:37</div>
+<div>Log_file</div><div>report_tc_pcap_create\tc_pcap_create_results.log</div>
+</div>
+</section>
+<section>
+<h3>Steps</h3>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1 Generate PCAP</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-09-16 01:14:35</td><td>2025-09-16 01:14:35</td></tr>
+</table>
+<div class='substeps'>
+<h4>Substeps</h4>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.1 UDP128</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-09-16 01:14:35</td><td>2025-09-16 01:14:35</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-09-16 01:14:35] [STEP 1.1] UDP128
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] pcap_create -&gt; target=report_tc_pcap_create\test_pcap.pcap last_ts_ns=None last_len=None params delta_ns=None ifg_bytes=None link_bps=None
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] IPv4 build: src=192.0.2.1 dst=198.51.100.1 proto=17 payload_len=72 ident=None df=0 mf=0 off8=0
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] IPv4 single eth_len=128
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] first packet ts=0 ns
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] frame#1 ts=0 ns len=128 crc=0x4F905B9A xor=0x00000000 fcs=0x4F905B9A
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] Wrote ns-global-header to report_tc_pcap_create\test_pcap.pcap (linktype=1)
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] wrote rec ts=0ns (sec=0 ns=0) len=128
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] appended 1 frame(s) -&gt; report_tc_pcap_create\test_pcap.pcap last_ts_ns=0
+[2025-09-16 01:14:35] [PASS] STEP 1.1 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.2 CorruptFCS200</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-09-16 01:14:35</td><td>2025-09-16 01:14:35</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-09-16 01:14:35] [STEP 1.2] CorruptFCS200
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] pcap_create -&gt; target=report_tc_pcap_create\test_pcap.pcap last_ts_ns=0 last_len=128 params delta_ns=200000 ifg_bytes=None link_bps=1000000000.0
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] Ether frame len=200 et=34998 payload_len=60 fcs_xor=0xDEADBEEF
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] Δt=explicit 200000 ns -&gt; ts=200000
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] frame#1 ts=200000 ns len=200 crc=0x58770085 xor=0xDEADBEEF fcs=0x86DABE6A
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] wrote rec ts=200000ns (sec=0 ns=200000) len=200
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] appended 1 frame(s) -&gt; report_tc_pcap_create\test_pcap.pcap last_ts_ns=200000
+[2025-09-16 01:14:35] [PASS] STEP 1.2 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.3 AA128</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-09-16 01:14:35</td><td>2025-09-16 01:14:35</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-09-16 01:14:35] [STEP 1.3] AA128
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] pcap_create -&gt; target=report_tc_pcap_create\test_pcap.pcap last_ts_ns=200000 last_len=200 params delta_ns=250000 ifg_bytes=None link_bps=1000000000.0
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] Ether frame len=128 et=34998 payload_len=100 fcs_xor=0x00000000
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] Δt=explicit 250000 ns -&gt; ts=450000
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] frame#1 ts=450000 ns len=128 crc=0xCB70046B xor=0x00000000 fcs=0xCB70046B
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] wrote rec ts=450000ns (sec=0 ns=450000) len=128
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] appended 1 frame(s) -&gt; report_tc_pcap_create\test_pcap.pcap last_ts_ns=450000
+[2025-09-16 01:14:35] [PASS] STEP 1.3 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.4 IFG12B256</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-09-16 01:14:35</td><td>2025-09-16 01:14:35</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-09-16 01:14:35] [STEP 1.4] IFG12B256
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] pcap_create -&gt; target=report_tc_pcap_create\test_pcap.pcap last_ts_ns=450000 last_len=128 params delta_ns=None ifg_bytes=12 link_bps=1000000000.0
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] Ether frame len=256 et=34998 payload_len=100 fcs_xor=0x00000000
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] Δt=serialize(128B)+IFG(12B) @ 1000000000.0bps = 1120 ns -&gt; ts=451120
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] frame#1 ts=451120 ns len=256 crc=0xB73899DE xor=0x00000000 fcs=0xB73899DE
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] wrote rec ts=451120ns (sec=0 ns=451120) len=256
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] appended 1 frame(s) -&gt; report_tc_pcap_create\test_pcap.pcap last_ts_ns=451120
+[2025-09-16 01:14:35] [PASS] STEP 1.4 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.5 IPv4FragManual300</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-09-16 01:14:35</td><td>2025-09-16 01:14:35</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-09-16 01:14:35] [STEP 1.5] IPv4FragManual300
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] pcap_create -&gt; target=report_tc_pcap_create\test_pcap.pcap last_ts_ns=451120 last_len=256 params delta_ns=100000 ifg_bytes=None link_bps=1000000000.0
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] IPv4 build: src=192.0.2.10 dst=198.51.100.20 proto=253 payload_len=262 ident=4660 df=0 mf=1 off8=0
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] IPv4 single eth_len=300
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] Δt=explicit 100000 ns -&gt; ts=551120
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] frame#1 ts=551120 ns len=300 crc=0x96CCC6BF xor=0x00000000 fcs=0x96CCC6BF
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] wrote rec ts=551120ns (sec=0 ns=551120) len=300
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] appended 1 frame(s) -&gt; report_tc_pcap_create\test_pcap.pcap last_ts_ns=551120
+[2025-09-16 01:14:35] [PASS] STEP 1.5 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.6 UDPFragAuto</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-09-16 01:14:35</td><td>2025-09-16 01:14:35</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-09-16 01:14:35] [STEP 1.6] UDPFragAuto
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] pcap_create -&gt; target=report_tc_pcap_create\test_pcap.pcap last_ts_ns=551120 last_len=300 params delta_ns=None ifg_bytes=12 link_bps=1000000000.0
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] IPv4 build: src=10.0.0.1 dst=10.0.0.2 proto=17 payload_len=1408 ident=None df=0 mf=0 off8=0
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] IPv4 auto-fragment -&gt; 3 packets (frag_payload_size=600)
+[2025-09-16 01:14:35] [INFO] [PCAPGEN]  frag#1 eth_len=638
+[2025-09-16 01:14:35] [INFO] [PCAPGEN]  frag#2 eth_len=638
+[2025-09-16 01:14:35] [INFO] [PCAPGEN]  frag#3 eth_len=246
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] Δt=serialize(300B)+IFG(12B) @ 1000000000.0bps = 2496 ns -&gt; ts=553616
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] frame#1 ts=553616 ns len=638 crc=0xA7812735 xor=0x00000000 fcs=0xA7812735
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] Δt=serialize(638B)+IFG(12B) @ 1000000000.0bps = 5200 ns -&gt; ts=558816
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] frame#2 ts=558816 ns len=638 crc=0x925DC96D xor=0x00000000 fcs=0x925DC96D
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] Δt=serialize(638B)+IFG(12B) @ 1000000000.0bps = 5200 ns -&gt; ts=564016
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] frame#3 ts=564016 ns len=246 crc=0xCE426EEF xor=0x00000000 fcs=0xCE426EEF
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] wrote rec ts=553616ns (sec=0 ns=553616) len=638
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] wrote rec ts=558816ns (sec=0 ns=558816) len=638
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] wrote rec ts=564016ns (sec=0 ns=564016) len=246
+[2025-09-16 01:14:35] [INFO] [PCAPGEN] appended 3 frame(s) -&gt; report_tc_pcap_create\test_pcap.pcap last_ts_ns=564016
+[2025-09-16 01:14:35] [PASS] STEP 1.6 completed successfully
+</pre>
+</div>
+</details>
+</div>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 2 Analyze – basic</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-09-16 01:14:35</td><td>2025-09-16 01:14:36</td></tr>
+</table>
+<div class='substeps'>
+<h4>Substeps</h4>
+<details>
+<summary>
+<div class='step-title'><div>STEP 2.1 Count_UDP128</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-09-16 01:14:35</td><td>2025-09-16 01:14:35</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-09-16 01:14:35] [STEP 2.1] Count_UDP128
+[2025-09-16 01:14:35] [INFO] [PCAP-CHECK] analyze start path=report_tc_pcap_create\test_pcap.pcap filter=ip.src==192.0.2.1 &amp;&amp; ip.dst==198.51.100.1 &amp;&amp; ip.proto==17 &amp;&amp; frame.len==128
+[2025-09-16 01:14:35] [INFO] [PCAP-READ] path=report_tc_pcap_create\test_pcap.pcap filter=ip.src==192.0.2.1 &amp;&amp; ip.dst==198.51.100.1 &amp;&amp; ip.proto==17 &amp;&amp; frame.len==128
+[2025-09-16 01:14:35] [INFO] [PCAP-CHECK] tshark fields start filter=ip.src==192.0.2.1 &amp;&amp; ip.dst==198.51.100.1 &amp;&amp; ip.proto==17 &amp;&amp; frame.len==128
+[2025-09-16 01:14:35] [TSHARK-FIELDS] cmd=tshark -r report_tc_pcap_create\test_pcap.pcap -T fields -E header=n -E separator=	 -E occurrence=f -e frame.number -e frame.len -e frame.time_epoch -e eth.src -e eth.dst -e vlan.id -e vlan.priority -e data.data -Y &quot;ip.src==192.0.2.1 &amp;&amp; ip.dst==198.51.100.1 &amp;&amp; ip.proto==17 &amp;&amp; frame.len==128&quot;
+[2025-09-16 01:14:35] [TSHARK-FIELDS] rc=0
+[2025-09-16 01:14:35] [TSHARK-FIELDS OUT]
+1	128	0.000000000	00:11:22:33:44:55	ff:ff:ff:ff:ff:ff			22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222
+
+[2025-09-16 01:14:35] [TSHARK-VLAN] cmd=tshark -r report_tc_pcap_create\test_pcap.pcap -T fields -E header=n -E separator=	 -E occurrence=a -e vlan.id -e vlan.priority -Y &quot;ip.src==192.0.2.1 &amp;&amp; ip.dst==198.51.100.1 &amp;&amp; ip.proto==17 &amp;&amp; frame.len==128&quot;
+[2025-09-16 01:14:35] [TSHARK-VLAN] rc=0
+[2025-09-16 01:14:35] [TSHARK-VLAN OUT]
+	
+
+[2025-09-16 01:14:35] [INFO] [PCAP-READ] parsed=1
+[2025-09-16 01:14:35] [INFO] [PCAP-READ] fnum=1 len=128 t=0ns src=00:11:22:33:44:55 dst=ff:ff:ff:ff:ff:ff vlan=[]
+[2025-09-16 01:14:35] [INFO] [PCAP-CHECK] filtered=1 (expect_count=1)
+[2025-09-16 01:14:35] [INFO] [PCAP-CHECK] size check eq=128 min=None max=None
+[2025-09-16 01:14:35] [INFO] [PCAP-CHECK] Filter &#x27;ip.src==192.0.2.1 &amp;&amp; ip.dst==198.51.100.1 &amp;&amp; ip.proto==17 &amp;&amp; frame.len==128&#x27; passed on 1 frame(s) in report_tc_pcap_create\test_pcap.pcap
+[2025-09-16 01:14:35] [PASS] STEP 2.1 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 2.2 AA128_Payload</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-09-16 01:14:35</td><td>2025-09-16 01:14:36</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-09-16 01:14:35] [STEP 2.2] AA128_Payload
+[2025-09-16 01:14:35] [INFO] [PCAP-CHECK] analyze start path=report_tc_pcap_create\test_pcap.pcap filter=eth.type==0x88b6 &amp;&amp; frame.len==128
+[2025-09-16 01:14:35] [INFO] [PCAP-READ] path=report_tc_pcap_create\test_pcap.pcap filter=eth.type==0x88b6 &amp;&amp; frame.len==128
+[2025-09-16 01:14:35] [INFO] [PCAP-CHECK] tshark fields start filter=eth.type==0x88b6 &amp;&amp; frame.len==128
+[2025-09-16 01:14:36] [TSHARK-FIELDS] cmd=tshark -r report_tc_pcap_create\test_pcap.pcap -T fields -E header=n -E separator=	 -E occurrence=f -e frame.number -e frame.len -e frame.time_epoch -e eth.src -e eth.dst -e vlan.id -e vlan.priority -e data.data -Y &quot;eth.type==0x88b6 &amp;&amp; frame.len==128&quot;
+[2025-09-16 01:14:36] [TSHARK-FIELDS] rc=0
+[2025-09-16 01:14:36] [TSHARK-FIELDS OUT]
+3	128	0.000450000	aa:bb:cc:dd:ee:02	aa:bb:cc:dd:ee:01			aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa000000000000000000006b0470cb
+
+[2025-09-16 01:14:36] [TSHARK-VLAN] cmd=tshark -r report_tc_pcap_create\test_pcap.pcap -T fields -E header=n -E separator=	 -E occurrence=a -e vlan.id -e vlan.priority -Y &quot;eth.type==0x88b6 &amp;&amp; frame.len==128&quot;
+[2025-09-16 01:14:36] [TSHARK-VLAN] rc=0
+[2025-09-16 01:14:36] [TSHARK-VLAN OUT]
+	
+
+[2025-09-16 01:14:36] [INFO] [PCAP-READ] parsed=1
+[2025-09-16 01:14:36] [INFO] [PCAP-READ] fnum=3 len=128 t=450000ns src=aa:bb:cc:dd:ee:02 dst=aa:bb:cc:dd:ee:01 vlan=[]
+[2025-09-16 01:14:36] [INFO] [PCAP-CHECK] filtered=1 (expect_count=1)
+[2025-09-16 01:14:36] [INFO] [PCAP-CHECK] payload patterns=[{&#x27;contains_hex&#x27;: &#x27;AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA&#x27;}]
+[2025-09-16 01:14:36] [INFO] [PCAP-CHECK] Filter &#x27;eth.type==0x88b6 &amp;&amp; frame.len==128&#x27; passed on 1 frame(s) in report_tc_pcap_create\test_pcap.pcap
+[2025-09-16 01:14:36] [PASS] STEP 2.2 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 2.3 IFG12B_Timing</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-09-16 01:14:36</td><td>2025-09-16 01:14:36</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-09-16 01:14:36] [STEP 2.3] IFG12B_Timing
+[2025-09-16 01:14:36] [INFO] [PCAP-CHECK] analyze start path=report_tc_pcap_create\test_pcap.pcap filter=eth.type==0x88b6 &amp;&amp; (frame.len==128 || frame.len==256)
+[2025-09-16 01:14:36] [INFO] [PCAP-READ] path=report_tc_pcap_create\test_pcap.pcap filter=eth.type==0x88b6 &amp;&amp; (frame.len==128 || frame.len==256)
+[2025-09-16 01:14:36] [INFO] [PCAP-CHECK] tshark fields start filter=eth.type==0x88b6 &amp;&amp; (frame.len==128 || frame.len==256)
+[2025-09-16 01:14:36] [TSHARK-FIELDS] cmd=tshark -r report_tc_pcap_create\test_pcap.pcap -T fields -E header=n -E separator=	 -E occurrence=f -e frame.number -e frame.len -e frame.time_epoch -e eth.src -e eth.dst -e vlan.id -e vlan.priority -e data.data -Y &quot;eth.type==0x88b6 &amp;&amp; (frame.len==128 || frame.len==256)&quot;
+[2025-09-16 01:14:36] [TSHARK-FIELDS] rc=0
+[2025-09-16 01:14:36] [TSHARK-FIELDS OUT]
+3	128	0.000450000	aa:bb:cc:dd:ee:02	aa:bb:cc:dd:ee:01			aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa000000000000000000006b0470cb
+4	256	0.000451120	aa:bb:cc:dd:ee:02	aa:bb:cc:dd:ee:01			cdb44f8396529b461e78fc63fa6fcacb63638be6441c91874cd4f0851e15481e7a2b7cc3623944a77e970386227826018c7ff94963d10c4661788f580fbcb277bd1ae9b42c44324a1d352395eb4c0ef47a445661425d8fc042bc7acf40730faa624b9e91000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000de9938b7
+
+[2025-09-16 01:14:36] [TSHARK-VLAN] cmd=tshark -r report_tc_pcap_create\test_pcap.pcap -T fields -E header=n -E separator=	 -E occurrence=a -e vlan.id -e vlan.priority -Y &quot;eth.type==0x88b6 &amp;&amp; (frame.len==128 || frame.len==256)&quot;
+[2025-09-16 01:14:36] [TSHARK-VLAN] rc=0
+[2025-09-16 01:14:36] [TSHARK-VLAN OUT]
+	
+	
+
+[2025-09-16 01:14:36] [INFO] [PCAP-READ] parsed=2
+[2025-09-16 01:14:36] [INFO] [PCAP-READ] fnum=3 len=128 t=450000ns src=aa:bb:cc:dd:ee:02 dst=aa:bb:cc:dd:ee:01 vlan=[]
+[2025-09-16 01:14:36] [INFO] [PCAP-READ] fnum=4 len=256 t=451120ns src=aa:bb:cc:dd:ee:02 dst=aa:bb:cc:dd:ee:01 vlan=[]
+[2025-09-16 01:14:36] [INFO] [PCAP-CHECK] filtered=2 (expect_count=2)
+[2025-09-16 01:14:36] [INFO] [PCAP-CHECK] Δt array ns=[1120]
+[2025-09-16 01:14:36] [INFO] [PCAP-CHECK] expect_mac src=aa:bb:cc:dd:ee:02 dst=aa:bb:cc:dd:ee:01
+[2025-09-16 01:14:36] [INFO] [PCAP-CHECK] Filter &#x27;eth.type==0x88b6 &amp;&amp; (frame.len==128 || frame.len==256)&#x27; passed on 2 frame(s) in report_tc_pcap_create\test_pcap.pcap
+[2025-09-16 01:14:36] [PASS] STEP 2.3 completed successfully
+</pre>
+</div>
+</details>
+</div>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 3 Analyze – fragments</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-09-16 01:14:36</td><td>2025-09-16 01:14:37</td></tr>
+</table>
+<div class='substeps'>
+<h4>Substeps</h4>
+<details>
+<summary>
+<div class='step-title'><div>STEP 3.1 IPv4Frag_Manual</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-09-16 01:14:36</td><td>2025-09-16 01:14:36</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-09-16 01:14:36] [STEP 3.1] IPv4Frag_Manual
+[2025-09-16 01:14:36] [INFO] [PCAP-CHECK] analyze start path=report_tc_pcap_create\test_pcap.pcap filter=ip.id==0x1234 &amp;&amp; ip.flags.mf==1 &amp;&amp; ip.src==192.0.2.10 &amp;&amp; ip.dst==198.51.100.20 &amp;&amp; ip.proto==253
+[2025-09-16 01:14:36] [INFO] [PCAP-READ] path=report_tc_pcap_create\test_pcap.pcap filter=ip.id==0x1234 &amp;&amp; ip.flags.mf==1 &amp;&amp; ip.src==192.0.2.10 &amp;&amp; ip.dst==198.51.100.20 &amp;&amp; ip.proto==253
+[2025-09-16 01:14:36] [INFO] [PCAP-CHECK] tshark fields start filter=ip.id==0x1234 &amp;&amp; ip.flags.mf==1 &amp;&amp; ip.src==192.0.2.10 &amp;&amp; ip.dst==198.51.100.20 &amp;&amp; ip.proto==253
+[2025-09-16 01:14:36] [TSHARK-FIELDS] cmd=tshark -r report_tc_pcap_create\test_pcap.pcap -T fields -E header=n -E separator=	 -E occurrence=f -e frame.number -e frame.len -e frame.time_epoch -e eth.src -e eth.dst -e vlan.id -e vlan.priority -e data.data -Y &quot;ip.id==0x1234 &amp;&amp; ip.flags.mf==1 &amp;&amp; ip.src==192.0.2.10 &amp;&amp; ip.dst==198.51.100.20 &amp;&amp; ip.proto==253&quot;
+[2025-09-16 01:14:36] [TSHARK-FIELDS] rc=0
+[2025-09-16 01:14:36] [TSHARK-FIELDS OUT]
+5	300	0.000551120	00:11:22:33:44:55	ff:ff:ff:ff:ff:ff			a73f1d37d0e0c46b37bdbc6e6bb271bc1728315d8de851d484e3b6e1880081af375b942b8efba0f577404961807d2b5f4d972814d2f761ab91462bd68fa63ee86383a69e34cb2e8836a87408ac90a3a9857e5c39f69bcd9d7b294cf8b4305205af61f6d00ec3c119edea663a3125cdfc30808624b0c68c6bcfd68376b0e62f229483c3027048477e5542053b933821bcfa8fdb14c55dad6b58b46614b6177f3c4174ce086cd1a039cfa29f994c3ff38b2feba097d52842aff5df62c3768754f73adcb14ad995e5b7692c5eaa78c3fe420ddf63459a7f0d0e4d5689e9ef13609e3520cf0a222d9275caf379cb5f197c5a3c63d7cd637ffdb28a7ee7634b46c3100b2b1fbe8fe7
+
+[2025-09-16 01:14:36] [TSHARK-VLAN] cmd=tshark -r report_tc_pcap_create\test_pcap.pcap -T fields -E header=n -E separator=	 -E occurrence=a -e vlan.id -e vlan.priority -Y &quot;ip.id==0x1234 &amp;&amp; ip.flags.mf==1 &amp;&amp; ip.src==192.0.2.10 &amp;&amp; ip.dst==198.51.100.20 &amp;&amp; ip.proto==253&quot;
+[2025-09-16 01:14:36] [TSHARK-VLAN] rc=0
+[2025-09-16 01:14:36] [TSHARK-VLAN OUT]
+	
+
+[2025-09-16 01:14:36] [INFO] [PCAP-READ] parsed=1
+[2025-09-16 01:14:36] [INFO] [PCAP-READ] fnum=5 len=300 t=551120ns src=00:11:22:33:44:55 dst=ff:ff:ff:ff:ff:ff vlan=[]
+[2025-09-16 01:14:36] [INFO] [PCAP-CHECK] filtered=1 (expect_count=1)
+[2025-09-16 01:14:36] [INFO] [PCAP-CHECK] size check eq=300 min=None max=None
+[2025-09-16 01:14:36] [INFO] [PCAP-CHECK] Filter &#x27;ip.id==0x1234 &amp;&amp; ip.flags.mf==1 &amp;&amp; ip.src==192.0.2.10 &amp;&amp; ip.dst==198.51.100.20 &amp;&amp; ip.proto==253&#x27; passed on 1 frame(s) in report_tc_pcap_create\test_pcap.pcap
+[2025-09-16 01:14:36] [PASS] STEP 3.1 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 3.2 UDPFrag_Lens</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-09-16 01:14:36</td><td>2025-09-16 01:14:37</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-09-16 01:14:36] [STEP 3.2] UDPFrag_Lens
+[2025-09-16 01:14:36] [INFO] [PCAP-EXPECT] checkFrames start path=report_tc_pcap_create\test_pcap.pcap filter=ip.src==10.0.0.1 &amp;&amp; ip.dst==10.0.0.2 &amp;&amp; ip.proto==17 ordered=False expect_count=3 n_expected=3
+[2025-09-16 01:14:36] [INFO] [PCAP-READ] path=report_tc_pcap_create\test_pcap.pcap filter=ip.src==10.0.0.1 &amp;&amp; ip.dst==10.0.0.2 &amp;&amp; ip.proto==17
+[2025-09-16 01:14:36] [INFO] [PCAP-CHECK] tshark fields start filter=ip.src==10.0.0.1 &amp;&amp; ip.dst==10.0.0.2 &amp;&amp; ip.proto==17
+[2025-09-16 01:14:36] [TSHARK-FIELDS] cmd=tshark -r report_tc_pcap_create\test_pcap.pcap -T fields -E header=n -E separator=	 -E occurrence=f -e frame.number -e frame.len -e frame.time_epoch -e eth.src -e eth.dst -e vlan.id -e vlan.priority -e data.data -Y &quot;ip.src==10.0.0.1 &amp;&amp; ip.dst==10.0.0.2 &amp;&amp; ip.proto==17&quot;
+[2025-09-16 01:14:36] [TSHARK-FIELDS] rc=0
+[2025-09-16 01:14:36] [TSHARK-FIELDS OUT]
+6	638	0.000553616	00:11:22:33:44:55	ff:ff:ff:ff:ff:ff			94a7392b0580000033333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333
+7	638	0.000558816	00:11:22:33:44:55	ff:ff:ff:ff:ff:ff			333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333
+8	246	0.000564016	00:11:22:33:44:55	ff:ff:ff:ff:ff:ff			33333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333... [truncated 1371 chars]
+[2025-09-16 01:14:37] [TSHARK-VLAN] cmd=tshark -r report_tc_pcap_create\test_pcap.pcap -T fields -E header=n -E separator=	 -E occurrence=a -e vlan.id -e vlan.priority -Y &quot;ip.src==10.0.0.1 &amp;&amp; ip.dst==10.0.0.2 &amp;&amp; ip.proto==17&quot;
+[2025-09-16 01:14:37] [TSHARK-VLAN] rc=0
+[2025-09-16 01:14:37] [TSHARK-VLAN OUT]
+	
+	
+	
+
+[2025-09-16 01:14:37] [INFO] [PCAP-READ] parsed=3
+[2025-09-16 01:14:37] [INFO] [PCAP-READ] fnum=6 len=638 t=553616ns src=00:11:22:33:44:55 dst=ff:ff:ff:ff:ff:ff vlan=[]
+[2025-09-16 01:14:37] [INFO] [PCAP-READ] fnum=7 len=638 t=558816ns src=00:11:22:33:44:55 dst=ff:ff:ff:ff:ff:ff vlan=[]
+[2025-09-16 01:14:37] [INFO] [PCAP-READ] fnum=8 len=246 t=564016ns src=00:11:22:33:44:55 dst=ff:ff:ff:ff:ff:ff vlan=[]
+[2025-09-16 01:14:37] [INFO] [PCAP-EXPECT] unordered match exp#1 ok {&#x27;len&#x27;: 638}
+[2025-09-16 01:14:37] [INFO] [PCAP-EXPECT] unordered match exp#2 ok {&#x27;len&#x27;: 638}
+[2025-09-16 01:14:37] [INFO] [PCAP-EXPECT] unordered match exp#3 ok {&#x27;len&#x27;: 246}
+[2025-09-16 01:14:37] [INFO] [PCAP-EXPECT] validated 3 expected frame(s) (unordered) in report_tc_pcap_create\test_pcap.pcap
+[2025-09-16 01:14:37] [PASS] STEP 3.2 completed successfully
+</pre>
+</div>
+</details>
+</div>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 4 Read_AllFrames</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-09-16 01:14:37</td><td>2025-09-16 01:14:37</td></tr>
+</table>
+<details>
+<summary><div class='step-title'><div>Step Log</div><div class='status unknown'>DETAIL</div></div></summary>
+<div class='content'>
+<h4>Log</h4>
+<pre>
+[2025-09-16 01:14:37] [STEP 4] Read_AllFrames
+[2025-09-16 01:14:37] [INFO] [PCAP-READ] path=report_tc_pcap_create\test_pcap.pcap filter=none
+[2025-09-16 01:14:37] [INFO] [PCAP-CHECK] tshark fields start filter=none
+[2025-09-16 01:14:37] [TSHARK-FIELDS] cmd=tshark -r report_tc_pcap_create\test_pcap.pcap -T fields -E header=n -E separator=	 -E occurrence=f -e frame.number -e frame.len -e frame.time_epoch -e eth.src -e eth.dst -e vlan.id -e vlan.priority -e data.data
+[2025-09-16 01:14:37] [TSHARK-FIELDS] rc=0
+[2025-09-16 01:14:37] [TSHARK-FIELDS OUT]
+1	128	0.000000000	00:11:22:33:44:55	ff:ff:ff:ff:ff:ff			22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222
+2	200	0.000200000	aa:bb:cc:dd:ee:02	aa:bb:cc:dd:ee:01			11d31ec93080f5600ae1fb20ae0603dbfcddcff017d90ddebd0e1b8ed759812df1cb9a48637c01122b160cedb425a7dbe236183147b2a8835b348fe700000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000006abeda86
+3	128	0.000450000	aa:bb:cc:dd:ee:02	aa:bb:cc:dd:ee:01			aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa000000000000000000006b0470cb
+4	256	0.000451120	aa:bb:cc:dd:ee:02	aa:bb:cc:dd:ee:01			cdb44f8396529b461e78fc63fa6fcacb63638be6441c91874cd4f0851e15481e7a2b7cc3623944a77e970386227826018c7ff94963d10c4661788f580fbcb277bd1ae9b42c44324a1d352395eb4c0ef47a445661425d8fc042bc7acf40730faa624b9e91000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000de9938b7
+5	300	0.000551120	00:11:22:33:44:55	ff:ff:ff:ff:ff:ff			a73f1d37d0e0c46b37bdbc6e6bb271bc1728315d8de851d484e3b6e1880081af375b942b8efba0f577404961807d2b5f4d972814d2f761ab91462bd68fa63ee86383a69e34cb2e8836a87408ac90a3a9857e5c39f69bcd9d7b294cf8b4305205af61f6d00ec3c119edea663a3125cdfc30808624b0c68c6bcfd68376b0e62f229483c3027048477e5542053b933821bcfa8fdb14c55dad6b58b46614b6177f3c4174ce086cd1a039cfa29f994c3ff38b2feba097d52842aff5df62c3768754f73adcb14ad995e5b7692c5eaa78c3fe420ddf63459a7f0d0e4d5689e9ef13609e3520cf0a222d9275caf379cb5f197c5a3c63d7cd637ffdb28a7ee7634b46c3100b2b1fbe8fe7
+6	638	0.000553616	00:11:22:33:44:55	ff:ff:ff:ff:ff:ff			94a7392b0580000033333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333
+7	638	0.000558816	00:11:22:33:44:55	ff:ff:ff:ff:ff:ff			333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333... [truncated 3392 chars]
+[2025-09-16 01:14:37] [TSHARK-VLAN] cmd=tshark -r report_tc_pcap_create\test_pcap.pcap -T fields -E header=n -E separator=	 -E occurrence=a -e vlan.id -e vlan.priority
+[2025-09-16 01:14:37] [TSHARK-VLAN] rc=0
+[2025-09-16 01:14:37] [TSHARK-VLAN OUT]
+	
+	
+	
+	
+	
+	
+	
+	
+
+[2025-09-16 01:14:37] [INFO] [PCAP-READ] parsed=8
+[2025-09-16 01:14:37] [INFO] [PCAP-READ] fnum=1 len=128 t=0ns src=00:11:22:33:44:55 dst=ff:ff:ff:ff:ff:ff vlan=[]
+[2025-09-16 01:14:37] [INFO] [PCAP-READ] fnum=2 len=200 t=200000ns src=aa:bb:cc:dd:ee:02 dst=aa:bb:cc:dd:ee:01 vlan=[]
+[2025-09-16 01:14:37] [INFO] [PCAP-READ] fnum=3 len=128 t=450000ns src=aa:bb:cc:dd:ee:02 dst=aa:bb:cc:dd:ee:01 vlan=[]
+[2025-09-16 01:14:37] [INFO] [PCAP-READ] fnum=4 len=256 t=451120ns src=aa:bb:cc:dd:ee:02 dst=aa:bb:cc:dd:ee:01 vlan=[]
+[2025-09-16 01:14:37] [INFO] [PCAP-READ] fnum=5 len=300 t=551120ns src=00:11:22:33:44:55 dst=ff:ff:ff:ff:ff:ff vlan=[]
+[2025-09-16 01:14:37] [INFO] [PCAP-READ] fnum=6 len=638 t=553616ns src=00:11:22:33:44:55 dst=ff:ff:ff:ff:ff:ff vlan=[]
+[2025-09-16 01:14:37] [INFO] [PCAP-READ] fnum=7 len=638 t=558816ns src=00:11:22:33:44:55 dst=ff:ff:ff:ff:ff:ff vlan=[]
+[2025-09-16 01:14:37] [INFO] [PCAP-READ] fnum=8 len=246 t=564016ns src=00:11:22:33:44:55 dst=ff:ff:ff:ff:ff:ff vlan=[]
+[2025-09-16 01:14:37] [PASS] STEP 4 completed successfully
+[2025-09-16 01:14:37] ===== tc_pcap_create: RESULT: PASS =====
+</pre>
+</div>
+</details>
+</div>
+</details>
+</section>
+</main>
+</body></html>
