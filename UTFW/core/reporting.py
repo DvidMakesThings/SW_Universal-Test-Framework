@@ -17,8 +17,16 @@ from .core import TestStep
 from .substep import SubStepExecutor
 from UTFW.modules import REPORT_HELPER
 
+# Use the universal logger so helpers (pcapgen/pcap_analyze/etc.) can emit details
+from .logger import (
+    create_logger,
+    set_active_logger,
+    get_active_logger,
+    LogConfig,
+    UniversalLogger,
+)
 
-# ------------------------ Active reporter hook (added) ------------------------
+# ------------------------ Active reporter hook (local helper) ------------------------
 
 _ACTIVE_REPORTER: Optional["TestReporter"] = None
 
@@ -65,22 +73,16 @@ def _now_ts() -> str:
 class TestReporter:
     """Structured test logger with detailed helpers.
 
-    Provides timestamped logging to file and stdout with convenience methods for:
+    Provides timestamped logging with convenience methods for:
     - Serial TX/RX with printable preview and optional hex dump
     - Serial open/close events
     - Subprocess invocation logging (command, rc, stdout/stderr)
     - SNMP GET/SET logging
     - Standard PASS/FAIL/INFO/WARN/ERROR/DEBUG lines
 
-    Args:
-        test_name: Logical test suite name used for filenames and folder name.
-        reports_dir: Optional base directory for reports. If None, uses
-            '<TestCases>/Reports/<test_name>/'. If provided, final path becomes
-            '<reports_dir>/'.
-        rx_preview_max: Maximum characters shown from RX text preview.
-        tx_preview_max: Maximum characters shown from TX text preview.
-        hex_dump: If True, also log a formatted hex dump for TX/RX payloads.
-        hex_width: Number of bytes per row in the hex dump.
+    Internally delegates all I/O to the universal logger, and registers it
+    as the active logger so helper modules can call get_active_logger().log(...)
+    and get_active_logger().subprocess(...).
     """
 
     def __init__(
@@ -100,7 +102,21 @@ class TestReporter:
         self.reports_dir.mkdir(parents=True, exist_ok=True)
 
         self.log_file = self.reports_dir / f"{test_name}_results.log"
-        self._fh = open(self.log_file, "w", encoding="utf-8")
+
+        # Create the universal logger and register globally
+        self._ulog: UniversalLogger = create_logger(
+            name=test_name,
+            log_file=self.log_file,
+            config=LogConfig(
+                rx_preview_max=rx_preview_max,
+                tx_preview_max=tx_preview_max,
+                hex_dump=hex_dump,
+                hex_width=hex_width,
+                console_output=True,
+                file_output=True,
+            ),
+        )
+        set_active_logger(self._ulog)
 
         self.rx_preview_max = int(rx_preview_max)
         self.tx_preview_max = int(tx_preview_max)
@@ -113,19 +129,13 @@ class TestReporter:
     # ------------------------ core IO ------------------------
 
     def _write_line(self, message: str) -> None:
-        line = f"[{_now_ts()}] {message}"
-        print(line)
-        try:
-            self._fh.write(line + "\n")
-            self._fh.flush()
-        except Exception:
-            pass
+        # Preserve original formatting (no extra [INFO]) by writing a raw line via the universal logger
+        self._ulog._write_line(message)  # internal call is OK inside the framework
 
     def close(self) -> None:
         """Close the log file handle."""
         try:
-            if self._fh:
-                self._fh.close()
+            self._ulog.close()
         except Exception:
             pass
 
@@ -133,35 +143,19 @@ class TestReporter:
 
     @staticmethod
     def _printable_preview(data: Union[bytes, str], max_len: int) -> str:
-        """Return a sanitized, human-readable preview of bytes or text.
-
-        Args:
-            data: Bytes or string to preview.
-            max_len: Maximum characters to include in the preview.
-
-        Returns:
-            Preview string with CR/LF/TAB visualized and truncated if needed.
-        """
+        """Return a sanitized, human-readable preview of bytes or text."""
         if isinstance(data, bytes):
             text = data.decode("utf-8", errors="replace")
         else:
             text = data
         text = text.replace("\r", "\\r").replace("\t", "\\t")
-        # Visualize newlines but keep readable
         text = text.replace("\n", "\\n\n")
         if len(text) > max_len:
             return text[:max_len] + f"... [truncated {len(text) - max_len} chars]"
         return text
 
     def _hexdump(self, b: bytes) -> str:
-        """Return a classic hex+ASCII dump for bytes.
-
-        Args:
-            b: Byte buffer.
-
-        Returns:
-            Multiline string with offset, hex, and ASCII columns.
-        """
+        """Return a classic hex+ASCII dump for bytes."""
         if not self.hex_dump_enabled or not b:
             return ""
         out = []
@@ -178,16 +172,18 @@ class TestReporter:
     def log_test_start(self, test_name: str) -> None:
         """Mark test suite start in the log."""
         self.test_start_time = _now_ts()
-        self._write_line(f"===== {test_name}: START =====")
+        # Preserve exact header format used across the framework:
+        self._ulog._write_line(f"===== {test_name}: START =====")
 
     def log_test_end(self, test_name: str, result: str) -> None:
         """Mark test suite end in the log."""
         self.test_end_time = _now_ts()
-        self._write_line(f"===== {test_name}: RESULT: {result} =====")
+        self._ulog._write_line(f"===== {test_name}: RESULT: {result} =====")
 
     def log_step_start(self, step_id: str, description: str) -> None:
         """Log test step start line."""
-        self._write_line(f"[{step_id}] {description}")
+        # Use the universal logger's standardized step format
+        self._ulog.step_start(step_id, description)
 
     def log_step_end(self, step_id: str) -> None:
         """Optional step end marker (not timed)."""
@@ -198,73 +194,66 @@ class TestReporter:
 
     def log_pass(self, message: str) -> None:
         """Log a PASS result line."""
-        self._write_line(f"[PASS] {message}")
+        self._ulog.pass_(message)
 
     def log_fail(self, message: str) -> None:
         """Log a FAIL result line."""
-        self._write_line(f"[FAIL] {message}")
+        self._ulog.fail(message)
 
     def log_info(self, message: str) -> None:
         """Log an INFO line."""
-        self._write_line(f"[INFO] {message}")
+        self._ulog.info(message)
 
     def log_warn(self, message: str) -> None:
         """Log a WARN line."""
-        self._write_line(f"[WARN] {message}")
+        self._ulog.warn(message)
 
     def log_error(self, message: str) -> None:
         """Log an ERROR line."""
-        self._write_line(f"[ERROR] {message}")
+        self._ulog.error(message)
 
     def log_debug(self, message: str) -> None:
         """Log a DEBUG line."""
-        self._write_line(f"[DEBUG] {message}")
+        self._ulog.debug(message)
+
+    # ------------------------ compatibility for helper modules ------------------------
+    # These delegate to the universal logger (which already defines them)
+
+    def log(self, message: str, tag: Optional[str] = None) -> None:
+        """Generic detail logger expected by helper modules."""
+        # Tag is handled at message level in universal logger if needed; we just pass through
+        self._ulog.log(message)
+
+    def subprocess(
+        self,
+        cmd: Union[str, List[str]],
+        returncode: int,
+        stdout: str,
+        stderr: str,
+        tag: str = "SUBPROC",
+    ) -> None:
+        """Forward subprocess logging to the universal logger."""
+        self._ulog.subprocess(cmd, returncode, stdout, stderr, tag=tag)
 
     # ------------------------ serial helpers ------------------------
 
     def log_serial_open(self, port: str, baud: int) -> None:
         """Log serial port open event."""
-        self._write_line(f"[SERIAL OPEN] port={port} baud={baud}")
+        self._ulog.serial_open(port, baud)
 
     def log_serial_close(self, port: str) -> None:
         """Log serial port close event."""
-        self._write_line(f"[SERIAL CLOSE] port={port}")
+        self._ulog.serial_close(port)
 
     def log_serial_tx(self, data: Union[bytes, str]) -> None:
-        """Log TX payload with preview and optional hex dump.
-
-        Args:
-            data: Bytes or text sent to serial port.
-        """
-        if isinstance(data, str):
-            b = data.encode("utf-8", errors="replace")
-        else:
-            b = data
-        preview = self._printable_preview(b, self.tx_preview_max)
-        self._write_line(f"[TX] bytes={len(b)}")
-        self._write_line(preview)
-        if self.hex_dump_enabled and b:
-            self._write_line("[TX_HEX]\n" + self._hexdump(b))
+        """Log TX payload with preview and optional hex dump."""
+        self._ulog.serial_tx(data)
 
     def log_serial_rx(self, data: Union[bytes, str], note: str = "") -> None:
-        """Log RX payload with preview and optional hex dump.
+        """Log RX payload with preview and optional hex dump."""
+        self._ulog.serial_rx(data, note=note)
 
-        Args:
-            data: Bytes or text received from serial port.
-            note: Optional tag (e.g., 'reconnect').
-        """
-        if isinstance(data, str):
-            b = data.encode("utf-8", errors="replace")
-        else:
-            b = data
-        prefix = f"[RX] {note} " if note else "[RX] "
-        preview = self._printable_preview(b, self.rx_preview_max)
-        self._write_line(f"{prefix}bytes={len(b)}")
-        self._write_line(preview)
-        if self.hex_dump_enabled and b:
-            self._write_line("[RX_HEX]\n" + self._hexdump(b))
-
-    # ------------------------ subprocess helpers ------------------------
+    # ------------------------ subprocess helpers (detailed) ------------------------
 
     def log_subprocess(
         self,
@@ -274,50 +263,25 @@ class TestReporter:
         stderr: str,
         tag: str = "SUBPROC",
     ) -> None:
-        """Log a subprocess invocation result.
-
-        Args:
-            cmd: Executed command (string or argv list).
-            returncode: Process return code.
-            stdout: Captured standard output.
-            stderr: Captured standard error.
-            tag: Optional tag label (e.g., 'PING').
-        """
-        if isinstance(cmd, list):
-            cmd_str = " ".join(_shell_quote(x) for x in cmd)
-        else:
-            cmd_str = cmd
-        self._write_line(f"[{tag}] cmd={cmd_str}")
-        self._write_line(f"[{tag}] rc={returncode}")
-        if stdout:
-            o = stdout if len(stdout) <= 4000 else (stdout[:4000] + f"... [truncated {len(stdout)-4000} chars]")
-            self._write_line(f"[{tag} OUT]\n{o}")
-        if stderr:
-            e = stderr if len(stderr) <= 4000 else (stderr[:4000] + f"... [truncated {len(stderr)-4000} chars]")
-            self._write_line(f"[{tag} ERR]\n{e}")
+        """Log a subprocess invocation result."""
+        self._ulog.subprocess(cmd, returncode, stdout, stderr, tag=tag)
 
     # ------------------------ SNMP helpers ------------------------
 
     def log_snmp_get(self, ip: str, oid: str, value: Optional[str], note: str = "") -> None:
         """Log SNMP GET outcome."""
-        more = f" ({note})" if note else ""
-        val = "None" if value is None else repr(value)
-        self._write_line(f"[SNMP GET] {ip} {oid} -> {val}{more}")
+        self._ulog.snmp_get(ip, oid, value, note=note)
 
     def log_snmp_set(self, ip: str, oid: str, value: Union[int, str], ok: bool, note: str = "") -> None:
         """Log SNMP SET outcome."""
-        more = f" ({note})" if note else ""
-        self._write_line(f"[SNMP SET] {ip} {oid} = {value!r} -> {'OK' if ok else 'FAIL'}{more}")
+        self._ulog.snmp_set(ip, oid, value, success=ok, note=note)
 
     # ------------------------ reports ------------------------
 
     def generate_reports(self) -> Dict[str, Path]:
-        """Generate HTML and JUnit XML reports using the optional helper.
-
-        Returns:
-            Mapping with 'html' and/or 'junit' report file paths if generated.
-        """
-        self.close()  # ensure file is flushed and closed
+        """Generate HTML and JUnit XML reports using the optional helper."""
+        # Ensure file is flushed/closed before parsing
+        self.close()
         reports: Dict[str, Path] = {}
         try:
             if REPORT_HELPER:
@@ -340,17 +304,7 @@ class TestReporter:
 
 
 def _shell_quote(s: str) -> str:
-    """Return a shell-friendly representation of a string for logging only.
-
-    On Windows, wrap in double quotes if it contains spaces or quotes; escape
-    embedded quotes with backslashes. On POSIX, use shlex.quote where available.
-
-    Args:
-        s: Raw token.
-
-    Returns:
-        Quoted token suitable for display in logs.
-    """
+    """Return a shell-friendly representation of a string for logging only."""
     try:
         platform = os.name
     except Exception:
@@ -392,8 +346,9 @@ class TestFramework:
             hex_dump=True,
             hex_width=16,
         )
-        # Make it globally visible so Serial/SNMP/etc. can log details
+        # Make it globally visible so Serial/SNMP/etc. can log details via reporter if needed
         set_active_reporter(self.reporter)
+        # Active universal logger is already set by TestReporter.__init__()
 
     def _auto_add_step(self, func: Callable) -> TestStep:
         """Create a TestStep with a readable title derived from the function name."""
@@ -405,18 +360,7 @@ class TestFramework:
         return step
 
     def execute_step(self, step: TestStep, func: Callable, *args, **kwargs) -> Any:
-        """Execute a test step with automatic logging and sub-steps support.
-
-        Args:
-            step: TestStep metadata (name/number).
-            func: Callable taking a SubStepExecutor as first argument.
-
-        Returns:
-            Whatever the step function returns.
-
-        Raises:
-            Propagates exceptions from the step function.
-        """
+        """Execute a test step with automatic logging and sub-steps support."""
         step.start_time = _now_ts()
         self.reporter.log_step_start(step.step_number, f"{step.name}")
         try:
@@ -434,11 +378,7 @@ class TestFramework:
             self.reporter.log_step_end(step.step_number)
 
     def run_test_class(self, test_class_instance) -> str:
-        """Run all test methods on a test class instance.
-
-        Discovers methods starting with 'test_' unless the instance provides
-        'get_test_functions()'.
-        """
+        """Run all test methods on a test class instance."""
         self.reporter.log_test_start(self.test_name)
         try:
             if hasattr(test_class_instance, "get_test_functions"):
@@ -463,7 +403,7 @@ class TestFramework:
             self.overall_result = "FAIL"
             self.reporter.log_error(f"Test suite failed: {str(e)}")
         finally:
-            self.reporter.log_test_end(self.overall_result)
+            self.reporter.log_test_end(self.test_name, self.overall_result)
         return self.overall_result
 
     def generate_reports(self) -> Dict[str, Path]:
@@ -475,8 +415,9 @@ class TestFramework:
         try:
             self.reporter.close()
         finally:
-            # Clear global reporter
+            # Clear global reporters
             set_active_reporter(None)
+            set_active_logger(None)
 
 
 def run_test_with_teardown(test_class_instance, test_name: str, reports_dir: Optional[str] = None) -> int:
@@ -484,16 +425,6 @@ def run_test_with_teardown(test_class_instance, test_name: str, reports_dir: Opt
 
     Creates a TestFramework, runs the provided test_class_instance, generates
     reports, and returns 0 for PASS or 1 for FAIL.
-
-    Args:
-        test_class_instance: Test class instance with 'test_*' methods or
-            'get_test_functions()' method.
-        test_name: Logical test suite name used for folder/file naming.
-        reports_dir: Optional custom base directory for reports. If omitted,
-            uses '<TestCases>/Reports/<test_name>/'.
-
-    Returns:
-        0 if test suite PASS, otherwise 1.
     """
     framework = TestFramework(test_name, reports_dir)
     try:
