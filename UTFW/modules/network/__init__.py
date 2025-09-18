@@ -45,4 +45,8 @@ __all__ = [
     "read_PCAPFrames",
     "analyze_PCAP",
     "pcap_checkFrames",
+
+    # PCAP capture
+    "CapturePcap",
+    "Ping",
 ]

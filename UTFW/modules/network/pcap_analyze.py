@@ -326,36 +326,74 @@ def analyze_PCAP(
     display_filter: str,
     *,
     expect_count: Optional[int] = None,
+    expect_count_min: Optional[int] = None,
     frame_size: Optional[Dict[str, int]] = None,
     time_delta_ns: Optional[Dict[str, Any]] = None,
     payload_patterns: Optional[List[Dict[str, Any]]] = None,
     expect_mac: Optional[Dict[str, str]] = None,
     vlan_expect: Optional[Dict[str, Any]] = None,
 ) -> TestAction:
-    """
-    Step 1: filter via tshark display filter.
-    Step 2: validate over remaining frames.
+    """Analyze packets in a PCAP using a tshark display filter, then validate properties.
 
-    Examples:
-      frame_size={"eq": 128}
-      frame_size={"min": 64, "max": 1518}
-      time_delta_ns={"min": 100_000, "max": 300_000}
-      time_delta_ns={"eq": 200_000}
-      time_delta_ns={"per_pair": [100_000, 200_000, 120_000]}  # len == (n-1)
-      payload_patterns=[{"contains_hex":"DEADBEEF"}, {"regex_ascii": r"OK|PASS"}]
-      expect_mac={"src":"aa:bb:cc:dd:ee:02", "dst":"aa:bb:cc:dd:ee:01"}
-      vlan_expect={"id": 100} or {"id":[100,200], "priority": 3}
-    """
+    This TestAction factory filters a PCAP with a Wireshark display filter and validates
+    the resulting frames by count (exact or minimum), size, inter-frame timing, payload
+    patterns, MAC addresses, and VLAN tags.
 
+    `expect_count` and `expect_count_min` are **mutually exclusive** (XOR). Use:
+      - `expect_count` to require an exact number of frames after filtering, or
+      - `expect_count_min` to require *at least* that many frames.
+
+    Args:
+        name (str): Human-readable name for the test action.
+        pcap_path (str): Path to the PCAP to analyze.
+        display_filter (str): Wireshark display filter applied prior to checks.
+        expect_count (Optional[int], optional): Require exactly this many frames.
+        expect_count_min (Optional[int], optional): Require at least this many frames.
+        frame_size (Optional[Dict[str, int]], optional): Enforce frame sizes. Examples:
+            {"eq": 128} or {"min": 64, "max": 1518}.
+        time_delta_ns (Optional[Dict[str, Any]], optional): Validate inter-frame deltas (ns).
+            Examples: {"eq": 200_000}, {"min": 100_000, "max": 300_000},
+            {"per_pair": [100_000, 200_000, 120_000]}  # length must be (n-1).
+        payload_patterns (Optional[List[Dict[str, Any]]], optional): Payload assertions applied to
+            each frame. Examples: [{"contains_hex":"DEADBEEF"}, {"regex_ascii": r"OK|PASS"}].
+        expect_mac (Optional[Dict[str, str]], optional): Expected MAC addresses:
+            {"src":"aa:bb:cc:dd:ee:02", "dst":"aa:bb:cc:dd:ee:01"}.
+        vlan_expect (Optional[Dict[str, Any]], optional): VLAN expectations:
+            {"id": 100} or {"id":[100,200], "priority": 3}.
+
+    Returns:
+        TestAction: Action that returns True when all validations pass.
+
+    Raises:
+        PCAPAnalyzeError: If the display filter yields an unexpected number of frames, or any
+            validation fails (sizes, timing, payload, MAC, VLAN), or when both `expect_count`
+            and `expect_count_min` are provided simultaneously.
+
+    Example:
+        >>> analyze_PCAP(
+        ...     "Check UDP",
+        ...     "out.pcap",
+        ...     "ip.proto==17",
+        ...     expect_count_min=10,
+        ...     frame_size={"min":64, "max":1518}
+        ... )
+    """
     def execute():
+        # XOR guard: only one of expect_count or expect_count_min may be set
+        if (expect_count is not None) and (expect_count_min is not None):
+            raise PCAPAnalyzeError("Provide either expect_count or expect_count_min, not both")
+
         _log(f"[PCAP-CHECK] analyze start path={pcap_path} filter={display_filter}")
         frames = read_PCAPFrames("read tmp", pcap_path, display_filter).execute_func()
 
-        if expect_count is not None and len(frames) != int(expect_count):
-            raise PCAPAnalyzeError(
-                f"Expected {expect_count} frames after filter, got {len(frames)}"
-            )
-        _log(f"[PCAP-CHECK] filtered={len(frames)} (expect_count={expect_count})")
+        # Count checks: exact or minimum
+        n = len(frames)
+        if expect_count is not None and n != int(expect_count):
+            raise PCAPAnalyzeError(f"Expected {expect_count} frames after filter, got {n}")
+        if expect_count_min is not None and n < int(expect_count_min):
+            raise PCAPAnalyzeError(f"Expected at least {expect_count_min} frames after filter, got {n}")
+
+        _log(f"[PCAP-CHECK] filtered={n} (expect_count={expect_count} expect_count_min={expect_count_min})")
 
         # Frame size checks
         if frame_size:
@@ -366,24 +404,15 @@ def analyze_PCAP(
             for f in frames:
                 L = f["frame_len"]
                 if eq is not None and L != int(eq):
-                    raise PCAPAnalyzeError(
-                        f"Frame {f['frame_number']} length {L} != {eq}"
-                    )
+                    raise PCAPAnalyzeError(f"Frame {f['frame_number']} length {L} != {eq}")
                 if mn is not None and L < int(mn):
-                    raise PCAPAnalyzeError(
-                        f"Frame {f['frame_number']} length {L} < min {mn}"
-                    )
+                    raise PCAPAnalyzeError(f"Frame {f['frame_number']} length {L} < min {mn}")
                 if mx is not None and L > int(mx):
-                    raise PCAPAnalyzeError(
-                        f"Frame {f['frame_number']} length {L} > max {mx}"
-                    )
+                    raise PCAPAnalyzeError(f"Frame {f['frame_number']} length {L} > max {mx}")
 
         # Time delta checks (between consecutive frames)
         if time_delta_ns and len(frames) >= 2:
-            deltas = [
-                frames[i]["timestamp_ns"] - frames[i - 1]["timestamp_ns"]
-                for i in range(1, len(frames))
-            ]
+            deltas = [frames[i]["timestamp_ns"] - frames[i - 1]["timestamp_ns"] for i in range(1, len(frames))]
             _log(f"[PCAP-CHECK] Δt array ns={deltas}")
             if "eq" in time_delta_ns:
                 want = int(time_delta_ns["eq"])
@@ -401,9 +430,7 @@ def analyze_PCAP(
             elif "per_pair" in time_delta_ns:
                 arr = list(map(int, time_delta_ns["per_pair"] or []))
                 if len(arr) != len(deltas):
-                    raise PCAPAnalyzeError(
-                        f"time_delta_ns.per_pair length {len(arr)} != expected {len(deltas)}"
-                    )
+                    raise PCAPAnalyzeError(f"time_delta_ns.per_pair length {len(arr)} != expected {len(deltas)}")
                 for i, (d, want) in enumerate(zip(deltas, arr), start=2):
                     if d != want:
                         raise PCAPAnalyzeError(f"Δt[{i-1}->{i}] {d}ns != {want}ns")
@@ -423,13 +450,9 @@ def analyze_PCAP(
             _log(f"[PCAP-CHECK] expect_mac src={src} dst={dst}")
             for f in frames:
                 if src and f["eth_src"].lower() != src.lower():
-                    raise PCAPAnalyzeError(
-                        f"Frame {f['frame_number']} eth.src {f['eth_src']} != {src}"
-                    )
+                    raise PCAPAnalyzeError(f"Frame {f['frame_number']} eth.src {f['eth_src']} != {src}")
                 if dst and f["eth_dst"].lower() != dst.lower():
-                    raise PCAPAnalyzeError(
-                        f"Frame {f['frame_number']} eth.dst {f['eth_dst']} != {dst}"
-                    )
+                    raise PCAPAnalyzeError(f"Frame {f['frame_number']} eth.dst {f['eth_dst']} != {dst}")
 
         # VLAN checks
         if vlan_expect:
@@ -437,37 +460,26 @@ def analyze_PCAP(
             want_pcp = vlan_expect.get("priority")
             _log(f"[PCAP-CHECK] vlan_expect ids={want_ids} pcp={want_pcp}")
             for f in frames:
-                stack = f.get("vlan_stack") or (
-                    []
-                    if f.get("vlan_id") is None
-                    else [(f["vlan_id"], f.get("vlan_pcp"))]
-                )
+                stack = f.get("vlan_stack") or ([] if f.get("vlan_id") is None else [(f["vlan_id"], f.get("vlan_pcp"))])
                 ids = [vid for (vid, _pcp) in stack]
                 if want_ids is not None:
                     if isinstance(want_ids, list):
                         missing = [v for v in want_ids if v not in ids]
                         if missing:
-                            raise PCAPAnalyzeError(
-                                f"Frame {f['frame_number']} missing VLAN IDs {missing}, got {ids}"
-                            )
+                            raise PCAPAnalyzeError(f"Frame {f['frame_number']} missing VLAN IDs {missing}, got {ids}")
                     else:
                         if int(want_ids) not in ids:
-                            raise PCAPAnalyzeError(
-                                f"Frame {f['frame_number']} VLAN id {want_ids} not in {ids}"
-                            )
+                            raise PCAPAnalyzeError(f"Frame {f['frame_number']} VLAN id {want_ids} not in {ids}")
                 if want_pcp is not None:
                     pcps = [p for (_, p) in stack if p is not None]
                     if not pcps or int(want_pcp) not in pcps:
-                        raise PCAPAnalyzeError(
-                            f"Frame {f['frame_number']} VLAN priority {want_pcp} not in {pcps or '[]'}"
-                        )
+                        raise PCAPAnalyzeError(f"Frame {f['frame_number']} VLAN priority {want_pcp} not in {pcps or '[]'}")
 
-        _log(
-            f"[PCAP-CHECK] Filter '{display_filter}' passed on {len(frames)} frame(s) in {pcap_path}"
-        )
+        _log(f"[PCAP-CHECK] Filter '{display_filter}' passed on {len(frames)} frame(s) in {pcap_path}")
         return True
 
     return TestAction(name, execute)
+
 
 
 def pcap_checkFrames(

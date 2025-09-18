@@ -1,0 +1,315 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<title>ENERGIS Test Report - PASS</title>
+<style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;background:#0f1216;color:#e7eaf0;margin:0}
+    header{padding:20px;background:#151a21;border-bottom:1px solid #2a2f37}
+    h1{margin:0;font-size:20px}
+    .meta{font-size:12px;color:#a6adbb;margin-top:6px}
+    .summary{display:flex;gap:16px;flex-wrap:wrap;margin:16px 0}
+    .chip{padding:8px 12px;border-radius:20px;border:1px solid #2a2f37;background:#151a21}
+    .chip.pass{border-color:#1e7f45;color:#d7ffe6;background:#0e2017}
+    .chip.fail{border-color:#a23b3b;color:#ffe1e1;background:#210e0e}
+    .chip.unknown{border-color:#6b7280;color:#e7eaf0;background:#1b2028}
+    main{padding:20px}
+    details{border:1px solid #2a2f37;border-radius:12px;margin-bottom:12px;overflow:hidden}
+    summary{padding:12px 14px;background:#151a21;cursor:pointer;font-weight:600}
+    .content{padding:12px 14px;background:#11161b}
+    .step-title{display:flex;justify-content:space-between;align-items:center}
+    .status{padding:3px 8px;border-radius:12px;border:1px solid #2a2f37;font-size:12px}
+    .status.pass{border-color:#1e7f45;color:#d7ffe6;background:#0e2017}
+    .status.fail{border-color:#a23b3b;color:#ffe1e1;background:#210e0e}
+    .status.unknown{border-color:#6b7280;background:#1b2028}
+    pre{background:#0b0f14;border:1px solid #2a2f37;border-radius:8px;padding:10px;overflow:auto}
+    table{width:100%;border-collapse:collapse;margin-top:8px}
+    th,td{border-bottom:1px solid #1f2530;padding:8px 6px;text-align:left;font-size:13px}
+    th{color:#a6adbb;font-weight:600;background:#131820}
+    .kv{display:grid;grid-template-columns:180px 1fr;gap:8px}
+    a{color:#9ad0ff;text-decoration:none}
+    a:hover{text-decoration:underline}
+    .img-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:10px}
+    .img-grid figure{margin:0;padding:8px;background:#0b0f14;border:1px solid #2a2f37;border-radius:8px}
+    .img-grid img{max-width:100%;height:auto;display:block;border-radius:6px}
+    .img-grid figcaption{font-size:12px;color:#a6adbb;margin-top:6px}
+    .substeps{margin-top:10px}
+    .substeps details{margin-bottom:8px}
+    </style></head><body>
+<header>
+<h1>ENERGIS Test Report</h1>
+<div class='meta'>
+Overall: <b class='chip pass'>PASS</b> &nbsp;
+Started: 2025-09-17 23:56:57 &nbsp;
+</div>
+</header>
+<main>
+<section class='summary'>
+<div class='chip pass'>Passed steps: 3</div>
+<div class='chip fail'>Failed steps: 0</div>
+<div class='chip unknown'>Unknown steps: 0</div>
+<div class='chip'>Total steps: 3</div>
+</section>
+<section>
+<h3>Environment</h3>
+<div class='kv'>
+<div>Hostname</div><div>DPC</div>
+<div>Os</div><div>Windows 11 (10.0.26100)</div>
+<div>Python</div><div>3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]</div>
+<div>Generated_at</div><div>2025-09-17 23:57:02</div>
+<div>Log_file</div><div>report_tc_pcap_capture\tc_pcap_capture_results.log</div>
+</div>
+</section>
+<section>
+<h3>Steps</h3>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1 Ping 127.0.0.1</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-09-17 23:56:57</td><td>2025-09-17 23:56:57</td></tr>
+</table>
+<details>
+<summary><div class='step-title'><div>Step Log</div><div class='status unknown'>DETAIL</div></div></summary>
+<div class='content'>
+<h4>Log</h4>
+<pre>
+[2025-09-17 23:56:57] [STEP 1] Ping 127.0.0.1
+[2025-09-17 23:56:57] [INFO] [PING] mode=BG target=127.0.0.1 count=0 timeout_s=1.0 interval_s=0.2 duration_s=6.0
+[2025-09-17 23:56:57] [INFO] [PING] cmd=C:\Windows\system32\ping.exe -t -w 1000 127.0.0.1
+[2025-09-17 23:56:57] [INFO] [PING] started background ping pid=111152
+[2025-09-17 23:56:57] [PASS] STEP 1 completed successfully
+</pre>
+</div>
+</details>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 2 Capture PCAP</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-09-17 23:56:57</td><td>2025-09-17 23:57:02</td></tr>
+</table>
+<details>
+<summary><div class='step-title'><div>Step Log</div><div class='status unknown'>DETAIL</div></div></summary>
+<div class='content'>
+<h4>Log</h4>
+<pre>
+[2025-09-17 23:56:57] [STEP 2] Capture PCAP
+[2025-09-17 23:56:57] [INFO] [PCAP-CAPTURE] tag=VW9EM2 dumpcap -D:
+1. \Device\NPF_{CED0C9EE-D3D8-4AF6-A642-236D14517B9D} (Bluetooth Network Connection)
+2. \Device\NPF_{50788C95-4726-4446-BEF9-1BDAD79385DF} (Wi-Fi)
+3. \Device\NPF_{F7EF8ACA-533A-4582-A44C-AA6FD3B30B80} (Local Area Connection* 10)
+4. \Device\NPF_{D62A827E-C7BA-46D2-ACE5-772C43BD80F7} (Local Area Connection* 9)
+5. \Device\NPF_{1342939B-DAE3-4B54-A305-87408E83C962} (Ethernet 2)
+6. \Device\NPF_{8FBED501-71F5-4B70-96B8-C2464A93CE8E} (Ethernet)
+7. \Device\NPF_{7CB6D269-0786-7E57-C13F-6CDFFF02FB02} (Eddie)
+8. \Device\NPF_Loopback (Adapter for loopback traffic capture)
+[2025-09-17 23:56:57] [INFO] [PCAP-CAPTURE] tag=VW9EM2 resolved interface &#x27;lo&#x27; -&gt; &#x27;8&#x27;
+[2025-09-17 23:56:57] [INFO] [PCAP-CAPTURE] tag=VW9EM2 tool=dumpcap exe=C:\Program Files\Wireshark\dumpcap.exe
+[2025-09-17 23:56:57] [INFO] [PCAP-CAPTURE] tag=VW9EM2 interface=&#x27;lo&#x27; promiscuous=False snaplen=256 duration_s=5 packet_count=None file_format=pcap ring_files=None ring_megabytes=None
+[2025-09-17 23:56:57] [INFO] [PCAP-CAPTURE] tag=VW9EM2 bpf=&#x27;icmp and host 127.0.0.1&#x27;
+[2025-09-17 23:56:57] [INFO] [PCAP-CAPTURE] tag=VW9EM2 output_path=report_tc_pcap_capture\capture_test.pcap
+[2025-09-17 23:56:57] [INFO] [PCAP-CAPTURE] tag=VW9EM2 cwd=G:\_GitHub\SW_Universal-Test-Framework\tests\tc_pcap_capture
+[2025-09-17 23:56:57] [INFO] [PCAP-CAPTURE] tag=VW9EM2 argv=&quot;C:\Program Files\Wireshark\dumpcap.exe&quot; -i 8 -F pcap -w report_tc_pcap_capture\capture_test.pcap -p -s 256 -a duration:5 -f &quot;icmp and host 127.0.0.1&quot;
+[2025-09-17 23:57:02] [INFO] [PCAP-CAPTURE] tag=VW9EM2 exit_code=0 elapsed_s=5.271 timed_stop=False
+[2025-09-17 23:57:02] [INFO] [PCAP-CAPTURE STDERR]
+Capturing on &#x27;Adapter for loopback traffic capture&#x27;
+File: report_tc_pcap_capture\capture_test.pcap
+
+Packets: 1 
+Packets: 3 
+Packets: 5 
+Packets: 13 
+Packets: 15 
+Packets: 16 
+Packets: 17 
+Packets: 25 
+Packets: 27 
+Packets: 29 
+Packets: 35 
+Packets: 37 
+Packets: 39 
+Packets: 41 
+Packets: 47 
+Packets: 49 
+Packets: 51 
+Packets: 53 
+Packets: 59 
+Packets captured: 59
+Packets received/dropped on interface &#x27;Adapter for loopback traffic capture&#x27;: 59/0 (pcap:0/dumpcap:0/flushed:0/ps_ifdrop:0) (100.0%)
+[2025-09-17 23:57:02] [INFO] [PCAP-CAPTURE] tag=VW9EM2 output_size=4744 bytes
+[2025-09-17 23:57:02] [PASS] STEP 2 completed successfully
+</pre>
+</div>
+</details>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 3 Check_ICMP_Captured</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-09-17 23:57:02</td><td>2025-09-17 23:57:02</td></tr>
+</table>
+<details>
+<summary><div class='step-title'><div>Step Log</div><div class='status unknown'>DETAIL</div></div></summary>
+<div class='content'>
+<h4>Log</h4>
+<pre>
+[2025-09-17 23:57:02] [STEP 3] Check_ICMP_Captured
+[2025-09-17 23:57:02] [INFO] [PCAP-CHECK] analyze start path=report_tc_pcap_capture\capture_test.pcap filter=icmp &amp;&amp; ip.addr==127.0.0.1
+[2025-09-17 23:57:02] [INFO] [PCAP-READ] path=report_tc_pcap_capture\capture_test.pcap filter=icmp &amp;&amp; ip.addr==127.0.0.1
+[2025-09-17 23:57:02] [INFO] [PCAP-CHECK] tshark fields start filter=icmp &amp;&amp; ip.addr==127.0.0.1
+[2025-09-17 23:57:02] [TSHARK-FIELDS] cmd=tshark -r report_tc_pcap_capture\capture_test.pcap -T fields -E header=n -E separator=	 -E occurrence=f -e frame.number -e frame.len -e frame.time_epoch -e eth.src -e eth.dst -e vlan.id -e vlan.priority -e data.data -Y &quot;icmp &amp;&amp; ip.addr==127.0.0.1&quot;
+[2025-09-17 23:57:02] [TSHARK-FIELDS] rc=0
+[2025-09-17 23:57:02] [TSHARK-FIELDS OUT]
+1	64	1758146217.559144000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+2	64	1758146217.559174000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+3	64	1758146217.839446000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+4	64	1758146217.839478000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+5	64	1758146218.149077000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+6	64	1758146218.149077000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+7	64	1758146218.149077000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+8	64	1758146218.149121000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+9	64	1758146218.149121000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+10	64	1758146218.149122000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+11	64	1758146218.256350000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+12	64	1758146218.256371000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+13	64	1758146218.567599000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+14	64	1758146218.567633000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+15	64	1758146218.848413000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+16	64	1758146218.848435000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+17	64	1758146219.159524000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+18	64	1758146219.159547000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+19	64	1758146219.159566000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+20	64	1758146219.159568000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+21	64	1758146219.159585000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+22	64	1758146219.159586000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+23	64	1758146219.267969000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+24	64	1758146219.267991000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+25	64	1758146219.576647000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+26	64	1758146219.576666000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+27	64	1758146219.855036000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+28	64	1758146219.855053000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+29	64	1758146220.166029000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+30	64	1758146220.166029000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+31	64	1758146220.166029000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+32	64	1758146220.166057000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+33	64	1758146220.166057000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+34	64	1758146220.166057000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+35	64	1758146220.274006000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+36	64	1758146220.274025000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+37	64	1758146220.584710000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+38	64	1758146220.584729000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+39	64	1758146220.863413000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+40	64	1758146220.863433000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+41	64	1758146221.175045000					6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+42	64	1758146221.175045000					6162636465666768696a6b6c6d6e6f707172737475... [truncated 1655 chars]
+[2025-09-17 23:57:02] [TSHARK-VLAN] cmd=tshark -r report_tc_pcap_capture\capture_test.pcap -T fields -E header=n -E separator=	 -E occurrence=a -e vlan.id -e vlan.priority -Y &quot;icmp &amp;&amp; ip.addr==127.0.0.1&quot;
+[2025-09-17 23:57:02] [TSHARK-VLAN] rc=0
+[2025-09-17 23:57:02] [TSHARK-VLAN OUT]
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+[2025-09-17 23:57:02] [INFO] [PCAP-READ] parsed=59
+[2025-09-17 23:57:02] [INFO] [PCAP-READ] fnum=1 len=64 t=1758146217559143936ns src= dst= vlan=[]
+[2025-09-17 23:57:02] [INFO] [PCAP-READ] fnum=2 len=64 t=1758146217559174144ns src= dst= vlan=[]
+[2025-09-17 23:57:02] [INFO] [PCAP-READ] fnum=3 len=64 t=1758146217839446016ns src= dst= vlan=[]
+[2025-09-17 23:57:02] [INFO] [PCAP-READ] fnum=4 len=64 t=1758146217839478016ns src= dst= vlan=[]
+[2025-09-17 23:57:02] [INFO] [PCAP-READ] fnum=5 len=64 t=1758146218149076992ns src= dst= vlan=[]
+[2025-09-17 23:57:02] [INFO] [PCAP-READ] fnum=6 len=64 t=1758146218149076992ns src= dst= vlan=[]
+[2025-09-17 23:57:02] [INFO] [PCAP-READ] fnum=7 len=64 t=1758146218149076992ns src= dst= vlan=[]
+[2025-09-17 23:57:02] [INFO] [PCAP-READ] fnum=8 len=64 t=1758146218149121024ns src= dst= vlan=[]
+[2025-09-17 23:57:02] [INFO] [PCAP-READ] fnum=9 len=64 t=1758146218149121024ns src= dst= vlan=[]
+[2025-09-17 23:57:02] [INFO] [PCAP-READ] fnum=10 len=64 t=1758146218149122048ns src= dst= vlan=[]
+[2025-09-17 23:57:02] [INFO] [PCAP-READ] fnum=11 len=64 t=1758146218256349952ns src= dst= vlan=[]
+[2025-09-17 23:57:02] [INFO] [PCAP-READ] fnum=12 len=64 t=1758146218256370944ns src= dst= vlan=[]
+[2025-09-17 23:57:02] [INFO] [PCAP-READ] fnum=13 len=64 t=1758146218567599104ns src= dst= vlan=[]
+[2025-09-17 23:57:02] [INFO] [PCAP-READ] fnum=14 len=64 t=1758146218567632896ns src= dst= vlan=[]
+[2025-09-17 23:57:02] [INFO] [PCAP-READ] fnum=15 len=64 t=1758146218848412928ns src= dst= vlan=[]
+[2025-09-17 23:57:02] [INFO] [PCAP-READ] fnum=16 len=64 t=1758146218848434944ns src= dst= vlan=[]
+[2025-09-17 23:57:02] [INFO] [PCAP-READ] fnum=17 len=64 t=1758146219159523840ns src= dst= vlan=[]
+[2025-09-17 23:57:02] [INFO] [PCAP-READ] fnum=18 len=64 t=1758146219159547136ns src= dst= vlan=[]
+[2025-09-17 23:57:02] [INFO] [PCAP-READ] fnum=19 len=64 t=1758146219159565824ns src= dst= vlan=[]
+[2025-09-17 23:57:02] [INFO] [PCAP-READ] fnum=20 len=64 t=1758146219159568128ns src= dst= vlan=[]
+[2025-09-17 23:57:02] [INFO] [PCAP-CHECK] filtered=59 (expect_count=None expect_count_min=1)
+[2025-09-17 23:57:02] [INFO] [PCAP-CHECK] Filter &#x27;icmp &amp;&amp; ip.addr==127.0.0.1&#x27; passed on 59 frame(s) in report_tc_pcap_capture\capture_test.pcap
+[2025-09-17 23:57:02] [PASS] STEP 3 completed successfully
+[2025-09-17 23:57:02] ===== tc_pcap_capture: RESULT: PASS =====
+</pre>
+</div>
+</details>
+</div>
+</details>
+</section>
+<section>
+<h3>Images & Artifacts</h3>
+<div class='img-grid'>
+<figure><a href='capture_test.pcap' target='_blank' class='file-link'>📄 capture_test.pcap</a><figcaption>capture_test.pcap</figcaption></figure>
+</div>
+</section>
+</main>
+</body></html>

@@ -111,14 +111,17 @@ def _rel_href(target: Path, base_dir: Path) -> str:
             rel = Path(target.name)
     return rel.as_posix()
 
-
 def _discover_images_and_artifacts(reports_dir: Path, out_html: Path) -> Tuple[Optional[Path], Optional[Path], Dict[str, List[Path]]]:
     """
-    Find EEPROM logs and collect images to embed in the HTML.
+    Find EEPROM logs and collect images/pcaps to embed or link in the HTML.
 
     Returns:
         (eeprom_ascii, eeprom_raw, images) where images is a dict with keys:
             "step2", "step3", "step4", "step5", "overall", "general"
+
+    Notes:
+        Besides image files (png/jpg/jpeg/svg), this also collects packet capture
+        files (.pcap, .pcapng) so they can be linked from the report.
     """
     # EEPROM (unchanged)
     eeprom_dir = reports_dir / "EEPROM"
@@ -142,10 +145,11 @@ def _discover_images_and_artifacts(reports_dir: Path, out_html: Path) -> Tuple[O
         except Exception:
             pass
 
-    img_exts = {".png", ".jpg", ".jpeg", ".svg"}
+    # Include common image types + packet capture artifacts
+    img_exts = {".png", ".jpg", ".jpeg", ".svg", ".pcap", ".pcapng"}
     found: set[Path] = set()
 
-    # 1) Scan the report directory recursively for images
+    # 1) Scan the report directory recursively for images/pcaps
     for ext in img_exts:
         for p in reports_dir.rglob(f"*{ext}"):
             _add_img(p, found)
@@ -188,8 +192,13 @@ def _discover_images_and_artifacts(reports_dir: Path, out_html: Path) -> Tuple[O
 
 
 def _render_img_grid(images: List[Path], base_dir: Path) -> str:
+    """
+    Render a grid of visual artifacts. Image files are shown as thumbnails;
+    non-image artifacts (e.g., .pcap/.pcapng) are rendered as clickable links.
+    """
     if not images:
         return ""
+    image_exts = {".png", ".jpg", ".jpeg", ".svg", ".gif", ".webp"}
     rows = ["<div class='img-grid'>"]
     for p in images:
         try:
@@ -197,11 +206,25 @@ def _render_img_grid(images: List[Path], base_dir: Path) -> str:
         except Exception:
             rel = p.name
         cap = html.escape(p.name)
-        rows.append(
-            f"<figure><img src='{html.escape(rel)}' alt='{cap}' /><figcaption>{cap}</figcaption></figure>"
-        )
+        ext = p.suffix.lower()
+        if ext in image_exts:
+            # Clickable thumbnail
+            rows.append(
+                f"<figure><a href='{html.escape(rel)}' target='_blank'>"
+                f"<img src='{html.escape(rel)}' alt='{cap}' /></a>"
+                f"<figcaption>{cap}</figcaption></figure>"
+            )
+        else:
+            # Non-image artifact (e.g., PCAP/PCAPNG) – render as link card
+            rows.append(
+                f"<figure>"
+                f"<a href='{html.escape(rel)}' target='_blank' class='file-link'>📄 {cap}</a>"
+                f"<figcaption>{cap}</figcaption>"
+                f"</figure>"
+            )
     rows.append("</div>")
     return "\n".join(rows)
+
 
 
 def parse_log(log_path: Path) -> ReportModel:
@@ -587,6 +610,21 @@ def render_html(model: "ReportModel", out_html: Path) -> None:
             html_lines.append(f"<li><a href='{html.escape(rel)}' target='_blank'>Hex dump</a></li>")
         html_lines.append("</ul>")
         html_lines.append("</section>")
+    
+    # PCAP artifacts (from _discover_images_and_artifacts)
+    pcap_files = images.get("pcap", [])
+    if pcap_files:
+        html_lines.append("<section>")
+        html_lines.append("<h3>PCAP Artifacts</h3>")
+        html_lines.append("<ul>")
+        for p in pcap_files:
+            rel = _rel_href(p, out_html.parent)
+            html_lines.append(
+                f"<li><a href='{html.escape(rel)}' target='_blank'>{p.name}</a></li>"
+            )
+        html_lines.append("</ul>")
+        html_lines.append("</section>")
+
 
     html_lines.append("</main>")
     html_lines.append("</body></html>")

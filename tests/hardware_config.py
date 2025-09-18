@@ -7,6 +7,8 @@ Values consumed by tc_pcap_create / tc_network_pcapgen tests via get_hwconfig().
 # ---------------- Paths ----------------
 PCAP_OUTPUT_DIR = "report_tc_pcap_create"
 PCAP_FILENAME = "test_pcap.pcap"
+PCAPCAPTURE_OUTPUT_DIR = "report_tc_pcap_capture"
+PCAP_CAPTURE_FILENAME = "capture_test.pcap"
 
 # ---------------- MAC addresses ----------------
 MAC_A = "aa:bb:cc:dd:ee:01"  # dst
