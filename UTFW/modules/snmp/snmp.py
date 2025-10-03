@@ -64,7 +64,15 @@ def _run_snmp_command(cmd: List[str], timeout: float = 5.0) -> Tuple[int, str, s
 
     # Detailed subprocess logging
     if logger:
-        logger.subprocess(cmd, rc, out, err, tag="SNMP")
+        cmd_str = " ".join(cmd) if isinstance(cmd, list) else cmd
+        logger.info(f"[SNMP] cmd={cmd_str}")
+        logger.info(f"[SNMP] rc={rc}")
+        if out:
+            truncated_out = out if len(out) <= 4000 else (out[:4000] + f"... [truncated {len(out)-4000} chars]")
+            logger.info(f"[SNMP OUT]\n{truncated_out}")
+        if err:
+            truncated_err = err if len(err) <= 4000 else (err[:4000] + f"... [truncated {len(err)-4000} chars]")
+            logger.info(f"[SNMP ERR]\n{truncated_err}")
     return rc, out, err
 
 
@@ -119,7 +127,10 @@ def get_value(ip: str, oid: str, community: str = "public", timeout: float = 3.0
 
     logger = get_active_logger()
     if logger:
-        logger.snmp_get(ip, oid, value, note="v1/public" if community == "public" else f"v1/{community}")
+        note = "v1/public" if community == "public" else f"v1/{community}"
+        note_part = f" ({note})" if note else ""
+        value_str = "None" if value is None else repr(value)
+        logger.info(f"[SNMP GET] {ip} {oid} -> {value_str}{note_part}")
     return value
 
 
@@ -146,7 +157,10 @@ def set_integer(ip: str, oid: str, value: int, community: str = "public", timeou
 
     logger = get_active_logger()
     if logger:
-        logger.snmp_set(ip, oid, value, ok, note="v1/public" if community == "public" else f"v1/{community}")
+        note = "v1/public" if community == "public" else f"v1/{community}"
+        note_part = f" ({note})" if note else ""
+        status = "OK" if ok else "FAIL"
+        logger.info(f"[SNMP SET] {ip} {oid} = {value!r} -> {status}{note_part}")
     return ok
 
 

@@ -74,39 +74,40 @@ class SerialTestError(Exception):
 
 def _ensure_pyserial():
     """Ensure pyserial library is available for import.
-    
+
     Raises:
         ImportError: If pyserial is not installed.
     """
     try:
-        import serial  # noqa: F401
+        import serial.tools.list_ports  # noqa: F401
     except ImportError:
         raise ImportError("pyserial is required. Install with: pip install pyserial")
 
 
 def _open_connection(port: str, baudrate: int = 115200, timeout: float = 2.0):
     """Open a serial connection with proper configuration and logging.
-    
+
     This function opens a serial port with the specified parameters and
     configures it for reliable communication. It also logs the connection
     event using the active logger.
-    
+
     Args:
         port (str): Serial port identifier (e.g., "COM3", "/dev/ttyUSB0").
         baudrate (int, optional): Communication baud rate. Defaults to 115200.
         timeout (float, optional): Read timeout in seconds. Defaults to 2.0.
-        
+
     Returns:
         serial.Serial: Configured and opened serial port object.
-        
+
     Raises:
         SerialTestError: If the port cannot be opened or configured.
     """
     _ensure_pyserial()
-    import serial
+    import serial.tools.list_ports as list_ports_check
+    import serial as pyserial
 
     try:
-        ser = serial.Serial(
+        ser = pyserial.Serial(
             port=port,
             baudrate=baudrate,
             timeout=timeout,
@@ -122,7 +123,7 @@ def _open_connection(port: str, baudrate: int = 115200, timeout: float = 2.0):
         # Log serial connection opening
         logger = get_active_logger()
         if logger:
-            logger.serial_open(port, baudrate)
+            logger.info(f"[SERIAL] Opened port={port} baud={baudrate}")
 
         return ser
     except Exception as e:
@@ -155,7 +156,7 @@ def send_command(port: str, command: str, baudrate: int = 115200, timeout: float
         # Send command
         payload = (command.strip() + "\r\n")
         if logger:
-            logger.serial_tx(payload)
+            logger.info(f"[SERIAL TX] {payload.strip()}")
         cmd_bytes = payload.encode('utf-8')
         ser.write(cmd_bytes)
         ser.flush()
@@ -177,16 +178,16 @@ def send_command(port: str, command: str, baudrate: int = 115200, timeout: float
 
         text = response_bytes.decode('utf-8', errors='ignore')
         if logger:
-            logger.serial_rx(text)
+            logger.info(f"[SERIAL RX] {len(response_bytes)} bytes")
+        _set_last_response(text)
         return text
 
     finally:
         try:
             ser.close()
         finally:
-            # Log serial connection closing
             if logger:
-                logger.serial_close(port)
+                logger.info(f"[SERIAL] Closed port {port}")
 
 
 def wait_for_reboot_and_ready(port: str, ready_token: str = "SYSTEM READY",
@@ -235,7 +236,8 @@ def wait_for_reboot_and_ready(port: str, ready_token: str = "SYSTEM READY",
                     time.sleep(0.05)
                 response = response_bytes.decode('utf-8', errors='ignore')
                 if logger and response:
-                    logger.serial_rx(response, note="reconnect")
+                    logger.info(f"[SERIAL RX] reconnect bytes={len(response_bytes)}")
+                    logger.info(response.replace("\r", "\\r").replace("\n", "\\n\n"))
                 if banner_found:
                     return True
             finally:
@@ -243,7 +245,7 @@ def wait_for_reboot_and_ready(port: str, ready_token: str = "SYSTEM READY",
                     ser.close()
                 finally:
                     if logger:
-                        logger.serial_close(port)
+                        logger.info(f"[SERIAL] Closed port={port}")
         except Exception:
             pass
         time.sleep(0.2)
@@ -674,19 +676,19 @@ def send_command_uart(
         def execute():
             try:
                 # Try to send the command and get a response
-                send_command(port, cmd, baudrate, timeout)
-            except Exception:
+                resp = send_command(port, cmd, baudrate, timeout)
+                return resp
+            except Exception as e:
                 # Connection may have dropped due to reboot; that's expected
-                pass
+                if reboot:
+                    # Wait for device to reboot and become ready
+                    if not wait_for_reboot_and_ready(port, "SYSTEM READY", baudrate, 15.0):
+                        raise SerialTestError(f"Device did not become ready after '{cmd}'")
+                    return "DEVICE REBOOTED"
+                else:
+                    # If not expecting reboot, this is a real error
+                    raise
 
-            # Wait for device to reboot and become ready
-            if reboot:
-                if not wait_for_reboot_and_ready(port, "SYSTEM READY", baudrate, 15.0):
-                    raise SerialTestError(f"Device did not become ready after '{cmd}'")
-            else:
-                pass
-
-                
         return execute
 
     if isinstance(command, str):
@@ -1070,7 +1072,8 @@ def _read_until_markers(port: str,
         # Send command
         payload = (command.strip() + "\r\n")
         if logger:
-            logger.serial_tx(payload)
+            logger.info(f"[SERIAL TX] bytes={len(payload.encode('utf-8'))}")
+            logger.info(payload.replace("\r", "\\r").replace("\n", "\\n"))
         ser.write(payload.encode("utf-8"))
         ser.flush()
 
@@ -1102,7 +1105,8 @@ def _read_until_markers(port: str,
                         break
             text = buf.decode("utf-8", errors="replace")
             if logger:
-                logger.serial_rx(text, note="eeprom-dump")
+                logger.info(f"[SERIAL RX] eeprom-dump bytes={len(buf)}")
+                logger.info(text.replace("\r", "\\r").replace("\n", "\\n\n"))
             return text
         finally:
             ser.timeout = old_timeout
@@ -1111,7 +1115,7 @@ def _read_until_markers(port: str,
             ser.close()
         finally:
             if logger:
-                logger.serial_close(port)
+                logger.info(f"[SERIAL] Closed port={port}")
 
 
 def send_eeprom_dump_command(

@@ -164,11 +164,11 @@ class UniversalLogger:
 
     def log(self, message: str, level: Optional[Union[str, LogLevel]] = None, tag: Optional[str] = None) -> None:
         """Generic logging entry point usable from any module.
-        
+
         This is a convenience wrapper to ensure modules can always emit a line
         into the report without picking a specific helper. When `level` is not
         provided, INFO is used. Optional `tag` is prefixed inside the message.
-        
+
         Args:
             message (str): The message to log.
             level (Optional[Union[str, LogLevel]]): One of LogLevel or a string
@@ -176,7 +176,25 @@ class UniversalLogger:
                 Defaults to INFO when omitted/unknown.
             tag (Optional[str]): Extra categorization tag, e.g. "PCAPGEN", "TSHARK".
         """
-        self._log(LogLevel.INFO, message)
+        # Determine the log level
+        if level is None:
+            log_level = LogLevel.INFO
+        elif isinstance(level, LogLevel):
+            log_level = level
+        elif isinstance(level, str):
+            level_upper = level.upper()
+            try:
+                log_level = LogLevel[level_upper]
+            except KeyError:
+                log_level = LogLevel.INFO
+        else:
+            log_level = LogLevel.INFO
+
+        # Prepend tag if provided
+        if tag:
+            message = f"[{tag}] {message}"
+
+        self._log(log_level, message)
 
     # ======================== Standard Log Levels ========================
     
@@ -296,137 +314,9 @@ class UniversalLogger:
         # Reserved for future timing implementation
         pass
     
-    # ======================== Serial Communication Logging ========================
-    
-    def _printable_preview(self, data: Union[bytes, str], max_len: int) -> str:
-        """Return a sanitized, human-readable preview of bytes or text.
-        
-        This method converts binary data or text into a readable format
-        by replacing control characters with their escape sequences and
-        truncating if necessary.
-        
-        Args:
-            data (Union[bytes, str]): The data to preview.
-            max_len (int): Maximum length of the preview.
-        
-        Returns:
-            str: Human-readable preview of the data.
-        """
-        if isinstance(data, bytes):
-            text = data.decode("utf-8", errors="replace")
-        else:
-            text = data
-        
-        # Replace control characters with visible representations
-        text = text.replace("\r", "\\r").replace("\t", "\\t")
-        text = text.replace("\n", "\\n\n")  # Keep newlines readable
-        
-        if len(text) > max_len:
-            return text[:max_len] + f"... [truncated {len(text) - max_len} chars]"
-        return text
-    
-    def _hexdump(self, data: bytes) -> str:
-        """Generate a formatted hex dump of binary data.
-        
-        Creates a classic hex dump format with offset, hex bytes, and ASCII
-        representation columns.
-        
-        Args:
-            data (bytes): Binary data to dump.
-        
-        Returns:
-            str: Formatted hex dump string, empty if hex dumps are disabled.
-        """
-        if not self.config.hex_dump or not data:
-            return ""
-        
-        lines = []
-        width = self.config.hex_width
-        
-        for i in range(0, len(data), width):
-            chunk = data[i:i + width]
-            hex_part = " ".join(f"{x:02X}" for x in chunk)
-            ascii_part = "".join(chr(x) if 32 <= x < 127 else "." for x in chunk)
-            lines.append(f"{i:04X}: {hex_part:<{width*3-1}}  {ascii_part}")
-        
-        return "\n".join(lines)
-    
-    def serial_open(self, port: str, baud: int) -> None:
-        """Log serial port open event.
-        
-        This method should be called when a serial port is successfully
-        opened to document the connection parameters.
-        
-        Args:
-            port (str): Serial port identifier (e.g., "COM3", "/dev/ttyUSB0").
-            baud (int): Baud rate used for the connection.
-        """
-        self._write_line(f"[SERIAL OPEN] port={port} baud={baud}")
-    
-    def serial_close(self, port: str) -> None:
-        """Log serial port close event.
-        
-        This method should be called when a serial port is closed to
-        document the disconnection.
-        
-        Args:
-            port (str): Serial port identifier that was closed.
-        """
-        self._write_line(f"[SERIAL CLOSE] port={port}")
-    
-    def serial_tx(self, data: Union[bytes, str]) -> None:
-        """Log transmitted serial data with preview and optional hex dump.
-        
-        This method logs data sent over a serial connection, providing
-        both a human-readable preview and an optional hex dump for
-        detailed analysis.
-        
-        Args:
-            data (Union[bytes, str]): Data transmitted over serial port.
-        """
-        if isinstance(data, str):
-            data_bytes = data.encode("utf-8", errors="replace")
-        else:
-            data_bytes = data
-        
-        preview = self._printable_preview(data_bytes, self.config.tx_preview_max)
-        self._write_line(f"[TX] bytes={len(data_bytes)}")
-        self._write_line(preview)
-        
-        if self.config.hex_dump and data_bytes:
-            hex_dump = self._hexdump(data_bytes)
-            if hex_dump:
-                self._write_line("[TX_HEX]\n" + hex_dump)
-    
-    def serial_rx(self, data: Union[bytes, str], note: str = "") -> None:
-        """Log received serial data with preview and optional hex dump.
-        
-        This method logs data received from a serial connection, providing
-        both a human-readable preview and an optional hex dump for
-        detailed analysis.
-        
-        Args:
-            data (Union[bytes, str]): Data received from serial port.
-            note (str, optional): Additional note or context for the reception.
-        """
-        if isinstance(data, str):
-            data_bytes = data.encode("utf-8", errors="replace")
-        else:
-            data_bytes = data
-        
-        prefix = f"[RX] {note} " if note else "[RX] "
-        preview = self._printable_preview(data_bytes, self.config.rx_preview_max)
-        self._write_line(f"{prefix}bytes={len(data_bytes)}")
-        self._write_line(preview)
-        
-        if self.config.hex_dump and data_bytes:
-            hex_dump = self._hexdump(data_bytes)
-            if hex_dump:
-                self._write_line("[RX_HEX]\n" + hex_dump)
-    
     # ======================== Subprocess Logging ========================
     
-    def subprocess(self, cmd: Union[str, List[str]], returncode: int, 
+    def subprocess(self, cmd: Union[str, List[str]], returncode: int,
                   stdout: str, stderr: str, tag: str = "SUBPROC") -> None:
         """Log subprocess execution results.
         
@@ -489,43 +379,7 @@ class UniversalLogger:
                 if "'" not in s:
                     return "'" + s + "'"
                 return "'" + s.replace("'", "'\"'\"'") + "'"
-    
-    # ======================== SNMP Operation Logging ========================
-    
-    def snmp_get(self, ip: str, oid: str, value: Optional[str], note: str = "") -> None:
-        """Log SNMP GET operation result.
-        
-        This method logs the details and result of an SNMP GET operation
-        including the target device, OID, and retrieved value.
-        
-        Args:
-            ip (str): IP address of the SNMP device.
-            oid (str): SNMP OID that was queried.
-            value (Optional[str]): Retrieved value, or None if the operation failed.
-            note (str, optional): Additional context or notes about the operation.
-        """
-        note_part = f" ({note})" if note else ""
-        value_str = "None" if value is None else repr(value)
-        self._write_line(f"[SNMP GET] {ip} {oid} -> {value_str}{note_part}")
-    
-    def snmp_set(self, ip: str, oid: str, value: Union[int, str], 
-                success: bool, note: str = "") -> None:
-        """Log SNMP SET operation result.
-        
-        This method logs the details and result of an SNMP SET operation
-        including the target device, OID, value, and success status.
-        
-        Args:
-            ip (str): IP address of the SNMP device.
-            oid (str): SNMP OID that was modified.
-            value (Union[int, str]): Value that was set.
-            success (bool): Whether the SET operation succeeded.
-            note (str, optional): Additional context or notes about the operation.
-        """
-        note_part = f" ({note})" if note else ""
-        status = "OK" if success else "FAIL"
-        self._write_line(f"[SNMP SET] {ip} {oid} = {value!r} -> {status}{note_part}")
-    
+
     # ======================== Resource Management ========================
     
     def close(self) -> None:
