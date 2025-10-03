@@ -397,30 +397,92 @@ class TestFramework:
 
         return results  # type: ignore[return-value]
 
+    def _execute_steps_list(self, actions: List[Any], label_prefix: str, start_idx: int = 1) -> None:
+        """Execute a list of actions with given label prefix and starting index.
+
+        Args:
+            actions: List of actions to execute
+            label_prefix: Prefix for step labels (e.g., "PRE-STEP", "STEP", "POST-STEP")
+            start_idx: Starting index for step numbering
+        """
+        for idx, action in enumerate(actions, start_idx):
+            step_number = f"{label_prefix} {idx}"
+            if isinstance(action, STE):
+                self.reporter.log_step_start(step_number, action.name)
+                self._execute_ste_group(action, step_number)
+                self.reporter.log_step_end(step_number)
+            elif isinstance(action, PTE):
+                self.reporter.log_step_start(step_number, action.name)
+                self._execute_pte_group(action, step_number)
+                self.reporter.log_step_end(step_number)
+            else:
+                self._execute_single_action(action, step_number)
+
     def run_test_class(self, test_class_instance) -> str:
-        """Run a test class instance and return the overall result."""
+        """Run a test class instance and return the overall result.
+
+        Execution order:
+        1. pre() - Optional preparation steps (labeled as PRE-STEP)
+        2. setup() - Main test steps (labeled as STEP)
+        3. post() - Optional cleanup steps (labeled as POST-STEP)
+        4. teardown() - Always executed if test fails or after post() completes
+                       (labeled as TEARDOWN with sub-step numbering 1.1, 1.2, etc.)
+        """
         self.reporter.log_test_start(self.test_name)
+        test_failed = False
+        teardown_actions = None
 
         try:
+            # Execute pre-steps if available
+            if hasattr(test_class_instance, 'pre') and callable(test_class_instance.pre):
+                pre_actions = test_class_instance.pre()
+                if pre_actions:
+                    self._execute_steps_list(pre_actions, "PRE-STEP")
+
+            # Execute main test steps
             actions = test_class_instance.setup()
-            for idx, action in enumerate(actions, 1):
-                step_number = f"STEP {idx}"
-                if isinstance(action, STE):
-                    self.reporter.log_step_start(step_number, action.name)
-                    self._execute_ste_group(action, step_number)
-                    self.reporter.log_step_end(step_number)
-                elif isinstance(action, PTE):
-                    self.reporter.log_step_start(step_number, action.name)
-                    self._execute_pte_group(action, step_number)
-                    self.reporter.log_step_end(step_number)
-                else:
-                    self._execute_single_action(action, step_number)
+            self._execute_steps_list(actions, "STEP")
+
+            # Execute post-steps if available
+            if hasattr(test_class_instance, 'post') and callable(test_class_instance.post):
+                post_actions = test_class_instance.post()
+                if post_actions:
+                    self._execute_steps_list(post_actions, "POST-STEP")
+
             self.overall_result = "PASS"
+
         except Exception as e:
+            test_failed = True
             self.overall_result = "FAIL"
             self.reporter.log_fail(f"Test failed: {str(e)}")
+
         finally:
+            # Execute teardown if it exists - always runs on failure, or after success
+            if hasattr(test_class_instance, 'teardown') and callable(test_class_instance.teardown):
+                try:
+                    teardown_actions = test_class_instance.teardown()
+                    if teardown_actions:
+                        # Teardown steps are numbered as TEARDOWN 1.1, 1.2, etc.
+                        for idx, action in enumerate(teardown_actions, 1):
+                            step_number = f"TEARDOWN {idx}"
+                            if isinstance(action, STE):
+                                self.reporter.log_step_start(step_number, action.name)
+                                self._execute_ste_group(action, step_number)
+                                self.reporter.log_step_end(step_number)
+                            elif isinstance(action, PTE):
+                                self.reporter.log_step_start(step_number, action.name)
+                                self._execute_pte_group(action, step_number)
+                                self.reporter.log_step_end(step_number)
+                            else:
+                                self._execute_single_action(action, step_number)
+                except Exception as td_error:
+                    self.reporter.log_fail(f"Teardown failed: {str(td_error)}")
+                    # Don't override original test failure
+                    if not test_failed:
+                        self.overall_result = "FAIL"
+
             self.reporter.log_test_end(self.test_name, self.overall_result)
+
         return self.overall_result
 
     def generate_reports(self) -> Dict[str, Path]:
@@ -452,32 +514,68 @@ def run_test_with_teardown(test_class_instance, test_name: str, reports_dir: Opt
     instance, executes the provided test class, generates reports, and ensures
     proper cleanup regardless of test outcome.
 
+    Test Class Methods (all optional except setup):
+        - pre(): Returns list of preparation steps (labeled as PRE-STEP 1, PRE-STEP 2, ...)
+                 Executed before main test steps. Use for test environment setup.
+        - setup(): Returns list of main test steps (labeled as STEP 1, STEP 2, ...)
+                   This is the core test logic. REQUIRED.
+        - post(): Returns list of cleanup steps (labeled as POST-STEP 1, POST-STEP 2, ...)
+                  Executed after successful completion of setup(). Use for normal cleanup.
+        - teardown(): Returns list of emergency cleanup steps (labeled as TEARDOWN 1.1, 1.2, ...)
+                      ALWAYS executed on test failure. If test passes, executed after post().
+                      Use for critical cleanup that must always happen (e.g., power off equipment).
+
     Args:
-        test_class_instance: Test class instance with a setup() method that returns
-            a list of TestActions and/or STE groups to execute.
+        test_class_instance: Test class instance with optional pre(), required setup(),
+            optional post(), and optional teardown() methods.
         test_name (str): Logical name for the test suite used in reports.
-        reports_dir (Optional[str]): Base directory for reports. If None, checks
-            UTFW_REPORTS_DIR environment variable, otherwise uses default location
-            based on TestCases directory structure.
+        reports_dir (Optional[str]): Reports directory name relative to test script location.
+            Can be overridden by test suite via UTFW_SUITE_REPORTS_DIR environment variable.
+            If None, defaults to "report_{test_name}".
 
     Returns:
         int: Exit code (0 for PASS, 1 for FAIL) suitable for use with sys.exit().
 
     Example:
+        >>> class MyTest:
+        ...     def pre(self):
+        ...         return [power_on_device()]
+        ...     def setup(self):
+        ...         return [run_main_test()]
+        ...     def post(self):
+        ...         return [save_logs()]
+        ...     def teardown(self):
+        ...         return [power_off_device()]
         >>> exit_code = run_test_with_teardown(MyTest(), "Device Test")
         >>> sys.exit(exit_code)
     """
     import os
+    import inspect
 
-    # Check if running as part of a test suite (environment variable set by suite runner)
-    suite_reports_dir = os.environ.get('UTFW_REPORTS_DIR')
-    if suite_reports_dir:
-        # Running as part of test suite - use suite's reports directory
-        # Use test_name as subdirectory within suite reports directory
-        reports_dir = str(Path(suite_reports_dir) / f"report_{test_name}")
-    # Otherwise use the provided reports_dir (or None for default)
+    # Check if running as part of a test suite with -r argument
+    suite_reports_base = os.environ.get('UTFW_SUITE_REPORTS_DIR')
+    if suite_reports_base:
+        # Suite runner specified a reports directory - use it as absolute path
+        final_reports_dir = str(Path(suite_reports_base) / f"report_{test_name}")
+    else:
+        # Not in suite mode - make reports_dir relative to the test script's location
+        # Get the caller's file path (the test script that called run_test_with_teardown)
+        caller_frame = inspect.stack()[1]
+        caller_file = caller_frame.filename
+        test_script_dir = Path(caller_file).parent
 
-    framework = TestFramework(test_name, reports_dir)
+        if reports_dir is None:
+            # No explicit reports_dir - use default
+            final_reports_dir = str(test_script_dir / f"report_{test_name}")
+        else:
+            # Use provided reports_dir relative to test script location
+            final_reports_dir = str(test_script_dir / reports_dir)
+
+    # Make reports directory available to test code via get_reports_dir()
+    from .utilities import set_reports_dir
+    set_reports_dir(final_reports_dir)
+
+    framework = TestFramework(test_name, final_reports_dir)
     try:
         result = framework.run_test_class(test_class_instance)
         framework.generate_reports()

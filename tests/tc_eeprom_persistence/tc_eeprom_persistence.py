@@ -10,6 +10,7 @@ from pathlib import Path
 
 from UTFW.core import run_test_with_teardown
 from UTFW.core import get_hwconfig
+from UTFW.core import get_reports_dir
 from UTFW.core import STE
 from UTFW.modules import serial as UART
 from UTFW.modules import snmp as SNMP
@@ -23,6 +24,11 @@ class tc_eeprom_persistence_test:
 
     def setup(self):
         hw = get_hwconfig()
+        reports_dir = get_reports_dir()
+
+        # Resolve checks file path relative to this script
+        test_script_dir = Path(__file__).parent
+        checks_file = str(test_script_dir.parent / "eeprom_checks.json")
 
         # Test configuration values
         test_ip = "192.168.0.12"
@@ -223,8 +229,8 @@ class tc_eeprom_persistence_test:
                     name="Analyze EEPROM dump after all tests",
                     port=hw.SERIAL_PORT,
                     baudrate=hw.BAUDRATE,
-                    checks="../eeprom_checks.json",
-                    reports_dir=Path("report_tc_eeprom_persistence")
+                    checks=checks_file,
+                    reports_dir=Path(reports_dir)
                 ),
                 name="Final EEPROM dump and analysis"
             )

@@ -20,6 +20,11 @@ import inspect
 from pathlib import Path
 from typing import Dict, Any, Optional, List, Callable
 
+# Global context for storing test execution context (e.g., reports directory)
+_test_context = {
+    'reports_dir': None
+}
+
 
 class UtilitiesError(Exception):
     """Exception raised by utility functions when operations fail.
@@ -602,3 +607,33 @@ def get_hwconfig(argv: Optional[List[str]] = None):
     """
     path = hwcfg_from_cli(argv)
     return load_hardware_config(path)
+
+
+def set_reports_dir(reports_dir: str):
+    """Set the current test's reports directory in the global context.
+
+    This function is called by the test framework to make the reports directory
+    available to test code. Tests can retrieve it using get_reports_dir().
+
+    Args:
+        reports_dir (str): Path to the reports directory for the current test.
+    """
+    _test_context['reports_dir'] = reports_dir
+
+
+def get_reports_dir() -> Optional[str]:
+    """Get the current test's reports directory.
+
+    This function allows test code to access the reports directory that was
+    configured by the framework. This is useful for tests that need to generate
+    output files in the correct location.
+
+    Returns:
+        Optional[str]: Path to the reports directory, or None if not set.
+
+    Example:
+        >>> from UTFW.core import get_reports_dir
+        >>> reports_dir = get_reports_dir()
+        >>> output_file = Path(reports_dir) / "capture.pcap"
+    """
+    return _test_context['reports_dir']

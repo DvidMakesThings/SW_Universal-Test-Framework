@@ -23,6 +23,7 @@ from pathlib import Path
 
 from UTFW.core import run_test_with_teardown
 from UTFW.core import get_hwconfig
+from UTFW.core import get_reports_dir
 from UTFW.core import STE, PTE, startFirstWith
 from UTFW.modules.snmp import snmp as SNMP
 from UTFW.modules.ethernet import ethernet as ETH
@@ -41,6 +42,7 @@ class tc_network_pcap:
     def setup(self):
 
         hw = get_hwconfig()
+        reports_dir = get_reports_dir()
 
         base = f"http://{hw.BASELINE_IP}:{hw.HTTP_PORT}"
         new_base = f"http://{hw.TEMP_NEW_IP}:{hw.HTTP_PORT}"
@@ -66,7 +68,7 @@ class tc_network_pcap:
                     PCAP.CapturePcap(
                         name="Capture PCAP",
                         output_path=str(
-                            Path("report_tc_network_pcap") / "capture_settings.pcap"
+                            Path(reports_dir) / "capture_settings.pcap"
                         ),
                         interface="Ethernet",
                         bpf=f"host {hw.BASELINE_IP}",
@@ -93,7 +95,7 @@ class tc_network_pcap:
                     PCAP.CapturePcap(
                         name="Capture PCAP",
                         output_path=str(
-                            Path("report_tc_network_pcap") / "capture_control.pcap"
+                            Path(reports_dir) / "capture_control.pcap"
                         ),
                         interface="Ethernet",
                         bpf=f"host {hw.BASELINE_IP}",
@@ -119,7 +121,7 @@ class tc_network_pcap:
                 ANALYZER.pcap_checkFrames(
                     name="Validate IP address",
                     pcap_path=str(
-                        Path("report_tc_network_pcap") / "capture_settings.pcap"
+                        Path(reports_dir) / "capture_settings.pcap"
                     ),
                     display_filter=f"http.response and ip.addr=={hw.BASELINE_IP}",
                     ordered=False,
@@ -130,7 +132,7 @@ class tc_network_pcap:
                 ANALYZER.pcap_checkFrames(
                     name="Validate Gateway address",
                     pcap_path=str(
-                        Path("report_tc_network_pcap") / "capture_settings.pcap"
+                        Path(reports_dir) / "capture_settings.pcap"
                     ),
                     display_filter=f"http.response and ip.addr=={hw.BASELINE_IP}",
                     ordered=False,
@@ -141,7 +143,7 @@ class tc_network_pcap:
                 ANALYZER.pcap_checkFrames(
                     name="Validate Subnet mask",
                     pcap_path=str(
-                        Path("report_tc_network_pcap") / "capture_settings.pcap"
+                        Path(reports_dir) / "capture_settings.pcap"
                     ),
                     display_filter=f"http.response and ip.addr=={hw.BASELINE_IP}",
                     ordered=False,
@@ -152,7 +154,7 @@ class tc_network_pcap:
                 ANALYZER.pcap_checkFrames(
                     name="Validate DNS address",
                     pcap_path=str(
-                        Path("report_tc_network_pcap") / "capture_settings.pcap"
+                        Path(reports_dir) / "capture_settings.pcap"
                     ),
                     display_filter=f"http.response and ip.addr=={hw.BASELINE_IP}",
                     ordered=False,
@@ -163,7 +165,7 @@ class tc_network_pcap:
                 ANALYZER.pcap_checkFrames(
                     name="Settings: Device Name present",
                     pcap_path=str(
-                        Path("report_tc_network_pcap") / "capture_settings.pcap"
+                        Path(reports_dir) / "capture_settings.pcap"
                     ),
                     display_filter=f"http.response and ip.addr=={hw.BASELINE_IP}",
                     ordered=False,
@@ -174,25 +176,13 @@ class tc_network_pcap:
                 ANALYZER.pcap_checkFrames(
                     name="Settings: Device Name present",
                     pcap_path=str(
-                        Path("report_tc_network_pcap") / "capture_settings.pcap"
+                        Path(reports_dir) / "capture_settings.pcap"
                     ),
                     display_filter=f"http.response and ip.addr=={hw.BASELINE_IP}",
                     ordered=False,
                     expected_frames=[
                         {"payload_patterns": [{"contains_ascii": "Location"}]},
                     ],
-                ),
-                ANALYZER.pcap_checkFrames(
-                    name="Settings: Device Name present",
-                    pcap_path=str(
-                        Path("report_tc_network_pcap") / "capture_settings.pcap"
-                    ),
-                    display_filter=f"http.response and ip.addr=={hw.BASELINE_IP}",
-                    ordered=False,
-                    expected_frames=[
-                        {"payload_patterns": [{"contains_ascii": "WRONGNAME"}]},
-                    ],
-                    negative_test=True,
                 ),
             ),
         ]

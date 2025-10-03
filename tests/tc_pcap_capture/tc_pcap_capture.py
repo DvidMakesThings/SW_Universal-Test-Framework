@@ -17,6 +17,7 @@ from pathlib import Path
 from UTFW.core import run_test_with_teardown, get_hwconfig
 from UTFW.modules.network.pcap_capture import CapturePcap, Ping
 from UTFW.modules.network import pcap_analyze as analyzer
+from UTFW.core import get_reports_dir
 
 
 class tc_pcap_capture_test:
@@ -25,10 +26,11 @@ class tc_pcap_capture_test:
 
     def setup(self):
         hw = get_hwconfig()
+        reports_dir = get_reports_dir()
 
         # Paths from hardware config
-        Path(hw.PCAPCAPTURE_OUTPUT_DIR).mkdir(parents=True, exist_ok=True)
-        output_pcap = str(Path(hw.PCAPCAPTURE_OUTPUT_DIR) / hw.PCAP_CAPTURE_FILENAME)
+        Path(reports_dir).mkdir(parents=True, exist_ok=True)
+        output_pcap = str(Path(reports_dir) / hw.PCAP_CAPTURE_FILENAME)
 
         # Use loopback by default; override in hw if desired
         iface = "lo"
@@ -76,7 +78,7 @@ def main():
     return run_test_with_teardown(
         test_class_instance=test_instance,
         test_name="tc_pcap_capture",
-        reports_dir=get_hwconfig().PCAPCAPTURE_OUTPUT_DIR,
+        reports_dir="report_tc_pcap_capture",
     )
 
 

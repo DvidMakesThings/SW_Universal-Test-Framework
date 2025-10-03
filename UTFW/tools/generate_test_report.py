@@ -55,7 +55,7 @@ from typing import List, Optional, Dict, Any, Tuple
 # ------------------------------- Data Structures -------------------------------
 
 TIMESTAMP_RE = re.compile(r"^\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\]\s+(.*)$")
-STEP_START_RE = re.compile(r"^\[(STEP\s+[^\]]+)\]\s*(.*)$")
+STEP_START_RE = re.compile(r"^\[((?:PRE-STEP|STEP|POST-STEP|TEARDOWN)(?:\s+[^\]]+)?)\]\s*(.*)$")
 LEVEL_TAG_RE = re.compile(r"^\[([A-Z]+)\]\s*(.*)$")
 RESULT_RE = re.compile(r"^=+\s+RESULT:\s+(PASS|FAIL)\s+=+$", re.I)
 
@@ -336,25 +336,47 @@ def _color_class(status: str) -> str:
 
 def _extract_step_tag(step: TestStep) -> str:
     """
-    Return the raw [STEP ...] tag (e.g., 'STEP 3.2/3.3') from the first line if present,
-    otherwise fall back to the name.
+    Return the raw step tag (e.g., 'STEP 3.2/3.3', 'PRE-STEP 1', 'TEARDOWN 1.1')
+    from the first line if present, otherwise fall back to the name.
     """
-    if step.lines and step.lines[0].tag and step.lines[0].tag.startswith("STEP"):
-        return step.lines[0].tag
+    if step.lines and step.lines[0].tag:
+        tag = step.lines[0].tag
+        if tag.startswith(("STEP", "PRE-STEP", "POST-STEP", "TEARDOWN")):
+            return tag
     return step.name
 
 def _parse_step_number_parts(step_tag: str) -> Tuple[str, bool, str]:
     """
-    From a tag like 'STEP 3', 'STEP 3.2', or 'STEP 3.2/3.3' extract:
-      - base step index as string (e.g., '3')
-      - is_substep: True if any dot exists after the base index
-      - raw numeric token after 'STEP ' (e.g., '3', '3.2', '3.2/3.3')
+    From a tag like 'STEP 3', 'STEP 3.2', 'PRE-STEP 1', 'POST-STEP 2', 'TEARDOWN 1.1' extract:
+      - base step index as string WITH prefix (e.g., 'STEP 3', 'PRE-STEP 1', 'TEARDOWN 1.1')
+      - is_substep: True if any dot exists AND it's a regular STEP (not PRE/POST/TEARDOWN)
+      - raw numeric token (e.g., '3', '3.2', '1.1')
+
+    Special handling:
+      - PRE-STEP, POST-STEP, and TEARDOWN steps are NEVER treated as substeps
+      - They always display as separate top-level items in the report
     """
-    m = re.search(r"STEP\s+([0-9][0-9]*(?:[./][0-9][0-9]*(?:\.[0-9]+)?)?(?:/[0-9][0-9]*(?:\.[0-9]+)?)*)", step_tag)
-    token = m.group(1) if m else ""
-    base = token.split("/")[0].split(".")[0] if token else ""
-    is_sub = "." in token
-    return base, is_sub, token
+    # Match any of: STEP, PRE-STEP, POST-STEP, TEARDOWN followed by number
+    m = re.search(r"((?:PRE-STEP|POST-STEP|TEARDOWN|STEP)\s+[0-9][0-9]*(?:[./][0-9][0-9]*(?:\.[0-9]+)?)?(?:/[0-9][0-9]*(?:\.[0-9]+)?)*)", step_tag)
+    if m:
+        full_token = m.group(1)  # e.g., "STEP 3.2", "PRE-STEP 1", "TEARDOWN 1.1"
+
+        # Extract just the numeric part
+        num_m = re.search(r"([0-9][0-9]*(?:[./][0-9][0-9]*(?:\.[0-9]+)?)?(?:/[0-9][0-9]*(?:\.[0-9]+)?)*)", full_token)
+        token = num_m.group(1) if num_m else ""
+
+        # For PRE-STEP, POST-STEP, and TEARDOWN, use the full tag as base (never group)
+        if full_token.startswith(("PRE-STEP", "POST-STEP", "TEARDOWN")):
+            # Return full tag as base so each appears as a separate top-level item
+            return full_token, False, token  # is_sub=False to prevent grouping
+
+        # For regular STEP, use standard grouping behavior
+        base_num = token.split("/")[0].split(".")[0] if token else ""
+        is_sub = "." in token
+        base = f"STEP {base_num}" if base_num else full_token
+        return base, is_sub, token
+
+    return "", False, ""
 
 def render_html(model: "ReportModel", out_html: Path) -> None:
     # ---- Build groups: only display STEPS; nest SUBSTEPS as dropdowns ----
@@ -439,6 +461,12 @@ def render_html(model: "ReportModel", out_html: Path) -> None:
     .status.pass{border-color:#1e7f45;color:#d7ffe6;background:#0e2017}
     .status.fail{border-color:#a23b3b;color:#ffe1e1;background:#210e0e}
     .status.unknown{border-color:#6b7280;background:#1b2028}
+    details.pre-step{border-left:4px solid #6366f1}
+    details.pre-step summary{background:#1a1c2e}
+    details.post-step{border-left:4px solid #22c55e}
+    details.post-step summary{background:#152419}
+    details.teardown{border-left:4px solid#f59e0b}
+    details.teardown summary{background:#2a1f0e}
     pre{background:#0b0f14;border:1px solid #2a2f37;border-radius:8px;padding:10px;overflow:auto}
     table{width:100%;border-collapse:collapse;margin-top:8px}
     th,td{border-bottom:1px solid #1f2530;padding:8px 6px;text-align:left;font-size:13px}
@@ -461,6 +489,17 @@ def render_html(model: "ReportModel", out_html: Path) -> None:
         if s == "FAIL":
             return "fail"
         return "unknown"
+
+    def _step_type_class(title: str) -> str:
+        """Return CSS class based on step type."""
+        title_upper = title.upper()
+        if "PRE-STEP" in title_upper:
+            return "pre-step"
+        elif "POST-STEP" in title_upper:
+            return "post-step"
+        elif "TEARDOWN" in title_upper:
+            return "teardown"
+        return ""
 
     html_lines: List[str] = []
     html_lines.append("<!DOCTYPE html><html><head><meta charset='utf-8'>")
@@ -528,7 +567,10 @@ def render_html(model: "ReportModel", out_html: Path) -> None:
         g = groups[base]
         st_cls = _color_class_local(g["status"])
         title = html.escape(g["title"])
-        html_lines.append("<details open>" if g["status"] != "PASS" else "<details>")
+        step_type_cls = _step_type_class(g["title"])
+        cls_attr = f" class='{step_type_cls}'" if step_type_cls else ""
+        open_attr = " open" if g["status"] != "PASS" else ""
+        html_lines.append(f"<details{cls_attr}{open_attr}>")
         html_lines.append("<summary>")
         html_lines.append(f"<div class='step-title'><div>{title}</div><div class='status {st_cls}'>{html.escape(g['status'])}</div></div>")
         html_lines.append("</summary>")

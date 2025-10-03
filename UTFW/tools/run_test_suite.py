@@ -97,16 +97,26 @@ class TestSuiteRunner:
             if self.hwcfg_path:
                 cmd.extend(['--hwcfg', str(self.hwcfg_path)])
 
-            # Set environment variable for reports directory
+            # Set environment variable to override test's reports_dir if suite reports_dir is specified
             import os
             env = os.environ.copy()
-            env['UTFW_REPORTS_DIR'] = str(self.reports_dir.absolute())
 
-            # Run test as subprocess
+            # Ensure UTF-8 encoding for Python subprocesses (especially important on Windows)
+            env['PYTHONIOENCODING'] = 'utf-8'
+
+            if self.reports_dir != Path("_SoftwareTest/Reports"):  # Non-default means user specified -r
+                env['UTFW_SUITE_REPORTS_DIR'] = str(self.reports_dir.absolute())
+
+            # Run test as subprocess from current working directory
+            # Tests create their reports based on:
+            # 1. UTFW_SUITE_REPORTS_DIR env var (if set by suite runner with -r arg)
+            # 2. Otherwise, their hardcoded reports_dir parameter
             result = subprocess.run(
                 cmd,
                 capture_output=True,
                 text=True,
+                encoding='utf-8',
+                errors='replace',  # Replace unencodable chars instead of crashing
                 env=env,
                 timeout=test_spec.get('timeout', 600)  # Default 10 min timeout
             )

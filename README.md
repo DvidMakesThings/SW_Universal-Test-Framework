@@ -78,6 +78,46 @@ from UTFW import run_test_with_teardown
 run_test_with_teardown(DeviceTest(), "Basic_Test")
 ```
 
+## Test Phases
+
+UTFW supports four distinct phases for test execution, providing flexibility in test organization:
+
+1. **pre()** - Pre-steps for hardware initialization (labeled as `PRE-STEP 1, 2, ...`)
+2. **setup()** - Main test steps (required, labeled as `STEP 1, 2, ...`)
+3. **post()** - Post-steps that run only on success (labeled as `POST-STEP 1, 2, ...`)
+4. **teardown()** - Cleanup that always runs (labeled as `TEARDOWN 1.1, 1.2, ...`)
+
+### Example with All Phases
+
+```python
+class MyTest:
+    def pre(self):
+        """Optional: Prepare hardware before test"""
+        return [
+            # Power on, initialize, etc.
+        ]
+
+    def setup(self):
+        """Required: Main test steps"""
+        return [
+            # Your test actions
+        ]
+
+    def post(self):
+        """Optional: Actions after successful test"""
+        return [
+            # Save results, etc. (only runs if test passes)
+        ]
+
+    def teardown(self):
+        """Optional: Cleanup (always runs, even on failure)"""
+        return [
+            # Power off, reset hardware, etc.
+        ]
+```
+
+See [PRE_POST_TEARDOWN.md](Programming%20Manual/PRE_POST_TEARDOWN.md) for detailed examples and [QUICK_REFERENCE.md](Programming%20Manual/QUICK_REFERENCE.md) for quick reference.
+
 ## Project Status
 
 This project is in **active development** with the following status:

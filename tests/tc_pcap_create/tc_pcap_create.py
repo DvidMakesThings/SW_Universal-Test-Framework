@@ -24,6 +24,7 @@ from pathlib import Path
 
 from UTFW.core import run_test_with_teardown
 from UTFW.core import get_hwconfig
+from UTFW.core import get_reports_dir
 from UTFW.core import STE
 from UTFW.modules.network import pcapgen as FrameGen
 from UTFW.modules.network import pcap_analyze as analyzer
@@ -38,10 +39,11 @@ class tc_network_pcapgen_test:
     def setup(self):
         """Assemble and return ordered TestAction list."""
         hw = get_hwconfig()
+        reports_dir = get_reports_dir()
 
         # Paths
-        Path(hw.PCAP_OUTPUT_DIR).mkdir(parents=True, exist_ok=True)
-        output_pcap = str(Path(hw.PCAP_OUTPUT_DIR) / hw.PCAP_FILENAME)
+        Path(reports_dir).mkdir(parents=True, exist_ok=True)
+        output_pcap = str(Path(reports_dir) / hw.PCAP_FILENAME)
 
         # Minimal IPv4 UDP segment (checksum 0) -> header(8) + data
         def _udp_segment(
@@ -209,7 +211,7 @@ def main():
     return run_test_with_teardown(
         test_class_instance=test_instance,
         test_name="tc_pcap_create",
-        reports_dir=get_hwconfig().PCAP_OUTPUT_DIR,
+        reports_dir="report_tc_pcap_create",
     )
 
 

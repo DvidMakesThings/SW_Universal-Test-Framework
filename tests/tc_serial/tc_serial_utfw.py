@@ -11,6 +11,7 @@ from pathlib import Path
 # Import UTFW framework
 from UTFW.core import run_test_with_teardown
 from UTFW.core import get_hwconfig
+from UTFW.core import get_reports_dir
 from UTFW.core import STE
 from UTFW.modules import snmp as SNMP
 from UTFW.modules import serial as UART
@@ -25,7 +26,13 @@ class tc_serial_test:
 
     def setup(self):
         hw = get_hwconfig()
+        reports_dir = get_reports_dir()
         """Setup actions and return test list"""
+
+        # Resolve checks file path relative to this script
+        test_script_dir = Path(__file__).parent
+        checks_file = str(test_script_dir.parent / "eeprom_checks.json")
+
         # Network test parameters
         test_ip = "192.168.0.72"
         test_subnet = "255.255.0.0"
@@ -240,8 +247,8 @@ class tc_serial_test:
                 name="Create EEPROM dump and analyze EEPROM content",
                 port=hw.SERIAL_PORT,
                 baudrate=hw.BAUDRATE,
-                checks="../eeprom_checks.json",
-                reports_dir=Path("report_tc_serial_utfw")
+                checks=checks_file,
+                reports_dir=Path(reports_dir)
             )
         ]
 

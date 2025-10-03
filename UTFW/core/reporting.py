@@ -452,8 +452,42 @@ def run_test_with_teardown(test_class_instance, test_name: str, reports_dir: Opt
 
     Creates a TestFramework, runs the provided test_class_instance, generates
     reports, and returns 0 for PASS or 1 for FAIL.
+
+    Args:
+        test_class_instance: Test class instance with setup() method
+        test_name: Test name for reports
+        reports_dir: Reports directory name relative to test script location.
+                     Can be overridden by test suite via UTFW_SUITE_REPORTS_DIR environment variable.
+                     If None, defaults to "report_{test_name}".
     """
-    framework = TestFramework(test_name, reports_dir)
+    import os
+    import inspect
+    from pathlib import Path
+
+    # Check if running as part of a test suite with -r argument
+    suite_reports_base = os.environ.get('UTFW_SUITE_REPORTS_DIR')
+    if suite_reports_base:
+        # Suite runner specified a reports directory - use it as absolute path
+        final_reports_dir = str(Path(suite_reports_base) / f"report_{test_name}")
+    else:
+        # Not in suite mode - make reports_dir relative to the test script's location
+        # Get the caller's file path (the test script that called run_test_with_teardown)
+        caller_frame = inspect.stack()[1]
+        caller_file = caller_frame.filename
+        test_script_dir = Path(caller_file).parent
+
+        if reports_dir is None:
+            # No explicit reports_dir - use default
+            final_reports_dir = str(test_script_dir / f"report_{test_name}")
+        else:
+            # Use provided reports_dir relative to test script location
+            final_reports_dir = str(test_script_dir / reports_dir)
+
+    # Make reports directory available to test code via get_reports_dir()
+    from .utilities import set_reports_dir
+    set_reports_dir(final_reports_dir)
+
+    framework = TestFramework(test_name, final_reports_dir)
     try:
         result = framework.run_test_class(test_class_instance)
         framework.generate_reports()
