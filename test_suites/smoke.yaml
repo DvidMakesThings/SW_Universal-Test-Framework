@@ -1,0 +1,17 @@
+# Smoke Test Suite
+# Quick validation tests to verify basic functionality
+# Typical duration: 5-10 minutes
+
+name: "Smoke Tests"
+description: "Quick smoke tests for basic functionality validation"
+
+tests:
+  - name: "Serial Communication Test"
+    path: "tests/tc_stress_switching/tc_stress_switching.py"
+    enabled: true
+    timeout: 300
+
+  - name: "Basic Network Test"
+    path: "tests/tc_network_eth/tc_network_eth.py"
+    enabled: true
+    timeout: 180

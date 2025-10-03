@@ -77,7 +77,8 @@ def capture_uart_and_check(
     expected: Optional[str] = None,
     match_mode: str = "contains",
     fmt: str = "ascii",
-    hex_strip_00: bool = True
+    hex_strip_00: bool = True,
+        negative_test: bool = False
 ) -> TestAction:
     """
     Capture UART traffic via FX2 and validate.
@@ -139,7 +140,7 @@ def capture_uart_and_check(
 
         return {"ascii": ascii_joined, "hex": hex_joined}
 
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)
 
 
 # ======================== I2C ========================
@@ -148,7 +149,8 @@ def capture_i2c_and_check(
     name: str,
     duration_s: float,
     expected: Optional[str] = None,
-    match_mode: str = "contains"
+    match_mode: str = "contains",
+        negative_test: bool = False
 ) -> TestAction:
     """
     Capture I2C traffic via FX2 and validate.
@@ -196,7 +198,7 @@ def capture_i2c_and_check(
 
         return {"hex": hex_joined}
 
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)
 
 
 # ======================== SPI ========================
@@ -206,7 +208,8 @@ def capture_spi_and_check(
     duration_s: float,
     expected: Optional[str] = None,
     match_mode: str = "contains",
-    lane: str = "mosi"
+    lane: str = "mosi",
+    negative_test: bool = False
 ) -> TestAction:
     """
     Capture SPI traffic via FX2 and validate.
@@ -254,12 +257,13 @@ def capture_spi_and_check(
 
         return {"hex": hex_joined}
 
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)
 
 
 # ======================== PulseView ========================
 
-def launch_pulseview(name: str, project_file: Optional[str] = None) -> TestAction:
+def launch_pulseview(name: str, project_file: Optional[str] = None,
+negative_test: bool = False) -> TestAction:
     """
     Launch PulseView GUI with optional project file.
     """
@@ -281,10 +285,11 @@ def launch_pulseview(name: str, project_file: Optional[str] = None) -> TestActio
 
         return True
 
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)
 
 
-def convert_sr_to_vcd(name: str, sr_file: str, vcd_file: Optional[str] = None) -> TestAction:
+def convert_sr_to_vcd(name: str, sr_file: str, vcd_file: Optional[str] = None,
+negative_test: bool = False) -> TestAction:
     """
     Convert .sr file to .vcd file using sigrok-cli.
     """
@@ -306,4 +311,4 @@ def convert_sr_to_vcd(name: str, sr_file: str, vcd_file: Optional[str] = None) -
 
         return vcd_path
 
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)

@@ -46,7 +46,7 @@ class tc_power_hlw8032_test:
                 UART.validate_tokens(
                     name=f"Validate power response for CH{channel}",
                     response="",
-                    tokens=["Voltage", "Current", "Power"]
+                    tokens=["V=", "I=", "P="]
                 ),
                 # Turn channel OFF
                 UART.send_command_uart(
@@ -93,7 +93,7 @@ class tc_power_hlw8032_test:
                 UART.validate_tokens(
                     name="Validate bulk power response",
                     response="",
-                    tokens=["Voltage", "Current", "Power"]
+                    tokens=["V=", "I=", "P="]
                 ),
                 name="Test bulk power monitoring command"
             )

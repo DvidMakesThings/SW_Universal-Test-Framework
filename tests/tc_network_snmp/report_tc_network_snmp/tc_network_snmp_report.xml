@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ENERGIS Functional Test " tests="23" failures="0" time="0.0">
+<testsuite name="ENERGIS Functional Test " tests="23" failures="0" skipped="0" time="0.0">
   <testcase classname="UTFW" name="STEP 1 Walk enterprise subtree" time="0.0">
   </testcase>
   <testcase classname="UTFW" name="STEP 2 Validate MIB-II system group" time="0.0">

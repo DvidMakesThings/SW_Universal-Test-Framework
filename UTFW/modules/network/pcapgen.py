@@ -149,6 +149,8 @@ def _ensure_dir(path: str) -> None:
         pass
 
 
+
+
 def _pcap_write_global_header_if_missing(
     path: str, linktype: int = _PCAP_NETWORK_ETHERNET
 ) -> None:
@@ -156,6 +158,7 @@ def _pcap_write_global_header_if_missing(
         return
     _ensure_dir(path)
     with open(path, "wb") as f:
+        # Write standard PCAP global header
         f.write(
             struct.pack(
                 "<IHHIIII",
@@ -168,6 +171,7 @@ def _pcap_write_global_header_if_missing(
                 linktype,
             )
         )
+
     logger = get_active_logger()
     if logger:
         logger.log(f"[PCAPGEN] Wrote ns-global-header to {path} (linktype={linktype})")
@@ -374,9 +378,13 @@ def _pcap_append_frames_ns(
     frames: List[bytes],
     timestamps_ns: List[int],
     linktype: int = _PCAP_NETWORK_ETHERNET,
+    overwrite: bool = False,
 ) -> None:
     if len(frames) != len(timestamps_ns):
         raise PCAPGenError("frames/timestamps length mismatch")
+
+    logger = get_active_logger()
+
     _pcap_write_global_header_if_missing(path, linktype)
     for ts, fr in zip(timestamps_ns, frames):
         _pcap_append_record_ns(path, int(ts), fr)
@@ -413,6 +421,9 @@ def pcap_create(
     ip_ttl: int = 64,
     ip_tos: int = 0,
     ip_auto_fragment_payload_size: Optional[int] = None,
+    # File handling
+    overwrite: bool = True,
+    negative_test: bool = False
 ) -> TestAction:
     """
     Create a TestAction that appends one or more Ethernet/IPv4 frames to a PCAP.
@@ -457,6 +468,8 @@ def pcap_create(
         ip_tos (int, optional): IPv4 TOS/DSCP field. Defaults to 0.
         ip_auto_fragment_payload_size (Optional[int], optional): If set >0, automatically fragment IPv4 payload
             into multiple packets using this per-fragment payload size (bytes).
+        overwrite (bool, optional): If True, delete existing PCAP file before writing. If False, append to existing file.
+            Defaults to True to ensure clean test runs.
 
     Returns:
         TestAction: Action that appends frame(s) and returns `output_path` on success.
@@ -670,7 +683,8 @@ def pcap_create(
                 )
 
         _pcap_append_frames_ns(
-            output_path, frames_to_write, timestamps, linktype=_PCAP_NETWORK_ETHERNET
+            output_path, frames_to_write, timestamps, linktype=_PCAP_NETWORK_ETHERNET,
+            overwrite=overwrite
         )
 
         if logger:
@@ -681,7 +695,7 @@ def pcap_create(
 
         return output_path
 
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)
 
 
 def pcap_from_spec_action(
@@ -691,6 +705,8 @@ def pcap_from_spec_action(
     *,
     start_time_ns: int = 0,
     link_speed_bps: Optional[Union[int, float, str]] = None,
+    overwrite: bool = True,
+    negative_test: bool = False
 ) -> TestAction:
     """Create a TestAction that appends frames built from a list of specs to a PCAP.
 
@@ -718,6 +734,8 @@ def pcap_from_spec_action(
         start_time_ns (int, optional): Timestamp for first packet when file is empty. Defaults to 0.
         link_speed_bps (Optional[Union[int, float, str]], optional): Default link speed in bps or shorthand;
             used when specs don't provide their own.
+        overwrite (bool, optional): If True, delete existing PCAP file before writing. If False, append to existing file.
+            Defaults to True to ensure clean test runs.
 
     Returns:
         TestAction: Action that appends all frames and returns `output_path` on success.
@@ -960,7 +978,8 @@ def pcap_from_spec_action(
                     )
 
         _pcap_append_frames_ns(
-            output_path, out_frames, out_ts, linktype=_PCAP_NETWORK_ETHERNET
+            output_path, out_frames, out_ts, linktype=_PCAP_NETWORK_ETHERNET,
+            overwrite=overwrite
         )
 
         if logger:
@@ -971,4 +990,6 @@ def pcap_from_spec_action(
 
         return output_path
 
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)
+
+

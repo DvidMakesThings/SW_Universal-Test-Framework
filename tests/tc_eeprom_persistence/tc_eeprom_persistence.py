@@ -25,7 +25,7 @@ class tc_eeprom_persistence_test:
         hw = get_hwconfig()
 
         # Test configuration values
-        test_ip = "192.168.1.100"
+        test_ip = "192.168.0.12"
         test_subnet = "255.255.255.0"
         test_gateway = "192.168.1.1"
         test_dns = "1.1.1.1"
@@ -50,11 +50,25 @@ class tc_eeprom_persistence_test:
             verify_channel_states.append(
                 SNMP.get_outlet(
                     name=f"Verify CH{channel} state via SNMP",
-                    ip=hw.BASELINE_IP,
+                    ip=test_ip,
                     channel=channel,
                     expected_state=expected_state,
                     outlet_base_oid=hw.OUTLET_BASE_OID,
                     community=hw.SNMP_COMMUNITY
+                )
+            )
+        
+        verify_channel_states_negative = []
+        for channel in range(1, 9):
+            verify_channel_states_negative.append(
+                SNMP.get_outlet(
+                    name=f"MUST FAIL - Verify CH{channel} state via SNMP",
+                    ip=test_ip,
+                    channel=channel,
+                    expected_state=True,
+                    outlet_base_oid=hw.OUTLET_BASE_OID,
+                    community=hw.SNMP_COMMUNITY,
+                    negative_test=True
                 )
             )
 
@@ -118,8 +132,8 @@ class tc_eeprom_persistence_test:
 
             # Step 4: Verify channel states persisted
             STE(
-                *verify_channel_states,
-                name="Verify channel states persisted after reboot"
+                *verify_channel_states_negative,
+                name="Verify channel states not persisted after reboot"
             ),
 
             # Step 5: Factory reset
@@ -209,7 +223,7 @@ class tc_eeprom_persistence_test:
                     name="Analyze EEPROM dump after all tests",
                     port=hw.SERIAL_PORT,
                     baudrate=hw.BAUDRATE,
-                    checks="eeprom_checks.json",
+                    checks="../eeprom_checks.json",
                     reports_dir=Path("report_tc_eeprom_persistence")
                 ),
                 name="Final EEPROM dump and analysis"

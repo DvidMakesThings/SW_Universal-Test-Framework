@@ -2,7 +2,8 @@
 """
 tc_stress_switching.py - Rapid Channel Switching Stress Test
 =============================================================
-Tests relay durability and system stability under rapid switching
+Tests relay durability and system stability under rapid SNMP-based switching
+Uses SNMP for maximum speed (no UART delays)
 """
 
 import sys
@@ -11,12 +12,11 @@ from pathlib import Path
 from UTFW.core import run_test_with_teardown
 from UTFW.core import get_hwconfig
 from UTFW.core import STE
-from UTFW.modules import serial as UART
 from UTFW.modules import snmp as SNMP
 
 
 class tc_stress_switching_test:
-    """Stress test for rapid outlet switching"""
+    """Stress test for rapid outlet switching using SNMP"""
 
     def __init__(self):
         pass
@@ -24,90 +24,148 @@ class tc_stress_switching_test:
     def setup(self):
         hw = get_hwconfig()
 
-        # Rapid switching: 10 cycles per channel
+        # Rapid switching: 50 cycles per channel (much faster with SNMP)
         rapid_switching_actions = []
-        num_cycles = 10
+        num_cycles = 15
 
         for cycle in range(1, num_cycles + 1):
             for channel in range(1, 9):
                 rapid_switching_actions.extend([
-                    UART.send_command_uart(
-                        name=f"Cycle {cycle} - Toggle CH{channel} ON",
-                        port=hw.SERIAL_PORT,
-                        command=f"SET_CH {channel} ON",
-                        baudrate=hw.BAUDRATE
+                    SNMP.set_outlet(
+                        name=f"Cycle {cycle} - CH{channel} ON",
+                        ip=hw.BASELINE_IP,
+                        channel=channel,
+                        state=True,
+                        outlet_base_oid=hw.OUTLET_BASE_OID,
+                        community=hw.SNMP_COMMUNITY
                     ),
-                    UART.send_command_uart(
-                        name=f"Cycle {cycle} - Toggle CH{channel} OFF",
-                        port=hw.SERIAL_PORT,
-                        command=f"SET_CH {channel} OFF",
-                        baudrate=hw.BAUDRATE
+                    SNMP.get_outlet(
+                        name=f"Cycle {cycle} - Verify CH{channel} ON",
+                        ip=hw.BASELINE_IP,
+                        channel=channel,
+                        expected_state=True,
+                        outlet_base_oid=hw.OUTLET_BASE_OID,
+                        community=hw.SNMP_COMMUNITY
+                    ),
+                    SNMP.set_outlet(
+                        name=f"Cycle {cycle} - CH{channel} OFF",
+                        ip=hw.BASELINE_IP,
+                        channel=channel,
+                        state=False,
+                        outlet_base_oid=hw.OUTLET_BASE_OID,
+                        community=hw.SNMP_COMMUNITY
+                    ),
+                    SNMP.get_outlet(
+                        name=f"Cycle {cycle} - Verify CH{channel} OFF",
+                        ip=hw.BASELINE_IP,
+                        channel=channel,
+                        expected_state=False,
+                        outlet_base_oid=hw.OUTLET_BASE_OID,
+                        community=hw.SNMP_COMMUNITY
                     )
                 ])
 
         # All channels simultaneous switching
         all_switching_actions = []
         for cycle in range(1, num_cycles + 1):
-            all_switching_actions.extend([
-                UART.send_command_uart(
-                    name=f"Cycle {cycle} - All channels ON",
-                    port=hw.SERIAL_PORT,
-                    command="SET_CH ALL ON",
-                    baudrate=hw.BAUDRATE
-                ),
-                UART.get_all_channels(
-                    name=f"Cycle {cycle} - Verify all ON",
-                    port=hw.SERIAL_PORT,
-                    baudrate=hw.BAUDRATE,
-                    expected=[True] * 8
-                ),
-                UART.send_command_uart(
-                    name=f"Cycle {cycle} - All channels OFF",
-                    port=hw.SERIAL_PORT,
-                    command="SET_CH ALL OFF",
-                    baudrate=hw.BAUDRATE
-                ),
-                UART.get_all_channels(
-                    name=f"Cycle {cycle} - Verify all OFF",
-                    port=hw.SERIAL_PORT,
-                    baudrate=hw.BAUDRATE,
-                    expected=[False] * 8
+            # Turn all ON
+            for channel in range(1, 9):
+                all_switching_actions.append(
+                    SNMP.set_outlet(
+                        name=f"Cycle {cycle} - Set CH{channel} ON",
+                        ip=hw.BASELINE_IP,
+                        channel=channel,
+                        state=True,
+                        outlet_base_oid=hw.OUTLET_BASE_OID,
+                        community=hw.SNMP_COMMUNITY
+                    )
                 )
-            ])
+            # Verify all ON
+            all_switching_actions.append(
+                SNMP.verify_all_outlets(
+                    name=f"Cycle {cycle} - Verify all ON",
+                    ip=hw.BASELINE_IP,
+                    outlet_base_oid=hw.OUTLET_BASE_OID,
+                    expected_state=True,
+                    community=hw.SNMP_COMMUNITY
+                )
+            )
+            # Turn all OFF
+            for channel in range(1, 9):
+                all_switching_actions.append(
+                    SNMP.set_outlet(
+                        name=f"Cycle {cycle} - Set CH{channel} OFF",
+                        ip=hw.BASELINE_IP,
+                        channel=channel,
+                        state=False,
+                        outlet_base_oid=hw.OUTLET_BASE_OID,
+                        community=hw.SNMP_COMMUNITY
+                    )
+                )
+            # Verify all OFF
+            all_switching_actions.append(
+                SNMP.verify_all_outlets(
+                    name=f"Cycle {cycle} - Verify all OFF",
+                    ip=hw.BASELINE_IP,
+                    outlet_base_oid=hw.OUTLET_BASE_OID,
+                    expected_state=False,
+                    community=hw.SNMP_COMMUNITY
+                )
+            )
 
         # Alternating pattern stress test
         alternating_actions = []
         for cycle in range(1, num_cycles + 1):
             # Odd channels ON, even OFF
             for channel in range(1, 9):
-                state = "ON" if channel % 2 == 1 else "OFF"
+                state = True if channel % 2 == 1 else False
                 alternating_actions.append(
-                    UART.send_command_uart(
-                        name=f"Cycle {cycle} - Set CH{channel} {state}",
-                        port=hw.SERIAL_PORT,
-                        command=f"SET_CH {channel} {state}",
-                        baudrate=hw.BAUDRATE
+                    SNMP.set_outlet(
+                        name=f"Cycle {cycle} - Set CH{channel} {'ON' if state else 'OFF'}",
+                        ip=hw.BASELINE_IP,
+                        channel=channel,
+                        state=state,
+                        outlet_base_oid=hw.OUTLET_BASE_OID,
+                        community=hw.SNMP_COMMUNITY
                     )
                 )
-            # Verify via SNMP
-            alternating_actions.append(
-                SNMP.verify_all_outlets(
-                    name=f"Cycle {cycle} - Verify alternating pattern via SNMP",
-                    ip=hw.BASELINE_IP,
-                    outlet_base_oid=hw.OUTLET_BASE_OID,
-                    expected_state=None,
-                    community=hw.SNMP_COMMUNITY
+            # Verify pattern
+            for channel in range(1, 9):
+                expected = True if channel % 2 == 1 else False
+                alternating_actions.append(
+                    SNMP.get_outlet(
+                        name=f"Cycle {cycle} - Verify CH{channel} {'ON' if expected else 'OFF'}",
+                        ip=hw.BASELINE_IP,
+                        channel=channel,
+                        expected_state=expected,
+                        outlet_base_oid=hw.OUTLET_BASE_OID,
+                        community=hw.SNMP_COMMUNITY
+                    )
                 )
-            )
             # Reverse: Even ON, odd OFF
             for channel in range(1, 9):
-                state = "OFF" if channel % 2 == 1 else "ON"
+                state = False if channel % 2 == 1 else True
                 alternating_actions.append(
-                    UART.send_command_uart(
-                        name=f"Cycle {cycle} - Set CH{channel} {state}",
-                        port=hw.SERIAL_PORT,
-                        command=f"SET_CH {channel} {state}",
-                        baudrate=hw.BAUDRATE
+                    SNMP.set_outlet(
+                        name=f"Cycle {cycle} - Set CH{channel} {'ON' if state else 'OFF'}",
+                        ip=hw.BASELINE_IP,
+                        channel=channel,
+                        state=state,
+                        outlet_base_oid=hw.OUTLET_BASE_OID,
+                        community=hw.SNMP_COMMUNITY
+                    )
+                )
+            # Verify reversed pattern
+            for channel in range(1, 9):
+                expected = False if channel % 2 == 1 else True
+                alternating_actions.append(
+                    SNMP.get_outlet(
+                        name=f"Cycle {cycle} - Verify CH{channel} {'ON' if expected else 'OFF'}",
+                        ip=hw.BASELINE_IP,
+                        channel=channel,
+                        expected_state=expected,
+                        outlet_base_oid=hw.OUTLET_BASE_OID,
+                        community=hw.SNMP_COMMUNITY
                     )
                 )
 
@@ -115,35 +173,31 @@ class tc_stress_switching_test:
             # Step 1: Rapid individual channel switching
             STE(
                 *rapid_switching_actions,
-                name=f"Rapid switching test - {num_cycles} cycles per channel"
+                name=f"Rapid SNMP switching test - {num_cycles} cycles per channel"
             ),
 
             # Step 2: All channels simultaneous switching
             STE(
                 *all_switching_actions,
-                name=f"Simultaneous all-channel switching - {num_cycles} cycles"
+                name=f"Simultaneous all-channel SNMP switching - {num_cycles} cycles"
             ),
 
             # Step 3: Alternating pattern stress
             STE(
                 *alternating_actions,
-                name=f"Alternating pattern stress test - {num_cycles} cycles"
+                name=f"Alternating pattern SNMP stress test - {num_cycles} cycles"
             ),
 
             # Step 4: Final state verification
             STE(
-                UART.send_command_uart(
-                    name="Set all channels OFF after stress test",
-                    port=hw.SERIAL_PORT,
-                    command="SET_CH ALL OFF",
-                    baudrate=hw.BAUDRATE
-                ),
-                UART.get_all_channels(
-                    name="Verify all channels OFF",
-                    port=hw.SERIAL_PORT,
-                    baudrate=hw.BAUDRATE,
-                    expected=[False] * 8
-                ),
+                *[SNMP.set_outlet(
+                    name=f"Set CH{channel} OFF after stress test",
+                    ip=hw.BASELINE_IP,
+                    channel=channel,
+                    state=False,
+                    outlet_base_oid=hw.OUTLET_BASE_OID,
+                    community=hw.SNMP_COMMUNITY
+                ) for channel in range(1, 9)],
                 SNMP.verify_all_outlets(
                     name="Final SNMP verification - all OFF",
                     ip=hw.BASELINE_IP,

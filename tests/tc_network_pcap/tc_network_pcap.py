@@ -182,6 +182,18 @@ class tc_network_pcap:
                         {"payload_patterns": [{"contains_ascii": "Location"}]},
                     ],
                 ),
+                ANALYZER.pcap_checkFrames(
+                    name="Settings: Device Name present",
+                    pcap_path=str(
+                        Path("report_tc_network_pcap") / "capture_settings.pcap"
+                    ),
+                    display_filter=f"http.response and ip.addr=={hw.BASELINE_IP}",
+                    ordered=False,
+                    expected_frames=[
+                        {"payload_patterns": [{"contains_ascii": "WRONGNAME"}]},
+                    ],
+                    negative_test=True,
+                ),
             ),
         ]
 

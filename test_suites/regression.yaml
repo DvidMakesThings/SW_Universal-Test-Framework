@@ -1,0 +1,62 @@
+# Regression Test Suite
+# Comprehensive tests to validate all functionality before release
+# Typical duration: 30-60 minutes
+
+name: "Regression Tests"
+description: "Full regression test suite for pre-release validation"
+
+tests:
+  # Serial Communication Tests
+  - name: "Serial Communication Test"
+    path: "tests/tc_serial/tc_serial_utfw.py"
+    enabled: true
+    timeout: 300
+
+  - name: "Serial Error Handling Test"
+    path: "tests/tc_serial_errors/tc_serial_errors.py"
+    enabled: true
+    timeout: 180
+
+  # Network Tests
+  - name: "Ethernet Basic Test"
+    path: "tests/tc_network_eth/tc_network_eth.py"
+    enabled: true
+    timeout: 300
+
+  - name: "HTTP Network Test"
+    path: "tests/tc_network_http/tc_network_http.py"
+    enabled: true
+    timeout: 300
+
+  - name: "SNMP Test"
+    path: "tests/tc_network_snmp/tc_network_snmp.py"
+    enabled: true
+    timeout: 300
+
+  - name: "Network PCAP Test"
+    path: "tests/tc_network_pcap/tc_network_pcap.py"
+    enabled: true
+    timeout: 300
+
+  # PCAP Tests
+  - name: "PCAP Capture Test"
+    path: "tests/tc_pcap_capture/tc_pcap_capture.py"
+    enabled: true
+    timeout: 300
+
+  - name: "PCAP Create Test"
+    path: "tests/tc_pcap_create/tc_pcap_create.py"
+    enabled: true
+    timeout: 180
+
+  # Persistence Tests
+  - name: "EEPROM Persistence Test"
+    path: "tests/tc_eeprom_persistence/tc_eeprom_persistence.py"
+    enabled: true
+    timeout: 300
+
+  # Power Tests
+  - name: "Power Meter HLW8032 Test"
+    path: "tests/tc_power_hlw8032/tc_power_hlw8032.py"
+    enabled: true
+    timeout: 300

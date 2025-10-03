@@ -313,7 +313,8 @@ def _http_request(
 
 def ping_action(
     name: str, ip: str, count: int = 1, timeout_per_pkt: float = 1.0
-) -> TestAction:
+,
+        negative_test: bool = False) -> TestAction:
     """Create a TestAction that performs ICMP ping operations.
 
     This TestAction factory creates an action that performs one or more
@@ -343,7 +344,7 @@ def ping_action(
                 raise EthernetTestError(f"Ping to {ip} failed")
         return True
 
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)
 
 
 def http_get_action(
@@ -356,6 +357,7 @@ def http_get_action(
     require_nonempty: Optional[bool] = False,
     headers: Optional[Dict[str, str]] = None,
     dump_subdir: Optional[str] = None,
+        negative_test: bool = False
 ) -> TestAction:
     """Create a TestAction that performs HTTP GET with validation.
 
@@ -400,7 +402,7 @@ def http_get_action(
             raise EthernetTestError(f"GET {path} empty body")
         return {"status": status, "headers": hdrs, "body": body}
 
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)
 
 
 def http_post_form_action(
@@ -416,6 +418,7 @@ def http_post_form_action(
     pace_key: Optional[str] = None,
     min_interval_s: float = 0.0,
     tolerate_disconnect: bool = False,
+        negative_test: bool = False
 ) -> TestAction:
     """Create a TestAction that performs HTTP POST with form data.
 
@@ -481,7 +484,7 @@ def http_post_form_action(
             raise EthernetTestError(f"POST {path} -> {status}, body={body[:200]}")
         return {"status": status, "headers": hdrs, "body": body}
 
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)
 
 
 def http_post_json_action(
@@ -497,7 +500,7 @@ def http_post_json_action(
     pace_key: Optional[str] = None,
     min_interval_s: float = 0.0,
     tolerate_disconnect: bool = False,
-) -> TestAction:
+    negative_test: bool = False) -> TestAction:
     """Create a TestAction that performs HTTP POST with JSON data.
 
     This TestAction factory creates an action that performs an HTTP POST
@@ -559,7 +562,7 @@ def http_post_json_action(
             raise EthernetTestError(f"POST {path} -> {status}, body={body[:200]}")
         return {"status": status, "headers": hdrs, "body": body}
 
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)
 
 
 def expect_header_prefix_action(
@@ -571,7 +574,7 @@ def expect_header_prefix_action(
     timeout: float,
     *,
     dump_subdir: Optional[str] = None,
-) -> TestAction:
+    negative_test: bool = False) -> TestAction:
     """Create a TestAction that validates HTTP response header prefixes.
 
     This TestAction factory creates an action that performs an HTTP GET
@@ -615,7 +618,7 @@ def expect_header_prefix_action(
             )
         return True
 
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)
 
 
 def etag_roundtrip_action(
@@ -625,6 +628,7 @@ def etag_roundtrip_action(
     timeout: float,
     *,
     dump_subdir: Optional[str] = None,
+        negative_test: bool = False
 ) -> TestAction:
     """Create a TestAction that validates ETag conditional GET behavior.
 
@@ -691,7 +695,7 @@ def etag_roundtrip_action(
                 )
         return True
 
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)
 
 
 def crawl_links_action(
@@ -701,6 +705,7 @@ def crawl_links_action(
     timeout: float,
     *,
     dump_subdir: Optional[str] = None,
+        negative_test: bool = False
 ) -> TestAction:
     """Create a TestAction that crawls and validates linked resources.
 
@@ -753,7 +758,7 @@ def crawl_links_action(
             )
         return True
 
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)
 
 
 def expect_status_action(
@@ -767,6 +772,7 @@ def expect_status_action(
     headers: Optional[Dict[str, str]] = None,
     body_bytes: Optional[bytes] = None,
     dump_subdir: Optional[str] = None,
+        negative_test: bool = False
 ) -> TestAction:
     """Create a TestAction that validates specific HTTP status codes.
 
@@ -812,12 +818,13 @@ def expect_status_action(
             )
         return True
 
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)
 
 
 def wait_http_ready_action(
     name: str, base_url: str, path: str, timeout_total: float
-) -> TestAction:
+,
+        negative_test: bool = False) -> TestAction:
     """Create a TestAction that waits for HTTP service readiness.
 
     This TestAction factory creates an action that polls an HTTP endpoint
@@ -858,4 +865,4 @@ def wait_http_ready_action(
             time.sleep(0.3)
         raise EthernetTestError(f"HTTP not ready at {path} (last={last})")
 
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)

@@ -287,7 +287,8 @@ def _parse_field_lines(stdout: str) -> List[Dict[str, Any]]:
 
 
 def read_PCAPFrames(
-    name: str, pcap_path: str, display_filter: Optional[str] = None
+    name: str, pcap_path: str, display_filter: Optional[str] = None,
+        negative_test: bool = False
 ) -> TestAction:
     """
     Read frames (optionally filtered) and return a list of dicts:
@@ -327,7 +328,7 @@ def read_PCAPFrames(
             )
         return frames
 
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)
 
 
 def analyze_PCAP(
@@ -342,6 +343,7 @@ def analyze_PCAP(
     payload_patterns: Optional[List[Dict[str, Any]]] = None,
     expect_mac: Optional[Dict[str, str]] = None,
     vlan_expect: Optional[Dict[str, Any]] = None,
+        negative_test: bool = False
 ) -> TestAction:
     """Analyze packets in a PCAP using a tshark display filter, then validate properties.
 
@@ -488,7 +490,7 @@ def analyze_PCAP(
         _log(f"[PCAP-CHECK] Filter '{display_filter}' passed on {len(frames)} frame(s) in {pcap_path}")
         return True
 
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)
 
 
 
@@ -500,6 +502,7 @@ def pcap_checkFrames(
     expect_count: Optional[int] = None,
     expected_frames: Optional[List[Dict[str, Any]]] = None,
     ordered: bool = True,
+        negative_test: bool = False
 ) -> TestAction:
     """
     Read frames (optionally filtered), return the parsed list, and validate against
@@ -584,4 +587,4 @@ def pcap_checkFrames(
         )
         return frames
 
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)

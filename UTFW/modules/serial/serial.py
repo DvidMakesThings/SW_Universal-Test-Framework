@@ -419,8 +419,8 @@ def wait_for_reboot(
         port: str,
         banner: str = "SYSTEM READY",
         baudrate: int = 115200,
-        timeout: float = 15.0
-        ) -> "TestAction":
+        timeout: float = 15.0,
+        negative_test: bool = False) -> TestAction:
     """Create a TestAction that waits for device reboot and ready banner.
     
     This TestAction factory creates an action that monitors a serial port
@@ -464,14 +464,14 @@ def wait_for_reboot(
             raise SerialTestError(f"Device did not become ready (banner='{banner}', timeout={timeout}s)")
         return True
 
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)
 
 
 def validate_all_channels_state(
         name: str,
         response: str,
-        expected: Union[bool, List[bool], Dict[int, bool]]
-        ) -> TestAction:
+        expected: Union[bool, List[bool], Dict[int, bool]],
+        negative_test: bool = False) -> TestAction:
     """Create a TestAction that validates channel states from GET_CH ALL response.
     
     This TestAction factory creates an action that parses a 'GET_CH ALL' response
@@ -546,7 +546,7 @@ def validate_all_channels_state(
 
         return True
 
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)
 
 
 def get_all_channels(
@@ -554,7 +554,8 @@ def get_all_channels(
         port: str,
         expected: Optional[Union[bool, List[bool], Dict[int, bool]]] = None,
         baudrate: int = 115200,
-        timeout: float = 2.0
+        timeout: float = 2.0,
+        negative_test: bool = False
         ) -> TestAction:
     """Create a TestAction that retrieves and optionally validates all channel states.
     
@@ -610,7 +611,7 @@ def get_all_channels(
             ).execute_func()
         return states
 
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)
 
 
 def send_command_uart(
@@ -619,7 +620,8 @@ def send_command_uart(
         command,   # str or list[str]
         baudrate: int = 115200,
         timeout: float = 2.0,
-        reboot: Optional[bool] = False
+        reboot: Optional[bool] = False,
+        negative_test: bool = False
         ):
     """Create TestAction(s) for sending command(s) via UART with response caching.
     
@@ -692,12 +694,12 @@ def send_command_uart(
         return execute
 
     if isinstance(command, str):
-        return TestAction(name, make_execute(command))
+        return TestAction(name, make_execute(command), negative_test=negative_test)
     elif isinstance(command, (list, tuple)):
         actions = []
         for idx, cmd in enumerate(command, start=1):
             actions.append(
-                TestAction(f"{name} [{idx}] {cmd}", make_execute(cmd))
+                TestAction(f"{name} [{idx}] {cmd}", make_execute(cmd), negative_test=negative_test)
             )
         return actions
     else:
@@ -708,7 +710,8 @@ def test_sysinfo_complete(
         name: str,
         port: str,
         validation: Dict[str, Any],
-        baudrate: int = 115200
+        baudrate: int = 115200,
+        negative_test: bool = False
         ) -> TestAction:
     """Create a TestAction that performs complete SYSINFO testing and validation.
     
@@ -750,14 +753,14 @@ def test_sysinfo_complete(
         sysinfo = parse_sysinfo_response(response)
         validate_sysinfo_data(sysinfo, validation)
         return sysinfo
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)
 
 
 def validate_single_token(
         name: str,
         response: str,
-        token: str
-        ) -> TestAction:
+        token: str,
+        negative_test: bool = False) -> TestAction:
     """Create a TestAction that validates the presence of a single token.
     
     This TestAction factory creates an action that checks if a specific
@@ -784,14 +787,14 @@ def validate_single_token(
         if token not in response:
             raise SerialTestError(f"Missing required token: {token}")
         return True
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)
 
 
 def validate_tokens(
         name: str,
         response: str,
-        tokens: List[str]
-        ) -> TestAction:
+        tokens: List[str],
+        negative_test: bool = False) -> TestAction:
     """Create a TestAction that validates the presence of multiple tokens.
     
     This TestAction factory creates an action that checks if all specified
@@ -823,7 +826,7 @@ def validate_tokens(
         if missing:
             raise SerialTestError(f"Missing required tokens: {', '.join(missing)}")
         return True
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)
 
 
 def set_network_parameter(
@@ -832,8 +835,8 @@ def set_network_parameter(
         param: str,
         value: str,
         baudrate: int = 115200,
-        reboot_timeout: float = 10.0
-        ) -> TestAction:
+        reboot_timeout: float = 10.0,
+        negative_test: bool = False) -> TestAction:
     """Create a TestAction that sets network parameters via UART with reboot handling.
     
     This TestAction factory creates an action that sends network configuration
@@ -914,7 +917,7 @@ def set_network_parameter(
 
         return True
 
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)
 
 
 def set_network_parameter_simple(
@@ -923,7 +926,8 @@ def set_network_parameter_simple(
         param: str,
         value: str,
         baudrate: int = 115200,
-        reboot_timeout: float = 10.0
+        reboot_timeout: float = 10.0,
+        negative_test: bool = False
         ) -> TestAction:
     """Create a TestAction for setting network parameters (backward compatibility).
     
@@ -951,7 +955,8 @@ def verify_network_change(
         port: str,
         param: str,
         expected_value: str,
-        baudrate: int = 115200
+        baudrate: int = 115200,
+        negative_test: bool = False
         ) -> TestAction:
     """Create a TestAction that verifies network parameter changes.
     
@@ -985,14 +990,14 @@ def verify_network_change(
         if expected_value not in response:
             raise SerialTestError(f"{param} verification failed: {expected_value} not found in NETINFO")
         return response
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)
 
 
 def factory_reset_complete(
         name: str,
         port: str,
-        baudrate: int = 115200
-        ) -> TestAction:
+        baudrate: int = 115200,
+        negative_test: bool = False) -> TestAction:
     """Create a TestAction that performs a complete factory reset sequence.
     
     This TestAction factory creates an action that sends an RFS (Reset Factory
@@ -1033,7 +1038,7 @@ def factory_reset_complete(
         response = send_command(port, "SYSINFO", baudrate)
         sysinfo = parse_sysinfo_response(response)
         return sysinfo
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)
 
 
 # ======================== EEPROM Dump Helpers ========================
@@ -1121,7 +1126,8 @@ def _read_until_markers(port: str,
 def send_eeprom_dump_command(
         name: str,
         port: str,
-        baudrate: int = 115200) -> TestAction:
+        baudrate: int = 115200,
+        negative_test: bool = False) -> TestAction:
     """Create a TestAction that captures a complete EEPROM dump with markers.
     
     This TestAction factory creates an action that sends a DUMP_EEPROM command
@@ -1156,10 +1162,11 @@ def send_eeprom_dump_command(
             overall_timeout=20.0,
             read_grace=1.0,
         )
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)
 
 
-def validate_eeprom_markers(name: str, response: str) -> TestAction:
+def validate_eeprom_markers(name: str, response: str,
+negative_test: bool = False) -> TestAction:
     """Create a TestAction that validates EEPROM dump markers are present.
     
     This TestAction factory creates an action that verifies both the
@@ -1186,10 +1193,11 @@ def validate_eeprom_markers(name: str, response: str) -> TestAction:
         if "EE_DUMP_START" not in response or "EE_DUMP_END" not in response:
             raise SerialTestError("EEPROM dump missing expected markers")
         return True
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)
 
 
-def analyze_eeprom_dump(name: str, port: str, baudrate: int, checks: str, reports_dir: Optional[str] = None) -> TestAction:
+def analyze_eeprom_dump(name: str, port: str, baudrate: int, checks: str, reports_dir: Optional[str] = None,
+negative_test: bool = False) -> TestAction:
     """Create a TestAction that performs comprehensive EEPROM dump analysis.
     
     This TestAction factory creates an action that captures an EEPROM dump,
@@ -1455,7 +1463,7 @@ def analyze_eeprom_dump(name: str, port: str, baudrate: int, checks: str, report
             "findings": findings,
         }
 
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)
 
 
 def load_eeprom_checks_from_json(json_path: str) -> list:

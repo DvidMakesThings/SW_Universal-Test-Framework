@@ -8,10 +8,57 @@ Author: DvidMakesThings
 
 import time
 import threading
+import hashlib
 from typing import Any, Dict, List, Callable, Optional
 from dataclasses import dataclass
 from pathlib import Path
 from .logger import get_active_logger
+
+# Global test session ID - unique per test execution
+_current_test_session_id: Optional[str] = None
+
+
+def generate_test_session_id(test_name: str) -> str:
+    """Generate a unique test session ID based on test name and timestamp.
+
+    Creates a hash-based ID that's unique for each test execution. This ID is used
+    to track which files belong to the current test run and need to be cleaned up.
+
+    Args:
+        test_name: Name of the test being executed
+
+    Returns:
+        Unique session ID string (8 character hex)
+    """
+    timestamp = str(time.time())
+    combined = f"{test_name}_{timestamp}"
+    hash_obj = hashlib.md5(combined.encode())
+    return hash_obj.hexdigest()[:8]
+
+
+def set_test_session_id(session_id: str) -> None:
+    """Set the current test session ID.
+
+    Args:
+        session_id: The session ID to set as current
+    """
+    global _current_test_session_id
+    _current_test_session_id = session_id
+
+
+def get_test_session_id() -> Optional[str]:
+    """Get the current test session ID.
+
+    Returns:
+        Current session ID or None if not set
+    """
+    return _current_test_session_id
+
+
+def clear_test_session_id() -> None:
+    """Clear the current test session ID."""
+    global _current_test_session_id
+    _current_test_session_id = None
 
 
 @dataclass
@@ -21,15 +68,16 @@ class TestStep:
     result: str
     duration: float
     error: Optional[str] = None
+    negative_test: bool = False
 
 
 class TestAction:
     """Represents an executable test action that can be used in test steps.
-    
+
     TestAction is the fundamental building block of the UTFW framework. It encapsulates
     a single test operation that can be executed as part of a test step. TestActions
     can be called directly, executed via the execute() method, or run via the run() method.
-    
+
     TestActions are designed to be composable and can be combined using STE (Sub-step
     Test Executor) to create complex test scenarios with multiple sub-steps.
 
@@ -44,7 +92,9 @@ class TestAction:
             operation. The function may accept *args and **kwargs and should return
             any relevant result data. The function should raise an exception if
             the test operation fails.
-    
+        negative_test (bool): If True, this test expects to fail. A failure will be
+            treated as success and reported as PASS. Defaults to False.
+
     Example:
         >>> def ping_device():
         ...     # Ping implementation
@@ -55,9 +105,10 @@ class TestAction:
         >>> result = action.execute()  # Alternative execution method
     """
 
-    def __init__(self, name: str, execute_func: Callable[..., Any]):
+    def __init__(self, name: str, execute_func: Callable[..., Any], negative_test: bool = False):
         self.name = name
         self.execute_func = execute_func
+        self.negative_test = negative_test
 
     def __call__(self, *args, **kwargs) -> Any:
         """Execute the action by calling the instance directly.
@@ -205,8 +256,12 @@ class TestFramework:
         self.test_steps: List[TestStep] = []
         self.overall_result = "UNKNOWN"
 
+        # Generate and set unique test session ID
+        self.session_id = generate_test_session_id(test_name)
+        set_test_session_id(self.session_id)
+
         from .reporting import TestReporter, set_active_reporter
-        self.reporter = TestReporter(test_name, reports_dir)
+        self.reporter = TestReporter(test_name, reports_dir, session_id=self.session_id)
         # Make reporter globally accessible so modules can log TX/RX
         set_active_reporter(self.reporter)
 
@@ -230,19 +285,44 @@ class TestFramework:
         step_id = f"{step_number}.{sub_step_number}" if sub_step_number else step_number
 
         action_name, execute_func = self._resolve_action(action)
-        self.reporter.log_step_start(step_id, action_name)
+        negative_test = getattr(action, 'negative_test', False)
+
+        self.reporter.log_step_start(step_id, action_name, negative_test=negative_test)
 
         start_time = time.time()
+        error_obj = None
+        result_str = "UNKNOWN"
+
         try:
             result = execute_func()
-            self.reporter.log_pass(f"{step_id} completed successfully")
+            if negative_test:
+                self.reporter.log_fail(f"{step_id} passed but expected to fail")
+                result_str = "FAIL"
+                raise Exception("Negative test passed when it should have failed")
+            else:
+                self.reporter.log_pass(f"{step_id} completed successfully")
+                result_str = "PASS"
             return result
         except Exception as e:
-            self.reporter.log_fail(f"{step_id} failed: {str(e)}")
-            raise
+            error_obj = e
+            if negative_test:
+                self.reporter.log_pass(f"{step_id} failed as expected: {str(e)}")
+                result_str = "PASS"
+                return None
+            else:
+                self.reporter.log_fail(f"{step_id} failed: {str(e)}")
+                result_str = "FAIL"
+                raise
         finally:
             duration = time.time() - start_time
-            self.test_steps.append(TestStep(step_id, action_name, "PASS" if 'result' in locals() else "FAIL", duration, str(e) if 'e' in locals() else None))
+            self.test_steps.append(TestStep(
+                step_id,
+                action_name,
+                result_str,
+                duration,
+                str(error_obj) if error_obj else None,
+                negative_test
+            ))
             self.reporter.log_step_end(step_id)
 
     def _execute_ste_group(self, ste_group: "STE", step_number: str) -> List[Any]:
@@ -361,29 +441,42 @@ class TestFramework:
         finally:
             from .reporting import set_active_reporter
             set_active_reporter(None)
+            # Clear the test session ID
+            clear_test_session_id()
 
 
 def run_test_with_teardown(test_class_instance, test_name: str, reports_dir: Optional[str] = None) -> int:
     """Universal test runner with automatic teardown and report generation.
-    
+
     This is the main entry point for running UTFW tests. It creates a TestFramework
     instance, executes the provided test class, generates reports, and ensures
     proper cleanup regardless of test outcome.
-    
+
     Args:
         test_class_instance: Test class instance with a setup() method that returns
             a list of TestActions and/or STE groups to execute.
         test_name (str): Logical name for the test suite used in reports.
-        reports_dir (Optional[str]): Base directory for reports. If None, uses
-            default location based on TestCases directory structure.
-    
+        reports_dir (Optional[str]): Base directory for reports. If None, checks
+            UTFW_REPORTS_DIR environment variable, otherwise uses default location
+            based on TestCases directory structure.
+
     Returns:
         int: Exit code (0 for PASS, 1 for FAIL) suitable for use with sys.exit().
-    
+
     Example:
         >>> exit_code = run_test_with_teardown(MyTest(), "Device Test")
         >>> sys.exit(exit_code)
     """
+    import os
+
+    # Check if running as part of a test suite (environment variable set by suite runner)
+    suite_reports_dir = os.environ.get('UTFW_REPORTS_DIR')
+    if suite_reports_dir:
+        # Running as part of test suite - use suite's reports directory
+        # Use test_name as subdirectory within suite reports directory
+        reports_dir = str(Path(suite_reports_dir) / f"report_{test_name}")
+    # Otherwise use the provided reports_dir (or None for default)
+
     framework = TestFramework(test_name, reports_dir)
     try:
         result = framework.run_test_class(test_class_instance)

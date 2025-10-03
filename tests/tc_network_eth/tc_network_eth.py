@@ -218,7 +218,7 @@ class tc_network_eth_test:
                     tolerate_disconnect=True
                 ),
                 UART.wait_for_reboot(
-                    name="Wait UART SYSTEM READY (new)",
+                    name="Wait UART SYSTEM READY",
                     port=hw.SERIAL_PORT,
                     baudrate=115200,
                     timeout=15.0

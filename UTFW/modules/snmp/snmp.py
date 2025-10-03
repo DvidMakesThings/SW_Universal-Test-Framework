@@ -165,7 +165,8 @@ def set_integer(ip: str, oid: str, value: int, community: str = "public", timeou
 
 
 def set_outlet(name: str, ip: str, channel: int, state: bool,
-               outlet_base_oid: str, community: str = "public") -> TestAction:
+               outlet_base_oid: str, community: str = "public",
+        negative_test: bool = False) -> TestAction:
     """Create a TestAction that controls a single outlet via SNMP.
     
     This TestAction factory creates an action that sets the state of a single
@@ -202,11 +203,12 @@ def set_outlet(name: str, ip: str, channel: int, state: bool,
         if not set_integer(ip, oid, set_value, community):
             raise SNMPTestError(f"Failed to set channel {channel} to {'ON' if state else 'OFF'}")
         return True
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)
 
 
 def get_outlet(name: str, ip: str, channel: int, expected_state: bool,
-               outlet_base_oid: str, community: str = "public") -> TestAction:
+               outlet_base_oid: str, community: str = "public",
+        negative_test: bool = False) -> TestAction:
     """Create a TestAction that verifies a single outlet state via SNMP.
     
     This TestAction factory creates an action that retrieves the current state
@@ -254,11 +256,12 @@ def get_outlet(name: str, ip: str, channel: int, expected_state: bool,
                 f"got {'ON' if current_state else 'OFF'}"
             )
         return True
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)
 
 
 def set_all_outlets(name: str, ip: str, state: bool, all_on_oid: str, all_off_oid: str,
-                    community: str = "public") -> TestAction:
+                    community: str = "public",
+        negative_test: bool = False) -> TestAction:
     """Create a TestAction that controls all outlets simultaneously via SNMP.
     
     This TestAction factory creates an action that uses special "all outlets"
@@ -293,11 +296,12 @@ def set_all_outlets(name: str, ip: str, state: bool, all_on_oid: str, all_off_oi
         if not set_integer(ip, trigger_oid, 1, community):
             raise SNMPTestError(f"Failed to set ALL outlets {'ON' if state else 'OFF'}")
         return True
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)
 
 
 def verify_all_outlets(name: str, ip: str, expected_state: bool, outlet_base_oid: str,
-                       community: str = "public") -> TestAction:
+                       community: str = "public",
+        negative_test: bool = False) -> TestAction:
     """Create a TestAction that verifies all outlets are in the expected state.
     
     This TestAction factory creates an action that checks each outlet channel
@@ -345,7 +349,7 @@ def verify_all_outlets(name: str, ip: str, expected_state: bool, outlet_base_oid
                 f"ALL {'ON' if expected_state else 'OFF'} verification failed for: {', '.join(failed_channels)}"
             )
         return True
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)
 
 
 def test_single_outlet(channel: int, state: bool, ip: str, outlet_base_oid: str, community: str = "public") -> bool:
@@ -455,7 +459,8 @@ def cycle_outlets_all_channels(name: str,
                                outlet_base_oid: str,
                                community: str = "public",
                                channels: Union[List[int], range] = range(1, 9),
-                               settle_s: float = 0.2) -> TestAction:
+                               settle_s: float = 0.2,
+        negative_test: bool = False) -> TestAction:
     """Create a TestAction that cycles each outlet through ON/OFF states.
     
     This TestAction factory creates an action that systematically cycles each
@@ -516,14 +521,15 @@ def cycle_outlets_all_channels(name: str,
         if failures:
             raise SNMPTestError("Outlet cycle failures: " + "; ".join(failures))
         return True
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)
 
 
 def walk_enterprise(name: str,
                     ip: str,
                     community: str = "public",
                     root_oid: str = "1.3.6.1.4.1.19865",
-                    timeout: float = 25.0) -> TestAction:
+                    timeout: float = 25.0,
+        negative_test: bool = False) -> TestAction:
     """Create a TestAction that performs an SNMP walk of an enterprise MIB subtree.
     
     This TestAction factory creates an action that performs an SNMP walk
@@ -582,7 +588,7 @@ def walk_enterprise(name: str,
             if get_value(ip, oid, community) is None:
                 raise SNMPTestError(f"SNMP GET probe failed for {oid}")
         return True
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)
 
 
 def expect_oid_regex(name: str,
@@ -590,7 +596,8 @@ def expect_oid_regex(name: str,
                      oid: str,
                      regex: str,
                      community: str = "public",
-                     timeout: float = 3.0) -> TestAction:
+                     timeout: float = 3.0,
+        negative_test: bool = False) -> TestAction:
     """Create a TestAction that validates an OID value against a regex pattern.
     
     This TestAction factory creates an action that retrieves an SNMP value
@@ -627,7 +634,7 @@ def expect_oid_regex(name: str,
         if re.search(regex, str(val)) is None:
             raise SNMPTestError(f"Value '{val}' for {oid} does not match /{regex}/")
         return True
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)
 
 
 def expect_oid_equals(name: str,
@@ -636,7 +643,8 @@ def expect_oid_equals(name: str,
                       expected: str,
                       community: str = "public",
                       timeout: float = 3.0,
-                      strip_quotes: bool = True) -> TestAction:
+                      strip_quotes: bool = True,
+        negative_test: bool = False) -> TestAction:
     """Create a TestAction that validates an OID value for exact equality.
     
     This TestAction factory creates an action that retrieves an SNMP value
@@ -677,14 +685,15 @@ def expect_oid_equals(name: str,
         if s != expected:
             raise SNMPTestError(f"Value mismatch for {oid}: expected '{expected}', got '{s}'")
         return True
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)
 
 
 def expect_oid_error(name: str,
                      ip: str,
                      oid: str,
                      community: str = "public",
-                     timeout: float = 3.0) -> TestAction:
+                     timeout: float = 3.0,
+        negative_test: bool = False) -> TestAction:
     """Create a TestAction that validates an OID read fails as expected.
     
     This TestAction factory creates an action that attempts to read an SNMP
@@ -730,4 +739,4 @@ def expect_oid_error(name: str,
         if val is None:
             return True
         raise SNMPTestError(f"SNMP GET unexpectedly returned '{val}' for {oid}")
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)

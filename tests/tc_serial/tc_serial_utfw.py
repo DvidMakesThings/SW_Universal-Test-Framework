@@ -240,7 +240,7 @@ class tc_serial_test:
                 name="Create EEPROM dump and analyze EEPROM content",
                 port=hw.SERIAL_PORT,
                 baudrate=hw.BAUDRATE,
-                checks="eeprom_checks.json",
+                checks="../eeprom_checks.json",
                 reports_dir=Path("report_tc_serial_utfw")
             )
         ]

@@ -21,9 +21,23 @@ from .logger import (
     get_active_logger,
     create_logger,
 )
-from .core import TestFramework, TestStep, TestAction, STE, PTE, run_test_with_teardown
+from .core import (
+    TestFramework,
+    TestStep,
+    TestAction,
+    STE,
+    PTE,
+    run_test_with_teardown,
+    get_test_session_id,
+    set_test_session_id,
+    clear_test_session_id,
+    generate_test_session_id,
+)
 from .substep import SubStepExecutor
 from .parallelstep import ParallelStepExecutor, startFirstWith
+
+# Aliases for convenience
+PSE = PTE  # Parallel Step Executor alias
 from .reporting import TestReporter, set_active_reporter, get_active_reporter
 from .validation import *
 from .utilities import *
@@ -42,7 +56,12 @@ __all__ = [
     "TestAction",
     "STE",
     "PTE",
+    "PSE",  # Alias for PTE
     "run_test_with_teardown",
+    "get_test_session_id",
+    "set_test_session_id",
+    "clear_test_session_id",
+    "generate_test_session_id",
     # Sub-step execution
     "SubStepExecutor",
     "ParallelStepExecutor",

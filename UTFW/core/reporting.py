@@ -94,8 +94,10 @@ class TestReporter:
         tx_preview_max: int = 1024,
         hex_dump: bool = True,
         hex_width: int = 16,
+        session_id: Optional[str] = None,
     ):
         self.test_name = test_name
+        self.session_id = session_id
 
         base_reports = Path(reports_dir) if reports_dir else (_find_testcases_root() / "Reports")
         self.reports_dir = base_reports
@@ -169,21 +171,42 @@ class TestReporter:
 
     # ------------------------ test lifecycle ------------------------
 
+    def _cleanup_old_pcap_files(self) -> None:
+        """Delete all PCAP files in the reports directory from previous test runs."""
+        import glob
+        pcap_pattern = str(self.reports_dir / "*.pcap")
+        for pcap_file in glob.glob(pcap_pattern):
+            try:
+                import os
+                os.remove(pcap_file)
+                self._ulog.info(f"Cleaned up old PCAP file: {pcap_file}")
+            except Exception as e:
+                self._ulog.warn(f"Failed to clean up PCAP file {pcap_file}: {e}")
+
     def log_test_start(self, test_name: str) -> None:
         """Mark test suite start in the log."""
         self.test_start_time = _now_ts()
         # Preserve exact header format used across the framework:
         self._ulog._write_line(f"===== {test_name}: START =====")
+        # Log the session ID for traceability
+        if self.session_id:
+            self._ulog.info(f"Test Session ID: {self.session_id}")
+
+        # Clean up old PCAP files from previous test runs
+        self._cleanup_old_pcap_files()
 
     def log_test_end(self, test_name: str, result: str) -> None:
         """Mark test suite end in the log."""
         self.test_end_time = _now_ts()
         self._ulog._write_line(f"===== {test_name}: RESULT: {result} =====")
 
-    def log_step_start(self, step_id: str, description: str) -> None:
+    def log_step_start(self, step_id: str, description: str, negative_test: bool = False) -> None:
         """Log test step start line."""
         # Use the universal logger's standardized step format
-        self._ulog.step_start(step_id, description)
+        if negative_test:
+            self._ulog.step_start(step_id, f"[NEGATIVE TEST] {description}")
+        else:
+            self._ulog.step_start(step_id, description)
 
     def log_step_end(self, step_id: str) -> None:
         """Optional step end marker (not timed)."""
@@ -286,6 +309,10 @@ class TestReporter:
         try:
             if REPORT_HELPER:
                 model = REPORT_HELPER.parse_log(self.log_file)
+                # Add session ID to the model
+                if self.session_id:
+                    model.session_id = self.session_id
+                # Pass negative test info to report generator
                 html_path = self.reports_dir / f"{self.test_name}_report.html"
                 REPORT_HELPER.render_html(model, html_path)
                 reports["html"] = html_path

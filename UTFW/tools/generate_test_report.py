@@ -74,15 +74,26 @@ class TestStep:
     finished_at: Optional[str] = None
     lines: List[LogEvent] = field(default_factory=list)
     status: str = "UNKNOWN"  # PASS/FAIL/UNKNOWN
+    is_negative_test: bool = False
 
     def close_with_status(self):
         # Determine status from contained events
-        st = "PASS"
+        has_fail = False
+        has_pass = False
+
         for ev in self.lines:
             if ev.tag == "FAIL":
-                st = "FAIL"
-                break
-        self.status = st
+                has_fail = True
+            elif ev.tag == "PASS":
+                has_pass = True
+
+        # Priority: FAIL > PASS
+        if has_fail:
+            self.status = "FAIL"
+        elif has_pass:
+            self.status = "PASS"
+        else:
+            self.status = "UNKNOWN"
 
 
 @dataclass
@@ -94,6 +105,7 @@ class ReportModel:
     other_events: List[LogEvent] = field(default_factory=list)
     overall: str = "UNKNOWN"
     meta: Dict[str, Any] = field(default_factory=dict)
+    session_id: Optional[str] = None
 
 
 # ---------------------------------- Parsing ------------------------------------
@@ -377,15 +389,17 @@ def render_html(model: "ReportModel", out_html: Path) -> None:
 
     # Compute grouped status
     def _combine_status(vals: List[str]) -> str:
-        out = "UNKNOWN"
-        seen_pass = False
         for v in vals:
             v = (v or "UNKNOWN").upper()
             if v == "FAIL":
                 return "FAIL"
+
+        for v in vals:
+            v = (v or "UNKNOWN").upper()
             if v == "PASS":
-                seen_pass = True
-        return "PASS" if seen_pass else out
+                return "PASS"
+
+        return "UNKNOWN"
 
     for base in groups_order:
         g = groups[base]
@@ -463,22 +477,27 @@ def render_html(model: "ReportModel", out_html: Path) -> None:
         html_lines.append(f"Started: {html.escape(model.started_at)} &nbsp;")
     if model.finished_at:
         html_lines.append(f"Finished: {html.escape(model.finished_at)} &nbsp;")
+    if model.session_id:
+        html_lines.append(f"Session ID: {html.escape(model.session_id)} &nbsp;")
     html_lines.append("</div>")
     html_lines.append("</header>")
 
     # Summary chips (based on groups)
     html_lines.append("<main>")
     html_lines.append("<section class='summary'>")
-    html_lines.append(f"<div class='chip pass'>Passed steps: {passed}</div>")
-    html_lines.append(f"<div class='chip fail'>Failed steps: {failed}</div>")
-    html_lines.append(f"<div class='chip unknown'>Unknown steps: {unknown}</div>")
-    html_lines.append(f"<div class='chip'>Total steps: {total}</div>")
+    html_lines.append(f"<div class='chip pass'>Passed: {passed}</div>")
+    html_lines.append(f"<div class='chip fail'>Failed: {failed}</div>")
+    html_lines.append(f"<div class='chip unknown'>Unknown: {unknown}</div>")
+    html_lines.append(f"<div class='chip'>Total: {total}</div>")
     html_lines.append("</section>")
 
     # Meta
     html_lines.append("<section>")
     html_lines.append("<h3>Environment</h3>")
     html_lines.append("<div class='kv'>")
+    # Add session ID first if available
+    if model.session_id:
+        html_lines.append(f"<div>Test Session ID</div><div><code>{html.escape(model.session_id)}</code></div>")
     for k in ["hostname", "os", "python", "generated_at", "log_file"]:
         if k in model.meta:
             html_lines.append(f"<div>{html.escape(k.capitalize())}</div><div>{html.escape(str(model.meta[k]))}</div>")
@@ -637,9 +656,12 @@ def render_html(model: "ReportModel", out_html: Path) -> None:
 def render_junit_xml(model: ReportModel, out_xml: Path) -> None:
     """
     Write a minimal JUnit XML so CI systems can ingest the step results.
+
+    Negative tests:
     """
     total = len(model.steps)
     failures = sum(1 for s in model.steps if s.status == "FAIL")
+    skipped = 0
     time_placeholder = "0.0"
 
     # Escape for XML
@@ -652,19 +674,25 @@ def render_junit_xml(model: ReportModel, out_xml: Path) -> None:
 
     lines = []
     lines.append('<?xml version="1.0" encoding="UTF-8"?>')
-    lines.append(f'<testsuite name="ENERGIS Functional Test " tests="{total}" failures="{failures}" time="{time_placeholder}">')
+
+    # Build testsuite element with optional session_id property
+    testsuite_attrs = f'name="ENERGIS Functional Test" tests="{total}" failures="{failures}" skipped="{skipped}" time="{time_placeholder}"'
+    if model.session_id:
+        testsuite_attrs += f' session_id="{x(model.session_id)}"'
+    lines.append(f'<testsuite {testsuite_attrs}>')
 
     for idx, s in enumerate(model.steps, 1):
         case_name = s.name or f"Step {idx}"
         lines.append(f'  <testcase classname="UTFW" name="{x(case_name)}" time="{time_placeholder}">')
+
         if s.status == "FAIL":
-            # Include last FAIL line or a generic message
             msg = "Step failed"
             for ev in reversed(s.lines):
                 if ev.tag == "FAIL":
                     msg = ev.text or ev.raw
                     break
             lines.append(f'    <failure message="{x(msg)}"/>')
+
         lines.append('  </testcase>')
 
     lines.append("</testsuite>")

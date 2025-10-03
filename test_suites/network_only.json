@@ -1,0 +1,30 @@
+{
+  "name": "Network Tests Only",
+  "description": "Test suite focused on network functionality",
+  "tests": [
+    {
+      "name": "Ethernet Basic Test",
+      "path": "tests/tc_network_eth/tc_network_eth.py",
+      "enabled": true,
+      "timeout": 300
+    },
+    {
+      "name": "HTTP Network Test",
+      "path": "tests/tc_network_http/tc_network_http.py",
+      "enabled": true,
+      "timeout": 300
+    },
+    {
+      "name": "SNMP Test",
+      "path": "tests/tc_network_snmp/tc_network_snmp.py",
+      "enabled": true,
+      "timeout": 300
+    },
+    {
+      "name": "Network PCAP Test",
+      "path": "tests/tc_network_pcap/tc_network_pcap.py",
+      "enabled": true,
+      "timeout": 300
+    }
+  ]
+}

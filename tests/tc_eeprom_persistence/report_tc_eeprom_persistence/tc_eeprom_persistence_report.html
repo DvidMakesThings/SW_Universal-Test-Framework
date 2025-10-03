@@ -1,6 +1,6 @@
 <!DOCTYPE html><html><head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'>
-<title>ENERGIS Test Report - FAIL</title>
+<title>ENERGIS Test Report - PASS</title>
 <style>
     body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;background:#0f1216;color:#e7eaf0;margin:0}
     header{padding:20px;background:#151a21;border-bottom:1px solid #2a2f37}
@@ -37,16 +37,16 @@
 <header>
 <h1>ENERGIS Test Report</h1>
 <div class='meta'>
-Overall: <b class='chip fail'>FAIL</b> &nbsp;
-Started: 2025-10-03 13:43:57 &nbsp;
+Overall: <b class='chip pass'>PASS</b> &nbsp;
+Started: 2025-10-03 15:07:55 &nbsp;
 </div>
 </header>
 <main>
 <section class='summary'>
-<div class='chip pass'>Passed steps: 1</div>
-<div class='chip fail'>Failed steps: 1</div>
-<div class='chip unknown'>Unknown steps: 0</div>
-<div class='chip'>Total steps: 2</div>
+<div class='chip pass'>Passed: 8</div>
+<div class='chip fail'>Failed: 0</div>
+<div class='chip unknown'>Unknown: 0</div>
+<div class='chip'>Total: 8</div>
 </section>
 <section>
 <h3>Environment</h3>
@@ -54,7 +54,7 @@ Started: 2025-10-03 13:43:57 &nbsp;
 <div>Hostname</div><div>DPC</div>
 <div>Os</div><div>Windows 11 (10.0.26100)</div>
 <div>Python</div><div>3.13.7 (tags/v3.13.7:bcee1c3, Aug 14 2025, 14:15:11) [MSC v.1944 64 bit (AMD64)]</div>
-<div>Generated_at</div><div>2025-10-03 13:44:20</div>
+<div>Generated_at</div><div>2025-10-03 15:09:24</div>
 <div>Log_file</div><div>report_tc_eeprom_persistence\tc_eeprom_persistence_results.log</div>
 </div>
 </section>
@@ -67,7 +67,7 @@ Started: 2025-10-03 13:43:57 &nbsp;
 <div class='content'>
 <table>
 <tr><th>Started</th><th>Finished</th></tr>
-<tr><td>2025-10-03 13:43:57</td><td>2025-10-03 13:44:08</td></tr>
+<tr><td>2025-10-03 15:07:55</td><td>2025-10-03 15:08:05</td></tr>
 </table>
 <div class='substeps'>
 <h4>Substeps</h4>
@@ -78,16 +78,16 @@ Started: 2025-10-03 13:43:57 &nbsp;
 <div class='content'>
 <table>
 <tr><th>Started</th><th>Finished</th></tr>
-<tr><td>2025-10-03 13:43:57</td><td>2025-10-03 13:44:06</td></tr>
+<tr><td>2025-10-03 15:07:55</td><td>2025-10-03 15:08:03</td></tr>
 </table>
 <h4>Log</h4>
 <pre>
-[2025-10-03 13:43:57] [STEP 1.1] Set custom network config
-[2025-10-03 13:43:58] [INFO] [SERIAL] Opened port=COM11 baud=115200
-[2025-10-03 13:43:58] [INFO] [SERIAL TX] CONFIG_NETWORK 192.168.1.100$255.255.255.0$192.168.1.1$1.1.1.1
-[2025-10-03 13:43:58] [INFO] [SERIAL] Closed port COM11
-[2025-10-03 13:44:06] [INFO] [SERIAL RX] reconnect bytes=1076
-[2025-10-03 13:44:06] [INFO] [INFO] Core 0 initializing...\r\n
+[2025-10-03 15:07:55] [STEP 1.1] Set custom network config
+[2025-10-03 15:07:55] [INFO] [SERIAL] Opened port=COM11 baud=115200
+[2025-10-03 15:07:55] [INFO] [SERIAL TX] CONFIG_NETWORK 192.168.0.12$255.255.255.0$192.168.1.1$1.1.1.1
+[2025-10-03 15:07:55] [INFO] [SERIAL] Closed port COM11
+[2025-10-03 15:08:03] [INFO] [SERIAL RX] reconnect bytes=1075
+[2025-10-03 15:08:03] [INFO] [INFO] Core 0 initializing...\r\n
 	[ECHO] Device Serial : SN-369366060325\r\n
 	[ECHO] Firmware Ver  : 1.0.0\r\n
 	[ECHO] Core voltage  : 1.15 V (vsel = 1)\r\n
@@ -110,7 +110,7 @@ VREG register: 0x000010D1\r\n
 	[ECHO] =============================================\r\n
 	[ECHO]  W5500 network configuration : static\r\n
 	[ECHO]  MAC         : 00:08:DC:BE:EF:91\r\n
-	[ECHO]  IP          : 192.168.1.100\r\n
+	[ECHO]  IP          : 192.168.0.12\r\n
 	[ECHO]  Subnet Mask : 255.255.255.0\r\n
 	[ECHO]  Gateway     : 192.168.1.1\r\n
 	[ECHO]  DNS         : 1.1.1.1\r\n
@@ -119,8 +119,8 @@ VREG register: 0x000010D1\r\n
 SYSTEM READY\r\n
 [INFO] - SNMP : Start SNMP Agent Daemon\r\n
 
-[2025-10-03 13:44:06] [INFO] [SERIAL] Closed port=COM11
-[2025-10-03 13:44:06] [PASS] STEP 1.1 completed successfully
+[2025-10-03 15:08:03] [INFO] [SERIAL] Closed port=COM11
+[2025-10-03 15:08:03] [PASS] STEP 1.1 completed successfully
 </pre>
 </div>
 </details>
@@ -131,16 +131,16 @@ SYSTEM READY\r\n
 <div class='content'>
 <table>
 <tr><th>Started</th><th>Finished</th></tr>
-<tr><td>2025-10-03 13:44:06</td><td>2025-10-03 13:44:07</td></tr>
+<tr><td>2025-10-03 15:08:03</td><td>2025-10-03 15:08:04</td></tr>
 </table>
 <h4>Log</h4>
 <pre>
-[2025-10-03 13:44:06] [STEP 1.2] Verify custom IP
-[2025-10-03 13:44:06] [INFO] [SERIAL] Opened port=COM11 baud=115200
-[2025-10-03 13:44:06] [INFO] [SERIAL TX] NETINFO
-[2025-10-03 13:44:07] [INFO] [SERIAL RX] 408 bytes
-[2025-10-03 13:44:07] [INFO] [SERIAL] Closed port COM11
-[2025-10-03 13:44:07] [PASS] STEP 1.2 completed successfully
+[2025-10-03 15:08:03] [STEP 1.2] Verify custom IP
+[2025-10-03 15:08:03] [INFO] [SERIAL] Opened port=COM11 baud=115200
+[2025-10-03 15:08:03] [INFO] [SERIAL TX] NETINFO
+[2025-10-03 15:08:04] [INFO] [SERIAL RX] 500 bytes
+[2025-10-03 15:08:04] [INFO] [SERIAL] Closed port COM11
+[2025-10-03 15:08:04] [PASS] STEP 1.2 completed successfully
 </pre>
 </div>
 </details>
@@ -151,30 +151,30 @@ SYSTEM READY\r\n
 <div class='content'>
 <table>
 <tr><th>Started</th><th>Finished</th></tr>
-<tr><td>2025-10-03 13:44:07</td><td>2025-10-03 13:44:08</td></tr>
+<tr><td>2025-10-03 15:08:04</td><td>2025-10-03 15:08:05</td></tr>
 </table>
 <h4>Log</h4>
 <pre>
-[2025-10-03 13:44:07] [STEP 1.3] Verify custom Gateway
-[2025-10-03 13:44:07] [INFO] [SERIAL] Opened port=COM11 baud=115200
-[2025-10-03 13:44:07] [INFO] [SERIAL TX] NETINFO
-[2025-10-03 13:44:08] [INFO] [SERIAL RX] 501 bytes
-[2025-10-03 13:44:08] [INFO] [SERIAL] Closed port COM11
-[2025-10-03 13:44:08] [PASS] STEP 1.3 completed successfully
+[2025-10-03 15:08:04] [STEP 1.3] Verify custom Gateway
+[2025-10-03 15:08:04] [INFO] [SERIAL] Opened port=COM11 baud=115200
+[2025-10-03 15:08:04] [INFO] [SERIAL TX] NETINFO
+[2025-10-03 15:08:05] [INFO] [SERIAL RX] 407 bytes
+[2025-10-03 15:08:05] [INFO] [SERIAL] Closed port COM11
+[2025-10-03 15:08:05] [PASS] STEP 1.3 completed successfully
 </pre>
 </div>
 </details>
 </div>
 </div>
 </details>
-<details open>
+<details>
 <summary>
-<div class='step-title'><div>STEP 2 Set alternating channel states (odd ON, even OFF)</div><div class='status fail'>FAIL</div></div>
+<div class='step-title'><div>STEP 2 Set alternating channel states (odd ON, even OFF)</div><div class='status pass'>PASS</div></div>
 </summary>
 <div class='content'>
 <table>
 <tr><th>Started</th><th>Finished</th></tr>
-<tr><td>2025-10-03 13:44:08</td><td>2025-10-03 13:44:19</td></tr>
+<tr><td>2025-10-03 15:08:05</td><td>2025-10-03 15:08:13</td></tr>
 </table>
 <div class='substeps'>
 <h4>Substeps</h4>
@@ -185,16 +185,16 @@ SYSTEM READY\r\n
 <div class='content'>
 <table>
 <tr><th>Started</th><th>Finished</th></tr>
-<tr><td>2025-10-03 13:44:08</td><td>2025-10-03 13:44:09</td></tr>
+<tr><td>2025-10-03 15:08:05</td><td>2025-10-03 15:08:06</td></tr>
 </table>
 <h4>Log</h4>
 <pre>
-[2025-10-03 13:44:08] [STEP 2.1] Set CH1 to ON
-[2025-10-03 13:44:08] [INFO] [SERIAL] Opened port=COM11 baud=115200
-[2025-10-03 13:44:08] [INFO] [SERIAL TX] SET_CH 1 ON
-[2025-10-03 13:44:09] [INFO] [SERIAL RX] 141 bytes
-[2025-10-03 13:44:09] [INFO] [SERIAL] Closed port COM11
-[2025-10-03 13:44:09] [PASS] STEP 2.1 completed successfully
+[2025-10-03 15:08:05] [STEP 2.1] Set CH1 to ON
+[2025-10-03 15:08:05] [INFO] [SERIAL] Opened port=COM11 baud=115200
+[2025-10-03 15:08:05] [INFO] [SERIAL TX] SET_CH 1 ON
+[2025-10-03 15:08:06] [INFO] [SERIAL RX] 141 bytes
+[2025-10-03 15:08:06] [INFO] [SERIAL] Closed port COM11
+[2025-10-03 15:08:06] [PASS] STEP 2.1 completed successfully
 </pre>
 </div>
 </details>
@@ -205,16 +205,16 @@ SYSTEM READY\r\n
 <div class='content'>
 <table>
 <tr><th>Started</th><th>Finished</th></tr>
-<tr><td>2025-10-03 13:44:09</td><td>2025-10-03 13:44:10</td></tr>
+<tr><td>2025-10-03 15:08:06</td><td>2025-10-03 15:08:07</td></tr>
 </table>
 <h4>Log</h4>
 <pre>
-[2025-10-03 13:44:09] [STEP 2.2] Set CH2 to OFF
-[2025-10-03 13:44:09] [INFO] [SERIAL] Opened port=COM11 baud=115200
-[2025-10-03 13:44:09] [INFO] [SERIAL TX] SET_CH 2 OFF
-[2025-10-03 13:44:10] [INFO] [SERIAL RX] 81 bytes
-[2025-10-03 13:44:10] [INFO] [SERIAL] Closed port COM11
-[2025-10-03 13:44:10] [PASS] STEP 2.2 completed successfully
+[2025-10-03 15:08:06] [STEP 2.2] Set CH2 to OFF
+[2025-10-03 15:08:06] [INFO] [SERIAL] Opened port=COM11 baud=115200
+[2025-10-03 15:08:06] [INFO] [SERIAL TX] SET_CH 2 OFF
+[2025-10-03 15:08:07] [INFO] [SERIAL RX] 81 bytes
+[2025-10-03 15:08:07] [INFO] [SERIAL] Closed port COM11
+[2025-10-03 15:08:07] [PASS] STEP 2.2 completed successfully
 </pre>
 </div>
 </details>
@@ -225,16 +225,16 @@ SYSTEM READY\r\n
 <div class='content'>
 <table>
 <tr><th>Started</th><th>Finished</th></tr>
-<tr><td>2025-10-03 13:44:10</td><td>2025-10-03 13:44:11</td></tr>
+<tr><td>2025-10-03 15:08:07</td><td>2025-10-03 15:08:08</td></tr>
 </table>
 <h4>Log</h4>
 <pre>
-[2025-10-03 13:44:10] [STEP 2.3] Set CH3 to ON
-[2025-10-03 13:44:10] [INFO] [SERIAL] Opened port=COM11 baud=115200
-[2025-10-03 13:44:10] [INFO] [SERIAL TX] SET_CH 3 ON
-[2025-10-03 13:44:11] [INFO] [SERIAL RX] 141 bytes
-[2025-10-03 13:44:11] [INFO] [SERIAL] Closed port COM11
-[2025-10-03 13:44:11] [PASS] STEP 2.3 completed successfully
+[2025-10-03 15:08:07] [STEP 2.3] Set CH3 to ON
+[2025-10-03 15:08:07] [INFO] [SERIAL] Opened port=COM11 baud=115200
+[2025-10-03 15:08:07] [INFO] [SERIAL TX] SET_CH 3 ON
+[2025-10-03 15:08:08] [INFO] [SERIAL RX] 141 bytes
+[2025-10-03 15:08:08] [INFO] [SERIAL] Closed port COM11
+[2025-10-03 15:08:08] [PASS] STEP 2.3 completed successfully
 </pre>
 </div>
 </details>
@@ -245,16 +245,16 @@ SYSTEM READY\r\n
 <div class='content'>
 <table>
 <tr><th>Started</th><th>Finished</th></tr>
-<tr><td>2025-10-03 13:44:11</td><td>2025-10-03 13:44:12</td></tr>
+<tr><td>2025-10-03 15:08:08</td><td>2025-10-03 15:08:09</td></tr>
 </table>
 <h4>Log</h4>
 <pre>
-[2025-10-03 13:44:11] [STEP 2.4] Set CH4 to OFF
-[2025-10-03 13:44:11] [INFO] [SERIAL] Opened port=COM11 baud=115200
-[2025-10-03 13:44:11] [INFO] [SERIAL TX] SET_CH 4 OFF
-[2025-10-03 13:44:12] [INFO] [SERIAL RX] 81 bytes
-[2025-10-03 13:44:12] [INFO] [SERIAL] Closed port COM11
-[2025-10-03 13:44:12] [PASS] STEP 2.4 completed successfully
+[2025-10-03 15:08:08] [STEP 2.4] Set CH4 to OFF
+[2025-10-03 15:08:08] [INFO] [SERIAL] Opened port=COM11 baud=115200
+[2025-10-03 15:08:08] [INFO] [SERIAL TX] SET_CH 4 OFF
+[2025-10-03 15:08:09] [INFO] [SERIAL RX] 81 bytes
+[2025-10-03 15:08:09] [INFO] [SERIAL] Closed port COM11
+[2025-10-03 15:08:09] [PASS] STEP 2.4 completed successfully
 </pre>
 </div>
 </details>
@@ -265,16 +265,16 @@ SYSTEM READY\r\n
 <div class='content'>
 <table>
 <tr><th>Started</th><th>Finished</th></tr>
-<tr><td>2025-10-03 13:44:12</td><td>2025-10-03 13:44:13</td></tr>
+<tr><td>2025-10-03 15:08:09</td><td>2025-10-03 15:08:10</td></tr>
 </table>
 <h4>Log</h4>
 <pre>
-[2025-10-03 13:44:12] [STEP 2.5] Set CH5 to ON
-[2025-10-03 13:44:12] [INFO] [SERIAL] Opened port=COM11 baud=115200
-[2025-10-03 13:44:12] [INFO] [SERIAL TX] SET_CH 5 ON
-[2025-10-03 13:44:13] [INFO] [SERIAL RX] 141 bytes
-[2025-10-03 13:44:13] [INFO] [SERIAL] Closed port COM11
-[2025-10-03 13:44:13] [PASS] STEP 2.5 completed successfully
+[2025-10-03 15:08:09] [STEP 2.5] Set CH5 to ON
+[2025-10-03 15:08:09] [INFO] [SERIAL] Opened port=COM11 baud=115200
+[2025-10-03 15:08:09] [INFO] [SERIAL TX] SET_CH 5 ON
+[2025-10-03 15:08:10] [INFO] [SERIAL RX] 141 bytes
+[2025-10-03 15:08:10] [INFO] [SERIAL] Closed port COM11
+[2025-10-03 15:08:10] [PASS] STEP 2.5 completed successfully
 </pre>
 </div>
 </details>
@@ -285,16 +285,16 @@ SYSTEM READY\r\n
 <div class='content'>
 <table>
 <tr><th>Started</th><th>Finished</th></tr>
-<tr><td>2025-10-03 13:44:13</td><td>2025-10-03 13:44:14</td></tr>
+<tr><td>2025-10-03 15:08:10</td><td>2025-10-03 15:08:11</td></tr>
 </table>
 <h4>Log</h4>
 <pre>
-[2025-10-03 13:44:13] [STEP 2.6] Set CH6 to OFF
-[2025-10-03 13:44:13] [INFO] [SERIAL] Opened port=COM11 baud=115200
-[2025-10-03 13:44:13] [INFO] [SERIAL TX] SET_CH 6 OFF
-[2025-10-03 13:44:14] [INFO] [SERIAL RX] 81 bytes
-[2025-10-03 13:44:14] [INFO] [SERIAL] Closed port COM11
-[2025-10-03 13:44:14] [PASS] STEP 2.6 completed successfully
+[2025-10-03 15:08:10] [STEP 2.6] Set CH6 to OFF
+[2025-10-03 15:08:10] [INFO] [SERIAL] Opened port=COM11 baud=115200
+[2025-10-03 15:08:10] [INFO] [SERIAL TX] SET_CH 6 OFF
+[2025-10-03 15:08:11] [INFO] [SERIAL RX] 81 bytes
+[2025-10-03 15:08:11] [INFO] [SERIAL] Closed port COM11
+[2025-10-03 15:08:11] [PASS] STEP 2.6 completed successfully
 </pre>
 </div>
 </details>
@@ -305,16 +305,16 @@ SYSTEM READY\r\n
 <div class='content'>
 <table>
 <tr><th>Started</th><th>Finished</th></tr>
-<tr><td>2025-10-03 13:44:14</td><td>2025-10-03 13:44:15</td></tr>
+<tr><td>2025-10-03 15:08:11</td><td>2025-10-03 15:08:12</td></tr>
 </table>
 <h4>Log</h4>
 <pre>
-[2025-10-03 13:44:14] [STEP 2.7] Set CH7 to ON
-[2025-10-03 13:44:14] [INFO] [SERIAL] Opened port=COM11 baud=115200
-[2025-10-03 13:44:14] [INFO] [SERIAL TX] SET_CH 7 ON
-[2025-10-03 13:44:15] [INFO] [SERIAL RX] 141 bytes
-[2025-10-03 13:44:15] [INFO] [SERIAL] Closed port COM11
-[2025-10-03 13:44:15] [PASS] STEP 2.7 completed successfully
+[2025-10-03 15:08:11] [STEP 2.7] Set CH7 to ON
+[2025-10-03 15:08:11] [INFO] [SERIAL] Opened port=COM11 baud=115200
+[2025-10-03 15:08:11] [INFO] [SERIAL TX] SET_CH 7 ON
+[2025-10-03 15:08:12] [INFO] [SERIAL RX] 141 bytes
+[2025-10-03 15:08:12] [INFO] [SERIAL] Closed port COM11
+[2025-10-03 15:08:12] [PASS] STEP 2.7 completed successfully
 </pre>
 </div>
 </details>
@@ -325,45 +325,919 @@ SYSTEM READY\r\n
 <div class='content'>
 <table>
 <tr><th>Started</th><th>Finished</th></tr>
-<tr><td>2025-10-03 13:44:15</td><td>2025-10-03 13:44:16</td></tr>
+<tr><td>2025-10-03 15:08:12</td><td>2025-10-03 15:08:13</td></tr>
 </table>
 <h4>Log</h4>
 <pre>
-[2025-10-03 13:44:15] [STEP 2.8] Set CH8 to OFF
-[2025-10-03 13:44:15] [INFO] [SERIAL] Opened port=COM11 baud=115200
-[2025-10-03 13:44:15] [INFO] [SERIAL TX] SET_CH 8 OFF
-[2025-10-03 13:44:16] [INFO] [SERIAL RX] 81 bytes
-[2025-10-03 13:44:16] [INFO] [SERIAL] Closed port COM11
-[2025-10-03 13:44:16] [PASS] STEP 2.8 completed successfully
+[2025-10-03 15:08:12] [STEP 2.8] Set CH8 to OFF
+[2025-10-03 15:08:12] [INFO] [SERIAL] Opened port=COM11 baud=115200
+[2025-10-03 15:08:12] [INFO] [SERIAL TX] SET_CH 8 OFF
+[2025-10-03 15:08:13] [INFO] [SERIAL RX] 81 bytes
+[2025-10-03 15:08:13] [INFO] [SERIAL] Closed port COM11
+[2025-10-03 15:08:13] [PASS] STEP 2.8 completed successfully
 </pre>
 </div>
 </details>
 <details>
 <summary>
-<div class='step-title'><div>STEP 2.9 Verify CH1 state via SNMP</div><div class='status fail'>FAIL</div></div>
+<div class='step-title'><div>STEP 2.9 Verify CH1 state via SNMP</div><div class='status pass'>PASS</div></div>
 </summary>
 <div class='content'>
 <table>
 <tr><th>Started</th><th>Finished</th></tr>
-<tr><td>2025-10-03 13:44:16</td><td>2025-10-03 13:44:19</td></tr>
+<tr><td>2025-10-03 15:08:13</td><td>2025-10-03 15:08:13</td></tr>
 </table>
 <h4>Log</h4>
 <pre>
-[2025-10-03 13:44:16] [STEP 2.9] Verify CH1 state via SNMP
-[2025-10-03 13:44:19] [INFO] [SNMP] cmd=snmpget -v1 -c public 192.168.0.11 1.3.6.1.4.1.19865.2.1.0
-[2025-10-03 13:44:19] [INFO] [SNMP] rc=124
-[2025-10-03 13:44:19] [INFO] [SNMP ERR]
-Command timed out
-[2025-10-03 13:44:19] [INFO] [SNMP GET] 192.168.0.11 1.3.6.1.4.1.19865.2.1.0 -&gt; None (v1/public)
-[2025-10-03 13:44:19] [FAIL] STEP 2.9 failed: Failed to read channel 1 state
-[2025-10-03 13:44:19] [FAIL] Test failed: Failed to read channel 1 state
-[2025-10-03 13:44:19] ===== tc_eeprom_persistence: RESULT: FAIL =====
+[2025-10-03 15:08:13] [STEP 2.9] Verify CH1 state via SNMP
+[2025-10-03 15:08:13] [INFO] [SNMP] cmd=snmpget -v1 -c public 192.168.0.12 1.3.6.1.4.1.19865.2.1.0
+[2025-10-03 15:08:13] [INFO] [SNMP] rc=0
+[2025-10-03 15:08:13] [INFO] [SNMP OUT]
+SNMPv2-SMI::enterprises.19865.2.1.0 = INTEGER: 1
+
+[2025-10-03 15:08:13] [INFO] [SNMP GET] 192.168.0.12 1.3.6.1.4.1.19865.2.1.0 -&gt; &#x27;1&#x27; (v1/public)
+[2025-10-03 15:08:13] [PASS] STEP 2.9 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 2.10 Verify CH2 state via SNMP</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-10-03 15:08:13</td><td>2025-10-03 15:08:13</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-10-03 15:08:13] [STEP 2.10] Verify CH2 state via SNMP
+[2025-10-03 15:08:13] [INFO] [SNMP] cmd=snmpget -v1 -c public 192.168.0.12 1.3.6.1.4.1.19865.2.2.0
+[2025-10-03 15:08:13] [INFO] [SNMP] rc=0
+[2025-10-03 15:08:13] [INFO] [SNMP OUT]
+SNMPv2-SMI::enterprises.19865.2.2.0 = INTEGER: 0
+
+[2025-10-03 15:08:13] [INFO] [SNMP GET] 192.168.0.12 1.3.6.1.4.1.19865.2.2.0 -&gt; &#x27;0&#x27; (v1/public)
+[2025-10-03 15:08:13] [PASS] STEP 2.10 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 2.11 Verify CH3 state via SNMP</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-10-03 15:08:13</td><td>2025-10-03 15:08:13</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-10-03 15:08:13] [STEP 2.11] Verify CH3 state via SNMP
+[2025-10-03 15:08:13] [INFO] [SNMP] cmd=snmpget -v1 -c public 192.168.0.12 1.3.6.1.4.1.19865.2.3.0
+[2025-10-03 15:08:13] [INFO] [SNMP] rc=0
+[2025-10-03 15:08:13] [INFO] [SNMP OUT]
+SNMPv2-SMI::enterprises.19865.2.3.0 = INTEGER: 1
+
+[2025-10-03 15:08:13] [INFO] [SNMP GET] 192.168.0.12 1.3.6.1.4.1.19865.2.3.0 -&gt; &#x27;1&#x27; (v1/public)
+[2025-10-03 15:08:13] [PASS] STEP 2.11 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 2.12 Verify CH4 state via SNMP</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-10-03 15:08:13</td><td>2025-10-03 15:08:13</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-10-03 15:08:13] [STEP 2.12] Verify CH4 state via SNMP
+[2025-10-03 15:08:13] [INFO] [SNMP] cmd=snmpget -v1 -c public 192.168.0.12 1.3.6.1.4.1.19865.2.4.0
+[2025-10-03 15:08:13] [INFO] [SNMP] rc=0
+[2025-10-03 15:08:13] [INFO] [SNMP OUT]
+SNMPv2-SMI::enterprises.19865.2.4.0 = INTEGER: 0
+
+[2025-10-03 15:08:13] [INFO] [SNMP GET] 192.168.0.12 1.3.6.1.4.1.19865.2.4.0 -&gt; &#x27;0&#x27; (v1/public)
+[2025-10-03 15:08:13] [PASS] STEP 2.12 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 2.13 Verify CH5 state via SNMP</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-10-03 15:08:13</td><td>2025-10-03 15:08:13</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-10-03 15:08:13] [STEP 2.13] Verify CH5 state via SNMP
+[2025-10-03 15:08:13] [INFO] [SNMP] cmd=snmpget -v1 -c public 192.168.0.12 1.3.6.1.4.1.19865.2.5.0
+[2025-10-03 15:08:13] [INFO] [SNMP] rc=0
+[2025-10-03 15:08:13] [INFO] [SNMP OUT]
+SNMPv2-SMI::enterprises.19865.2.5.0 = INTEGER: 1
+
+[2025-10-03 15:08:13] [INFO] [SNMP GET] 192.168.0.12 1.3.6.1.4.1.19865.2.5.0 -&gt; &#x27;1&#x27; (v1/public)
+[2025-10-03 15:08:13] [PASS] STEP 2.13 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 2.14 Verify CH6 state via SNMP</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-10-03 15:08:13</td><td>2025-10-03 15:08:13</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-10-03 15:08:13] [STEP 2.14] Verify CH6 state via SNMP
+[2025-10-03 15:08:13] [INFO] [SNMP] cmd=snmpget -v1 -c public 192.168.0.12 1.3.6.1.4.1.19865.2.6.0
+[2025-10-03 15:08:13] [INFO] [SNMP] rc=0
+[2025-10-03 15:08:13] [INFO] [SNMP OUT]
+SNMPv2-SMI::enterprises.19865.2.6.0 = INTEGER: 0
+
+[2025-10-03 15:08:13] [INFO] [SNMP GET] 192.168.0.12 1.3.6.1.4.1.19865.2.6.0 -&gt; &#x27;0&#x27; (v1/public)
+[2025-10-03 15:08:13] [PASS] STEP 2.14 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 2.15 Verify CH7 state via SNMP</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-10-03 15:08:13</td><td>2025-10-03 15:08:13</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-10-03 15:08:13] [STEP 2.15] Verify CH7 state via SNMP
+[2025-10-03 15:08:13] [INFO] [SNMP] cmd=snmpget -v1 -c public 192.168.0.12 1.3.6.1.4.1.19865.2.7.0
+[2025-10-03 15:08:13] [INFO] [SNMP] rc=0
+[2025-10-03 15:08:13] [INFO] [SNMP OUT]
+SNMPv2-SMI::enterprises.19865.2.7.0 = INTEGER: 1
+
+[2025-10-03 15:08:13] [INFO] [SNMP GET] 192.168.0.12 1.3.6.1.4.1.19865.2.7.0 -&gt; &#x27;1&#x27; (v1/public)
+[2025-10-03 15:08:13] [PASS] STEP 2.15 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 2.16 Verify CH8 state via SNMP</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-10-03 15:08:13</td><td>2025-10-03 15:08:13</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-10-03 15:08:13] [STEP 2.16] Verify CH8 state via SNMP
+[2025-10-03 15:08:13] [INFO] [SNMP] cmd=snmpget -v1 -c public 192.168.0.12 1.3.6.1.4.1.19865.2.8.0
+[2025-10-03 15:08:13] [INFO] [SNMP] rc=0
+[2025-10-03 15:08:13] [INFO] [SNMP OUT]
+SNMPv2-SMI::enterprises.19865.2.8.0 = INTEGER: 0
+
+[2025-10-03 15:08:13] [INFO] [SNMP GET] 192.168.0.12 1.3.6.1.4.1.19865.2.8.0 -&gt; &#x27;0&#x27; (v1/public)
+[2025-10-03 15:08:13] [PASS] STEP 2.16 completed successfully
 </pre>
 </div>
 </details>
 </div>
 </div>
 </details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 3 Reboot and verify network config persistence</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-10-03 15:08:13</td><td>2025-10-03 15:08:22</td></tr>
+</table>
+<div class='substeps'>
+<h4>Substeps</h4>
+<details>
+<summary>
+<div class='step-title'><div>STEP 3.1 Reboot device</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-10-03 15:08:13</td><td>2025-10-03 15:08:21</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-10-03 15:08:13] [STEP 3.1] Reboot device
+[2025-10-03 15:08:13] [INFO] [SERIAL] Opened port=COM11 baud=115200
+[2025-10-03 15:08:13] [INFO] [SERIAL TX] REBOOT
+[2025-10-03 15:08:13] [INFO] [SERIAL] Closed port COM11
+[2025-10-03 15:08:21] [INFO] [SERIAL RX] reconnect bytes=1075
+[2025-10-03 15:08:21] [INFO] [INFO] Core 0 initializing...\r\n
+	[ECHO] Device Serial : SN-369366060325\r\n
+	[ECHO] Firmware Ver  : 1.0.0\r\n
+	[ECHO] Core voltage  : 1.15 V (vsel = 1)\r\n
+	[ECHO] Clock Sources :\r\n
+	[ECHO] 	SYS: 200000000 Hz (200 MHz)\r\n
+	[ECHO] 	USB: 48000000 Hz (48 MHz)\r\n
+	[ECHO] 	PER: 48000000 Hz (48 MHz)\r\n
+	[ECHO] 	ADC: 48000000 Hz (48 MHz)\r\n
+[INFO] ADC initializing\r\n
+VREG register: 0x000010D1\r\n
+[INFO] I2C scanning...\r\n
+[INFO] EEPROM initializing...\r\n
+[INFO] MCP23017 initializing...\r\n
+[INFO] Headless mode, skipping display initialization\r\n
+[INFO] Initializing HLW8032...\r\n
+[INFO] Initializing buttons...\r\n
+[INFO] Loaded network config from EEPROM.\r\n
+[INFO] W5500 version: 0x04\r\n
+[INFO] W5500 PHY link is up\r\n
+	[ECHO] =============================================\r\n
+	[ECHO]  W5500 network configuration : static\r\n
+	[ECHO]  MAC         : 00:08:DC:BE:EF:91\r\n
+	[ECHO]  IP          : 192.168.0.12\r\n
+	[ECHO]  Subnet Mask : 255.255.255.0\r\n
+	[ECHO]  Gateway     : 192.168.1.1\r\n
+	[ECHO]  DNS         : 1.1.1.1\r\n
+	[ECHO] =============================================\r\n
+\r\n
+SYSTEM READY\r\n
+[INFO] - SNMP : Start SNMP Agent Daemon\r\n
+
+[2025-10-03 15:08:21] [INFO] [SERIAL] Closed port=COM11
+[2025-10-03 15:08:21] [PASS] STEP 3.1 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 3.2 Get network config after reboot</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-10-03 15:08:21</td><td>2025-10-03 15:08:22</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-10-03 15:08:21] [STEP 3.2] Get network config after reboot
+[2025-10-03 15:08:21] [INFO] [SERIAL] Opened port=COM11 baud=115200
+[2025-10-03 15:08:21] [INFO] [SERIAL TX] NETINFO
+[2025-10-03 15:08:22] [INFO] [SERIAL RX] 500 bytes
+[2025-10-03 15:08:22] [INFO] [SERIAL] Closed port COM11
+[2025-10-03 15:08:22] [PASS] STEP 3.2 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 3.3 Verify network config persisted</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-10-03 15:08:22</td><td>2025-10-03 15:08:22</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-10-03 15:08:22] [STEP 3.3] Verify network config persisted
+[2025-10-03 15:08:22] [PASS] STEP 3.3 completed successfully
+</pre>
+</div>
+</details>
+</div>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 4 Verify channel states not persisted after reboot</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-10-03 15:08:22</td><td>2025-10-03 15:08:23</td></tr>
+</table>
+<div class='substeps'>
+<h4>Substeps</h4>
+<details>
+<summary>
+<div class='step-title'><div>STEP 4.1 [NEGATIVE TEST] MUST FAIL - Verify CH1 state via SNMP</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-10-03 15:08:22</td><td>2025-10-03 15:08:22</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-10-03 15:08:22] [STEP 4.1] [NEGATIVE TEST] MUST FAIL - Verify CH1 state via SNMP
+[2025-10-03 15:08:22] [INFO] [SNMP] cmd=snmpget -v1 -c public 192.168.0.12 1.3.6.1.4.1.19865.2.1.0
+[2025-10-03 15:08:22] [INFO] [SNMP] rc=0
+[2025-10-03 15:08:22] [INFO] [SNMP OUT]
+SNMPv2-SMI::enterprises.19865.2.1.0 = INTEGER: 0
+
+[2025-10-03 15:08:22] [INFO] [SNMP GET] 192.168.0.12 1.3.6.1.4.1.19865.2.1.0 -&gt; &#x27;0&#x27; (v1/public)
+[2025-10-03 15:08:22] [PASS] STEP 4.1 failed as expected: Channel 1 state mismatch: expected ON, got OFF
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 4.2 [NEGATIVE TEST] MUST FAIL - Verify CH2 state via SNMP</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-10-03 15:08:22</td><td>2025-10-03 15:08:22</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-10-03 15:08:22] [STEP 4.2] [NEGATIVE TEST] MUST FAIL - Verify CH2 state via SNMP
+[2025-10-03 15:08:22] [INFO] [SNMP] cmd=snmpget -v1 -c public 192.168.0.12 1.3.6.1.4.1.19865.2.2.0
+[2025-10-03 15:08:22] [INFO] [SNMP] rc=0
+[2025-10-03 15:08:22] [INFO] [SNMP OUT]
+SNMPv2-SMI::enterprises.19865.2.2.0 = INTEGER: 0
+
+[2025-10-03 15:08:22] [INFO] [SNMP GET] 192.168.0.12 1.3.6.1.4.1.19865.2.2.0 -&gt; &#x27;0&#x27; (v1/public)
+[2025-10-03 15:08:22] [PASS] STEP 4.2 failed as expected: Channel 2 state mismatch: expected ON, got OFF
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 4.3 [NEGATIVE TEST] MUST FAIL - Verify CH3 state via SNMP</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-10-03 15:08:22</td><td>2025-10-03 15:08:22</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-10-03 15:08:22] [STEP 4.3] [NEGATIVE TEST] MUST FAIL - Verify CH3 state via SNMP
+[2025-10-03 15:08:22] [INFO] [SNMP] cmd=snmpget -v1 -c public 192.168.0.12 1.3.6.1.4.1.19865.2.3.0
+[2025-10-03 15:08:22] [INFO] [SNMP] rc=0
+[2025-10-03 15:08:22] [INFO] [SNMP OUT]
+SNMPv2-SMI::enterprises.19865.2.3.0 = INTEGER: 0
+
+[2025-10-03 15:08:22] [INFO] [SNMP GET] 192.168.0.12 1.3.6.1.4.1.19865.2.3.0 -&gt; &#x27;0&#x27; (v1/public)
+[2025-10-03 15:08:22] [PASS] STEP 4.3 failed as expected: Channel 3 state mismatch: expected ON, got OFF
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 4.4 [NEGATIVE TEST] MUST FAIL - Verify CH4 state via SNMP</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-10-03 15:08:22</td><td>2025-10-03 15:08:23</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-10-03 15:08:22] [STEP 4.4] [NEGATIVE TEST] MUST FAIL - Verify CH4 state via SNMP
+[2025-10-03 15:08:23] [INFO] [SNMP] cmd=snmpget -v1 -c public 192.168.0.12 1.3.6.1.4.1.19865.2.4.0
+[2025-10-03 15:08:23] [INFO] [SNMP] rc=0
+[2025-10-03 15:08:23] [INFO] [SNMP OUT]
+SNMPv2-SMI::enterprises.19865.2.4.0 = INTEGER: 0
+
+[2025-10-03 15:08:23] [INFO] [SNMP GET] 192.168.0.12 1.3.6.1.4.1.19865.2.4.0 -&gt; &#x27;0&#x27; (v1/public)
+[2025-10-03 15:08:23] [PASS] STEP 4.4 failed as expected: Channel 4 state mismatch: expected ON, got OFF
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 4.5 [NEGATIVE TEST] MUST FAIL - Verify CH5 state via SNMP</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-10-03 15:08:23</td><td>2025-10-03 15:08:23</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-10-03 15:08:23] [STEP 4.5] [NEGATIVE TEST] MUST FAIL - Verify CH5 state via SNMP
+[2025-10-03 15:08:23] [INFO] [SNMP] cmd=snmpget -v1 -c public 192.168.0.12 1.3.6.1.4.1.19865.2.5.0
+[2025-10-03 15:08:23] [INFO] [SNMP] rc=0
+[2025-10-03 15:08:23] [INFO] [SNMP OUT]
+SNMPv2-SMI::enterprises.19865.2.5.0 = INTEGER: 0
+
+[2025-10-03 15:08:23] [INFO] [SNMP GET] 192.168.0.12 1.3.6.1.4.1.19865.2.5.0 -&gt; &#x27;0&#x27; (v1/public)
+[2025-10-03 15:08:23] [PASS] STEP 4.5 failed as expected: Channel 5 state mismatch: expected ON, got OFF
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 4.6 [NEGATIVE TEST] MUST FAIL - Verify CH6 state via SNMP</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-10-03 15:08:23</td><td>2025-10-03 15:08:23</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-10-03 15:08:23] [STEP 4.6] [NEGATIVE TEST] MUST FAIL - Verify CH6 state via SNMP
+[2025-10-03 15:08:23] [INFO] [SNMP] cmd=snmpget -v1 -c public 192.168.0.12 1.3.6.1.4.1.19865.2.6.0
+[2025-10-03 15:08:23] [INFO] [SNMP] rc=0
+[2025-10-03 15:08:23] [INFO] [SNMP OUT]
+SNMPv2-SMI::enterprises.19865.2.6.0 = INTEGER: 0
+
+[2025-10-03 15:08:23] [INFO] [SNMP GET] 192.168.0.12 1.3.6.1.4.1.19865.2.6.0 -&gt; &#x27;0&#x27; (v1/public)
+[2025-10-03 15:08:23] [PASS] STEP 4.6 failed as expected: Channel 6 state mismatch: expected ON, got OFF
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 4.7 [NEGATIVE TEST] MUST FAIL - Verify CH7 state via SNMP</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-10-03 15:08:23</td><td>2025-10-03 15:08:23</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-10-03 15:08:23] [STEP 4.7] [NEGATIVE TEST] MUST FAIL - Verify CH7 state via SNMP
+[2025-10-03 15:08:23] [INFO] [SNMP] cmd=snmpget -v1 -c public 192.168.0.12 1.3.6.1.4.1.19865.2.7.0
+[2025-10-03 15:08:23] [INFO] [SNMP] rc=0
+[2025-10-03 15:08:23] [INFO] [SNMP OUT]
+SNMPv2-SMI::enterprises.19865.2.7.0 = INTEGER: 0
+
+[2025-10-03 15:08:23] [INFO] [SNMP GET] 192.168.0.12 1.3.6.1.4.1.19865.2.7.0 -&gt; &#x27;0&#x27; (v1/public)
+[2025-10-03 15:08:23] [PASS] STEP 4.7 failed as expected: Channel 7 state mismatch: expected ON, got OFF
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 4.8 [NEGATIVE TEST] MUST FAIL - Verify CH8 state via SNMP</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-10-03 15:08:23</td><td>2025-10-03 15:08:23</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-10-03 15:08:23] [STEP 4.8] [NEGATIVE TEST] MUST FAIL - Verify CH8 state via SNMP
+[2025-10-03 15:08:23] [INFO] [SNMP] cmd=snmpget -v1 -c public 192.168.0.12 1.3.6.1.4.1.19865.2.8.0
+[2025-10-03 15:08:23] [INFO] [SNMP] rc=0
+[2025-10-03 15:08:23] [INFO] [SNMP OUT]
+SNMPv2-SMI::enterprises.19865.2.8.0 = INTEGER: 0
+
+[2025-10-03 15:08:23] [INFO] [SNMP GET] 192.168.0.12 1.3.6.1.4.1.19865.2.8.0 -&gt; &#x27;0&#x27; (v1/public)
+[2025-10-03 15:08:23] [PASS] STEP 4.8 failed as expected: Channel 8 state mismatch: expected ON, got OFF
+</pre>
+</div>
+</details>
+</div>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 5 Factory reset device</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-10-03 15:08:23</td><td>2025-10-03 15:08:32</td></tr>
+</table>
+<div class='substeps'>
+<h4>Substeps</h4>
+<details>
+<summary>
+<div class='step-title'><div>STEP 5.1 Perform factory reset (RFS)</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-10-03 15:08:23</td><td>2025-10-03 15:08:32</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-10-03 15:08:23] [STEP 5.1] Perform factory reset (RFS)
+[2025-10-03 15:08:23] [INFO] [SERIAL] Opened port=COM11 baud=115200
+[2025-10-03 15:08:23] [INFO] [SERIAL TX] RFS
+[2025-10-03 15:08:23] [INFO] [SERIAL] Closed port COM11
+[2025-10-03 15:08:31] [INFO] [SERIAL RX] reconnect bytes=1075
+[2025-10-03 15:08:31] [INFO] [INFO] Core 0 initializing...\r\n
+	[ECHO] Device Serial : SN-369366060325\r\n
+	[ECHO] Firmware Ver  : 1.0.0\r\n
+	[ECHO] Core voltage  : 1.15 V (vsel = 1)\r\n
+	[ECHO] Clock Sources :\r\n
+	[ECHO] 	SYS: 200000000 Hz (200 MHz)\r\n
+	[ECHO] 	USB: 48000000 Hz (48 MHz)\r\n
+	[ECHO] 	PER: 48000000 Hz (48 MHz)\r\n
+	[ECHO] 	ADC: 48000000 Hz (48 MHz)\r\n
+[INFO] ADC initializing\r\n
+VREG register: 0x000010D1\r\n
+[INFO] I2C scanning...\r\n
+[INFO] EEPROM initializing...\r\n
+[INFO] MCP23017 initializing...\r\n
+[INFO] Headless mode, skipping display initialization\r\n
+[INFO] Initializing HLW8032...\r\n
+[INFO] Initializing buttons...\r\n
+[INFO] Loaded network config from EEPROM.\r\n
+[INFO] W5500 version: 0x04\r\n
+[INFO] W5500 PHY link is up\r\n
+	[ECHO] =============================================\r\n
+	[ECHO]  W5500 network configuration : static\r\n
+	[ECHO]  MAC         : 00:08:DC:BE:EF:91\r\n
+	[ECHO]  IP          : 192.168.0.11\r\n
+	[ECHO]  Subnet Mask : 255.255.255.0\r\n
+	[ECHO]  Gateway     : 192.168.0.1\r\n
+	[ECHO]  DNS         : 8.8.8.8\r\n
+	[ECHO] =============================================\r\n
+\r\n
+SYSTEM READY\r\n
+[INFO] - SNMP : Start SNMP Agent Daemon\r\n
+
+[2025-10-03 15:08:31] [INFO] [SERIAL] Closed port=COM11
+[2025-10-03 15:08:31] [INFO] [SERIAL] Opened port=COM11 baud=115200
+[2025-10-03 15:08:31] [INFO] [SERIAL TX] SYSINFO
+[2025-10-03 15:08:32] [INFO] [SERIAL RX] 441 bytes
+[2025-10-03 15:08:32] [INFO] [SERIAL] Closed port COM11
+[2025-10-03 15:08:32] [PASS] STEP 5.1 completed successfully
+</pre>
+</div>
+</details>
+</div>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 6 Verify factory defaults restored</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-10-03 15:08:32</td><td>2025-10-03 15:08:34</td></tr>
+</table>
+<div class='substeps'>
+<h4>Substeps</h4>
+<details>
+<summary>
+<div class='step-title'><div>STEP 6.1 Get network config after factory reset</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-10-03 15:08:32</td><td>2025-10-03 15:08:33</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-10-03 15:08:32] [STEP 6.1] Get network config after factory reset
+[2025-10-03 15:08:32] [INFO] [SERIAL] Opened port=COM11 baud=115200
+[2025-10-03 15:08:32] [INFO] [SERIAL TX] NETINFO
+[2025-10-03 15:08:33] [INFO] [SERIAL RX] 407 bytes
+[2025-10-03 15:08:33] [INFO] [SERIAL] Closed port COM11
+[2025-10-03 15:08:33] [PASS] STEP 6.1 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 6.2 Verify baseline network config restored</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-10-03 15:08:33</td><td>2025-10-03 15:08:33</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-10-03 15:08:33] [STEP 6.2] Verify baseline network config restored
+[2025-10-03 15:08:33] [PASS] STEP 6.2 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 6.3 Verify all channels reset to OFF</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-10-03 15:08:33</td><td>2025-10-03 15:08:34</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-10-03 15:08:33] [STEP 6.3] Verify all channels reset to OFF
+[2025-10-03 15:08:33] [INFO] [SERIAL] Opened port=COM11 baud=115200
+[2025-10-03 15:08:33] [INFO] [SERIAL TX] GET_CH ALL
+[2025-10-03 15:08:34] [INFO] [SERIAL RX] 180 bytes
+[2025-10-03 15:08:34] [INFO] [SERIAL] Closed port COM11
+[2025-10-03 15:08:34] [PASS] STEP 6.3 completed successfully
+</pre>
+</div>
+</details>
+</div>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 7 Multiple reboot cycle stability test</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-10-03 15:08:34</td><td>2025-10-03 15:09:04</td></tr>
+</table>
+<div class='substeps'>
+<h4>Substeps</h4>
+<details>
+<summary>
+<div class='step-title'><div>STEP 7.1 Reboot cycle 1</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-10-03 15:08:34</td><td>2025-10-03 15:08:43</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-10-03 15:08:34] [STEP 7.1] Reboot cycle 1
+[2025-10-03 15:08:34] [INFO] [SERIAL] Opened port=COM11 baud=115200
+[2025-10-03 15:08:34] [INFO] [SERIAL TX] REBOOT
+[2025-10-03 15:08:35] [INFO] [SERIAL] Closed port COM11
+[2025-10-03 15:08:43] [INFO] [SERIAL RX] reconnect bytes=1075
+[2025-10-03 15:08:43] [INFO] [INFO] Core 0 initializing...\r\n
+	[ECHO] Device Serial : SN-369366060325\r\n
+	[ECHO] Firmware Ver  : 1.0.0\r\n
+	[ECHO] Core voltage  : 1.15 V (vsel = 1)\r\n
+	[ECHO] Clock Sources :\r\n
+	[ECHO] 	SYS: 200000000 Hz (200 MHz)\r\n
+	[ECHO] 	USB: 48000000 Hz (48 MHz)\r\n
+	[ECHO] 	PER: 48000000 Hz (48 MHz)\r\n
+	[ECHO] 	ADC: 48000000 Hz (48 MHz)\r\n
+[INFO] ADC initializing\r\n
+VREG register: 0x000010D1\r\n
+[INFO] I2C scanning...\r\n
+[INFO] EEPROM initializing...\r\n
+[INFO] MCP23017 initializing...\r\n
+[INFO] Headless mode, skipping display initialization\r\n
+[INFO] Initializing HLW8032...\r\n
+[INFO] Initializing buttons...\r\n
+[INFO] Loaded network config from EEPROM.\r\n
+[INFO] W5500 version: 0x04\r\n
+[INFO] W5500 PHY link is up\r\n
+	[ECHO] =============================================\r\n
+	[ECHO]  W5500 network configuration : static\r\n
+	[ECHO]  MAC         : 00:08:DC:BE:EF:91\r\n
+	[ECHO]  IP          : 192.168.0.11\r\n
+	[ECHO]  Subnet Mask : 255.255.255.0\r\n
+	[ECHO]  Gateway     : 192.168.0.1\r\n
+	[ECHO]  DNS         : 8.8.8.8\r\n
+	[ECHO] =============================================\r\n
+\r\n
+SYSTEM READY\r\n
+[INFO] - SNMP : Start SNMP Agent Daemon\r\n
+
+[2025-10-03 15:08:43] [INFO] [SERIAL] Closed port=COM11
+[2025-10-03 15:08:43] [PASS] STEP 7.1 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 7.2 Verify ready after reboot 1</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-10-03 15:08:43</td><td>2025-10-03 15:08:44</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-10-03 15:08:43] [STEP 7.2] Verify ready after reboot 1
+[2025-10-03 15:08:43] [INFO] [SERIAL] Opened port=COM11 baud=115200
+[2025-10-03 15:08:43] [INFO] [SERIAL TX] NETINFO
+[2025-10-03 15:08:44] [INFO] [SERIAL RX] 500 bytes
+[2025-10-03 15:08:44] [INFO] [SERIAL] Closed port COM11
+[2025-10-03 15:08:44] [PASS] STEP 7.2 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 7.3 Reboot cycle 2</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-10-03 15:08:44</td><td>2025-10-03 15:08:53</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-10-03 15:08:44] [STEP 7.3] Reboot cycle 2
+[2025-10-03 15:08:44] [INFO] [SERIAL] Opened port=COM11 baud=115200
+[2025-10-03 15:08:44] [INFO] [SERIAL TX] REBOOT
+[2025-10-03 15:08:44] [INFO] [SERIAL] Closed port COM11
+[2025-10-03 15:08:53] [INFO] [SERIAL RX] reconnect bytes=1075
+[2025-10-03 15:08:53] [INFO] [INFO] Core 0 initializing...\r\n
+	[ECHO] Device Serial : SN-369366060325\r\n
+	[ECHO] Firmware Ver  : 1.0.0\r\n
+	[ECHO] Core voltage  : 1.15 V (vsel = 1)\r\n
+	[ECHO] Clock Sources :\r\n
+	[ECHO] 	SYS: 200000000 Hz (200 MHz)\r\n
+	[ECHO] 	USB: 48000000 Hz (48 MHz)\r\n
+	[ECHO] 	PER: 48000000 Hz (48 MHz)\r\n
+	[ECHO] 	ADC: 48000000 Hz (48 MHz)\r\n
+[INFO] ADC initializing\r\n
+VREG register: 0x000010D1\r\n
+[INFO] I2C scanning...\r\n
+[INFO] EEPROM initializing...\r\n
+[INFO] MCP23017 initializing...\r\n
+[INFO] Headless mode, skipping display initialization\r\n
+[INFO] Initializing HLW8032...\r\n
+[INFO] Initializing buttons...\r\n
+[INFO] Loaded network config from EEPROM.\r\n
+[INFO] W5500 version: 0x04\r\n
+[INFO] W5500 PHY link is up\r\n
+	[ECHO] =============================================\r\n
+	[ECHO]  W5500 network configuration : static\r\n
+	[ECHO]  MAC         : 00:08:DC:BE:EF:91\r\n
+	[ECHO]  IP          : 192.168.0.11\r\n
+	[ECHO]  Subnet Mask : 255.255.255.0\r\n
+	[ECHO]  Gateway     : 192.168.0.1\r\n
+	[ECHO]  DNS         : 8.8.8.8\r\n
+	[ECHO] =============================================\r\n
+\r\n
+SYSTEM READY\r\n
+[INFO] - SNMP : Start SNMP Agent Daemon\r\n
+
+[2025-10-03 15:08:53] [INFO] [SERIAL] Closed port=COM11
+[2025-10-03 15:08:53] [PASS] STEP 7.3 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 7.4 Verify ready after reboot 2</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-10-03 15:08:53</td><td>2025-10-03 15:08:54</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-10-03 15:08:53] [STEP 7.4] Verify ready after reboot 2
+[2025-10-03 15:08:53] [INFO] [SERIAL] Opened port=COM11 baud=115200
+[2025-10-03 15:08:53] [INFO] [SERIAL TX] NETINFO
+[2025-10-03 15:08:54] [INFO] [SERIAL RX] 500 bytes
+[2025-10-03 15:08:54] [INFO] [SERIAL] Closed port COM11
+[2025-10-03 15:08:54] [PASS] STEP 7.4 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 7.5 Reboot cycle 3</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-10-03 15:08:54</td><td>2025-10-03 15:09:02</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-10-03 15:08:54] [STEP 7.5] Reboot cycle 3
+[2025-10-03 15:08:54] [INFO] [SERIAL] Opened port=COM11 baud=115200
+[2025-10-03 15:08:54] [INFO] [SERIAL TX] REBOOT
+[2025-10-03 15:08:54] [INFO] [SERIAL] Closed port COM11
+[2025-10-03 15:09:02] [INFO] [SERIAL RX] reconnect bytes=1075
+[2025-10-03 15:09:02] [INFO] [INFO] Core 0 initializing...\r\n
+	[ECHO] Device Serial : SN-369366060325\r\n
+	[ECHO] Firmware Ver  : 1.0.0\r\n
+	[ECHO] Core voltage  : 1.15 V (vsel = 1)\r\n
+	[ECHO] Clock Sources :\r\n
+	[ECHO] 	SYS: 200000000 Hz (200 MHz)\r\n
+	[ECHO] 	USB: 48000000 Hz (48 MHz)\r\n
+	[ECHO] 	PER: 48000000 Hz (48 MHz)\r\n
+	[ECHO] 	ADC: 48000000 Hz (48 MHz)\r\n
+[INFO] ADC initializing\r\n
+VREG register: 0x000010D1\r\n
+[INFO] I2C scanning...\r\n
+[INFO] EEPROM initializing...\r\n
+[INFO] MCP23017 initializing...\r\n
+[INFO] Headless mode, skipping display initialization\r\n
+[INFO] Initializing HLW8032...\r\n
+[INFO] Initializing buttons...\r\n
+[INFO] Loaded network config from EEPROM.\r\n
+[INFO] W5500 version: 0x04\r\n
+[INFO] W5500 PHY link is up\r\n
+	[ECHO] =============================================\r\n
+	[ECHO]  W5500 network configuration : static\r\n
+	[ECHO]  MAC         : 00:08:DC:BE:EF:91\r\n
+	[ECHO]  IP          : 192.168.0.11\r\n
+	[ECHO]  Subnet Mask : 255.255.255.0\r\n
+	[ECHO]  Gateway     : 192.168.0.1\r\n
+	[ECHO]  DNS         : 8.8.8.8\r\n
+	[ECHO] =============================================\r\n
+\r\n
+SYSTEM READY\r\n
+[INFO] - SNMP : Start SNMP Agent Daemon\r\n
+
+[2025-10-03 15:09:02] [INFO] [SERIAL] Closed port=COM11
+[2025-10-03 15:09:02] [PASS] STEP 7.5 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 7.6 Verify ready after reboot 3</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-10-03 15:09:02</td><td>2025-10-03 15:09:04</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-10-03 15:09:02] [STEP 7.6] Verify ready after reboot 3
+[2025-10-03 15:09:03] [INFO] [SERIAL] Opened port=COM11 baud=115200
+[2025-10-03 15:09:03] [INFO] [SERIAL TX] NETINFO
+[2025-10-03 15:09:04] [INFO] [SERIAL RX] 500 bytes
+[2025-10-03 15:09:04] [INFO] [SERIAL] Closed port COM11
+[2025-10-03 15:09:04] [PASS] STEP 7.6 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 7.7 Verify config stable after multiple reboots</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-10-03 15:09:04</td><td>2025-10-03 15:09:04</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-10-03 15:09:04] [STEP 7.7] Verify config stable after multiple reboots
+[2025-10-03 15:09:04] [PASS] STEP 7.7 completed successfully
+</pre>
+</div>
+</details>
+</div>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 8 Final EEPROM dump and analysis</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-10-03 15:09:04</td><td>2025-10-03 15:09:23</td></tr>
+</table>
+<div class='substeps'>
+<h4>Substeps</h4>
+<details>
+<summary>
+<div class='step-title'><div>STEP 8.1 Analyze EEPROM dump after all tests</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-10-03 15:09:04</td><td>2025-10-03 15:09:23</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-10-03 15:09:04] [STEP 8.1] Analyze EEPROM dump after all tests
+[2025-10-03 15:09:23] [PASS] STEP 8.1 completed successfully
+[2025-10-03 15:09:23] ===== tc_eeprom_persistence: RESULT: PASS =====
+</pre>
+</div>
+</details>
+</div>
+</div>
+</details>
+</section>
+<section>
+<h3>EEPROM Artifacts</h3>
+<ul>
+<li><a href='EEPROM/eeprom_dump_ascii.log' target='_blank'>ASCII dump</a></li>
+<li><a href='EEPROM/eeprom_dump_raw.log' target='_blank'>Hex dump</a></li>
+</ul>
 </section>
 </main>
 </body></html>

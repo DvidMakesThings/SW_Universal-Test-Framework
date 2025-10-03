@@ -149,7 +149,8 @@ def CapturePcap(name: str,
                 ring_megabytes: Optional[int] = None,
                 require_tool: Optional[str] = None,
                 env: Optional[dict] = None,
-                cwd: Optional[Union[str, os.PathLike]] = None) -> TestAction:
+                cwd: Optional[Union[str, os.PathLike]] = None,
+        negative_test: bool = False) -> TestAction:
     """Create a TestAction that captures packets from a live interface into a PCAP/PCAPNG file.
 
     This TestAction factory starts a live capture using **dumpcap** (Wireshark capture engine)
@@ -436,7 +437,7 @@ def CapturePcap(name: str,
 
         return output_path
 
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)
 
 def Ping(name: str,
          target: str,
@@ -445,7 +446,8 @@ def Ping(name: str,
          timeout_s: float = 2.0,
          interval_s: Optional[float] = None,
          background: bool = False,
-         duration_s: Optional[float] = None) -> TestAction:
+         duration_s: Optional[float] = None,
+        negative_test: bool = False) -> TestAction:
     """Create a TestAction that sends ICMP echo(s) to a target host.
 
     This TestAction invokes the system `ping` in a cross-platform way to
@@ -613,4 +615,4 @@ def Ping(name: str,
 
         return True
 
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)

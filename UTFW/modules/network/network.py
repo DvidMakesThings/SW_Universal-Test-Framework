@@ -398,7 +398,8 @@ def test_network_config_via_web(
     )
 
 
-def ping_host(name: str, ip: str, count: int = 1, timeout: int = 1) -> TestAction:
+def ping_host(name: str, ip: str, count: int = 1, timeout: int = 1,
+negative_test: bool = False) -> TestAction:
     """Create a TestAction that tests network connectivity via ping.
 
     This TestAction factory creates an action that performs ICMP ping
@@ -428,4 +429,4 @@ def ping_host(name: str, ip: str, count: int = 1, timeout: int = 1) -> TestActio
             raise NetworkTestError(f"Ping to {ip} failed")
         return True
 
-    return TestAction(name, execute)
+    return TestAction(name, execute, negative_test=negative_test)
