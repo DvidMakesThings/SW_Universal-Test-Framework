@@ -616,7 +616,8 @@ def send_command_uart(
         port: str,
         command,   # str or list[str]
         baudrate: int = 115200,
-        timeout: float = 2.0
+        timeout: float = 2.0,
+        reboot: Optional[bool] = False
         ):
     """Create TestAction(s) for sending command(s) via UART with response caching.
     
@@ -624,16 +625,20 @@ def send_command_uart(
     It supports both single commands and multiple commands, with automatic
     response caching for use by subsequent validation actions.
 
+    If the connection drops during command execution (which often happens when
+    the device reboots), this function will automatically wait for the device
+    to reboot and return a "DEVICE REBOOTED" message.
+
     Args:
         name (str): Base name for the test action(s). For multiple commands,
             each action gets a numbered suffix with the command text.
         port (str): Serial port identifier (e.g., "COM3", "/dev/ttyACM0").
         command (Union[str, List[str]]): Command string or list of command
             strings to send via UART.
-        baudrate (int, optional): Serial communication baud rate.
-            Defaults to 115200.
-        timeout (float, optional): Response timeout in seconds.
-            Defaults to 2.0.
+        baudrate (int, optional): Communication baud rate. Defaults to 115200.
+        timeout (float, optional): Response timeout in seconds. Defaults to 2.0.
+        reboot (bool, optional): If True, expect the device to reboot after
+            the command. The action will handle waiting for the reboot.
 
     Returns:
         Union[TestAction, List[TestAction]]: Single TestAction if command
@@ -641,6 +646,7 @@ def send_command_uart(
 
     Raises:
         TypeError: If command is neither a string nor a list/tuple of strings.
+        SerialTestError: If communication fails or times out.
 
     Example:
         # Single command (legacy behavior, unchanged)
@@ -658,12 +664,29 @@ def send_command_uart(
             command=[f"GET_CH {i}" for i in range(1, 9)],
             baudrate=115200
         )
+    
+        # The function will automatically handle the reboot:
+        # 1. Send the command
+        # 2. Handle the expected connection drop
+        # 3. Wait for the device to come back online
     """
     def make_execute(cmd):
         def execute():
-            resp = send_command(port, cmd, baudrate, timeout)
-            _set_last_response(resp)   # store it for later validation
-            return resp
+            try:
+                # Try to send the command and get a response
+                send_command(port, cmd, baudrate, timeout)
+            except Exception:
+                # Connection may have dropped due to reboot; that's expected
+                pass
+
+            # Wait for device to reboot and become ready
+            if reboot:
+                if not wait_for_reboot_and_ready(port, "SYSTEM READY", baudrate, 15.0):
+                    raise SerialTestError(f"Device did not become ready after '{cmd}'")
+            else:
+                pass
+
+                
         return execute
 
     if isinstance(command, str):

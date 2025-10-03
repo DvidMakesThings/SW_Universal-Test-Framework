@@ -145,9 +145,15 @@ _TS_FIELDS_BASE = [
     "eth.dst",
     "vlan.id",
     "vlan.priority",
+    # Prefer reassembled HTTP body when available
+    "http.file_data",
+    # Reassembled TCP data when HTTP dissector places it there
+    "tcp.reassembled.data",
+    # Raw TCP segment payload (non-reassembled)
+    "tcp.payload",
+    # Fallback generic data layer
     "data.data",
 ]
-
 
 def _run_tshark_fields(
     pcap_path: str,
@@ -160,16 +166,14 @@ def _run_tshark_fields(
         fields.extend(extra_fields)
     cmd = [
         "tshark",
-        "-r",
-        pcap_path,
-        "-T",
-        "fields",
-        "-E",
-        "header=n",
-        "-E",
-        "separator=\t",
-        "-E",
-        "occurrence=f",
+        "-r", pcap_path,
+        # Enable TCP/HTTP reassembly so http.file_data/tcp.reassembled.data get populated
+        "-o", "tcp.desegment_tcp_streams:TRUE",
+        "-o", "http.desegment_body:TRUE",
+        "-T", "fields",
+        "-E", "header=n",
+        "-E", "separator=\t",
+        "-E", "occurrence=f",
     ]
     for f in fields:
         cmd += ["-e", f]
@@ -249,14 +253,21 @@ def _parse_field_lines(stdout: str) -> List[Dict[str, Any]]:
         if not ln.strip():
             continue
         cols = ln.split("\t")
-        num = cols[0] if len(cols) > 0 else ""
-        flen = cols[1] if len(cols) > 1 else ""
-        tsec = cols[2] if len(cols) > 2 else ""
-        src = cols[3] if len(cols) > 3 else ""
-        dst = cols[4] if len(cols) > 4 else ""
-        vlan_id = cols[5] if len(cols) > 5 else ""
-        vlan_pcp = cols[6] if len(cols) > 6 else ""
-        datahex = cols[7] if len(cols) > 7 else ""
+        num         = cols[0] if len(cols) > 0 else ""
+        flen        = cols[1] if len(cols) > 1 else ""
+        tsec        = cols[2] if len(cols) > 2 else ""
+        src         = cols[3] if len(cols) > 3 else ""
+        dst         = cols[4] if len(cols) > 4 else ""
+        vlan_id     = cols[5] if len(cols) > 5 else ""
+        vlan_pcp    = cols[6] if len(cols) > 6 else ""
+        http_body   = cols[7] if len(cols) > 7 else ""  # http.file_data (hex)
+        tcp_reasm   = cols[8] if len(cols) > 8 else ""  # tcp.reassembled.data (hex)
+        tcp_payload = cols[9] if len(cols) > 9 else ""  # tcp.payload (hex)
+        datahex     = cols[10] if len(cols) > 10 else "" # data.data (hex)
+
+        # Pick the richest available payload in order of preference
+        chosen_hex = http_body or tcp_reasm or tcp_payload or datahex
+        payload_bytes = _decode_hex(chosen_hex)
 
         frames.append(
             {
@@ -267,11 +278,10 @@ def _parse_field_lines(stdout: str) -> List[Dict[str, Any]]:
                 "eth_dst": dst or "",
                 "vlan_id": _to_int(vlan_id, 0) if vlan_id else None,
                 "vlan_pcp": _to_int(vlan_pcp, 0) if vlan_pcp else None,
-                "payload": _decode_hex(datahex),
+                "payload": payload_bytes,
             }
         )
     return frames
-
 
 # ======================== Public TestAction Factories ========================
 

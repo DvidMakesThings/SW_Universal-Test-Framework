@@ -214,7 +214,7 @@ def test_http_endpoint(
     base_url: str,
     path: str = "/",
     expected_content: Optional[str] = None,
-    expected_status: int = 200,
+    expected_status: Optional[int] = 200,
     timeout: float = 3.0,
 ) -> str:
     """Test HTTP endpoint availability and validate response.
