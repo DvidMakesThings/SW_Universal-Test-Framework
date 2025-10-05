@@ -71,14 +71,36 @@ def _pace(pace_key: Optional[str], min_interval_s: float) -> None:
         Uses an in-process timestamp map, so pacing is not enforced across
         different process instances.
     """
+    logger = get_active_logger()
+
+    if logger:
+        logger.log(f"[ETHERNET] _pace() called: pace_key={pace_key}, min_interval_s={min_interval_s}")
+
     if not pace_key or min_interval_s <= 0:
+        if logger:
+            logger.log(f"[ETHERNET] _pace() skipped (key empty or interval <= 0)")
         return
+
     now = time.time()
     last = _last_event_time.get(pace_key, 0.0)
     delta = now - last
+
+    if logger:
+        logger.log(f"[ETHERNET] _pace() timing: now={now:.3f}, last={last:.3f}, delta={delta:.3f}s")
+
     if delta < min_interval_s:
-        time.sleep(min_interval_s - delta)
+        sleep_time = min_interval_s - delta
+        if logger:
+            logger.log(f"[ETHERNET] _pace() sleeping for {sleep_time:.3f}s to enforce minimum interval")
+        time.sleep(sleep_time)
+    else:
+        if logger:
+            logger.log(f"[ETHERNET] _pace() no sleep needed, delta >= min_interval")
+
     _last_event_time[pace_key] = time.time()
+
+    if logger:
+        logger.log(f"[ETHERNET] _pace() complete, updated timestamp for key '{pace_key}'")
 
 
 # ======================== Internal Helper Functions ========================
@@ -111,10 +133,18 @@ def _ensure_dir(path: str) -> None:
     Args:
         path (str): Directory path to create.
     """
+    logger = get_active_logger()
+
+    if logger:
+        logger.log(f"[ETHERNET] _ensure_dir() called: path={path}")
+
     try:
         os.makedirs(path, exist_ok=True)
-    except Exception:
-        pass
+        if logger:
+            logger.log(f"[ETHERNET] _ensure_dir() success: directory ensured")
+    except Exception as e:
+        if logger:
+            logger.log(f"[ETHERNET] _ensure_dir() exception (ignored): {type(e).__name__}: {e}")
 
 
 def _ts() -> str:
@@ -126,7 +156,13 @@ def _ts() -> str:
     Returns:
         str: Timestamp in format 'YYYYMMDD_HHMMSS_microseconds'.
     """
-    return datetime.now().strftime("%Y%m%d_%H%M%S_%f")
+    logger = get_active_logger()
+    result = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
+
+    if logger:
+        logger.log(f"[ETHERNET] _ts() generated: {result}")
+
+    return result
 
 
 def _dump_http(
@@ -160,26 +196,51 @@ def _dump_http(
         I/O errors are silently ignored to avoid interfering with test execution.
     """
     logger = get_active_logger()
+
+    if logger:
+        logger.log(f"[ETHERNET] _dump_http() called")
+        logger.log(f"[ETHERNET]   base_url={base_url}")
+        logger.log(f"[ETHERNET]   path={path}")
+        logger.log(f"[ETHERNET]   method={method}")
+        logger.log(f"[ETHERNET]   status={status}")
+        logger.log(f"[ETHERNET]   headers={len(headers)} entries")
+        logger.log(f"[ETHERNET]   body={len(body)} bytes")
+        logger.log(f"[ETHERNET]   dump_subdir={dump_subdir}")
+
     dump_dir = None
     if logger and hasattr(logger, "log_file") and logger.log_file and dump_subdir:
         dump_dir = os.path.join(logger.log_file.parent, dump_subdir)
+        if logger:
+            logger.log(f"[ETHERNET] _dump_http() resolved dump_dir={dump_dir}")
+
     if not dump_dir:
+        if logger:
+            logger.log(f"[ETHERNET] _dump_http() skipped (no dump_dir available)")
         return
+
     _ensure_dir(dump_dir)
     safe_path = re.sub(r"[^A-Za-z0-9_.-]+", "_", (path or "root"))
     fname = f"{_ts()}_{method}_{safe_path}_{status}.txt"
+    full_path = os.path.join(dump_dir, fname)
+
+    if logger:
+        logger.log(f"[ETHERNET] _dump_http() writing to: {full_path}")
+
     try:
-        with open(
-            os.path.join(dump_dir, fname), "w", encoding="utf-8", errors="replace"
-        ) as f:
+        with open(full_path, "w", encoding="utf-8", errors="replace") as f:
             f.write(f"URL: {base_url}{path}\nMETHOD: {method}\nSTATUS: {status}\n\n")
             f.write("=== HEADERS ===\n")
             for k, v in headers.items():
                 f.write(f"{k}: {v}\n")
             f.write("\n=== BODY ===\n")
             f.write(body or "")
-    except Exception:
-        pass
+
+        if logger:
+            logger.log(f"[ETHERNET] _dump_http() write complete: {len(body or '')} bytes written")
+
+    except Exception as e:
+        if logger:
+            logger.log(f"[ETHERNET] _dump_http() write error (ignored): {type(e).__name__}: {e}")
 
 
 def _url(base: str, path: str) -> str:
@@ -195,13 +256,30 @@ def _url(base: str, path: str) -> str:
     Returns:
         str: Complete absolute URL.
     """
+    logger = get_active_logger()
+
+    if logger:
+        logger.log(f"[ETHERNET] _url() called: base={base}, path={path}")
+
     if not path:
+        if logger:
+            logger.log(f"[ETHERNET] _url() no path, returning base: {base}")
         return base
+
     if path.startswith("http://") or path.startswith("https://"):
+        if logger:
+            logger.log(f"[ETHERNET] _url() path is absolute URL: {path}")
         return path
+
     if not base.endswith("/") and not path.startswith("/"):
-        return base + "/" + path
-    return base + path
+        result = base + "/" + path
+    else:
+        result = base + path
+
+    if logger:
+        logger.log(f"[ETHERNET] _url() result: {result}")
+
+    return result
 
 
 def _ping_once(host: str, timeout_s: float = 1.0) -> bool:
@@ -218,16 +296,43 @@ def _ping_once(host: str, timeout_s: float = 1.0) -> bool:
     Returns:
         bool: True if ping succeeds (return code 0), False otherwise.
     """
+    logger = get_active_logger()
+
+    if logger:
+        logger.log(f"[ETHERNET] _ping_once() called: host={host}, timeout={timeout_s}s")
+
     sysname = platform.system().lower()
+
+    if logger:
+        logger.log(f"[ETHERNET] _ping_once() detected system: {sysname}")
+
     if "windows" in sysname:
         cmd = ["ping", "-n", "1", "-w", str(int(timeout_s * 1000)), host]
     else:
         cmd = ["ping", "-c", "1", "-W", str(int(timeout_s)), host]
+
+    if logger:
+        logger.log(f"[ETHERNET] _ping_once() command: {' '.join(cmd)}")
+
     try:
         r = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout_s + 2.0)
+        success = r.returncode == 0
+
+        if logger:
+            logger.log(f"[ETHERNET] _ping_once() result: rc={r.returncode}, success={success}")
+
         _log_subprocess(cmd, r.returncode, r.stdout, r.stderr, tag="PING")
-        return r.returncode == 0
+        return success
+
+    except subprocess.TimeoutExpired as e:
+        if logger:
+            logger.log(f"[ETHERNET] _ping_once() timeout after {timeout_s + 2.0}s")
+        _log_subprocess(cmd, 124, "", f"Timeout after {timeout_s + 2.0}s", tag="PING")
+        return False
+
     except Exception as e:
+        if logger:
+            logger.log(f"[ETHERNET] _ping_once() exception: {type(e).__name__}: {e}")
         _log_subprocess(cmd, 1, "", str(e), tag="PING")
         return False
 
@@ -262,33 +367,107 @@ def _http_request(
     import http.client
     import socket
 
-    req = urllib.request.Request(url, method=method.upper())
-    for k, v in (headers or {}).items():
-        req.add_header(k, v)
     logger = get_active_logger()
+
+    if logger:
+        logger.log(f"[ETHERNET] _http_request() called")
+        logger.log(f"[ETHERNET]   method={method}")
+        logger.log(f"[ETHERNET]   url={url}")
+        logger.log(f"[ETHERNET]   timeout={timeout}s")
+        logger.log(f"[ETHERNET]   headers={headers}")
+        logger.log(f"[ETHERNET]   data_bytes={len(data_bytes or b'')} bytes")
+
     if logger:
         h_preview = " ".join(f"{k}={repr(v)}" for k, v in (headers or {}).items())
         logger.info(
             f"[HTTP {method}] {url} timeout={timeout}s headers={h_preview or 'none'} data_len={len(data_bytes or b'')}"
         )
+
     attempts = 3
     last_err = None
+
     for attempt in range(1, attempts + 1):
+        if logger and attempt > 1:
+            logger.log(f"[ETHERNET] _http_request() attempt {attempt}/{attempts}")
+
+        conn = None
         try:
-            with urllib.request.urlopen(req, timeout=timeout, data=data_bytes) as resp:
-                body = resp.read()
-                try:
-                    text = body.decode("utf-8", errors="replace")
-                except Exception:
-                    text = ""
-                return resp.getcode(), dict(resp.headers), text
+            if logger:
+                logger.log(f"[ETHERNET] _http_request() opening connection...")
+
+            # Parse URL to get host and path
+            from urllib.parse import urlparse
+            parsed = urlparse(url)
+            host = parsed.hostname
+            port = parsed.port or (443 if parsed.scheme == 'https' else 80)
+            path = parsed.path or '/'
+            if parsed.query:
+                path += '?' + parsed.query
+
+            # Use HTTPConnection for more control
+            if parsed.scheme == 'https':
+                conn = http.client.HTTPSConnection(host, port, timeout=timeout)
+            else:
+                conn = http.client.HTTPConnection(host, port, timeout=timeout)
+
+            # Prepare headers
+            req_headers = headers.copy() if headers else {}
+            if 'Host' not in req_headers:
+                req_headers['Host'] = host
+            if 'Connection' not in req_headers:
+                req_headers['Connection'] = 'close'
+
+            # Send request
+            conn.request(method.upper(), path, body=data_bytes, headers=req_headers)
+
+            # Get response
+            resp = conn.getresponse()
+            status_code = resp.status
+            response_headers = dict(resp.headers)
+
+            if logger:
+                logger.log(f"[ETHERNET] _http_request() response status: {status_code}")
+                logger.log(f"[ETHERNET] _http_request() response headers: {response_headers}")
+
+            # Read body
+            body = resp.read()
+
+            if logger:
+                logger.log(f"[ETHERNET] _http_request() received {len(body)} bytes")
+
+            try:
+                text = body.decode("utf-8", errors="replace")
+            except Exception as decode_err:
+                if logger:
+                    logger.log(f"[ETHERNET] _http_request() decode error: {decode_err}")
+                text = ""
+
+            if logger:
+                logger.log(f"[ETHERNET] _http_request() success on attempt {attempt}")
+
+            return status_code, response_headers, text
+
         except urllib.error.HTTPError as e:
+            # This should not happen with HTTPConnection, but keep for compatibility
+            if logger:
+                logger.log(f"[ETHERNET] _http_request() HTTPError: {e.code} {e.reason}")
+
             body = ""
             try:
                 body = (e.read() or b"").decode("utf-8", errors="replace")
-            except Exception:
-                pass
-            return e.code, dict(getattr(e, "headers", {}) or {}), body
+                if logger:
+                    logger.log(f"[ETHERNET] _http_request() HTTPError body: {len(body)} bytes")
+            except Exception as body_err:
+                if logger:
+                    logger.log(f"[ETHERNET] _http_request() HTTPError body read error: {body_err}")
+
+            headers_dict = dict(getattr(e, "headers", {}) or {})
+
+            if logger:
+                logger.log(f"[ETHERNET] _http_request() returning HTTPError: status={e.code}, headers={len(headers_dict)}, body={len(body)}B")
+
+            return e.code, headers_dict, body
+
         except (
             http.client.IncompleteRead,
             http.client.RemoteDisconnected,
@@ -296,15 +475,40 @@ def _http_request(
             TimeoutError,
         ) as e:
             last_err = e
+
             if logger:
+                logger.log(f"[ETHERNET] _http_request() transient error: {type(e).__name__}: {e}")
                 logger.info(
                     f"[HTTP RETRY {attempt}/{attempts}] {method} {url} due to transient error: {e}"
                 )
-            time.sleep(0.15 * attempt)
+
+            sleep_time = 0.15 * attempt
+            if logger:
+                logger.log(f"[ETHERNET] _http_request() sleeping {sleep_time:.3f}s before retry...")
+
+            time.sleep(sleep_time)
             continue
+
         except Exception as e:
             last_err = e
+
+            if logger:
+                logger.log(f"[ETHERNET] _http_request() unexpected error: {type(e).__name__}: {e}")
+
             break
+
+        finally:
+            # Always close the connection
+            if conn:
+                try:
+                    conn.close()
+                except Exception:
+                    pass
+
+    if logger:
+        logger.log(f"[ETHERNET] _http_request() all attempts failed, raising EthernetTestError")
+        logger.log(f"[ETHERNET] _http_request() last error: {type(last_err).__name__}: {last_err}")
+
     raise EthernetTestError(f"{method} {url} failed: {last_err}")
 
 
@@ -500,7 +704,8 @@ def http_post_json_action(
     pace_key: Optional[str] = None,
     min_interval_s: float = 0.0,
     tolerate_disconnect: bool = False,
-    negative_test: bool = False) -> TestAction:
+    negative_test: bool = False
+) -> TestAction:
     """Create a TestAction that performs HTTP POST with JSON data.
 
     This TestAction factory creates an action that performs an HTTP POST
@@ -574,7 +779,8 @@ def expect_header_prefix_action(
     timeout: float,
     *,
     dump_subdir: Optional[str] = None,
-    negative_test: bool = False) -> TestAction:
+    negative_test: bool = False
+) -> TestAction:
     """Create a TestAction that validates HTTP response header prefixes.
 
     This TestAction factory creates an action that performs an HTTP GET

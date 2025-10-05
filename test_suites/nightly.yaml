@@ -6,15 +6,15 @@ name: "Nightly Tests"
 description: "Extended nightly test suite with stress testing"
 
 tests:
-  # Serial Communication Tests
-  - name: "Serial Communication Test"
-    path: "tests/tc_serial/tc_serial_utfw.py"
+  # Sanity Check Test
+  - name: "Sanity Check Test"
+    path: "tests/tc_sanity_check/tc_sanity_check.py"
     enabled: true
     timeout: 300
 
-  # Network Tests
-  - name: "Ethernet Basic Test"
-    path: "tests/tc_network_eth/tc_network_eth.py"
+  # Serial Communication Tests
+  - name: "Serial Communication Test"
+    path: "tests/tc_serial/tc_serial_utfw.py"
     enabled: true
     timeout: 300
 

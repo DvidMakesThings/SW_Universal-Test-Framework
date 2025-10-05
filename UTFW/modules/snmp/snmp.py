@@ -78,7 +78,7 @@ def _run_snmp_command(cmd: List[str], timeout: float = 5.0) -> Tuple[int, str, s
 
 def _parse_snmp_value(output: str) -> Optional[str]:
     """Parse SNMP command output to extract the returned value.
-    
+
     This function parses the standard output from SNMP commands to extract
     the actual value, handling various output formats from different SNMP
     implementations.
@@ -89,7 +89,14 @@ def _parse_snmp_value(output: str) -> Optional[str]:
     Returns:
         Optional[str]: Extracted value as string if parsable, otherwise None.
     """
+    logger = get_active_logger()
+
+    if logger:
+        logger.info(f"[SNMP] _parse_snmp_value() called, output length: {len(output)} chars")
+
     if " = " not in output:
+        if logger:
+            logger.info(f"[SNMP] No ' = ' separator found in output, returning None")
         return None
 
     parts = output.strip().split(" = ", 1)
@@ -102,12 +109,17 @@ def _parse_snmp_value(output: str) -> Optional[str]:
     else:
         value = value_part
 
-    return value.strip().strip('"')
+    result = value.strip().strip('"')
+
+    if logger:
+        logger.info(f"[SNMP] Parsed value: '{result}'")
+
+    return result
 
 
 def get_value(ip: str, oid: str, community: str = "public", timeout: float = 3.0) -> Optional[str]:
     """Retrieve an SNMP value from a device with logging.
-    
+
     This function performs an SNMP GET operation and logs both the subprocess
     execution details and a semantic summary of the SNMP operation result.
 
@@ -121,22 +133,33 @@ def get_value(ip: str, oid: str, community: str = "public", timeout: float = 3.0
         Optional[str]: Parsed value string or None if the command failed
             or the value couldn't be parsed.
     """
+    logger = get_active_logger()
+
+    if logger:
+        logger.info(f"[SNMP] get_value() called")
+        logger.info(f"[SNMP]   Target: {ip}, OID: {oid}, Community: {community}, Timeout: {timeout}s")
+
     cmd = ["snmpget", "-v1", "-c", community, ip, oid]
     rc, out, _err = _run_snmp_command(cmd, timeout)
+    if logger:
+        logger.info(f"[SNMP] snmpget returned: rc={rc}")
+
     value = _parse_snmp_value(out) if rc == 0 else None
 
-    logger = get_active_logger()
     if logger:
         note = "v1/public" if community == "public" else f"v1/{community}"
         note_part = f" ({note})" if note else ""
         value_str = "None" if value is None else repr(value)
         logger.info(f"[SNMP GET] {ip} {oid} -> {value_str}{note_part}")
+        if value is None and rc != 0:
+            logger.error(f"[SNMP GET ERROR] Failed to retrieve value, rc={rc}")
+
     return value
 
 
 def set_integer(ip: str, oid: str, value: int, community: str = "public", timeout: float = 3.0) -> bool:
     """Set an SNMP integer value with logging.
-    
+
     This function performs an SNMP SET operation for integer values and logs
     both the subprocess execution details and a semantic summary of the
     operation result.
@@ -151,16 +174,24 @@ def set_integer(ip: str, oid: str, value: int, community: str = "public", timeou
     Returns:
         bool: True if the command succeeded (rc==0), otherwise False.
     """
+    logger = get_active_logger()
+
+    if logger:
+        logger.info(f"[SNMP] set_integer() called")
+        logger.info(f"[SNMP]   Target: {ip}, OID: {oid}, Value: {value}, Community: {community}, Timeout: {timeout}s")
+
     cmd = ["snmpset", "-v1", "-c", community, ip, oid, "i", str(value)]
     rc, out, err = _run_snmp_command(cmd, timeout)
     ok = (rc == 0)
 
-    logger = get_active_logger()
     if logger:
+        logger.info(f"[SNMP] snmpset returned: rc={rc}, success={ok}")
         note = "v1/public" if community == "public" else f"v1/{community}"
         note_part = f" ({note})" if note else ""
         status = "OK" if ok else "FAIL"
         logger.info(f"[SNMP SET] {ip} {oid} = {value!r} -> {status}{note_part}")
+        if not ok:
+            logger.error(f"[SNMP SET ERROR] Failed to set value, rc={rc}")
     return ok
 
 
@@ -196,12 +227,28 @@ def set_outlet(name: str, ip: str, channel: int, state: bool,
         ... )
     """
     def execute():
+        logger = get_active_logger()
+        if logger:
+            logger.info(f"[SNMP] Executing set_outlet: channel={channel}, state={'ON' if state else 'OFF'}")
+
         if not 1 <= channel <= 8:
+            if logger:
+                logger.error(f"[SNMP ERROR] Invalid channel number: {channel} (must be 1-8)")
             raise SNMPTestError(f"Invalid channel: {channel}. Must be 1-8")
+
         oid = f"{outlet_base_oid}.{channel}.0"
         set_value = 1 if state else 0
+
+        if logger:
+            logger.info(f"[SNMP] Setting outlet: OID={oid}, value={set_value}")
+
         if not set_integer(ip, oid, set_value, community):
+            if logger:
+                logger.error(f"[SNMP ERROR] Failed to set channel {channel} to {'ON' if state else 'OFF'}")
             raise SNMPTestError(f"Failed to set channel {channel} to {'ON' if state else 'OFF'}")
+
+        if logger:
+            logger.info(f"[SNMP] Successfully set channel {channel} to {'ON' if state else 'OFF'}")
         return True
     return TestAction(name, execute, negative_test=negative_test)
 
@@ -240,21 +287,48 @@ def get_outlet(name: str, ip: str, channel: int, expected_state: bool,
         ... )
     """
     def execute():
+        logger = get_active_logger()
+        if logger:
+            logger.info(f"[SNMP] Executing get_outlet: channel={channel}, expected_state={'ON' if expected_state else 'OFF'}")
+
         if not 1 <= channel <= 8:
+            if logger:
+                logger.error(f"[SNMP ERROR] Invalid channel number: {channel} (must be 1-8)")
             raise SNMPTestError(f"Invalid channel: {channel}. Must be 1-8")
+
         oid = f"{outlet_base_oid}.{channel}.0"
+
+        if logger:
+            logger.info(f"[SNMP] Getting outlet state: OID={oid}")
+
         value = get_value(ip, oid, community)
         if value is None:
+            if logger:
+                logger.error(f"[SNMP ERROR] Failed to read channel {channel} state (got None)")
             raise SNMPTestError(f"Failed to read channel {channel} state")
+
+        if logger:
+            logger.info(f"[SNMP] Retrieved value: {value}")
+
         try:
             current_state = int(value) == 1
+            if logger:
+                logger.info(f"[SNMP] Parsed state: {'ON' if current_state else 'OFF'}")
         except ValueError:
+            if logger:
+                logger.error(f"[SNMP ERROR] Invalid state value: {value} (cannot parse as integer)")
             raise SNMPTestError(f"Invalid state value for channel {channel}: {value}")
+
         if current_state != expected_state:
+            if logger:
+                logger.error(f"[SNMP ERROR] State mismatch: expected={'ON' if expected_state else 'OFF'}, got={'ON' if current_state else 'OFF'}")
             raise SNMPTestError(
                 f"Channel {channel} state mismatch: expected {'ON' if expected_state else 'OFF'}, "
                 f"got {'ON' if current_state else 'OFF'}"
             )
+
+        if logger:
+            logger.info(f"[SNMP] Channel {channel} state verified: {'ON' if current_state else 'OFF'}")
         return True
     return TestAction(name, execute, negative_test=negative_test)
 
@@ -292,9 +366,22 @@ def set_all_outlets(name: str, ip: str, state: bool, all_on_oid: str, all_off_oi
         ... )
     """
     def execute():
+        logger = get_active_logger()
+        if logger:
+            logger.info(f"[SNMP] Executing set_all_outlets: state={'ON' if state else 'OFF'}")
+
         trigger_oid = all_on_oid if state else all_off_oid
+
+        if logger:
+            logger.info(f"[SNMP] Using trigger OID: {trigger_oid}")
+
         if not set_integer(ip, trigger_oid, 1, community):
+            if logger:
+                logger.error(f"[SNMP ERROR] Failed to set ALL outlets {'ON' if state else 'OFF'}")
             raise SNMPTestError(f"Failed to set ALL outlets {'ON' if state else 'OFF'}")
+
+        if logger:
+            logger.info(f"[SNMP] Successfully set ALL outlets {'ON' if state else 'OFF'}")
         return True
     return TestAction(name, execute, negative_test=negative_test)
 
@@ -331,23 +418,45 @@ def verify_all_outlets(name: str, ip: str, expected_state: bool, outlet_base_oid
         ... )
     """
     def execute():
+        logger = get_active_logger()
+        if logger:
+            logger.info(f"[SNMP] Executing verify_all_outlets: expected_state={'ON' if expected_state else 'OFF'}")
+
         failed_channels = []
         for channel in range(1, 9):
+            if logger:
+                logger.info(f"[SNMP] Checking channel {channel}...")
+
             try:
                 oid = f"{outlet_base_oid}.{channel}.0"
                 value = get_value(ip, oid, community)
                 if value is None:
+                    if logger:
+                        logger.error(f"[SNMP ERROR] CH{channel} read failed (got None)")
                     failed_channels.append(f"CH{channel} (read failed)")
                     continue
                 current_state = int(value) == 1
+                if logger:
+                    logger.info(f"[SNMP] CH{channel} state: {'ON' if current_state else 'OFF'}")
+
                 if current_state != expected_state:
+                    if logger:
+                        logger.error(f"[SNMP ERROR] CH{channel} state mismatch: expected={'ON' if expected_state else 'OFF'}, got={'ON' if current_state else 'OFF'}")
                     failed_channels.append(f"CH{channel} ({'ON' if current_state else 'OFF'})")
             except Exception as e:
+                if logger:
+                    logger.error(f"[SNMP ERROR] CH{channel} exception: {type(e).__name__}: {e}")
                 failed_channels.append(f"CH{channel} (error: {e})")
+
         if failed_channels:
+            if logger:
+                logger.error(f"[SNMP ERROR] Verification failed for {len(failed_channels)} channels: {', '.join(failed_channels)}")
             raise SNMPTestError(
                 f"ALL {'ON' if expected_state else 'OFF'} verification failed for: {', '.join(failed_channels)}"
             )
+
+        if logger:
+            logger.info(f"[SNMP] All 8 channels verified: {'ON' if expected_state else 'OFF'}")
         return True
     return TestAction(name, execute, negative_test=negative_test)
 
@@ -373,11 +482,19 @@ def test_single_outlet(channel: int, state: bool, ip: str, outlet_base_oid: str,
         SNMPTestError: If setting or verifying the outlet state fails,
             or if an invalid value is read.
     """
+    logger = get_active_logger()
+    if logger:
+        logger.info(f"[SNMP] test_single_outlet() called: channel={channel}, state={'ON' if state else 'OFF'}")
+
     # Set the outlet state
     if not set_integer(ip, f"{outlet_base_oid}.{channel}.0", 1 if state else 0, community):
+        if logger:
+            logger.error(f"[SNMP ERROR] Failed to set channel {channel}")
         raise SNMPTestError(f"Failed to set channel {channel} to {'ON' if state else 'OFF'}")
 
     # Verify the state
+    if logger:
+        logger.info(f"[SNMP] Waiting 200ms for outlet state change...")
     time.sleep(0.2)  # Allow time for change
     value = get_value(ip, f"{outlet_base_oid}.{channel}.0", community)
 
@@ -390,11 +507,15 @@ def test_single_outlet(channel: int, state: bool, ip: str, outlet_base_oid: str,
         raise SNMPTestError(f"Invalid state value for channel {channel}: {value}")
 
     if current_state != state:
+        if logger:
+            logger.error(f"[SNMP ERROR] Verification failed: expected={'ON' if state else 'OFF'}, got={'ON' if current_state else 'OFF'}")
         raise SNMPTestError(
             f"Channel {channel} verification failed: expected {'ON' if state else 'OFF'}, "
             f"got {'ON' if current_state else 'OFF'}"
         )
 
+    if logger:
+        logger.info(f"[SNMP] test_single_outlet succeeded for channel {channel}")
     return True
 
 
@@ -420,13 +541,21 @@ def test_all_outlets(state: bool, ip: str, all_on_oid: str, all_off_oid: str,
     Raises:
         SNMPTestError: If setting fails or any outlet verification fails.
     """
+    logger = get_active_logger()
+    if logger:
+        logger.info(f"[SNMP] test_all_outlets() called: state={'ON' if state else 'OFF'}")
+
     trigger_oid = all_on_oid if state else all_off_oid
 
     # Set ALL outlets
     if not set_integer(ip, trigger_oid, 1, community):
+        if logger:
+            logger.error(f"[SNMP ERROR] Failed to set ALL outlets")
         raise SNMPTestError(f"Failed to set ALL outlets {'ON' if state else 'OFF'}")
 
     # Verify all channels
+    if logger:
+        logger.info(f"[SNMP] Waiting 400ms for all outlet changes...")
     time.sleep(0.4)  # Allow time for all changes
     failed_channels = []
 
@@ -739,4 +868,393 @@ def expect_oid_error(name: str,
         if val is None:
             return True
         raise SNMPTestError(f"SNMP GET unexpectedly returned '{val}' for {oid}")
+    return TestAction(name, execute, negative_test=negative_test)
+
+
+def read_oid(
+    name: str,
+    ip: str,
+    oid: str,
+    expected: str = None,
+    min_val: float = None,
+    max_val: float = None,
+    community: str = "public",
+    timeout: float = 3.0,
+    negative_test: bool = False
+) -> TestAction:
+    """
+    Create TestAction to read an OID and optionally validate against expected value or range.
+
+    This is a simple, flexible function that reads an OID via SNMP and returns
+    the string value. You can validate in three ways:
+    1. No validation (just read and log)
+    2. String comparison (expected="OK")
+    3. Numeric range check (min_val=220.0, max_val=240.0)
+
+    Args:
+        name (str): Descriptive name for this test action.
+        ip (str): IP address of the device to query.
+        oid (str): OID to read.
+        expected (str, optional): Expected string value for exact match validation.
+            If None, no string validation. Defaults to None.
+        min_val (float, optional): Minimum acceptable numeric value (inclusive).
+            If provided with max_val, validates value is within range. Defaults to None.
+        max_val (float, optional): Maximum acceptable numeric value (inclusive).
+            If provided with min_val, validates value is within range. Defaults to None.
+        community (str, optional): SNMP community string. Defaults to "public".
+        timeout (float, optional): SNMP command timeout. Defaults to 3.0.
+        negative_test (bool, optional): If True, mark as negative test. Defaults to False.
+
+    Returns:
+        TestAction: Configured test action to read OID.
+
+    Raises:
+        SNMPTestError: If OID cannot be read or validation fails.
+
+    Example:
+        >>> # Just read and log the value
+        >>> read_oid("Read CH1 Voltage", "192.168.0.11", "1.3.6.1.4.1.19865.5.1.1.0")
+
+        >>> # String comparison
+        >>> read_oid("Check VREG Status", "192.168.0.11",
+        ...          "1.3.6.1.4.1.19865.3.8.0", expected="OK")
+
+        >>> # Numeric range validation
+        >>> read_oid("CH1 Voltage ON", "192.168.0.11",
+        ...          "1.3.6.1.4.1.19865.5.1.1.0", min_val=220.0, max_val=240.0)
+    """
+    def execute():
+        logger = get_active_logger()
+        value = get_value(ip, oid, community, timeout)
+
+        if value is None:
+            if logger:
+                logger.error(f"[SNMP] Failed to read OID {oid}")
+            raise SNMPTestError(f"Failed to read OID {oid}")
+
+        # Clean up the value (remove quotes if present)
+        value_clean = value.strip('"')
+
+        # Determine validation mode
+        if min_val is not None and max_val is not None:
+            # Numeric range validation
+            try:
+                value_numeric = float(value_clean)
+            except ValueError as e:
+                if logger:
+                    logger.error(f"[SNMP] Failed to parse '{value_clean}' as number: {e}")
+                raise SNMPTestError(f"Cannot parse '{value_clean}' as number for range validation")
+
+            if logger:
+                logger.info(f"[SNMP] {name}: {value_numeric} (range: {min_val}-{max_val})")
+
+            if not (min_val <= value_numeric <= max_val):
+                if logger:
+                    logger.error(f"[SNMP] Value {value_numeric} out of range [{min_val}, {max_val}]")
+                raise SNMPTestError(
+                    f"{name}: Value {value_numeric} out of range (expected {min_val}-{max_val})"
+                )
+
+        elif expected is not None:
+            # String comparison
+            if logger:
+                logger.info(f"[SNMP] {name}: {value_clean} (expected: {expected})")
+
+            if value_clean != expected:
+                if logger:
+                    logger.error(f"[SNMP] Value mismatch: got '{value_clean}', expected '{expected}'")
+                raise SNMPTestError(
+                    f"{name}: Value mismatch - got '{value_clean}', expected '{expected}'"
+                )
+
+        else:
+            # No validation, just log
+            if logger:
+                logger.info(f"[SNMP] {name}: {value_clean}")
+
+        return True
+    return TestAction(name, execute, negative_test=negative_test)
+
+
+def get_oid_value(
+    name: str,
+    ip: str,
+    oid: str,
+    community: str = "public",
+    timeout: float = 3.0,
+    negative_test: bool = False
+) -> TestAction:
+    """
+    Create TestAction to read and log an OID value without validation.
+
+    This function simply reads an OID value via SNMP and logs it, without
+    performing any validation. Useful for informational readings like current
+    measurements where you just want to see the value.
+
+    Args:
+        name (str): Descriptive name for this test action.
+        ip (str): IP address of the device to query.
+        oid (str): OID to read.
+        community (str, optional): SNMP community string. Defaults to "public".
+        timeout (float, optional): SNMP command timeout. Defaults to 3.0.
+        negative_test (bool, optional): If True, mark as negative test. Defaults to False.
+
+    Returns:
+        TestAction: Configured test action to read OID value.
+
+    Example:
+        >>> get_oid_value("Read CH1 Current", "192.168.0.11", "1.3.6.1.4.1.19865.5.1.2.0")
+    """
+    def execute():
+        logger = get_active_logger()
+        value = get_value(ip, oid, community, timeout)
+        if value is None:
+            if logger:
+                logger.warning(f"[SNMP] Failed to read OID {oid}")
+            raise SNMPTestError(f"Failed to read OID {oid}")
+        if logger:
+            logger.info(f"[SNMP] {name}: {value}")
+        return True
+    return TestAction(name, execute, negative_test=negative_test)
+
+
+def expect_oid_range(
+    name: str,
+    ip: str,
+    oid: str,
+    min_val: float,
+    max_val: float,
+    community: str = "public",
+    timeout: float = 3.0,
+    negative_test: bool = False
+) -> TestAction:
+    """
+    Create TestAction to validate an OID value is within a numeric range.
+
+    This function reads an OID value via SNMP, parses it as a float, and
+    validates that it falls within the specified min/max range.
+
+    Args:
+        name (str): Descriptive name for this test action.
+        ip (str): IP address of the device to query.
+        oid (str): OID to read and validate.
+        min_val (float): Minimum acceptable value (inclusive).
+        max_val (float): Maximum acceptable value (inclusive).
+        community (str, optional): SNMP community string. Defaults to "public".
+        timeout (float, optional): SNMP command timeout. Defaults to 3.0.
+        negative_test (bool, optional): If True, mark as negative test. Defaults to False.
+
+    Returns:
+        TestAction: Configured test action to validate OID range.
+
+    Raises:
+        SNMPTestError: If value is out of range or cannot be read/parsed.
+
+    Example:
+        >>> expect_oid_range("CH1 Voltage", "192.168.0.11",
+        ...                  "1.3.6.1.4.1.19865.5.1.1.0", 220.0, 240.0)
+    """
+    def execute():
+        logger = get_active_logger()
+        value_str = get_value(ip, oid, community, timeout)
+
+        if value_str is None:
+            if logger:
+                logger.error(f"[SNMP] Failed to read OID {oid}")
+            raise SNMPTestError(f"Failed to read OID {oid}")
+
+        try:
+            value = float(value_str.strip('"'))
+        except ValueError as e:
+            if logger:
+                logger.error(f"[SNMP] Failed to parse '{value_str}' as float: {e}")
+            raise SNMPTestError(f"Invalid numeric value '{value_str}' for OID {oid}: {e}")
+
+        if logger:
+            logger.info(f"[SNMP] {name}: {value} (expected: {min_val}-{max_val})")
+
+        if not (min_val <= value <= max_val):
+            if logger:
+                logger.error(f"[SNMP] Value {value} out of range [{min_val}, {max_val}]")
+            raise SNMPTestError(
+                f"{name}: Value {value} out of range (expected {min_val}-{max_val})"
+            )
+
+        return True
+    return TestAction(name, execute, negative_test=negative_test)
+
+
+def wait_settle(
+    name: str,
+    duration_s: float,
+    negative_test: bool = False
+) -> TestAction:
+    """
+    Create TestAction to wait for a specified duration.
+
+    This is useful for allowing system states to settle before taking
+    measurements, such as waiting for power readings to stabilize after
+    turning outlets on.
+
+    Args:
+        name (str): Descriptive name for this test action.
+        duration_s (float): Duration to wait in seconds.
+        negative_test (bool, optional): If True, mark as negative test. Defaults to False.
+
+    Returns:
+        TestAction: Configured test action to wait.
+
+    Example:
+        >>> wait_settle("Wait for power to stabilize", 8.0)
+    """
+    def execute():
+        logger = get_active_logger()
+        if logger:
+            logger.info(f"[SNMP] Waiting {duration_s}s...")
+        time.sleep(duration_s)
+        return True
+    return TestAction(name, execute, negative_test=negative_test)
+
+
+def verify_hlw8032_all_channels(
+    name: str,
+    ip: str,
+    community: str = "public",
+    check_voltage: bool = True,
+    check_current: bool = True,
+    expected_voltage_min: float = 0.0,
+    expected_voltage_max: float = 5.0,
+    settle_time_s: float = 2.0,
+    timeout: float = 3.0,
+    negative_test: bool = False
+) -> TestAction:
+    """
+    Create TestAction to verify HLW8032 power monitoring readings for all 8 channels.
+
+    This function reads voltage and current values from all 8 HLW8032 power monitoring
+    channels via SNMP and validates them against expected ranges. It's used to verify
+    that power monitoring is working correctly, typically with outlets OFF (low voltage)
+    or ON (mains voltage).
+
+    The HLW8032 OIDs follow the pattern: .1.3.6.1.4.1.19865.5.<channel>.<metric>.0
+    where channel = 1-8 and metric: 1=Voltage, 2=Current, 3=Power, 4=PowerFactor,
+    5=kWh, 6=Uptime
+
+    Args:
+        name (str): Descriptive name for this test action.
+        ip (str): IP address of the device to query.
+        community (str, optional): SNMP community string. Defaults to "public".
+        check_voltage (bool, optional): Whether to check voltage readings. Defaults to True.
+        check_current (bool, optional): Whether to check current readings. Defaults to True.
+        expected_voltage_min (float, optional): Minimum expected voltage in V. Defaults to 0.0.
+        expected_voltage_max (float, optional): Maximum expected voltage in V. Defaults to 5.0.
+        settle_time_s (float, optional): Time to wait before reading values (seconds).
+            Defaults to 2.0.
+        timeout (float, optional): SNMP command timeout. Defaults to 3.0.
+        negative_test (bool, optional): If True, mark as negative test. Defaults to False.
+
+    Returns:
+        TestAction: Configured test action to verify HLW8032 readings.
+
+    Raises:
+        SNMPTestError: If any channel's readings are out of expected range or cannot be read.
+
+    Example:
+        >>> # Check all channels with outlets OFF (voltage < 5V)
+        >>> verify_hlw8032_all_channels(
+        ...     "HLW8032 OFF check", "192.168.0.11",
+        ...     expected_voltage_min=0.0, expected_voltage_max=5.0
+        ... )
+
+        >>> # Check all channels with outlets ON (220-240V AC)
+        >>> verify_hlw8032_all_channels(
+        ...     "HLW8032 ON check", "192.168.0.11",
+        ...     expected_voltage_min=220.0, expected_voltage_max=240.0,
+        ...     settle_time_s=8.0
+        ... )
+    """
+    from tests import hardware_config as hw
+
+    def execute():
+        logger = get_active_logger()
+        if logger:
+            logger.info(f"[SNMP] Verifying HLW8032 readings for all 8 channels")
+            logger.info(f"[SNMP]   Voltage check: {check_voltage} (range: {expected_voltage_min}-{expected_voltage_max}V)")
+            logger.info(f"[SNMP]   Current check: {check_current}")
+            logger.info(f"[SNMP]   Settle time: {settle_time_s}s")
+
+        # Wait for readings to settle
+        if settle_time_s > 0:
+            if logger:
+                logger.info(f"[SNMP] Waiting {settle_time_s}s for readings to settle...")
+            time.sleep(settle_time_s)
+
+        errors = []
+
+        # Check all 8 channels
+        for channel in range(1, 9):
+            if logger:
+                logger.info(f"[SNMP] === Channel {channel} ===")
+
+            # Check voltage if requested
+            if check_voltage:
+                voltage_oid = hw.get_hlw8032_oid(channel, hw.HLW8032_VOLTAGE)
+                voltage_str = get_value(ip, voltage_oid, community, timeout)
+
+                if voltage_str is None:
+                    errors.append(f"Channel {channel}: Failed to read voltage (OID: {voltage_oid})")
+                    if logger:
+                        logger.warning(f"[SNMP] Channel {channel} voltage read failed")
+                    continue
+
+                try:
+                    voltage = float(voltage_str.strip('"'))
+                    if logger:
+                        logger.info(f"[SNMP] Channel {channel} Voltage: {voltage}V")
+
+                    if not (expected_voltage_min <= voltage <= expected_voltage_max):
+                        errors.append(
+                            f"Channel {channel}: Voltage {voltage}V out of range "
+                            f"({expected_voltage_min}-{expected_voltage_max}V)"
+                        )
+                        if logger:
+                            logger.warning(
+                                f"[SNMP] Channel {channel} voltage {voltage}V out of expected range"
+                            )
+                except ValueError as e:
+                    errors.append(f"Channel {channel}: Invalid voltage value '{voltage_str}': {e}")
+                    if logger:
+                        logger.warning(f"[SNMP] Channel {channel} voltage parse error: {e}")
+
+            # Check current if requested
+            if check_current:
+                current_oid = hw.get_hlw8032_oid(channel, hw.HLW8032_CURRENT)
+                current_str = get_value(ip, current_oid, community, timeout)
+
+                if current_str is None:
+                    errors.append(f"Channel {channel}: Failed to read current (OID: {current_oid})")
+                    if logger:
+                        logger.warning(f"[SNMP] Channel {channel} current read failed")
+                    continue
+
+                try:
+                    current = float(current_str.strip('"'))
+                    if logger:
+                        logger.info(f"[SNMP] Channel {channel} Current: {current}A")
+                except ValueError as e:
+                    errors.append(f"Channel {channel}: Invalid current value '{current_str}': {e}")
+                    if logger:
+                        logger.warning(f"[SNMP] Channel {channel} current parse error: {e}")
+
+        # Report results
+        if errors:
+            error_msg = f"HLW8032 verification failed:\n" + "\n".join(f"  - {e}" for e in errors)
+            if logger:
+                logger.error(f"[SNMP] {error_msg}")
+            raise SNMPTestError(error_msg)
+
+        if logger:
+            logger.info(f"[SNMP] All 8 channels passed HLW8032 verification")
+        return True
+
     return TestAction(name, execute, negative_test=negative_test)

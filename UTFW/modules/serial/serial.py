@@ -30,6 +30,31 @@ DEBUG = False  # Set to True to enable debug prints
 _LAST_RESPONSE: Optional[str] = None
 
 
+def _format_hex_dump(data: bytes, bytes_per_line: int = 16) -> str:
+    """Format binary data as a detailed hex dump with ASCII preview.
+
+    Creates a formatted hex dump showing hex values and printable ASCII characters.
+
+    Args:
+        data (bytes): Binary data to format.
+        bytes_per_line (int, optional): Number of bytes per line. Defaults to 16.
+
+    Returns:
+        str: Formatted hex dump string.
+    """
+    if not data:
+        return "[empty]"
+
+    lines = []
+    for i in range(0, len(data), bytes_per_line):
+        chunk = data[i:i + bytes_per_line]
+        hex_part = ' '.join(f'{b:02X}' for b in chunk)
+        ascii_part = ''.join(chr(b) if 32 <= b < 127 else '.' for b in chunk)
+        lines.append(f"  {i:04X}  {hex_part:<{bytes_per_line*3}}  |{ascii_part}|")
+
+    return '\n'.join(lines)
+
+
 def _set_last_response(text: str) -> None:
     """Store the last response for use in validation functions.
     
@@ -106,7 +131,15 @@ def _open_connection(port: str, baudrate: int = 115200, timeout: float = 2.0):
     import serial.tools.list_ports as list_ports_check
     import serial as pyserial
 
+    logger = get_active_logger()
+
+    if logger:
+        logger.info(f"[SERIAL] Opening connection to port={port}")
+        logger.info(f"[SERIAL]   Configuration: baudrate={baudrate}, timeout={timeout}s, write_timeout=2.0s")
+        logger.info(f"[SERIAL]   Flow control: xonxoff=False, rtscts=False, dsrdtr=False")
+
     try:
+        # Attempt to open the serial port
         ser = pyserial.Serial(
             port=port,
             baudrate=baudrate,
@@ -116,78 +149,161 @@ def _open_connection(port: str, baudrate: int = 115200, timeout: float = 2.0):
             rtscts=False,
             dsrdtr=False
         )
+
+        if logger:
+            logger.info(f"[SERIAL] Port {port} opened successfully")
+            logger.info(f"[SERIAL] Stabilizing connection (100ms delay)...")
+
         time.sleep(0.1)  # Allow connection to stabilize
+
+        # Clear any stale data from buffers
+        if logger:
+            logger.info(f"[SERIAL] Resetting input and output buffers")
         ser.reset_input_buffer()
         ser.reset_output_buffer()
 
-        # Log serial connection opening
-        logger = get_active_logger()
         if logger:
-            logger.info(f"[SERIAL] Opened port={port} baud={baudrate}")
+            logger.info(f"[SERIAL] Connection ready: port={port}, baudrate={baudrate}, timeout={timeout}s")
 
         return ser
+
+    except FileNotFoundError as e:
+        error_msg = f"Serial port {port} not found. Please verify the port exists."
+        if logger:
+            logger.error(f"[SERIAL ERROR] {error_msg}")
+            logger.error(f"[SERIAL ERROR] Exception details: {type(e).__name__}: {e}")
+        raise SerialTestError(error_msg)
+
+    except PermissionError as e:
+        error_msg = f"Permission denied accessing port {port}. Port may be in use by another process."
+        if logger:
+            logger.error(f"[SERIAL ERROR] {error_msg}")
+            logger.error(f"[SERIAL ERROR] Exception details: {type(e).__name__}: {e}")
+        raise SerialTestError(error_msg)
+
     except Exception as e:
-        raise SerialTestError(f"Failed to open serial port {port}: {e}")
+        error_msg = f"Failed to open serial port {port}: {type(e).__name__}: {e}"
+        if logger:
+            logger.error(f"[SERIAL ERROR] {error_msg}")
+            logger.error(f"[SERIAL ERROR] Port: {port}, Baudrate: {baudrate}")
+        raise SerialTestError(error_msg)
 
 
 def send_command(port: str, command: str, baudrate: int = 115200, timeout: float = 2.0) -> str:
     """Send a command via serial port and return the complete response.
-    
+
     This function opens a serial connection, sends the specified command,
     waits for and captures the response, then closes the connection. All
     communication is logged using the active logger with TX/RX details.
-    
+
     Args:
         port (str): Serial port identifier (e.g., "COM3", "/dev/ttyUSB0").
         command (str): Command string to send (CR+LF will be appended).
         baudrate (int, optional): Communication baud rate. Defaults to 115200.
         timeout (float, optional): Response timeout in seconds. Defaults to 2.0.
-        
+
     Returns:
         str: Complete response received from the device.
-        
+
     Raises:
         SerialTestError: If communication fails or times out.
     """
-    ser = _open_connection(port, baudrate, timeout)
     logger = get_active_logger()
 
+    if logger:
+        logger.info(f"[SERIAL] send_command() called")
+        logger.info(f"[SERIAL]   port={port}, command='{command}', baudrate={baudrate}, timeout={timeout}s")
+
+    ser = _open_connection(port, baudrate, timeout)
+
     try:
-        # Send command
+        # Prepare command payload
         payload = (command.strip() + "\r\n")
-        if logger:
-            logger.info(f"[SERIAL TX] {payload.strip()}")
         cmd_bytes = payload.encode('utf-8')
-        ser.write(cmd_bytes)
+
+        if logger:
+            logger.info(f"[SERIAL TX] Sending command: '{command.strip()}'")
+            logger.info(f"[SERIAL TX] Payload length: {len(cmd_bytes)} bytes (including CR+LF)")
+            logger.info(f"[SERIAL TX] Hex dump:")
+            logger.info(_format_hex_dump(cmd_bytes))
+
+        # Write command to serial port
+        bytes_written = ser.write(cmd_bytes)
         ser.flush()
+
+        if logger:
+            logger.info(f"[SERIAL TX] Wrote {bytes_written} bytes to port")
+            logger.info(f"[SERIAL TX] Waiting 50ms for device processing...")
+
         time.sleep(0.05)
 
-        # Read response
+        # Read response with detailed progress logging
         response_bytes = bytearray()
         start_time = time.time()
         last_data_time = start_time
+        chunk_count = 0
+
+        if logger:
+            logger.info(f"[SERIAL RX] Starting to read response (timeout={timeout}s)")
 
         while (time.time() - start_time) < timeout:
             if ser.in_waiting > 0:
                 chunk = ser.read(ser.in_waiting)
+                chunk_count += 1
                 response_bytes.extend(chunk)
                 last_data_time = time.time()
+                elapsed = time.time() - start_time
+
+                if logger:
+                    logger.info(f"[SERIAL RX] Chunk #{chunk_count}: received {len(chunk)} bytes (elapsed: {elapsed:.3f}s, total: {len(response_bytes)} bytes)")
+
             elif (time.time() - last_data_time) > 0.5:
+                if logger:
+                    logger.info(f"[SERIAL RX] No data received for 500ms, assuming response complete")
                 break
+
             time.sleep(0.01)
 
-        text = response_bytes.decode('utf-8', errors='ignore')
+        total_time = time.time() - start_time
+
         if logger:
-            logger.info(f"[SERIAL RX] {len(response_bytes)} bytes")
+            logger.info(f"[SERIAL RX] Response complete:")
+            logger.info(f"[SERIAL RX]   Total bytes: {len(response_bytes)}")
+            logger.info(f"[SERIAL RX]   Chunks received: {chunk_count}")
+            logger.info(f"[SERIAL RX]   Total time: {total_time:.3f}s")
+
+        # Decode response
+        text = response_bytes.decode('utf-8', errors='ignore')
+
+        if logger:
+            logger.info(f"[SERIAL RX] Decoded text ({len(text)} characters):")
+            # Log response with visible control characters
+            visible_text = text.replace("\r", "\\r").replace("\n", "\\n\n  ")
+            logger.info(f"  {visible_text}")
+            logger.info(f"[SERIAL RX] Hex dump:")
+            logger.info(_format_hex_dump(response_bytes))
+
         _set_last_response(text)
         return text
 
+    except Exception as e:
+        if logger:
+            logger.error(f"[SERIAL ERROR] Exception during send_command:")
+            logger.error(f"[SERIAL ERROR]   Type: {type(e).__name__}")
+            logger.error(f"[SERIAL ERROR]   Message: {e}")
+            logger.error(f"[SERIAL ERROR]   Port: {port}, Command: '{command}'")
+        raise SerialTestError(f"Communication error on {port}: {type(e).__name__}: {e}")
+
     finally:
         try:
-            ser.close()
-        finally:
             if logger:
-                logger.info(f"[SERIAL] Closed port {port}")
+                logger.info(f"[SERIAL] Closing port {port}")
+            ser.close()
+            if logger:
+                logger.info(f"[SERIAL] Port {port} closed successfully")
+        except Exception as e:
+            if logger:
+                logger.error(f"[SERIAL ERROR] Failed to close port {port}: {e}")
 
 
 def wait_for_reboot_and_ready(port: str, ready_token: str = "SYSTEM READY",
@@ -212,62 +328,134 @@ def wait_for_reboot_and_ready(port: str, ready_token: str = "SYSTEM READY",
     _ensure_pyserial()
     import serial
 
-    deadline = time.time() + timeout
-    time.sleep(0.2)  # Give device time to start rebooting
     logger = get_active_logger()
 
+    if logger:
+        logger.info(f"[SERIAL] wait_for_reboot_and_ready() called")
+        logger.info(f"[SERIAL]   port={port}, ready_token='{ready_token}', baudrate={baudrate}, timeout={timeout}s")
+
+    deadline = time.time() + timeout
+    start_time = time.time()
+
+    if logger:
+        logger.info(f"[SERIAL] Waiting 200ms for device to start rebooting...")
+    time.sleep(0.2)  # Give device time to start rebooting
+
+    connection_attempts = 0
     while time.time() < deadline:
+        connection_attempts += 1
+        remaining_time = deadline - time.time()
+
+        if logger:
+            logger.info(f"[SERIAL] Connection attempt #{connection_attempts} (remaining timeout: {remaining_time:.1f}s)")
+
         try:
             ser = serial.Serial(port=port, baudrate=baudrate, timeout=1.0)
+
+            if logger:
+                logger.info(f"[SERIAL] Connected to port {port} on attempt #{connection_attempts}")
+
             try:
                 time.sleep(0.1)
                 response_bytes = bytearray()
                 banner_found = False
+                chunk_count = 0
+
+                if logger:
+                    logger.info(f"[SERIAL RX] Monitoring for ready token: '{ready_token}'")
+
                 while time.time() < deadline:
                     if ser.in_waiting > 0:
                         chunk = ser.read(ser.in_waiting)
+                        chunk_count += 1
                         response_bytes.extend(chunk)
                         text_chunk = chunk.decode('utf-8', errors='ignore')
+
+                        if logger:
+                            logger.info(f"[SERIAL RX] Chunk #{chunk_count}: {len(chunk)} bytes")
+                            logger.info(f"[SERIAL RX] Content: {text_chunk.replace(chr(13), '<CR>').replace(chr(10), '<LF>\n')}")
+
                         if DEBUG: print(f"[DEBUG] Received during reboot: {text_chunk}")
+
                         # Check for banner in the latest chunk
                         if ready_token.lower() in text_chunk.lower():
                             banner_found = True
+                            if logger:
+                                logger.info(f"[SERIAL] Ready token '{ready_token}' detected!")
                             break
                     time.sleep(0.05)
+
                 response = response_bytes.decode('utf-8', errors='ignore')
-                if logger and response:
-                    logger.info(f"[SERIAL RX] reconnect bytes={len(response_bytes)}")
-                    logger.info(response.replace("\r", "\\r").replace("\n", "\\n\n"))
+                elapsed = time.time() - start_time
+
+                if logger:
+                    logger.info(f"[SERIAL RX] Total response: {len(response_bytes)} bytes in {chunk_count} chunks")
+                    logger.info(f"[SERIAL RX] Elapsed time: {elapsed:.3f}s")
+                    if response:
+                        logger.info(f"[SERIAL RX] Full response:")
+                        logger.info(response.replace("\r", "\\r").replace("\n", "\\n\n"))
+                        logger.info(f"[SERIAL RX] Hex dump:")
+                        logger.info(_format_hex_dump(response_bytes))
+
                 if banner_found:
+                    if logger:
+                        logger.info(f"[SERIAL] Device ready! Returning True")
                     return True
+                else:
+                    if logger:
+                        logger.info(f"[SERIAL] Ready token not found in this attempt")
+
             finally:
                 try:
                     ser.close()
-                finally:
                     if logger:
-                        logger.info(f"[SERIAL] Closed port={port}")
-        except Exception:
+                        logger.info(f"[SERIAL] Closed port {port}")
+                except Exception as e:
+                    if logger:
+                        logger.error(f"[SERIAL ERROR] Failed to close port: {e}")
+
+        except Exception as e:
+            if logger:
+                logger.info(f"[SERIAL] Connection attempt #{connection_attempts} failed: {type(e).__name__}: {e}")
             pass
+
+        if logger:
+            logger.info(f"[SERIAL] Waiting 200ms before next attempt...")
         time.sleep(0.2)
+
+    elapsed_total = time.time() - start_time
+    if logger:
+        logger.error(f"[SERIAL] Timeout after {elapsed_total:.1f}s and {connection_attempts} attempts")
+        logger.error(f"[SERIAL] Ready token '{ready_token}' was NOT detected")
+
     return False
 
 
 def parse_sysinfo_response(response: str) -> Dict[str, str]:
     """Parse SYSINFO command response into a structured dictionary.
-    
+
     This function parses the multi-line response from a SYSINFO command
     and extracts key system information into a dictionary with standardized
     key names.
-    
+
     Args:
         response (str): Raw SYSINFO command response text.
-        
+
     Returns:
         Dict[str, str]: Dictionary containing parsed system information
             with keys like "Serial", "Firmware", "Core Voltage", etc.
     """
+    logger = get_active_logger()
+
+    if logger:
+        logger.info(f"[SERIAL] parse_sysinfo_response() called")
+        logger.info(f"[SERIAL]   Response length: {len(response)} characters")
+
     sysinfo = {}
     lines = response.replace("\r\n", "\n").replace("\r", "\n").splitlines()
+
+    if logger:
+        logger.info(f"[SERIAL] Parsing {len(lines)} lines from response")
 
     for line in lines:
         line = line.strip()
@@ -302,24 +490,35 @@ def parse_sysinfo_response(response: str) -> Dict[str, str]:
             else:
                 sysinfo[key] = value
 
+    if logger:
+        logger.info(f"[SERIAL] Parsed {len(sysinfo)} fields from SYSINFO:")
+        for key, value in sysinfo.items():
+            logger.info(f"[SERIAL]   {key}: {value}")
+
     return sysinfo
 
 
 def validate_sysinfo_data(sysinfo: Dict[str, str], validation: Dict[str, Any]):
     """Validate parsed SYSINFO data against specified validation rules.
-    
+
     This function checks parsed system information against a set of validation
     rules including firmware version format, voltage ranges, and frequency
     expectations.
-    
+
     Args:
         sysinfo (Dict[str, str]): Parsed system information dictionary.
         validation (Dict[str, Any]): Validation rules dictionary containing
             rules for firmware_regex, core_voltage_range, frequencies, etc.
-            
+
     Raises:
         SerialTestError: If any validation rules fail.
     """
+    logger = get_active_logger()
+
+    if logger:
+        logger.info(f"[SERIAL] validate_sysinfo_data() called")
+        logger.info(f"[SERIAL]   Validating {len(sysinfo)} SYSINFO fields against {len(validation)} rules")
+
     failures = []
 
     # Firmware regex validation
@@ -366,22 +565,29 @@ def validate_sysinfo_data(sysinfo: Dict[str, str], validation: Dict[str, Any]):
                 failures.append(f"Invalid frequency value for {freq_field}: {sysinfo[freq_field]}")
 
     if failures:
+        if logger:
+            logger.error(f"[SERIAL] Validation failed with {len(failures)} errors:")
+            for i, failure in enumerate(failures, 1):
+                logger.error(f"[SERIAL]   {i}. {failure}")
         raise SerialTestError(f"SYSINFO validation failed: {'; '.join(failures)}")
+    else:
+        if logger:
+            logger.info(f"[SERIAL] All validations passed successfully")
 
 
 def parse_get_ch_all(response: str) -> Dict[int, bool]:
     """Parse a multi-line 'GET_CH ALL' response into a channel state mapping.
-    
+
     This function parses the response from a 'GET_CH ALL' command and extracts
     the state (ON/OFF) of each channel into a dictionary.
 
     Args:
         response (str): Raw response text from 'GET_CH ALL' command.
-        
+
     Returns:
         Dict[int, bool]: Dictionary mapping channel numbers (1-8) to their
             states (True for ON, False for OFF).
-    
+
     Example:
         Input response:
         [ECHO] Received CMD: "GET_CH ALL"
@@ -389,12 +595,21 @@ def parse_get_ch_all(response: str) -> Dict[int, bool]:
         [ECHO] CH2: OFF
         ...
         [ECHO] CH8: OFF
-        
+
         Returns: {1: False, 2: False, ..., 8: False}
     """
+    logger = get_active_logger()
+
+    if logger:
+        logger.info(f"[SERIAL] parse_get_ch_all() called")
+        logger.info(f"[SERIAL]   Response length: {len(response)} characters")
+
     lines = response.replace("\r\n", "\n").replace("\r", "\n").splitlines()
     ch_map: Dict[int, bool] = {}
     pat = re.compile(r"CH\s*([1-8])\s*:\s*(ON|OFF)", re.IGNORECASE)
+
+    if logger:
+        logger.info(f"[SERIAL] Parsing {len(lines)} lines for channel states")
 
     for raw in lines:
         s = raw.strip()
@@ -409,6 +624,14 @@ def parse_get_ch_all(response: str) -> Dict[int, bool]:
         on = m.group(2).upper() == "ON"
         ch_map[ch] = on
 
+        if logger:
+            logger.info(f"[SERIAL]   Found: CH{ch} = {'ON' if on else 'OFF'}")
+
+    if logger:
+        logger.info(f"[SERIAL] Parsed {len(ch_map)} channel states")
+        if len(ch_map) < 8:
+            logger.warning(f"[SERIAL] Warning: Only {len(ch_map)} channels parsed, expected 8")
+
     return ch_map
 
 
@@ -420,7 +643,8 @@ def wait_for_reboot(
         banner: str = "SYSTEM READY",
         baudrate: int = 115200,
         timeout: float = 15.0,
-        negative_test: bool = False) -> TestAction:
+        negative_test: bool = False
+        ) -> "TestAction":
     """Create a TestAction that waits for device reboot and ready banner.
     
     This TestAction factory creates an action that monitors a serial port
@@ -471,7 +695,8 @@ def validate_all_channels_state(
         name: str,
         response: str,
         expected: Union[bool, List[bool], Dict[int, bool]],
-        negative_test: bool = False) -> TestAction:
+        negative_test: bool = False
+        ) -> TestAction:
     """Create a TestAction that validates channel states from GET_CH ALL response.
     
     This TestAction factory creates an action that parses a 'GET_CH ALL' response
@@ -760,7 +985,8 @@ def validate_single_token(
         name: str,
         response: str,
         token: str,
-        negative_test: bool = False) -> TestAction:
+        negative_test: bool = False
+        ) -> TestAction:
     """Create a TestAction that validates the presence of a single token.
     
     This TestAction factory creates an action that checks if a specific
@@ -794,7 +1020,8 @@ def validate_tokens(
         name: str,
         response: str,
         tokens: List[str],
-        negative_test: bool = False) -> TestAction:
+        negative_test: bool = False
+        ) -> TestAction:
     """Create a TestAction that validates the presence of multiple tokens.
     
     This TestAction factory creates an action that checks if all specified
@@ -836,7 +1063,8 @@ def set_network_parameter(
         value: str,
         baudrate: int = 115200,
         reboot_timeout: float = 10.0,
-        negative_test: bool = False) -> TestAction:
+        negative_test: bool = False
+        ) -> TestAction:
     """Create a TestAction that sets network parameters via UART with reboot handling.
     
     This TestAction factory creates an action that sends network configuration
@@ -997,7 +1225,8 @@ def factory_reset_complete(
         name: str,
         port: str,
         baudrate: int = 115200,
-        negative_test: bool = False) -> TestAction:
+        negative_test: bool = False
+        ) -> TestAction:
     """Create a TestAction that performs a complete factory reset sequence.
     
     This TestAction factory creates an action that sends an RFS (Reset Factory

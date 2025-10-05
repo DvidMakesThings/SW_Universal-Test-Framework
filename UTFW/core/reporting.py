@@ -258,24 +258,6 @@ class TestReporter:
         """Forward subprocess logging to the universal logger."""
         self._ulog.subprocess(cmd, returncode, stdout, stderr, tag=tag)
 
-    # ------------------------ serial helpers ------------------------
-
-    def log_serial_open(self, port: str, baud: int) -> None:
-        """Log serial port open event."""
-        self._ulog.serial_open(port, baud)
-
-    def log_serial_close(self, port: str) -> None:
-        """Log serial port close event."""
-        self._ulog.serial_close(port)
-
-    def log_serial_tx(self, data: Union[bytes, str]) -> None:
-        """Log TX payload with preview and optional hex dump."""
-        self._ulog.serial_tx(data)
-
-    def log_serial_rx(self, data: Union[bytes, str], note: str = "") -> None:
-        """Log RX payload with preview and optional hex dump."""
-        self._ulog.serial_rx(data, note=note)
-
     # ------------------------ subprocess helpers (detailed) ------------------------
 
     def log_subprocess(
@@ -288,16 +270,6 @@ class TestReporter:
     ) -> None:
         """Log a subprocess invocation result."""
         self._ulog.subprocess(cmd, returncode, stdout, stderr, tag=tag)
-
-    # ------------------------ SNMP helpers ------------------------
-
-    def log_snmp_get(self, ip: str, oid: str, value: Optional[str], note: str = "") -> None:
-        """Log SNMP GET outcome."""
-        self._ulog.snmp_get(ip, oid, value, note=note)
-
-    def log_snmp_set(self, ip: str, oid: str, value: Union[int, str], ok: bool, note: str = "") -> None:
-        """Log SNMP SET outcome."""
-        self._ulog.snmp_set(ip, oid, value, success=ok, note=note)
 
     # ------------------------ reports ------------------------
 

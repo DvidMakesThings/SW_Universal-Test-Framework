@@ -13,6 +13,7 @@ from UTFW.core import run_test_with_teardown
 from UTFW.core import get_hwconfig
 from UTFW.core import STE
 from UTFW.modules import snmp as SNMP
+from UTFW.modules import serial as UART
 
 
 class tc_stress_switching_test:
@@ -20,6 +21,53 @@ class tc_stress_switching_test:
 
     def __init__(self):
         pass
+
+    def pre(self):
+        """Pre-steps: Reboot device and wait for it to be ready.
+
+        These steps prepare the hardware before the actual test begins.
+        """
+        hw = get_hwconfig()
+
+        return [
+            # PRE-STEP 1: Send reboot command via UART
+            UART.send_command_uart(
+                name="Reboot device via UART",
+                port=hw.SERIAL_PORT,
+                command="REBOOT",
+                baudrate=hw.BAUDRATE,
+                reboot=True  # Special handling for reboot
+            ),
+        ]
+    
+    def teardown(self):
+        """Teardown: Cleanup actions that always run, even on failure.
+
+        These steps are guaranteed to execute regardless of test outcome.
+        Critical for ensuring hardware is left in a safe state.
+        """
+        hw = get_hwconfig()
+
+        return [
+            # TEARDOWN 1.1: Ensure all outputs are OFF (safety measure)
+            SNMP.set_all_outlets(
+                name="Ensure all outputs OFF",
+                ip=hw.BASELINE_IP,
+                all_on_oid=hw.ALL_ON_OID,
+                all_off_oid=hw.ALL_OFF_OID,
+                state=False,
+                community=hw.SNMP_COMMUNITY
+            ),
+
+            # TEARDOWN 1.2: Final verification all outputs are OFF
+            SNMP.verify_all_outlets(
+                name="Final verify all outputs OFF",
+                ip=hw.BASELINE_IP,
+                outlet_base_oid=hw.OUTLET_BASE_OID,
+                expected_state=False,
+                community=hw.SNMP_COMMUNITY
+            ),
+        ]
 
     def setup(self):
         hw = get_hwconfig()

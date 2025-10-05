@@ -42,19 +42,47 @@ def _ensure_reports_dir() -> Path:
         FX2TestError: If no active logger or no log file is present.
     """
     logger = get_active_logger()
+
+    if logger:
+        logger.log(f"[FX2LA] _ensure_reports_dir() called")
+
     if not logger or not getattr(logger, "log_file", None):
+        if logger:
+            logger.log(f"[FX2LA ERROR] _ensure_reports_dir() no active logger or log file")
         raise FX2TestError("Active logger not set or no log file. Initialize TestFramework first.")
-    return Path(logger.log_file).parent
+
+    reports_dir = Path(logger.log_file).parent
+
+    if logger:
+        logger.log(f"[FX2LA] _ensure_reports_dir() resolved: {reports_dir}")
+
+    return reports_dir
 
 
 def _run_sigrok(cmd: List[str], cwd: Optional[str] = None) -> Tuple[int, str, str]:
     """Run a sigrok-related subprocess with logging."""
     logger = get_active_logger()
+
+    if logger:
+        logger.log(f"[FX2LA] _run_sigrok() called")
+        logger.log(f"[FX2LA]   cmd={' '.join(cmd)}")
+        logger.log(f"[FX2LA]   cwd={cwd or os.getcwd()}")
+
     try:
+        if logger:
+            logger.log(f"[FX2LA] _run_sigrok() starting subprocess...")
+
         proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, cwd=cwd, text=True)
         out, err = proc.communicate()
         rc = proc.returncode
+
+        if logger:
+            logger.log(f"[FX2LA] _run_sigrok() process completed: rc={rc}")
+            logger.log(f"[FX2LA] _run_sigrok() stdout={len(out)} bytes, stderr={len(err)} bytes")
+
     except Exception as e:
+        if logger:
+            logger.log(f"[FX2LA ERROR] _run_sigrok() exception: {type(e).__name__}: {e}")
         raise FX2TestError(f"Failed to run command {cmd}: {e}")
 
     if logger:
@@ -65,7 +93,17 @@ def _run_sigrok(cmd: List[str], cwd: Optional[str] = None) -> Tuple[int, str, st
 
 def _normalize_hex(s: str) -> str:
     """Normalize hex string spacing/casing."""
-    return " ".join(x.upper() for x in s.strip().split())
+    logger = get_active_logger()
+
+    if logger:
+        logger.log(f"[FX2LA] _normalize_hex() called: input='{s}'")
+
+    result = " ".join(x.upper() for x in s.strip().split())
+
+    if logger:
+        logger.log(f"[FX2LA] _normalize_hex() result: '{result}'")
+
+    return result
 
 
 # ======================== UART ========================
@@ -86,8 +124,22 @@ def capture_uart_and_check(
 
     def execute():
         logger = get_active_logger()
+
+        if logger:
+            logger.log(f"[FX2LA] capture_uart_and_check() execute called")
+            logger.log(f"[FX2LA]   duration_s={duration_s}")
+            logger.log(f"[FX2LA]   baud={baud}")
+            logger.log(f"[FX2LA]   expected={expected}")
+            logger.log(f"[FX2LA]   match_mode={match_mode}")
+            logger.log(f"[FX2LA]   fmt={fmt}")
+            logger.log(f"[FX2LA]   hex_strip_00={hex_strip_00}")
+
         tmpdir = tempfile.mkdtemp(prefix="fx2_uart_")
         outfile = Path(tmpdir) / "uart.sr"
+
+        if logger:
+            logger.log(f"[FX2LA] Created temp directory: {tmpdir}")
+            logger.log(f"[FX2LA] Output file: {outfile}")
 
         cmd = [
             "sigrok-cli",
@@ -97,9 +149,19 @@ def capture_uart_and_check(
             "-o", str(outfile),
             "-O", "sr"
         ]
+
+        if logger:
+            logger.log(f"[FX2LA] Running sigrok capture command...")
+
         rc, out, err = _run_sigrok(cmd)
+
         if rc != 0:
+            if logger:
+                logger.log(f"[FX2LA ERROR] sigrok-cli capture failed: rc={rc}")
             raise FX2TestError(f"sigrok-cli failed: {err}")
+
+        if logger:
+            logger.log(f"[FX2LA] Running sigrok decode command...")
 
         decode_cmd = [
             "sigrok-cli",
@@ -107,17 +169,33 @@ def capture_uart_and_check(
             "-P", f"uart:baudrate={baud}"
         ]
         rc, out, err = _run_sigrok(decode_cmd)
+
         if rc != 0:
+            if logger:
+                logger.log(f"[FX2LA] Decode failed, trying fallback without -P parameter...")
+
             fallback = decode_cmd[:-1]  # drop -P
             rc, out, err = _run_sigrok(fallback)
+
             if rc != 0:
+                if logger:
+                    logger.log(f"[FX2LA ERROR] UART decode fallback also failed: rc={rc}")
                 raise FX2TestError(f"UART decode failed: {err}")
+
             if logger:
                 logger.info("UART decode re-run without '-A' due to previous error.")
                 logger.subprocess(fallback, rc, out, err, tag="SIGROK-UART")
 
+        if logger:
+            logger.log(f"[FX2LA] Decode complete, processing output...")
+            logger.log(f"[FX2LA]   Output lines: {len(out.splitlines())}")
+
         ascii_joined = "".join(line for line in out.splitlines() if line.strip())
         hex_joined = " ".join(line.encode("utf-8").hex() for line in out.splitlines())
+
+        if logger:
+            logger.log(f"[FX2LA] Joined ASCII length: {len(ascii_joined)} chars")
+            logger.log(f"[FX2LA] Joined HEX length: {len(hex_joined)} chars")
 
         if logger:
             a_prev = ascii_joined if len(ascii_joined) <= 200 else ascii_joined[:200] + f". [{len(ascii_joined)-200} more]"
@@ -131,12 +209,31 @@ def capture_uart_and_check(
                 logger.info(f"[UART] HEX (drop 00): {h_prev2}")
 
         if expected:
+            if logger:
+                logger.log(f"[FX2LA] Validating expected value...")
+                logger.log(f"[FX2LA]   expected={expected}")
+                logger.log(f"[FX2LA]   fmt={fmt}")
+                logger.log(f"[FX2LA]   match_mode={match_mode}")
+
             target = ascii_joined if fmt.lower() == "ascii" else hex_joined
+
+            if logger:
+                target_preview = target[:200] + "..." if len(target) > 200 else target
+                logger.log(f"[FX2LA]   target={target_preview}")
+
             ok = (expected in target) if match_mode == "contains" else (expected == target)
+
             if not ok:
+                if logger:
+                    logger.log(f"[FX2LA ERROR] Validation failed: expected '{expected}' not found in target")
                 raise FX2TestError(f"UART validation failed. Expected {expected} (mode={match_mode}) not found.")
+
             if logger:
                 logger.info(f"[UART] Expected check PASSED (mode={match_mode}).")
+                logger.log(f"[FX2LA] Validation successful!")
+
+        if logger:
+            logger.log(f"[FX2LA] capture_uart_and_check() complete, returning results")
 
         return {"ascii": ascii_joined, "hex": hex_joined}
 

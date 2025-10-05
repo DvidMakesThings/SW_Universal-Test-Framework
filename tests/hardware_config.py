@@ -31,6 +31,46 @@ ALL_ON_OID = "1.3.6.1.4.1.19865.2.10.0"
 ALL_OFF_OID = "1.3.6.1.4.1.19865.2.9.0"
 SNMP_TIMEOUT = 3.0
 
+# ADC + Voltage Monitoring OIDs (.1.3.6.1.4.1.19865.3.X.0)
+ADC_BASE_OID = "1.3.6.1.4.1.19865.3"
+ADC_DIE_SENSOR_VOLTAGE = "1.3.6.1.4.1.19865.3.1.0"
+ADC_DIE_SENSOR_TEMPERATURE = "1.3.6.1.4.1.19865.3.2.0"
+ADC_12V_PSU_VOLTAGE = "1.3.6.1.4.1.19865.3.3.0"
+ADC_5V_USB_VOLTAGE = "1.3.6.1.4.1.19865.3.4.0"
+ADC_12V_PSU_DIVIDER_VOLTAGE = "1.3.6.1.4.1.19865.3.5.0"
+ADC_5V_USB_DIVIDER_VOLTAGE = "1.3.6.1.4.1.19865.3.6.0"
+ADC_CORE_VREG_TARGET_VOLTAGE = "1.3.6.1.4.1.19865.3.7.0"
+ADC_CORE_VREG_STATUS_FLAGS = "1.3.6.1.4.1.19865.3.8.0"
+ADC_BANDGAP_REFERENCE = "1.3.6.1.4.1.19865.3.9.0"
+ADC_USB_PHY_RAIL = "1.3.6.1.4.1.19865.3.10.0"
+ADC_IO_RAIL_NOMINAL = "1.3.6.1.4.1.19865.3.11.0"
+
+# HLW8032 Power Monitoring OIDs (.1.3.6.1.4.1.19865.5.<channel>.<metric>.0)
+# Channels 1-8, Metrics: 1=Voltage, 2=Current, 3=Power, 4=PowerFactor, 5=kWh, 6=Uptime
+HLW8032_BASE_OID = "1.3.6.1.4.1.19865.5"
+
+# Helper function to build HLW8032 OIDs
+def get_hlw8032_oid(channel: int, metric: int) -> str:
+    """
+    Get HLW8032 OID for a specific channel and metric.
+
+    Args:
+        channel: Channel number (1-8)
+        metric: Metric type (1=Voltage, 2=Current, 3=Power, 4=PowerFactor, 5=kWh, 6=Uptime)
+
+    Returns:
+        Complete OID string
+    """
+    return f"{HLW8032_BASE_OID}.{channel}.{metric}.0"
+
+# Metric indices for HLW8032
+HLW8032_VOLTAGE = 1
+HLW8032_CURRENT = 2
+HLW8032_POWER = 3
+HLW8032_POWER_FACTOR = 4
+HLW8032_KWH = 5
+HLW8032_UPTIME = 6
+
 # System OIDs
 SYS_DESCR = "1.3.6.1.2.1.1.1.0"
 SYS_OBJID = "1.3.6.1.2.1.1.2.0"

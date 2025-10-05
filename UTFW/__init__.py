@@ -42,11 +42,12 @@ Serial = modules.serial
 Network = modules.network
 Ethernet = modules.ethernet
 FX2 = modules.fx2LA
+NOP = modules.nop
 
 # Import report helper
 from .tools import generate_test_report as REPORT_HELPER
 
-__version__ = "2.0.0"
+__version__ = "2.1.32"
 __all__ = [
     # Core framework
     "TestFramework",
@@ -72,10 +73,11 @@ __all__ = [
     # Test modules
     "SNMP",
     "Serial",
-    "Network", 
+    "Network",
     "Ethernet",
     "FX2",
-    
+    "NOP",
+
     # Module package
     "modules",
     

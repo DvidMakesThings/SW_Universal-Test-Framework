@@ -27,7 +27,7 @@ __all__ = [
     # Exceptions
     "NetworkTestError",
 
-    # Core network functions
+    # Core network functions (duplicated ping_host is intentional for compatibility)
     "ping_host",
     "http_get",
     "http_post",

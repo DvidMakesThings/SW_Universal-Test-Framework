@@ -59,6 +59,13 @@ def _dumpcap_list_interfaces(dumpcap_exe: str, env: Optional[dict], cwd: Optiona
       1. \\Device\\NPF_{GUID} (Ethernet 2)
       2. \\Device\\NPF_Loopback (Npcap Loopback Adapter)
     """
+    logger = get_active_logger()
+
+    if logger:
+        logger.log(f"[PCAP-CAPTURE] _dumpcap_list_interfaces() called")
+        logger.log(f"[PCAP-CAPTURE]   dumpcap_exe={dumpcap_exe}")
+        logger.log(f"[PCAP-CAPTURE]   cwd={cwd or os.getcwd()}")
+
     try:
         proc = subprocess.run(
             [dumpcap_exe, "-D"],
@@ -70,8 +77,22 @@ def _dumpcap_list_interfaces(dumpcap_exe: str, env: Optional[dict], cwd: Optiona
             timeout=10
         )
         lines = (proc.stdout or "").splitlines()
-        return [ln.strip() for ln in lines if ln.strip()]
-    except Exception:
+        result = [ln.strip() for ln in lines if ln.strip()]
+
+        if logger:
+            logger.log(f"[PCAP-CAPTURE] dumpcap -D returned {len(result)} interfaces")
+            for ln in result:
+                logger.log(f"[PCAP-CAPTURE]   {ln}")
+
+        return result
+
+    except subprocess.TimeoutExpired as e:
+        if logger:
+            logger.log(f"[PCAP-CAPTURE ERROR] dumpcap -D timed out after 10s")
+        return []
+    except Exception as e:
+        if logger:
+            logger.log(f"[PCAP-CAPTURE ERROR] dumpcap -D failed: {type(e).__name__}: {e}")
         return []
 
 
@@ -86,8 +107,16 @@ def _dumpcap_resolve_interface(requested: str, dumpcap_exe: str, env: Optional[d
       4) Substring match on description or device
       5) Fallback to original string
     """
+    logger = get_active_logger()
+
+    if logger:
+        logger.log(f"[PCAP-CAPTURE] _dumpcap_resolve_interface() called")
+        logger.log(f"[PCAP-CAPTURE]   requested={requested}")
+
     req = (requested or "").strip()
     if req.isdigit():
+        if logger:
+            logger.log(f"[PCAP-CAPTURE] Interface is numeric: {req} (using as-is)")
         return req, None
 
     lines = _dumpcap_list_interfaces(dumpcap_exe, env, cwd)
@@ -117,21 +146,35 @@ def _dumpcap_resolve_interface(requested: str, dumpcap_exe: str, env: Optional[d
 
     # (2) Prefer loopback explicitly on Windows BEFORE any generic substring matches
     if sys_is_win and lower_req in {"lo", "loopback", "npcap loopback", "npcap loopback adapter", "127.0.0.1"}:
+        if logger:
+            logger.log(f"[PCAP-CAPTURE] Windows loopback alias detected, searching for loopback interface...")
         for idx, dev, desc in entries:
             if "loopback" in desc.lower() or "loopback" in dev.lower():
+                if logger:
+                    logger.log(f"[PCAP-CAPTURE] Resolved to loopback: idx={idx}, desc={desc}")
                 return idx, pretty
 
     # (3) Exact match on desc or dev
+    if logger:
+        logger.log(f"[PCAP-CAPTURE] Trying exact match on description or device...")
     for idx, dev, desc in entries:
         if lower_req == desc.lower() or lower_req == dev.lower():
+            if logger:
+                logger.log(f"[PCAP-CAPTURE] Exact match found: idx={idx}, dev={dev}, desc={desc}")
             return idx, pretty
 
     # (4) Substring match on desc or dev
+    if logger:
+        logger.log(f"[PCAP-CAPTURE] No exact match, trying substring match...")
     for idx, dev, desc in entries:
         if lower_req in desc.lower() or lower_req in dev.lower():
+            if logger:
+                logger.log(f"[PCAP-CAPTURE] Substring match found: idx={idx}, dev={dev}, desc={desc}")
             return idx, pretty
 
     # (5) Fallback
+    if logger:
+        logger.log(f"[PCAP-CAPTURE] No match found, using requested value as-is: {req}")
     return req, pretty
 
 
@@ -203,6 +246,41 @@ def CapturePcap(name: str,
         ... )
         >>> action()
     """
+    # PRE-RESOLVE: Do expensive setup BEFORE execute() to minimize startup latency
+    # This is critical for parallel execution where timing matters
+    dumpcap_path = _which("dumpcap")
+    tcpdump_path = _which("tcpdump")
+
+    tool = None
+    if require_tool:
+        rq = require_tool.strip().lower()
+        if rq == "dumpcap":
+            if not dumpcap_path:
+                raise PCAPCaptureError("Requested tool 'dumpcap' not found in PATH.")
+            tool = ("dumpcap", dumpcap_path)
+        elif rq == "tcpdump":
+            if not tcpdump_path:
+                raise PCAPCaptureError("Requested tool 'tcpdump' not found in PATH.")
+            tool = ("tcpdump", tcpdump_path)
+        else:
+            raise PCAPCaptureError(f"Unknown require_tool={require_tool!r}; use 'dumpcap' or 'tcpdump'.")
+    else:
+        # Prefer dumpcap when available
+        if dumpcap_path:
+            tool = ("dumpcap", dumpcap_path)
+        elif tcpdump_path:
+            tool = ("tcpdump", tcpdump_path)
+        else:
+            raise PCAPCaptureError("Neither 'dumpcap' nor 'tcpdump' found in PATH.")
+
+    tool_name, tool_exe = tool
+
+    # PRE-RESOLVE interface for dumpcap to avoid delay during execution
+    pre_resolved_iface = None
+    pre_listing_text = None
+    if tool_name == "dumpcap":
+        pre_resolved_iface, pre_listing_text = _dumpcap_resolve_interface(interface, tool_exe, os.environ.copy(), cwd)
+
     def execute():
         logger = get_active_logger()
         tag = _rand_tag()
@@ -210,40 +288,13 @@ def CapturePcap(name: str,
         # Ensure output directory exists
         _make_parent_dirs(output_path)
 
-        # Decide which tool to use
-        dumpcap_path = _which("dumpcap")
-        tcpdump_path = _which("tcpdump")
-        tool = None
-
-        if require_tool:
-            rq = require_tool.strip().lower()
-            if rq == "dumpcap":
-                if not dumpcap_path:
-                    raise PCAPCaptureError("Requested tool 'dumpcap' not found in PATH.")
-                tool = ("dumpcap", dumpcap_path)
-            elif rq == "tcpdump":
-                if not tcpdump_path:
-                    raise PCAPCaptureError("Requested tool 'tcpdump' not found in PATH.")
-                tool = ("tcpdump", tcpdump_path)
-            else:
-                raise PCAPCaptureError(f"Unknown require_tool={require_tool!r}; use 'dumpcap' or 'tcpdump'.")
-        else:
-            # Prefer dumpcap when available
-            if dumpcap_path:
-                tool = ("dumpcap", dumpcap_path)
-            elif tcpdump_path:
-                tool = ("tcpdump", tcpdump_path)
-            else:
-                raise PCAPCaptureError("Neither 'dumpcap' nor 'tcpdump' found in PATH.")
-
-        tool_name, tool_exe = tool
-
         # Build command
         argv: List[str] = [tool_exe]
 
         if tool_name == "dumpcap":
-            # Resolve interface for dumpcap (-D listing can be numeric index)
-            resolved_iface, listing_text = _dumpcap_resolve_interface(interface, tool_exe, os.environ.copy(), cwd)
+            # Use pre-resolved interface
+            resolved_iface = pre_resolved_iface
+            listing_text = pre_listing_text
             if logger:
                 if listing_text:
                     logger.log(f"[PCAP-CAPTURE] tag={tag} dumpcap -D:\n{listing_text}")
@@ -287,6 +338,9 @@ def CapturePcap(name: str,
 
             # BPF filter at capture time
             if bpf:
+                # Validate BPF filter syntax before starting capture
+                if logger:
+                    logger.log(f"[PCAP-CAPTURE] tag={tag} validating BPF filter: {bpf}")
                 argv += ["-f", bpf]
 
         else:  # tcpdump
@@ -354,6 +408,29 @@ def CapturePcap(name: str,
         except Exception as e:
             raise PCAPCaptureError(f"Failed to launch capture tool: {e}") from e
 
+        # Give capture tool time to initialize and start capturing
+        # This is critical on Windows where dumpcap needs time to initialize the interface
+        # and apply BPF filters. Wait for the output file to be created with header.
+        if logger:
+            logger.log(f"[PCAP-CAPTURE] tag={tag} waiting for capture tool to initialize...")
+
+        # Wait up to 3 seconds for dumpcap to create the output file and write the header
+        init_deadline = time.time() + 3.0
+        file_created = False
+        while time.time() < init_deadline:
+            if Path(output_path).exists() and Path(output_path).stat().st_size >= 24:
+                file_created = True
+                if logger:
+                    logger.log(f"[PCAP-CAPTURE] tag={tag} output file created, dumpcap is ready")
+                break
+            time.sleep(0.1)
+
+        if not file_created and logger:
+            logger.log(f"[PCAP-CAPTURE] tag={tag} WARNING: output file not created within 3s, proceeding anyway")
+
+        # Additional 200ms buffer to ensure dumpcap is truly ready to capture
+        time.sleep(0.2)
+
         # Manage duration for tcpdump (dumpcap already has -a duration)
         timed_stop = False
         if tool_name == "tcpdump" and duration_s is not None and packet_count is None:
@@ -415,6 +492,15 @@ def CapturePcap(name: str,
 
         # Validate output
         out_path = Path(output_path)
+        file_size = out_path.stat().st_size if out_path.exists() else 0
+        if logger:
+            logger.log(f"[PCAP-CAPTURE] tag={tag} file size after capture: {file_size} bytes")
+            if file_size == 24:
+                logger.log(f"[PCAP-CAPTURE] tag={tag} WARNING: File contains only PCAP header, no packets captured!")
+                logger.log(f"[PCAP-CAPTURE] tag={tag} This suggests either:")
+                logger.log(f"[PCAP-CAPTURE] tag={tag}   1. BPF filter '{bpf}' matched zero packets")
+                logger.log(f"[PCAP-CAPTURE] tag={tag}   2. No traffic occurred during capture window")
+                logger.log(f"[PCAP-CAPTURE] tag={tag}   3. Interface '{interface}' did not see the expected traffic")
         if not out_path.exists() or out_path.stat().st_size == 0:
             # dumpcap ring buffer: if ring_files specified, the base -w is a prefix and files may have suffixes.
             # Try to find at least one produced file.

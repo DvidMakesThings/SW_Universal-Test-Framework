@@ -239,6 +239,10 @@ def build_ipv4_packet(
     ttl: int,
     tos: int,
 ) -> bytes:
+    logger = get_active_logger()
+    if logger:
+        logger.log(f"[PCAPGEN] build_ipv4_packet(): src={src}, dst={dst}, payload={len(payload)}B, proto={protocol}, ident={identification}, df={flags_df}, mf={flags_mf}, offset={frag_offset_units8}, ttl={ttl}, tos={tos}")
+
     ip_src = _ip4_bytes(src)
     ip_dst = _ip4_bytes(dst)
     ver_ihl = (4 << 4) | 5  # no options
@@ -262,7 +266,12 @@ def build_ipv4_packet(
     )
     cksum = _checksum16(ihdr)
     ihdr = ihdr[:10] + struct.pack("!H", cksum) + ihdr[12:]
-    return ihdr + payload
+    result = ihdr + payload
+
+    if logger:
+        logger.log(f"[PCAPGEN] build_ipv4_packet() complete: total={len(result)}B, header=20B, checksum=0x{cksum:04x}")
+
+    return result
 
 
 def fragment_ipv4_payload_auto(
@@ -280,6 +289,10 @@ def fragment_ipv4_payload_auto(
     Split payload into IPv4 fragments with data sizes multiple of 8 bytes except last.
     Returns list of complete IPv4 packets (headers + fragment payload).
     """
+    logger = get_active_logger()
+    if logger:
+        logger.log(f"[PCAPGEN] fragment_ipv4_payload_auto(): payload={len(full_payload)}B, frag_size={frag_payload_size}B, ident={identification}")
+
     if frag_payload_size <= 0:
         raise PCAPGenError("ip_auto_fragment_payload_size must be > 0")
     ident = int(identification) & 0xFFFF if identification is not None else 0
@@ -311,6 +324,10 @@ def fragment_ipv4_payload_auto(
         )
         packets.append(pkt)
         offset += frag_len
+
+    if logger:
+        logger.log(f"[PCAPGEN] fragment_ipv4_payload_auto() complete: {len(packets)} fragments created")
+
     return packets
 
 
@@ -324,6 +341,10 @@ def build_ethernet_frame(
     fcs_xormask: int,
 ) -> bytes:
     """Return Ethernet frame bytes including FCS. Enforces total_size_including_fcs when provided."""
+    logger = get_active_logger()
+    if logger:
+        logger.log(f"[PCAPGEN] build_ethernet_frame(): dst={dst_mac}, src={src_mac}, ethertype={ethertype}, payload={len(payload)}B, total_size={total_size_including_fcs}, fcs_xor=0x{fcs_xormask:08x}")
+
     d = _mac_from_any(dst_mac)
     s = _mac_from_any(src_mac)
     if isinstance(ethertype, str):
@@ -370,7 +391,12 @@ def build_ethernet_frame(
     # FCS
     fcs = _crc32_le(frame_wo_fcs) ^ (int(fcs_xormask) & 0xFFFFFFFF)
     fcs_bytes = struct.pack("<I", fcs)  # little-endian on the wire (LSB first)
-    return frame_wo_fcs + fcs_bytes
+    result = frame_wo_fcs + fcs_bytes
+
+    if logger:
+        logger.log(f"[PCAPGEN] build_ethernet_frame() complete: total={len(result)}B (with FCS), fcs=0x{fcs:08x}")
+
+    return result
 
 
 def _pcap_append_frames_ns(

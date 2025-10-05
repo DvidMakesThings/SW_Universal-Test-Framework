@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ENERGIS Functional Test" tests="1243" failures="0" skipped="0" time="0.0" session_id="4d8da390">
+<testsuite name="ENERGIS Functional Test" tests="1246" failures="0" skipped="0" time="0.0" session_id="8c599b18">
+  <testcase classname="UTFW" name="PRE-STEP 1 Reboot device via UART" time="0.0">
+  </testcase>
   <testcase classname="UTFW" name="STEP 1 Rapid SNMP switching test - 15 cycles per channel" time="0.0">
   </testcase>
   <testcase classname="UTFW" name="STEP 1.1 Cycle 1 - CH1 ON" time="0.0">
@@ -2485,5 +2487,9 @@
   <testcase classname="UTFW" name="STEP 4.8 Set CH8 OFF after stress test" time="0.0">
   </testcase>
   <testcase classname="UTFW" name="STEP 4.9 Final SNMP verification - all OFF" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="TEARDOWN 1 Ensure all outputs OFF" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="TEARDOWN 2 Final verify all outputs OFF" time="0.0">
   </testcase>
 </testsuite>

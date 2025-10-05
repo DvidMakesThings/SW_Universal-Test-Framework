@@ -1,0 +1,37 @@
+# UTFW Universal Test Framework - Python Dependencies
+# ======================================================
+# This file lists all Python packages required to run the UTFW framework
+# Install with: pip install -r requirements.txt
+
+# Core Serial Communication
+pyserial>=3.5
+
+# SNMP Protocol Support
+pysnmp>=4.4.12
+
+# Network Packet Analysis (scapy for packet generation and analysis)
+scapy>=2.5.0
+
+# HTTP/HTTPS Requests
+requests>=2.31.0
+
+# YAML Configuration Support (for test suites)
+PyYAML>=6.0
+
+# XML Processing (included in Python stdlib, but listed for clarity)
+# lxml>=4.9.0  # Optional: Enhanced XML processing if needed
+
+# Data Validation and Type Hints (Python 3.9+ has most built-in)
+# Note: dataclasses is built-in for Python 3.7+
+# Note: typing is built-in for Python 3.5+
+
+# Test Reporting Dependencies
+# Note: Most HTML/XML generation uses stdlib only
+
+# Optional: Enhanced terminal output (not required, but recommended)
+# colorama>=0.4.6  # For colored terminal output on Windows
+
+# Development Dependencies (optional, for developers)
+# pytest>=7.4.0  # For running unit tests
+# black>=23.0.0  # For code formatting
+# mypy>=1.5.0  # For type checking

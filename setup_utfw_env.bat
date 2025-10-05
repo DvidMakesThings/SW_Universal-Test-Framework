@@ -66,6 +66,18 @@ if errorlevel 1 (
   exit /b 1
 )
 
+REM --- Install dependencies from requirements.txt ----------------
+echo [INFO] Installing dependencies from requirements.txt...
+if exist "%REPO_DIR%\requirements.txt" (
+  %PY_CALL% -m pip install -r "%REPO_DIR%\requirements.txt"
+  if errorlevel 1 (
+    echo [WARN] Some dependencies from requirements.txt failed to install.
+    echo [WARN] The framework may still work, but some features might be unavailable.
+  )
+) else (
+  echo [WARN] requirements.txt not found in "%REPO_DIR%"
+)
+
 REM --- Editable install of UTFW ----------------------------------
 echo [INFO] Installing UTFW in editable mode from:
 echo        "%REPO_DIR%"

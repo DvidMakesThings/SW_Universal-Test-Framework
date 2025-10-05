@@ -14,6 +14,7 @@ Available modules:
 - network: Network connectivity and HTTP testing
 - ethernet: Advanced HTTP and web testing utilities
 - fx2LA: Logic analyzer integration (experimental)
+- nop: No Operation / Wait utilities
 
 Author: DvidMakesThings
 """
@@ -24,12 +25,14 @@ from . import snmp
 from . import network
 from . import ethernet
 from . import fx2LA
+from . import nop
 from UTFW.tools import generate_test_report as REPORT_HELPER
 
 __all__ = [
     "serial",
-    "snmp", 
+    "snmp",
     "network",
     "ethernet",
-    "fx2LA"
+    "fx2LA",
+    "nop"
 ]

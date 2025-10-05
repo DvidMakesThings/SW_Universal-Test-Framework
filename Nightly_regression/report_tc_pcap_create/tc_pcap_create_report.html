@@ -20,6 +20,12 @@
     .status.pass{border-color:#1e7f45;color:#d7ffe6;background:#0e2017}
     .status.fail{border-color:#a23b3b;color:#ffe1e1;background:#210e0e}
     .status.unknown{border-color:#6b7280;background:#1b2028}
+    details.pre-step{border-left:4px solid #6366f1}
+    details.pre-step summary{background:#1a1c2e}
+    details.post-step{border-left:4px solid #22c55e}
+    details.post-step summary{background:#152419}
+    details.teardown{border-left:4px solid#f59e0b}
+    details.teardown summary{background:#2a1f0e}
     pre{background:#0b0f14;border:1px solid #2a2f37;border-radius:8px;padding:10px;overflow:auto}
     table{width:100%;border-collapse:collapse;margin-top:8px}
     th,td{border-bottom:1px solid #1f2530;padding:8px 6px;text-align:left;font-size:13px}
@@ -38,8 +44,8 @@
 <h1>ENERGIS Test Report</h1>
 <div class='meta'>
 Overall: <b class='chip pass'>PASS</b> &nbsp;
-Started: 2025-10-03 21:15:04 &nbsp;
-Session ID: 29bef53c &nbsp;
+Started: 2025-10-04 21:02:00 &nbsp;
+Session ID: 238fa495 &nbsp;
 </div>
 </header>
 <main>
@@ -52,11 +58,11 @@ Session ID: 29bef53c &nbsp;
 <section>
 <h3>Environment</h3>
 <div class='kv'>
-<div>Test Session ID</div><div><code>29bef53c</code></div>
+<div>Test Session ID</div><div><code>238fa495</code></div>
 <div>Hostname</div><div>DPC</div>
 <div>Os</div><div>Windows 11 (10.0.26100)</div>
 <div>Python</div><div>3.13.7 (tags/v3.13.7:bcee1c3, Aug 14 2025, 14:15:11) [MSC v.1944 64 bit (AMD64)]</div>
-<div>Generated_at</div><div>2025-10-03 21:15:08</div>
+<div>Generated_at</div><div>2025-10-04 21:02:04</div>
 <div>Log_file</div><div>G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\tc_pcap_create_results.log</div>
 </div>
 </section>
@@ -69,7 +75,7 @@ Session ID: 29bef53c &nbsp;
 <div class='content'>
 <table>
 <tr><th>Started</th><th>Finished</th></tr>
-<tr><td>2025-10-03 21:15:04</td><td>2025-10-03 21:15:04</td></tr>
+<tr><td>2025-10-04 21:02:00</td><td>2025-10-04 21:02:00</td></tr>
 </table>
 <div class='substeps'>
 <h4>Substeps</h4>
@@ -80,20 +86,24 @@ Session ID: 29bef53c &nbsp;
 <div class='content'>
 <table>
 <tr><th>Started</th><th>Finished</th></tr>
-<tr><td>2025-10-03 21:15:04</td><td>2025-10-03 21:15:04</td></tr>
+<tr><td>2025-10-04 21:02:00</td><td>2025-10-04 21:02:00</td></tr>
 </table>
 <h4>Log</h4>
 <pre>
-[2025-10-03 21:15:04] [STEP 1.1] UDP128
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] pcap_create -&gt; target=G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap last_ts_ns=None last_len=None params delta_ns=None ifg_bytes=None link_bps=None
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] IPv4 build: src=192.0.2.1 dst=198.51.100.1 proto=17 payload_len=72 ident=None df=0 mf=0 off8=0
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] IPv4 single eth_len=128
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] first packet ts=0 ns
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] frame#1 ts=0 ns len=128 crc=0x4F905B9A xor=0x00000000 fcs=0x4F905B9A
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] Wrote ns-global-header to G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap (linktype=1)
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] wrote rec ts=0ns (sec=0 ns=0) len=128
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] appended 1 frame(s) -&gt; G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap last_ts_ns=0
-[2025-10-03 21:15:04] [PASS] STEP 1.1 completed successfully
+[2025-10-04 21:02:00] [STEP 1.1] UDP128
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] pcap_create -&gt; target=G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap last_ts_ns=None last_len=None params delta_ns=None ifg_bytes=None link_bps=None
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] IPv4 build: src=192.0.2.1 dst=198.51.100.1 proto=17 payload_len=72 ident=None df=0 mf=0 off8=0
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] build_ipv4_packet(): src=192.0.2.1, dst=198.51.100.1, payload=72B, proto=17, ident=None, df=False, mf=False, offset=0, ttl=64, tos=0
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] build_ipv4_packet() complete: total=92B, header=20B, checksum=0x8e5b
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] build_ethernet_frame(): dst=ff:ff:ff:ff:ff:ff, src=00:11:22:33:44:55, ethertype=2048, payload=92B, total_size=128, fcs_xor=0x00000000
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] build_ethernet_frame() complete: total=128B (with FCS), fcs=0x4f905b9a
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] IPv4 single eth_len=128
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] first packet ts=0 ns
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] frame#1 ts=0 ns len=128 crc=0x4F905B9A xor=0x00000000 fcs=0x4F905B9A
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] Wrote ns-global-header to G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap (linktype=1)
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] wrote rec ts=0ns (sec=0 ns=0) len=128
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] appended 1 frame(s) -&gt; G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap last_ts_ns=0
+[2025-10-04 21:02:00] [PASS] STEP 1.1 completed successfully
 </pre>
 </div>
 </details>
@@ -104,18 +114,20 @@ Session ID: 29bef53c &nbsp;
 <div class='content'>
 <table>
 <tr><th>Started</th><th>Finished</th></tr>
-<tr><td>2025-10-03 21:15:04</td><td>2025-10-03 21:15:04</td></tr>
+<tr><td>2025-10-04 21:02:00</td><td>2025-10-04 21:02:00</td></tr>
 </table>
 <h4>Log</h4>
 <pre>
-[2025-10-03 21:15:04] [STEP 1.2] CorruptFCS200
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] pcap_create -&gt; target=G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap last_ts_ns=0 last_len=128 params delta_ns=200000 ifg_bytes=None link_bps=1000000000.0
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] Ether frame len=200 et=34998 payload_len=60 fcs_xor=0xDEADBEEF
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] Δt=explicit 200000 ns -&gt; ts=200000
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] frame#1 ts=200000 ns len=200 crc=0x4BEE1914 xor=0xDEADBEEF fcs=0x9543A7FB
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] wrote rec ts=200000ns (sec=0 ns=200000) len=200
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] appended 1 frame(s) -&gt; G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap last_ts_ns=200000
-[2025-10-03 21:15:04] [PASS] STEP 1.2 completed successfully
+[2025-10-04 21:02:00] [STEP 1.2] CorruptFCS200
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] pcap_create -&gt; target=G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap last_ts_ns=0 last_len=128 params delta_ns=200000 ifg_bytes=None link_bps=1000000000.0
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] build_ethernet_frame(): dst=aa:bb:cc:dd:ee:01, src=aa:bb:cc:dd:ee:02, ethertype=34998, payload=60B, total_size=200, fcs_xor=0xdeadbeef
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] build_ethernet_frame() complete: total=200B (with FCS), fcs=0xf7ff158f
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] Ether frame len=200 et=34998 payload_len=60 fcs_xor=0xDEADBEEF
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] Δt=explicit 200000 ns -&gt; ts=200000
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] frame#1 ts=200000 ns len=200 crc=0x2952AB60 xor=0xDEADBEEF fcs=0xF7FF158F
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] wrote rec ts=200000ns (sec=0 ns=200000) len=200
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] appended 1 frame(s) -&gt; G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap last_ts_ns=200000
+[2025-10-04 21:02:00] [PASS] STEP 1.2 completed successfully
 </pre>
 </div>
 </details>
@@ -126,18 +138,20 @@ Session ID: 29bef53c &nbsp;
 <div class='content'>
 <table>
 <tr><th>Started</th><th>Finished</th></tr>
-<tr><td>2025-10-03 21:15:04</td><td>2025-10-03 21:15:04</td></tr>
+<tr><td>2025-10-04 21:02:00</td><td>2025-10-04 21:02:00</td></tr>
 </table>
 <h4>Log</h4>
 <pre>
-[2025-10-03 21:15:04] [STEP 1.3] AA128
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] pcap_create -&gt; target=G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap last_ts_ns=200000 last_len=200 params delta_ns=250000 ifg_bytes=None link_bps=1000000000.0
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] Ether frame len=128 et=34998 payload_len=100 fcs_xor=0x00000000
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] Δt=explicit 250000 ns -&gt; ts=450000
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] frame#1 ts=450000 ns len=128 crc=0xCB70046B xor=0x00000000 fcs=0xCB70046B
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] wrote rec ts=450000ns (sec=0 ns=450000) len=128
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] appended 1 frame(s) -&gt; G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap last_ts_ns=450000
-[2025-10-03 21:15:04] [PASS] STEP 1.3 completed successfully
+[2025-10-04 21:02:00] [STEP 1.3] AA128
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] pcap_create -&gt; target=G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap last_ts_ns=200000 last_len=200 params delta_ns=250000 ifg_bytes=None link_bps=1000000000.0
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] build_ethernet_frame(): dst=aa:bb:cc:dd:ee:01, src=aa:bb:cc:dd:ee:02, ethertype=34998, payload=100B, total_size=128, fcs_xor=0x00000000
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] build_ethernet_frame() complete: total=128B (with FCS), fcs=0xcb70046b
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] Ether frame len=128 et=34998 payload_len=100 fcs_xor=0x00000000
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] Δt=explicit 250000 ns -&gt; ts=450000
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] frame#1 ts=450000 ns len=128 crc=0xCB70046B xor=0x00000000 fcs=0xCB70046B
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] wrote rec ts=450000ns (sec=0 ns=450000) len=128
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] appended 1 frame(s) -&gt; G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap last_ts_ns=450000
+[2025-10-04 21:02:00] [PASS] STEP 1.3 completed successfully
 </pre>
 </div>
 </details>
@@ -148,18 +162,20 @@ Session ID: 29bef53c &nbsp;
 <div class='content'>
 <table>
 <tr><th>Started</th><th>Finished</th></tr>
-<tr><td>2025-10-03 21:15:04</td><td>2025-10-03 21:15:04</td></tr>
+<tr><td>2025-10-04 21:02:00</td><td>2025-10-04 21:02:00</td></tr>
 </table>
 <h4>Log</h4>
 <pre>
-[2025-10-03 21:15:04] [STEP 1.4] IFG12B256
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] pcap_create -&gt; target=G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap last_ts_ns=450000 last_len=128 params delta_ns=None ifg_bytes=12 link_bps=1000000000.0
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] Ether frame len=256 et=34998 payload_len=100 fcs_xor=0x00000000
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] Δt=serialize(128B)+IFG(12B) @ 1000000000.0bps = 1120 ns -&gt; ts=451120
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] frame#1 ts=451120 ns len=256 crc=0x63E61D8A xor=0x00000000 fcs=0x63E61D8A
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] wrote rec ts=451120ns (sec=0 ns=451120) len=256
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] appended 1 frame(s) -&gt; G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap last_ts_ns=451120
-[2025-10-03 21:15:04] [PASS] STEP 1.4 completed successfully
+[2025-10-04 21:02:00] [STEP 1.4] IFG12B256
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] pcap_create -&gt; target=G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap last_ts_ns=450000 last_len=128 params delta_ns=None ifg_bytes=12 link_bps=1000000000.0
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] build_ethernet_frame(): dst=aa:bb:cc:dd:ee:01, src=aa:bb:cc:dd:ee:02, ethertype=34998, payload=100B, total_size=256, fcs_xor=0x00000000
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] build_ethernet_frame() complete: total=256B (with FCS), fcs=0x72daf4cc
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] Ether frame len=256 et=34998 payload_len=100 fcs_xor=0x00000000
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] Δt=serialize(128B)+IFG(12B) @ 1000000000.0bps = 1120 ns -&gt; ts=451120
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] frame#1 ts=451120 ns len=256 crc=0x72DAF4CC xor=0x00000000 fcs=0x72DAF4CC
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] wrote rec ts=451120ns (sec=0 ns=451120) len=256
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] appended 1 frame(s) -&gt; G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap last_ts_ns=451120
+[2025-10-04 21:02:00] [PASS] STEP 1.4 completed successfully
 </pre>
 </div>
 </details>
@@ -170,19 +186,23 @@ Session ID: 29bef53c &nbsp;
 <div class='content'>
 <table>
 <tr><th>Started</th><th>Finished</th></tr>
-<tr><td>2025-10-03 21:15:04</td><td>2025-10-03 21:15:04</td></tr>
+<tr><td>2025-10-04 21:02:00</td><td>2025-10-04 21:02:00</td></tr>
 </table>
 <h4>Log</h4>
 <pre>
-[2025-10-03 21:15:04] [STEP 1.5] IPv4FragManual300
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] pcap_create -&gt; target=G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap last_ts_ns=451120 last_len=256 params delta_ns=100000 ifg_bytes=None link_bps=1000000000.0
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] IPv4 build: src=192.0.2.10 dst=198.51.100.20 proto=253 payload_len=262 ident=4660 df=0 mf=1 off8=0
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] IPv4 single eth_len=300
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] Δt=explicit 100000 ns -&gt; ts=551120
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] frame#1 ts=551120 ns len=300 crc=0x581613AF xor=0x00000000 fcs=0x581613AF
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] wrote rec ts=551120ns (sec=0 ns=551120) len=300
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] appended 1 frame(s) -&gt; G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap last_ts_ns=551120
-[2025-10-03 21:15:04] [PASS] STEP 1.5 completed successfully
+[2025-10-04 21:02:00] [STEP 1.5] IPv4FragManual300
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] pcap_create -&gt; target=G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap last_ts_ns=451120 last_len=256 params delta_ns=100000 ifg_bytes=None link_bps=1000000000.0
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] IPv4 build: src=192.0.2.10 dst=198.51.100.20 proto=253 payload_len=262 ident=4660 df=0 mf=1 off8=0
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] build_ipv4_packet(): src=192.0.2.10, dst=198.51.100.20, payload=262B, proto=253, ident=4660, df=False, mf=True, offset=0, ttl=64, tos=0
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] build_ipv4_packet() complete: total=282B, header=20B, checksum=0x5a61
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] build_ethernet_frame(): dst=ff:ff:ff:ff:ff:ff, src=00:11:22:33:44:55, ethertype=2048, payload=282B, total_size=300, fcs_xor=0x00000000
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] build_ethernet_frame() complete: total=300B (with FCS), fcs=0x2e661d06
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] IPv4 single eth_len=300
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] Δt=explicit 100000 ns -&gt; ts=551120
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] frame#1 ts=551120 ns len=300 crc=0x2E661D06 xor=0x00000000 fcs=0x2E661D06
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] wrote rec ts=551120ns (sec=0 ns=551120) len=300
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] appended 1 frame(s) -&gt; G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap last_ts_ns=551120
+[2025-10-04 21:02:00] [PASS] STEP 1.5 completed successfully
 </pre>
 </div>
 </details>
@@ -193,28 +213,42 @@ Session ID: 29bef53c &nbsp;
 <div class='content'>
 <table>
 <tr><th>Started</th><th>Finished</th></tr>
-<tr><td>2025-10-03 21:15:04</td><td>2025-10-03 21:15:04</td></tr>
+<tr><td>2025-10-04 21:02:00</td><td>2025-10-04 21:02:00</td></tr>
 </table>
 <h4>Log</h4>
 <pre>
-[2025-10-03 21:15:04] [STEP 1.6] UDPFragAuto
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] pcap_create -&gt; target=G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap last_ts_ns=551120 last_len=300 params delta_ns=None ifg_bytes=12 link_bps=1000000000.0
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] IPv4 build: src=10.0.0.1 dst=10.0.0.2 proto=17 payload_len=1408 ident=None df=0 mf=0 off8=0
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] IPv4 auto-fragment -&gt; 3 packets (frag_payload_size=600)
-[2025-10-03 21:15:04] [INFO] [PCAPGEN]  frag#1 eth_len=638
-[2025-10-03 21:15:04] [INFO] [PCAPGEN]  frag#2 eth_len=638
-[2025-10-03 21:15:04] [INFO] [PCAPGEN]  frag#3 eth_len=246
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] Δt=serialize(300B)+IFG(12B) @ 1000000000.0bps = 2496 ns -&gt; ts=553616
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] frame#1 ts=553616 ns len=638 crc=0xA7812735 xor=0x00000000 fcs=0xA7812735
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] Δt=serialize(638B)+IFG(12B) @ 1000000000.0bps = 5200 ns -&gt; ts=558816
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] frame#2 ts=558816 ns len=638 crc=0x925DC96D xor=0x00000000 fcs=0x925DC96D
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] Δt=serialize(638B)+IFG(12B) @ 1000000000.0bps = 5200 ns -&gt; ts=564016
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] frame#3 ts=564016 ns len=246 crc=0xCE426EEF xor=0x00000000 fcs=0xCE426EEF
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] wrote rec ts=553616ns (sec=0 ns=553616) len=638
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] wrote rec ts=558816ns (sec=0 ns=558816) len=638
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] wrote rec ts=564016ns (sec=0 ns=564016) len=246
-[2025-10-03 21:15:04] [INFO] [PCAPGEN] appended 3 frame(s) -&gt; G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap last_ts_ns=564016
-[2025-10-03 21:15:04] [PASS] STEP 1.6 completed successfully
+[2025-10-04 21:02:00] [STEP 1.6] UDPFragAuto
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] pcap_create -&gt; target=G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap last_ts_ns=551120 last_len=300 params delta_ns=None ifg_bytes=12 link_bps=1000000000.0
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] IPv4 build: src=10.0.0.1 dst=10.0.0.2 proto=17 payload_len=1408 ident=None df=0 mf=0 off8=0
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] fragment_ipv4_payload_auto(): payload=1408B, frag_size=600B, ident=None
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] build_ipv4_packet(): src=10.0.0.1, dst=10.0.0.2, payload=600B, proto=17, ident=0, df=False, mf=True, offset=0, ttl=64, tos=0
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] build_ipv4_packet() complete: total=620B, header=20B, checksum=0x447f
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] build_ipv4_packet(): src=10.0.0.1, dst=10.0.0.2, payload=600B, proto=17, ident=0, df=False, mf=True, offset=75, ttl=64, tos=0
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] build_ipv4_packet() complete: total=620B, header=20B, checksum=0x4434
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] build_ipv4_packet(): src=10.0.0.1, dst=10.0.0.2, payload=208B, proto=17, ident=0, df=False, mf=False, offset=150, ttl=64, tos=0
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] build_ipv4_packet() complete: total=228B, header=20B, checksum=0x6571
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] fragment_ipv4_payload_auto() complete: 3 fragments created
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] IPv4 auto-fragment -&gt; 3 packets (frag_payload_size=600)
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] build_ethernet_frame(): dst=ff:ff:ff:ff:ff:ff, src=00:11:22:33:44:55, ethertype=2048, payload=620B, total_size=None, fcs_xor=0x00000000
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] build_ethernet_frame() complete: total=638B (with FCS), fcs=0xa7812735
+[2025-10-04 21:02:00] [INFO] [PCAPGEN]  frag#1 eth_len=638
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] build_ethernet_frame(): dst=ff:ff:ff:ff:ff:ff, src=00:11:22:33:44:55, ethertype=2048, payload=620B, total_size=None, fcs_xor=0x00000000
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] build_ethernet_frame() complete: total=638B (with FCS), fcs=0x925dc96d
+[2025-10-04 21:02:00] [INFO] [PCAPGEN]  frag#2 eth_len=638
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] build_ethernet_frame(): dst=ff:ff:ff:ff:ff:ff, src=00:11:22:33:44:55, ethertype=2048, payload=228B, total_size=None, fcs_xor=0x00000000
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] build_ethernet_frame() complete: total=246B (with FCS), fcs=0xce426eef
+[2025-10-04 21:02:00] [INFO] [PCAPGEN]  frag#3 eth_len=246
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] Δt=serialize(300B)+IFG(12B) @ 1000000000.0bps = 2496 ns -&gt; ts=553616
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] frame#1 ts=553616 ns len=638 crc=0xA7812735 xor=0x00000000 fcs=0xA7812735
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] Δt=serialize(638B)+IFG(12B) @ 1000000000.0bps = 5200 ns -&gt; ts=558816
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] frame#2 ts=558816 ns len=638 crc=0x925DC96D xor=0x00000000 fcs=0x925DC96D
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] Δt=serialize(638B)+IFG(12B) @ 1000000000.0bps = 5200 ns -&gt; ts=564016
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] frame#3 ts=564016 ns len=246 crc=0xCE426EEF xor=0x00000000 fcs=0xCE426EEF
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] wrote rec ts=553616ns (sec=0 ns=553616) len=638
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] wrote rec ts=558816ns (sec=0 ns=558816) len=638
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] wrote rec ts=564016ns (sec=0 ns=564016) len=246
+[2025-10-04 21:02:00] [INFO] [PCAPGEN] appended 3 frame(s) -&gt; G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap last_ts_ns=564016
+[2025-10-04 21:02:00] [PASS] STEP 1.6 completed successfully
 </pre>
 </div>
 </details>
@@ -228,7 +262,7 @@ Session ID: 29bef53c &nbsp;
 <div class='content'>
 <table>
 <tr><th>Started</th><th>Finished</th></tr>
-<tr><td>2025-10-03 21:15:04</td><td>2025-10-03 21:15:05</td></tr>
+<tr><td>2025-10-04 21:02:00</td><td>2025-10-04 21:02:00</td></tr>
 </table>
 <div class='substeps'>
 <h4>Substeps</h4>
@@ -239,30 +273,45 @@ Session ID: 29bef53c &nbsp;
 <div class='content'>
 <table>
 <tr><th>Started</th><th>Finished</th></tr>
-<tr><td>2025-10-03 21:15:04</td><td>2025-10-03 21:15:05</td></tr>
+<tr><td>2025-10-04 21:02:00</td><td>2025-10-04 21:02:00</td></tr>
 </table>
 <h4>Log</h4>
 <pre>
-[2025-10-03 21:15:04] [STEP 2.1] Count_UDP128
-[2025-10-03 21:15:04] [INFO] [PCAP-CHECK] analyze start path=G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap filter=ip.src==192.0.2.1 &amp;&amp; ip.dst==198.51.100.1 &amp;&amp; ip.proto==17 &amp;&amp; frame.len==128
-[2025-10-03 21:15:04] [INFO] [PCAP-READ] path=G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap filter=ip.src==192.0.2.1 &amp;&amp; ip.dst==198.51.100.1 &amp;&amp; ip.proto==17 &amp;&amp; frame.len==128
-[2025-10-03 21:15:04] [INFO] [PCAP-CHECK] tshark fields start filter=ip.src==192.0.2.1 &amp;&amp; ip.dst==198.51.100.1 &amp;&amp; ip.proto==17 &amp;&amp; frame.len==128
-[2025-10-03 21:15:04] [TSHARK-FIELDS] cmd=tshark -r G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap -o tcp.desegment_tcp_streams:TRUE -o http.desegment_body:TRUE -T fields -E header=n -E separator=	 -E occurrence=f -e frame.number -e frame.len -e frame.time_epoch -e eth.src -e eth.dst -e vlan.id -e vlan.priority -e http.file_data -e tcp.reassembled.data -e tcp.payload -e data.data -Y &quot;ip.src==192.0.2.1 &amp;&amp; ip.dst==198.51.100.1 &amp;&amp; ip.proto==17 &amp;&amp; frame.len==128&quot;
-[2025-10-03 21:15:04] [TSHARK-FIELDS] rc=0
-[2025-10-03 21:15:04] [TSHARK-FIELDS OUT]
+[2025-10-04 21:02:00] [STEP 2.1] Count_UDP128
+[2025-10-04 21:02:00] [INFO] [PCAP-CHECK] analyze start path=G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap filter=ip.src==192.0.2.1 &amp;&amp; ip.dst==198.51.100.1 &amp;&amp; ip.proto==17 &amp;&amp; frame.len==128
+[2025-10-04 21:02:00] [INFO] [PCAP-READ] read_PCAPFrames() execute called
+[2025-10-04 21:02:00] [INFO] [PCAP-READ]   pcap_path=G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap
+[2025-10-04 21:02:00] [INFO] [PCAP-READ]   display_filter=ip.src==192.0.2.1 &amp;&amp; ip.dst==198.51.100.1 &amp;&amp; ip.proto==17 &amp;&amp; frame.len==128
+[2025-10-04 21:02:00] [INFO] [PCAP-READ] File exists, size=2686 bytes
+[2025-10-04 21:02:00] [INFO] [PCAP-READ] Running tshark to extract fields...
+[2025-10-04 21:02:00] [INFO] [PCAP-CHECK] tshark fields start filter=ip.src==192.0.2.1 &amp;&amp; ip.dst==198.51.100.1 &amp;&amp; ip.proto==17 &amp;&amp; frame.len==128
+[2025-10-04 21:02:00] [TSHARK-FIELDS] cmd=tshark -r G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap -o tcp.desegment_tcp_streams:TRUE -o http.desegment_body:TRUE -T fields -E header=n -E separator=	 -E occurrence=f -e frame.number -e frame.len -e frame.time_epoch -e eth.src -e eth.dst -e vlan.id -e vlan.priority -e http.file_data -e tcp.reassembled.data -e tcp.payload -e data.data -Y &quot;ip.src==192.0.2.1 &amp;&amp; ip.dst==198.51.100.1 &amp;&amp; ip.proto==17 &amp;&amp; frame.len==128&quot;
+[2025-10-04 21:02:00] [TSHARK-FIELDS] rc=0
+[2025-10-04 21:02:00] [TSHARK-FIELDS OUT]
 1	128	0.000000000	00:11:22:33:44:55	ff:ff:ff:ff:ff:ff						22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222
 
-[2025-10-03 21:15:05] [TSHARK-VLAN] cmd=tshark -r G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap -T fields -E header=n -E separator=	 -E occurrence=a -e vlan.id -e vlan.priority -Y &quot;ip.src==192.0.2.1 &amp;&amp; ip.dst==198.51.100.1 &amp;&amp; ip.proto==17 &amp;&amp; frame.len==128&quot;
-[2025-10-03 21:15:05] [TSHARK-VLAN] rc=0
-[2025-10-03 21:15:05] [TSHARK-VLAN OUT]
+[2025-10-04 21:02:00] [INFO] [PCAP-READ] tshark succeeded, parsing output...
+[2025-10-04 21:02:00] [INFO] [PCAP-READ] Parsed 1 frames from tshark output
+[2025-10-04 21:02:00] [INFO] [PCAP-READ] Extracting VLAN stack information...
+[2025-10-04 21:02:00] [TSHARK-VLAN] cmd=tshark -r G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap -T fields -E header=n -E separator=	 -E occurrence=a -e vlan.id -e vlan.priority -Y &quot;ip.src==192.0.2.1 &amp;&amp; ip.dst==198.51.100.1 &amp;&amp; ip.proto==17 &amp;&amp; frame.len==128&quot;
+[2025-10-04 21:02:00] [TSHARK-VLAN] rc=0
+[2025-10-04 21:02:00] [TSHARK-VLAN OUT]
 	
 
-[2025-10-03 21:15:05] [INFO] [PCAP-READ] parsed=1
-[2025-10-03 21:15:05] [INFO] [PCAP-READ] fnum=1 len=128 t=0ns src=00:11:22:33:44:55 dst=ff:ff:ff:ff:ff:ff vlan=[]
-[2025-10-03 21:15:05] [INFO] [PCAP-CHECK] filtered=1 (expect_count=1 expect_count_min=None)
-[2025-10-03 21:15:05] [INFO] [PCAP-CHECK] size check eq=128 min=None max=None
-[2025-10-03 21:15:05] [INFO] [PCAP-CHECK] Filter &#x27;ip.src==192.0.2.1 &amp;&amp; ip.dst==198.51.100.1 &amp;&amp; ip.proto==17 &amp;&amp; frame.len==128&#x27; passed on 1 frame(s) in G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap
-[2025-10-03 21:15:05] [PASS] STEP 2.1 completed successfully
+[2025-10-04 21:02:00] [INFO] [PCAP-READ] VLAN stack mismatch or empty, using single-level VLAN data
+[2025-10-04 21:02:00] [INFO] [PCAP-READ] Total frames parsed: 1
+[2025-10-04 21:02:00] [INFO] [PCAP-READ] Frame summary (showing up to 20):
+[2025-10-04 21:02:00] [INFO] [PCAP-READ]   fnum=1 len=128 t=0ns src=00:11:22:33:44:55 dst=ff:ff:ff:ff:ff:ff vlan=[]
+[2025-10-04 21:02:00] [INFO] [PCAP-READ] read_PCAPFrames() returning 1 frames
+[2025-10-04 21:02:00] [INFO] [PCAP-CHECK] filtered=1 (expect_count=1 expect_count_min=None)
+[2025-10-04 21:02:00] [INFO] [PCAP-CHECK] size check eq=128 min=None max=None
+[2025-10-04 21:02:00] [INFO] [PCAP-CHECK] ========================================
+[2025-10-04 21:02:00] [INFO] [PCAP-CHECK] ALL VALIDATIONS PASSED
+[2025-10-04 21:02:00] [INFO] [PCAP-CHECK] Filter: &#x27;ip.src==192.0.2.1 &amp;&amp; ip.dst==198.51.100.1 &amp;&amp; ip.proto==17 &amp;&amp; frame.len==128&#x27;
+[2025-10-04 21:02:00] [INFO] [PCAP-CHECK] Frames validated: 1
+[2025-10-04 21:02:00] [INFO] [PCAP-CHECK] PCAP file: G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap
+[2025-10-04 21:02:00] [INFO] [PCAP-CHECK] ========================================
+[2025-10-04 21:02:00] [PASS] STEP 2.1 completed successfully
 </pre>
 </div>
 </details>
@@ -273,30 +322,47 @@ Session ID: 29bef53c &nbsp;
 <div class='content'>
 <table>
 <tr><th>Started</th><th>Finished</th></tr>
-<tr><td>2025-10-03 21:15:05</td><td>2025-10-03 21:15:05</td></tr>
+<tr><td>2025-10-04 21:02:00</td><td>2025-10-04 21:02:00</td></tr>
 </table>
 <h4>Log</h4>
 <pre>
-[2025-10-03 21:15:05] [STEP 2.2] AA128_Payload
-[2025-10-03 21:15:05] [INFO] [PCAP-CHECK] analyze start path=G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap filter=eth.type==0x88b6 &amp;&amp; frame.len==128
-[2025-10-03 21:15:05] [INFO] [PCAP-READ] path=G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap filter=eth.type==0x88b6 &amp;&amp; frame.len==128
-[2025-10-03 21:15:05] [INFO] [PCAP-CHECK] tshark fields start filter=eth.type==0x88b6 &amp;&amp; frame.len==128
-[2025-10-03 21:15:05] [TSHARK-FIELDS] cmd=tshark -r G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap -o tcp.desegment_tcp_streams:TRUE -o http.desegment_body:TRUE -T fields -E header=n -E separator=	 -E occurrence=f -e frame.number -e frame.len -e frame.time_epoch -e eth.src -e eth.dst -e vlan.id -e vlan.priority -e http.file_data -e tcp.reassembled.data -e tcp.payload -e data.data -Y &quot;eth.type==0x88b6 &amp;&amp; frame.len==128&quot;
-[2025-10-03 21:15:05] [TSHARK-FIELDS] rc=0
-[2025-10-03 21:15:05] [TSHARK-FIELDS OUT]
+[2025-10-04 21:02:00] [STEP 2.2] AA128_Payload
+[2025-10-04 21:02:00] [INFO] [PCAP-CHECK] analyze start path=G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap filter=eth.type==0x88b6 &amp;&amp; frame.len==128
+[2025-10-04 21:02:00] [INFO] [PCAP-READ] read_PCAPFrames() execute called
+[2025-10-04 21:02:00] [INFO] [PCAP-READ]   pcap_path=G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap
+[2025-10-04 21:02:00] [INFO] [PCAP-READ]   display_filter=eth.type==0x88b6 &amp;&amp; frame.len==128
+[2025-10-04 21:02:00] [INFO] [PCAP-READ] File exists, size=2686 bytes
+[2025-10-04 21:02:00] [INFO] [PCAP-READ] Running tshark to extract fields...
+[2025-10-04 21:02:00] [INFO] [PCAP-CHECK] tshark fields start filter=eth.type==0x88b6 &amp;&amp; frame.len==128
+[2025-10-04 21:02:00] [TSHARK-FIELDS] cmd=tshark -r G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap -o tcp.desegment_tcp_streams:TRUE -o http.desegment_body:TRUE -T fields -E header=n -E separator=	 -E occurrence=f -e frame.number -e frame.len -e frame.time_epoch -e eth.src -e eth.dst -e vlan.id -e vlan.priority -e http.file_data -e tcp.reassembled.data -e tcp.payload -e data.data -Y &quot;eth.type==0x88b6 &amp;&amp; frame.len==128&quot;
+[2025-10-04 21:02:00] [TSHARK-FIELDS] rc=0
+[2025-10-04 21:02:00] [TSHARK-FIELDS OUT]
 3	128	0.000450000	aa:bb:cc:dd:ee:02	aa:bb:cc:dd:ee:01						aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa000000000000000000006b0470cb
 
-[2025-10-03 21:15:05] [TSHARK-VLAN] cmd=tshark -r G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap -T fields -E header=n -E separator=	 -E occurrence=a -e vlan.id -e vlan.priority -Y &quot;eth.type==0x88b6 &amp;&amp; frame.len==128&quot;
-[2025-10-03 21:15:05] [TSHARK-VLAN] rc=0
-[2025-10-03 21:15:05] [TSHARK-VLAN OUT]
+[2025-10-04 21:02:00] [INFO] [PCAP-READ] tshark succeeded, parsing output...
+[2025-10-04 21:02:00] [INFO] [PCAP-READ] Parsed 1 frames from tshark output
+[2025-10-04 21:02:00] [INFO] [PCAP-READ] Extracting VLAN stack information...
+[2025-10-04 21:02:00] [TSHARK-VLAN] cmd=tshark -r G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap -T fields -E header=n -E separator=	 -E occurrence=a -e vlan.id -e vlan.priority -Y &quot;eth.type==0x88b6 &amp;&amp; frame.len==128&quot;
+[2025-10-04 21:02:00] [TSHARK-VLAN] rc=0
+[2025-10-04 21:02:00] [TSHARK-VLAN OUT]
 	
 
-[2025-10-03 21:15:05] [INFO] [PCAP-READ] parsed=1
-[2025-10-03 21:15:05] [INFO] [PCAP-READ] fnum=3 len=128 t=450000ns src=aa:bb:cc:dd:ee:02 dst=aa:bb:cc:dd:ee:01 vlan=[]
-[2025-10-03 21:15:05] [INFO] [PCAP-CHECK] filtered=1 (expect_count=1 expect_count_min=None)
-[2025-10-03 21:15:05] [INFO] [PCAP-CHECK] payload patterns=[{&#x27;contains_hex&#x27;: &#x27;AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA&#x27;}]
-[2025-10-03 21:15:05] [INFO] [PCAP-CHECK] Filter &#x27;eth.type==0x88b6 &amp;&amp; frame.len==128&#x27; passed on 1 frame(s) in G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap
-[2025-10-03 21:15:05] [PASS] STEP 2.2 completed successfully
+[2025-10-04 21:02:00] [INFO] [PCAP-READ] VLAN stack mismatch or empty, using single-level VLAN data
+[2025-10-04 21:02:00] [INFO] [PCAP-READ] Total frames parsed: 1
+[2025-10-04 21:02:00] [INFO] [PCAP-READ] Frame summary (showing up to 20):
+[2025-10-04 21:02:00] [INFO] [PCAP-READ]   fnum=3 len=128 t=450000ns src=aa:bb:cc:dd:ee:02 dst=aa:bb:cc:dd:ee:01 vlan=[]
+[2025-10-04 21:02:00] [INFO] [PCAP-READ] read_PCAPFrames() returning 1 frames
+[2025-10-04 21:02:00] [INFO] [PCAP-CHECK] filtered=1 (expect_count=1 expect_count_min=None)
+[2025-10-04 21:02:00] [INFO] [PCAP-CHECK] Validating 1 payload patterns across 1 frames...
+[2025-10-04 21:02:00] [INFO] [PCAP-CHECK] Patterns: [{&#x27;contains_hex&#x27;: &#x27;AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA&#x27;}]
+[2025-10-04 21:02:00] [INFO] [PCAP-CHECK] All 1 frames passed payload pattern validation
+[2025-10-04 21:02:00] [INFO] [PCAP-CHECK] ========================================
+[2025-10-04 21:02:00] [INFO] [PCAP-CHECK] ALL VALIDATIONS PASSED
+[2025-10-04 21:02:00] [INFO] [PCAP-CHECK] Filter: &#x27;eth.type==0x88b6 &amp;&amp; frame.len==128&#x27;
+[2025-10-04 21:02:00] [INFO] [PCAP-CHECK] Frames validated: 1
+[2025-10-04 21:02:00] [INFO] [PCAP-CHECK] PCAP file: G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap
+[2025-10-04 21:02:00] [INFO] [PCAP-CHECK] ========================================
+[2025-10-04 21:02:00] [PASS] STEP 2.2 completed successfully
 </pre>
 </div>
 </details>
@@ -307,34 +373,52 @@ Session ID: 29bef53c &nbsp;
 <div class='content'>
 <table>
 <tr><th>Started</th><th>Finished</th></tr>
-<tr><td>2025-10-03 21:15:05</td><td>2025-10-03 21:15:05</td></tr>
+<tr><td>2025-10-04 21:02:00</td><td>2025-10-04 21:02:00</td></tr>
 </table>
 <h4>Log</h4>
 <pre>
-[2025-10-03 21:15:05] [STEP 2.3] IFG12B_Timing
-[2025-10-03 21:15:05] [INFO] [PCAP-CHECK] analyze start path=G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap filter=eth.type==0x88b6 &amp;&amp; (frame.len==128 || frame.len==256)
-[2025-10-03 21:15:05] [INFO] [PCAP-READ] path=G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap filter=eth.type==0x88b6 &amp;&amp; (frame.len==128 || frame.len==256)
-[2025-10-03 21:15:05] [INFO] [PCAP-CHECK] tshark fields start filter=eth.type==0x88b6 &amp;&amp; (frame.len==128 || frame.len==256)
-[2025-10-03 21:15:05] [TSHARK-FIELDS] cmd=tshark -r G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap -o tcp.desegment_tcp_streams:TRUE -o http.desegment_body:TRUE -T fields -E header=n -E separator=	 -E occurrence=f -e frame.number -e frame.len -e frame.time_epoch -e eth.src -e eth.dst -e vlan.id -e vlan.priority -e http.file_data -e tcp.reassembled.data -e tcp.payload -e data.data -Y &quot;eth.type==0x88b6 &amp;&amp; (frame.len==128 || frame.len==256)&quot;
-[2025-10-03 21:15:05] [TSHARK-FIELDS] rc=0
-[2025-10-03 21:15:05] [TSHARK-FIELDS OUT]
+[2025-10-04 21:02:00] [STEP 2.3] IFG12B_Timing
+[2025-10-04 21:02:00] [INFO] [PCAP-CHECK] analyze start path=G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap filter=eth.type==0x88b6 &amp;&amp; (frame.len==128 || frame.len==256)
+[2025-10-04 21:02:00] [INFO] [PCAP-READ] read_PCAPFrames() execute called
+[2025-10-04 21:02:00] [INFO] [PCAP-READ]   pcap_path=G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap
+[2025-10-04 21:02:00] [INFO] [PCAP-READ]   display_filter=eth.type==0x88b6 &amp;&amp; (frame.len==128 || frame.len==256)
+[2025-10-04 21:02:00] [INFO] [PCAP-READ] File exists, size=2686 bytes
+[2025-10-04 21:02:00] [INFO] [PCAP-READ] Running tshark to extract fields...
+[2025-10-04 21:02:00] [INFO] [PCAP-CHECK] tshark fields start filter=eth.type==0x88b6 &amp;&amp; (frame.len==128 || frame.len==256)
+[2025-10-04 21:02:00] [TSHARK-FIELDS] cmd=tshark -r G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap -o tcp.desegment_tcp_streams:TRUE -o http.desegment_body:TRUE -T fields -E header=n -E separator=	 -E occurrence=f -e frame.number -e frame.len -e frame.time_epoch -e eth.src -e eth.dst -e vlan.id -e vlan.priority -e http.file_data -e tcp.reassembled.data -e tcp.payload -e data.data -Y &quot;eth.type==0x88b6 &amp;&amp; (frame.len==128 || frame.len==256)&quot;
+[2025-10-04 21:02:00] [TSHARK-FIELDS] rc=0
+[2025-10-04 21:02:00] [TSHARK-FIELDS OUT]
 3	128	0.000450000	aa:bb:cc:dd:ee:02	aa:bb:cc:dd:ee:01						aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa000000000000000000006b0470cb
-4	256	0.000451120	aa:bb:cc:dd:ee:02	aa:bb:cc:dd:ee:01						53c941da13d92b9b02d90834a80437ef64ba52c3c138d9540c30ba8b022b308658206f169d487e377d9e7a17eec54a6c4d98c43ad1a42a43346a4561eeaeae5dba7786c9f0175abcec04f1e4ef5010c0278c382fc479f43a5e4bda28e15e9fa7cd5731fc0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008a1de663
+4	256	0.000451120	aa:bb:cc:dd:ee:02	aa:bb:cc:dd:ee:01						13c87f72601ab02f8e441517f3b23e8bdd5484f9e0d5d2c6aec90dc2c158ee29d70a07cc99590efbb218fb3ec52ab5bc3d818a2474648f43646ffe3384bfb5a72f8aa527406a0eede55e921bb5fff422d02c6f0c03fa50d391a0191fec9ae5d2d47be8f9000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000ccf4da72
 
-[2025-10-03 21:15:05] [TSHARK-VLAN] cmd=tshark -r G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap -T fields -E header=n -E separator=	 -E occurrence=a -e vlan.id -e vlan.priority -Y &quot;eth.type==0x88b6 &amp;&amp; (frame.len==128 || frame.len==256)&quot;
-[2025-10-03 21:15:05] [TSHARK-VLAN] rc=0
-[2025-10-03 21:15:05] [TSHARK-VLAN OUT]
+[2025-10-04 21:02:00] [INFO] [PCAP-READ] tshark succeeded, parsing output...
+[2025-10-04 21:02:00] [INFO] [PCAP-READ] Parsed 2 frames from tshark output
+[2025-10-04 21:02:00] [INFO] [PCAP-READ] Extracting VLAN stack information...
+[2025-10-04 21:02:00] [TSHARK-VLAN] cmd=tshark -r G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap -T fields -E header=n -E separator=	 -E occurrence=a -e vlan.id -e vlan.priority -Y &quot;eth.type==0x88b6 &amp;&amp; (frame.len==128 || frame.len==256)&quot;
+[2025-10-04 21:02:00] [TSHARK-VLAN] rc=0
+[2025-10-04 21:02:00] [TSHARK-VLAN OUT]
 	
 	
 
-[2025-10-03 21:15:05] [INFO] [PCAP-READ] parsed=2
-[2025-10-03 21:15:05] [INFO] [PCAP-READ] fnum=3 len=128 t=450000ns src=aa:bb:cc:dd:ee:02 dst=aa:bb:cc:dd:ee:01 vlan=[]
-[2025-10-03 21:15:05] [INFO] [PCAP-READ] fnum=4 len=256 t=451120ns src=aa:bb:cc:dd:ee:02 dst=aa:bb:cc:dd:ee:01 vlan=[]
-[2025-10-03 21:15:05] [INFO] [PCAP-CHECK] filtered=2 (expect_count=2 expect_count_min=None)
-[2025-10-03 21:15:05] [INFO] [PCAP-CHECK] Δt array ns=[1120]
-[2025-10-03 21:15:05] [INFO] [PCAP-CHECK] expect_mac src=aa:bb:cc:dd:ee:02 dst=aa:bb:cc:dd:ee:01
-[2025-10-03 21:15:05] [INFO] [PCAP-CHECK] Filter &#x27;eth.type==0x88b6 &amp;&amp; (frame.len==128 || frame.len==256)&#x27; passed on 2 frame(s) in G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap
-[2025-10-03 21:15:05] [PASS] STEP 2.3 completed successfully
+[2025-10-04 21:02:00] [INFO] [PCAP-READ] VLAN stack mismatch or empty, using single-level VLAN data
+[2025-10-04 21:02:00] [INFO] [PCAP-READ] Total frames parsed: 2
+[2025-10-04 21:02:00] [INFO] [PCAP-READ] Frame summary (showing up to 20):
+[2025-10-04 21:02:00] [INFO] [PCAP-READ]   fnum=3 len=128 t=450000ns src=aa:bb:cc:dd:ee:02 dst=aa:bb:cc:dd:ee:01 vlan=[]
+[2025-10-04 21:02:00] [INFO] [PCAP-READ]   fnum=4 len=256 t=451120ns src=aa:bb:cc:dd:ee:02 dst=aa:bb:cc:dd:ee:01 vlan=[]
+[2025-10-04 21:02:00] [INFO] [PCAP-READ] read_PCAPFrames() returning 2 frames
+[2025-10-04 21:02:00] [INFO] [PCAP-CHECK] filtered=2 (expect_count=2 expect_count_min=None)
+[2025-10-04 21:02:00] [INFO] [PCAP-CHECK] Δt array ns=[1120]
+[2025-10-04 21:02:00] [INFO] [PCAP-CHECK] Checking per-pair deltas against 1 expected values...
+[2025-10-04 21:02:00] [INFO] [PCAP-CHECK] All 1 per-pair time deltas matched
+[2025-10-04 21:02:00] [INFO] [PCAP-CHECK] Validating MAC addresses: src=aa:bb:cc:dd:ee:02 dst=aa:bb:cc:dd:ee:01
+[2025-10-04 21:02:00] [INFO] [PCAP-CHECK] All 2 frames passed MAC validation
+[2025-10-04 21:02:00] [INFO] [PCAP-CHECK] ========================================
+[2025-10-04 21:02:00] [INFO] [PCAP-CHECK] ALL VALIDATIONS PASSED
+[2025-10-04 21:02:00] [INFO] [PCAP-CHECK] Filter: &#x27;eth.type==0x88b6 &amp;&amp; (frame.len==128 || frame.len==256)&#x27;
+[2025-10-04 21:02:00] [INFO] [PCAP-CHECK] Frames validated: 2
+[2025-10-04 21:02:00] [INFO] [PCAP-CHECK] PCAP file: G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap
+[2025-10-04 21:02:00] [INFO] [PCAP-CHECK] ========================================
+[2025-10-04 21:02:00] [PASS] STEP 2.3 completed successfully
 </pre>
 </div>
 </details>
@@ -348,7 +432,7 @@ Session ID: 29bef53c &nbsp;
 <div class='content'>
 <table>
 <tr><th>Started</th><th>Finished</th></tr>
-<tr><td>2025-10-03 21:15:05</td><td>2025-10-03 21:15:06</td></tr>
+<tr><td>2025-10-04 21:02:00</td><td>2025-10-04 21:02:01</td></tr>
 </table>
 <div class='substeps'>
 <h4>Substeps</h4>
@@ -359,30 +443,45 @@ Session ID: 29bef53c &nbsp;
 <div class='content'>
 <table>
 <tr><th>Started</th><th>Finished</th></tr>
-<tr><td>2025-10-03 21:15:05</td><td>2025-10-03 21:15:05</td></tr>
+<tr><td>2025-10-04 21:02:00</td><td>2025-10-04 21:02:01</td></tr>
 </table>
 <h4>Log</h4>
 <pre>
-[2025-10-03 21:15:05] [STEP 3.1] IPv4Frag_Manual
-[2025-10-03 21:15:05] [INFO] [PCAP-CHECK] analyze start path=G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap filter=ip.id==0x1234 &amp;&amp; ip.flags.mf==1 &amp;&amp; ip.src==192.0.2.10 &amp;&amp; ip.dst==198.51.100.20 &amp;&amp; ip.proto==253
-[2025-10-03 21:15:05] [INFO] [PCAP-READ] path=G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap filter=ip.id==0x1234 &amp;&amp; ip.flags.mf==1 &amp;&amp; ip.src==192.0.2.10 &amp;&amp; ip.dst==198.51.100.20 &amp;&amp; ip.proto==253
-[2025-10-03 21:15:05] [INFO] [PCAP-CHECK] tshark fields start filter=ip.id==0x1234 &amp;&amp; ip.flags.mf==1 &amp;&amp; ip.src==192.0.2.10 &amp;&amp; ip.dst==198.51.100.20 &amp;&amp; ip.proto==253
-[2025-10-03 21:15:05] [TSHARK-FIELDS] cmd=tshark -r G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap -o tcp.desegment_tcp_streams:TRUE -o http.desegment_body:TRUE -T fields -E header=n -E separator=	 -E occurrence=f -e frame.number -e frame.len -e frame.time_epoch -e eth.src -e eth.dst -e vlan.id -e vlan.priority -e http.file_data -e tcp.reassembled.data -e tcp.payload -e data.data -Y &quot;ip.id==0x1234 &amp;&amp; ip.flags.mf==1 &amp;&amp; ip.src==192.0.2.10 &amp;&amp; ip.dst==198.51.100.20 &amp;&amp; ip.proto==253&quot;
-[2025-10-03 21:15:05] [TSHARK-FIELDS] rc=0
-[2025-10-03 21:15:05] [TSHARK-FIELDS OUT]
-5	300	0.000551120	00:11:22:33:44:55	ff:ff:ff:ff:ff:ff						df754d422465ca0adf1217ea7aedabbafc6d5a9e79b0b21c20c2288f337cd3289a0dd4d9a8e5bf220beb588e2ec10877b7ba4b8340e49c997c7587505c971961dbe1a91028cdae2781a4bee4331d47b9778acf53f734b9bc3cff64deeb13e13eac04fed33307028dfd2d9ced2ba234eddcd92faf5f5de552bc30bf4e7947c7639063fc4512106c044a690b923a59e2d038fa1efebf7e1e88eb720a0a04591c4803368f3a2686ed6ae56fd87ef8b68a049806751561a32fed7f71921bf06b54bc1bfcab97639f644f9016f578c7eb0e4b2730843b35f9165a29a7948298d92c6dd23fe3d1fad8c6d5cdfa25242a5bb85314e3b7c9525cd73e05ff4f24a2dd72d32da571056f2a
+[2025-10-04 21:02:00] [STEP 3.1] IPv4Frag_Manual
+[2025-10-04 21:02:00] [INFO] [PCAP-CHECK] analyze start path=G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap filter=ip.id==0x1234 &amp;&amp; ip.flags.mf==1 &amp;&amp; ip.src==192.0.2.10 &amp;&amp; ip.dst==198.51.100.20 &amp;&amp; ip.proto==253
+[2025-10-04 21:02:00] [INFO] [PCAP-READ] read_PCAPFrames() execute called
+[2025-10-04 21:02:00] [INFO] [PCAP-READ]   pcap_path=G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap
+[2025-10-04 21:02:00] [INFO] [PCAP-READ]   display_filter=ip.id==0x1234 &amp;&amp; ip.flags.mf==1 &amp;&amp; ip.src==192.0.2.10 &amp;&amp; ip.dst==198.51.100.20 &amp;&amp; ip.proto==253
+[2025-10-04 21:02:00] [INFO] [PCAP-READ] File exists, size=2686 bytes
+[2025-10-04 21:02:00] [INFO] [PCAP-READ] Running tshark to extract fields...
+[2025-10-04 21:02:00] [INFO] [PCAP-CHECK] tshark fields start filter=ip.id==0x1234 &amp;&amp; ip.flags.mf==1 &amp;&amp; ip.src==192.0.2.10 &amp;&amp; ip.dst==198.51.100.20 &amp;&amp; ip.proto==253
+[2025-10-04 21:02:01] [TSHARK-FIELDS] cmd=tshark -r G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap -o tcp.desegment_tcp_streams:TRUE -o http.desegment_body:TRUE -T fields -E header=n -E separator=	 -E occurrence=f -e frame.number -e frame.len -e frame.time_epoch -e eth.src -e eth.dst -e vlan.id -e vlan.priority -e http.file_data -e tcp.reassembled.data -e tcp.payload -e data.data -Y &quot;ip.id==0x1234 &amp;&amp; ip.flags.mf==1 &amp;&amp; ip.src==192.0.2.10 &amp;&amp; ip.dst==198.51.100.20 &amp;&amp; ip.proto==253&quot;
+[2025-10-04 21:02:01] [TSHARK-FIELDS] rc=0
+[2025-10-04 21:02:01] [TSHARK-FIELDS OUT]
+5	300	0.000551120	00:11:22:33:44:55	ff:ff:ff:ff:ff:ff						bffb99ed066616817ab74e686bcab1fc5216e60ac632bf07a09db5f08b05fdb59a5313ff5288846e302708e18ebf39fc174fd5fc410b50eaa7e9523b2231d6fa6cb54248949fb958a2988acc29870e2fc9bf315dac0a750ff3d63616c9b1becf3792ab08c7b8ba826d6d8f466e2144f23f1075e8fe9a53d58b678f4624fc99405a52626c3eed9bee195030469d8e283f740a118435ac579d2a97122578af67342fabbcdb24e8253da5f99197a83536776623defdf4dc2d70ae2120fb52637c96e633307a7128b6c5a9d2e08fed543d29553c195909d410127a8565763497a625306878ba8a65ff7eb916b73766e60c7145edfc52349cc63911ca44be4546fe31488abd7478fa
 
-[2025-10-03 21:15:05] [TSHARK-VLAN] cmd=tshark -r G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap -T fields -E header=n -E separator=	 -E occurrence=a -e vlan.id -e vlan.priority -Y &quot;ip.id==0x1234 &amp;&amp; ip.flags.mf==1 &amp;&amp; ip.src==192.0.2.10 &amp;&amp; ip.dst==198.51.100.20 &amp;&amp; ip.proto==253&quot;
-[2025-10-03 21:15:05] [TSHARK-VLAN] rc=0
-[2025-10-03 21:15:05] [TSHARK-VLAN OUT]
+[2025-10-04 21:02:01] [INFO] [PCAP-READ] tshark succeeded, parsing output...
+[2025-10-04 21:02:01] [INFO] [PCAP-READ] Parsed 1 frames from tshark output
+[2025-10-04 21:02:01] [INFO] [PCAP-READ] Extracting VLAN stack information...
+[2025-10-04 21:02:01] [TSHARK-VLAN] cmd=tshark -r G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap -T fields -E header=n -E separator=	 -E occurrence=a -e vlan.id -e vlan.priority -Y &quot;ip.id==0x1234 &amp;&amp; ip.flags.mf==1 &amp;&amp; ip.src==192.0.2.10 &amp;&amp; ip.dst==198.51.100.20 &amp;&amp; ip.proto==253&quot;
+[2025-10-04 21:02:01] [TSHARK-VLAN] rc=0
+[2025-10-04 21:02:01] [TSHARK-VLAN OUT]
 	
 
-[2025-10-03 21:15:05] [INFO] [PCAP-READ] parsed=1
-[2025-10-03 21:15:05] [INFO] [PCAP-READ] fnum=5 len=300 t=551120ns src=00:11:22:33:44:55 dst=ff:ff:ff:ff:ff:ff vlan=[]
-[2025-10-03 21:15:05] [INFO] [PCAP-CHECK] filtered=1 (expect_count=1 expect_count_min=None)
-[2025-10-03 21:15:05] [INFO] [PCAP-CHECK] size check eq=300 min=None max=None
-[2025-10-03 21:15:05] [INFO] [PCAP-CHECK] Filter &#x27;ip.id==0x1234 &amp;&amp; ip.flags.mf==1 &amp;&amp; ip.src==192.0.2.10 &amp;&amp; ip.dst==198.51.100.20 &amp;&amp; ip.proto==253&#x27; passed on 1 frame(s) in G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap
-[2025-10-03 21:15:05] [PASS] STEP 3.1 completed successfully
+[2025-10-04 21:02:01] [INFO] [PCAP-READ] VLAN stack mismatch or empty, using single-level VLAN data
+[2025-10-04 21:02:01] [INFO] [PCAP-READ] Total frames parsed: 1
+[2025-10-04 21:02:01] [INFO] [PCAP-READ] Frame summary (showing up to 20):
+[2025-10-04 21:02:01] [INFO] [PCAP-READ]   fnum=5 len=300 t=551120ns src=00:11:22:33:44:55 dst=ff:ff:ff:ff:ff:ff vlan=[]
+[2025-10-04 21:02:01] [INFO] [PCAP-READ] read_PCAPFrames() returning 1 frames
+[2025-10-04 21:02:01] [INFO] [PCAP-CHECK] filtered=1 (expect_count=1 expect_count_min=None)
+[2025-10-04 21:02:01] [INFO] [PCAP-CHECK] size check eq=300 min=None max=None
+[2025-10-04 21:02:01] [INFO] [PCAP-CHECK] ========================================
+[2025-10-04 21:02:01] [INFO] [PCAP-CHECK] ALL VALIDATIONS PASSED
+[2025-10-04 21:02:01] [INFO] [PCAP-CHECK] Filter: &#x27;ip.id==0x1234 &amp;&amp; ip.flags.mf==1 &amp;&amp; ip.src==192.0.2.10 &amp;&amp; ip.dst==198.51.100.20 &amp;&amp; ip.proto==253&#x27;
+[2025-10-04 21:02:01] [INFO] [PCAP-CHECK] Frames validated: 1
+[2025-10-04 21:02:01] [INFO] [PCAP-CHECK] PCAP file: G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap
+[2025-10-04 21:02:01] [INFO] [PCAP-CHECK] ========================================
+[2025-10-04 21:02:01] [PASS] STEP 3.1 completed successfully
 </pre>
 </div>
 </details>
@@ -393,36 +492,46 @@ Session ID: 29bef53c &nbsp;
 <div class='content'>
 <table>
 <tr><th>Started</th><th>Finished</th></tr>
-<tr><td>2025-10-03 21:15:05</td><td>2025-10-03 21:15:06</td></tr>
+<tr><td>2025-10-04 21:02:01</td><td>2025-10-04 21:02:01</td></tr>
 </table>
 <h4>Log</h4>
 <pre>
-[2025-10-03 21:15:05] [STEP 3.2] UDPFrag_Lens
-[2025-10-03 21:15:05] [INFO] [PCAP-EXPECT] checkFrames start path=G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap filter=ip.src==10.0.0.1 &amp;&amp; ip.dst==10.0.0.2 &amp;&amp; ip.proto==17 ordered=False expect_count=3 n_expected=3
-[2025-10-03 21:15:05] [INFO] [PCAP-READ] path=G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap filter=ip.src==10.0.0.1 &amp;&amp; ip.dst==10.0.0.2 &amp;&amp; ip.proto==17
-[2025-10-03 21:15:05] [INFO] [PCAP-CHECK] tshark fields start filter=ip.src==10.0.0.1 &amp;&amp; ip.dst==10.0.0.2 &amp;&amp; ip.proto==17
-[2025-10-03 21:15:06] [TSHARK-FIELDS] cmd=tshark -r G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap -o tcp.desegment_tcp_streams:TRUE -o http.desegment_body:TRUE -T fields -E header=n -E separator=	 -E occurrence=f -e frame.number -e frame.len -e frame.time_epoch -e eth.src -e eth.dst -e vlan.id -e vlan.priority -e http.file_data -e tcp.reassembled.data -e tcp.payload -e data.data -Y &quot;ip.src==10.0.0.1 &amp;&amp; ip.dst==10.0.0.2 &amp;&amp; ip.proto==17&quot;
-[2025-10-03 21:15:06] [TSHARK-FIELDS] rc=0
-[2025-10-03 21:15:06] [TSHARK-FIELDS OUT]
+[2025-10-04 21:02:01] [STEP 3.2] UDPFrag_Lens
+[2025-10-04 21:02:01] [INFO] [PCAP-EXPECT] checkFrames start path=G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap filter=ip.src==10.0.0.1 &amp;&amp; ip.dst==10.0.0.2 &amp;&amp; ip.proto==17 ordered=False expect_count=3 n_expected=3
+[2025-10-04 21:02:01] [INFO] [PCAP-READ] read_PCAPFrames() execute called
+[2025-10-04 21:02:01] [INFO] [PCAP-READ]   pcap_path=G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap
+[2025-10-04 21:02:01] [INFO] [PCAP-READ]   display_filter=ip.src==10.0.0.1 &amp;&amp; ip.dst==10.0.0.2 &amp;&amp; ip.proto==17
+[2025-10-04 21:02:01] [INFO] [PCAP-READ] File exists, size=2686 bytes
+[2025-10-04 21:02:01] [INFO] [PCAP-READ] Running tshark to extract fields...
+[2025-10-04 21:02:01] [INFO] [PCAP-CHECK] tshark fields start filter=ip.src==10.0.0.1 &amp;&amp; ip.dst==10.0.0.2 &amp;&amp; ip.proto==17
+[2025-10-04 21:02:01] [TSHARK-FIELDS] cmd=tshark -r G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap -o tcp.desegment_tcp_streams:TRUE -o http.desegment_body:TRUE -T fields -E header=n -E separator=	 -E occurrence=f -e frame.number -e frame.len -e frame.time_epoch -e eth.src -e eth.dst -e vlan.id -e vlan.priority -e http.file_data -e tcp.reassembled.data -e tcp.payload -e data.data -Y &quot;ip.src==10.0.0.1 &amp;&amp; ip.dst==10.0.0.2 &amp;&amp; ip.proto==17&quot;
+[2025-10-04 21:02:01] [TSHARK-FIELDS] rc=0
+[2025-10-04 21:02:01] [TSHARK-FIELDS OUT]
 6	638	0.000553616	00:11:22:33:44:55	ff:ff:ff:ff:ff:ff						94a7392b0580000033333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333
 7	638	0.000558816	00:11:22:33:44:55	ff:ff:ff:ff:ff:ff						333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333
 8	246	0.000564016	00:11:22:33:44:55	ff:ff:ff:ff:ff:ff						33333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333... [truncated 1380 chars]
-[2025-10-03 21:15:06] [TSHARK-VLAN] cmd=tshark -r G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap -T fields -E header=n -E separator=	 -E occurrence=a -e vlan.id -e vlan.priority -Y &quot;ip.src==10.0.0.1 &amp;&amp; ip.dst==10.0.0.2 &amp;&amp; ip.proto==17&quot;
-[2025-10-03 21:15:06] [TSHARK-VLAN] rc=0
-[2025-10-03 21:15:06] [TSHARK-VLAN OUT]
+[2025-10-04 21:02:01] [INFO] [PCAP-READ] tshark succeeded, parsing output...
+[2025-10-04 21:02:01] [INFO] [PCAP-READ] Parsed 3 frames from tshark output
+[2025-10-04 21:02:01] [INFO] [PCAP-READ] Extracting VLAN stack information...
+[2025-10-04 21:02:01] [TSHARK-VLAN] cmd=tshark -r G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap -T fields -E header=n -E separator=	 -E occurrence=a -e vlan.id -e vlan.priority -Y &quot;ip.src==10.0.0.1 &amp;&amp; ip.dst==10.0.0.2 &amp;&amp; ip.proto==17&quot;
+[2025-10-04 21:02:01] [TSHARK-VLAN] rc=0
+[2025-10-04 21:02:01] [TSHARK-VLAN OUT]
 	
 	
 	
 
-[2025-10-03 21:15:06] [INFO] [PCAP-READ] parsed=3
-[2025-10-03 21:15:06] [INFO] [PCAP-READ] fnum=6 len=638 t=553616ns src=00:11:22:33:44:55 dst=ff:ff:ff:ff:ff:ff vlan=[]
-[2025-10-03 21:15:06] [INFO] [PCAP-READ] fnum=7 len=638 t=558816ns src=00:11:22:33:44:55 dst=ff:ff:ff:ff:ff:ff vlan=[]
-[2025-10-03 21:15:06] [INFO] [PCAP-READ] fnum=8 len=246 t=564016ns src=00:11:22:33:44:55 dst=ff:ff:ff:ff:ff:ff vlan=[]
-[2025-10-03 21:15:06] [INFO] [PCAP-EXPECT] unordered match exp#1 ok {&#x27;len&#x27;: 638}
-[2025-10-03 21:15:06] [INFO] [PCAP-EXPECT] unordered match exp#2 ok {&#x27;len&#x27;: 638}
-[2025-10-03 21:15:06] [INFO] [PCAP-EXPECT] unordered match exp#3 ok {&#x27;len&#x27;: 246}
-[2025-10-03 21:15:06] [INFO] [PCAP-EXPECT] validated 3 expected frame(s) (unordered) in G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap
-[2025-10-03 21:15:06] [PASS] STEP 3.2 completed successfully
+[2025-10-04 21:02:01] [INFO] [PCAP-READ] VLAN stack mismatch or empty, using single-level VLAN data
+[2025-10-04 21:02:01] [INFO] [PCAP-READ] Total frames parsed: 3
+[2025-10-04 21:02:01] [INFO] [PCAP-READ] Frame summary (showing up to 20):
+[2025-10-04 21:02:01] [INFO] [PCAP-READ]   fnum=6 len=638 t=553616ns src=00:11:22:33:44:55 dst=ff:ff:ff:ff:ff:ff vlan=[]
+[2025-10-04 21:02:01] [INFO] [PCAP-READ]   fnum=7 len=638 t=558816ns src=00:11:22:33:44:55 dst=ff:ff:ff:ff:ff:ff vlan=[]
+[2025-10-04 21:02:01] [INFO] [PCAP-READ]   fnum=8 len=246 t=564016ns src=00:11:22:33:44:55 dst=ff:ff:ff:ff:ff:ff vlan=[]
+[2025-10-04 21:02:01] [INFO] [PCAP-READ] read_PCAPFrames() returning 3 frames
+[2025-10-04 21:02:01] [INFO] [PCAP-EXPECT] unordered match exp#1 ok {&#x27;len&#x27;: 638}
+[2025-10-04 21:02:01] [INFO] [PCAP-EXPECT] unordered match exp#2 ok {&#x27;len&#x27;: 638}
+[2025-10-04 21:02:01] [INFO] [PCAP-EXPECT] unordered match exp#3 ok {&#x27;len&#x27;: 246}
+[2025-10-04 21:02:01] [INFO] [PCAP-EXPECT] validated 3 expected frame(s) (unordered) in G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap
+[2025-10-04 21:02:01] [PASS] STEP 3.2 completed successfully
 </pre>
 </div>
 </details>
@@ -436,29 +545,36 @@ Session ID: 29bef53c &nbsp;
 <div class='content'>
 <table>
 <tr><th>Started</th><th>Finished</th></tr>
-<tr><td>2025-10-03 21:15:06</td><td>2025-10-03 21:15:06</td></tr>
+<tr><td>2025-10-04 21:02:01</td><td>2025-10-04 21:02:01</td></tr>
 </table>
 <details>
 <summary><div class='step-title'><div>Step Log</div><div class='status unknown'>DETAIL</div></div></summary>
 <div class='content'>
 <h4>Log</h4>
 <pre>
-[2025-10-03 21:15:06] [STEP 4] Read_AllFrames
-[2025-10-03 21:15:06] [INFO] [PCAP-READ] path=G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap filter=none
-[2025-10-03 21:15:06] [INFO] [PCAP-CHECK] tshark fields start filter=none
-[2025-10-03 21:15:06] [TSHARK-FIELDS] cmd=tshark -r G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap -o tcp.desegment_tcp_streams:TRUE -o http.desegment_body:TRUE -T fields -E header=n -E separator=	 -E occurrence=f -e frame.number -e frame.len -e frame.time_epoch -e eth.src -e eth.dst -e vlan.id -e vlan.priority -e http.file_data -e tcp.reassembled.data -e tcp.payload -e data.data
-[2025-10-03 21:15:06] [TSHARK-FIELDS] rc=0
-[2025-10-03 21:15:06] [TSHARK-FIELDS OUT]
+[2025-10-04 21:02:01] [STEP 4] Read_AllFrames
+[2025-10-04 21:02:01] [INFO] [PCAP-READ] read_PCAPFrames() execute called
+[2025-10-04 21:02:01] [INFO] [PCAP-READ]   pcap_path=G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap
+[2025-10-04 21:02:01] [INFO] [PCAP-READ]   display_filter=none
+[2025-10-04 21:02:01] [INFO] [PCAP-READ] File exists, size=2686 bytes
+[2025-10-04 21:02:01] [INFO] [PCAP-READ] Running tshark to extract fields...
+[2025-10-04 21:02:01] [INFO] [PCAP-CHECK] tshark fields start filter=none
+[2025-10-04 21:02:01] [TSHARK-FIELDS] cmd=tshark -r G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap -o tcp.desegment_tcp_streams:TRUE -o http.desegment_body:TRUE -T fields -E header=n -E separator=	 -E occurrence=f -e frame.number -e frame.len -e frame.time_epoch -e eth.src -e eth.dst -e vlan.id -e vlan.priority -e http.file_data -e tcp.reassembled.data -e tcp.payload -e data.data
+[2025-10-04 21:02:01] [TSHARK-FIELDS] rc=0
+[2025-10-04 21:02:01] [TSHARK-FIELDS OUT]
 1	128	0.000000000	00:11:22:33:44:55	ff:ff:ff:ff:ff:ff						22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222
-2	200	0.000200000	aa:bb:cc:dd:ee:02	aa:bb:cc:dd:ee:01						b37ea8313a7aa97c3fc42a910d449dc00caef699ef684c0344a5769f0adf0303a6993f75fd7853ca59bd3009e442228acb47bc430ad4389f076fba1a0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000fba74395
+2	200	0.000200000	aa:bb:cc:dd:ee:02	aa:bb:cc:dd:ee:01						755a04681824ec36004d827fc6497ab47ccb789a4b868c0ebdc401a6b963559b8b5efe0cd6a5f9e1afbf54a8dcc176cd75cfdf33a502d63628b42ed200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008f15fff7
 3	128	0.000450000	aa:bb:cc:dd:ee:02	aa:bb:cc:dd:ee:01						aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa000000000000000000006b0470cb
-4	256	0.000451120	aa:bb:cc:dd:ee:02	aa:bb:cc:dd:ee:01						53c941da13d92b9b02d90834a80437ef64ba52c3c138d9540c30ba8b022b308658206f169d487e377d9e7a17eec54a6c4d98c43ad1a42a43346a4561eeaeae5dba7786c9f0175abcec04f1e4ef5010c0278c382fc479f43a5e4bda28e15e9fa7cd5731fc0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000008a1de663
-5	300	0.000551120	00:11:22:33:44:55	ff:ff:ff:ff:ff:ff						df754d422465ca0adf1217ea7aedabbafc6d5a9e79b0b21c20c2288f337cd3289a0dd4d9a8e5bf220beb588e2ec10877b7ba4b8340e49c997c7587505c971961dbe1a91028cdae2781a4bee4331d47b9778acf53f734b9bc3cff64deeb13e13eac04fed33307028dfd2d9ced2ba234eddcd92faf5f5de552bc30bf4e7947c7639063fc4512106c044a690b923a59e2d038fa1efebf7e1e88eb720a0a04591c4803368f3a2686ed6ae56fd87ef8b68a049806751561a32fed7f71921bf06b54bc1bfcab97639f644f9016f578c7eb0e4b2730843b35f9165a29a7948298d92c6dd23fe3d1fad8c6d5cdfa25242a5bb85314e3b7c9525cd73e05ff4f24a2dd72d32da571056f2a
+4	256	0.000451120	aa:bb:cc:dd:ee:02	aa:bb:cc:dd:ee:01						13c87f72601ab02f8e441517f3b23e8bdd5484f9e0d5d2c6aec90dc2c158ee29d70a07cc99590efbb218fb3ec52ab5bc3d818a2474648f43646ffe3384bfb5a72f8aa527406a0eede55e921bb5fff422d02c6f0c03fa50d391a0191fec9ae5d2d47be8f9000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000ccf4da72
+5	300	0.000551120	00:11:22:33:44:55	ff:ff:ff:ff:ff:ff						bffb99ed066616817ab74e686bcab1fc5216e60ac632bf07a09db5f08b05fdb59a5313ff5288846e302708e18ebf39fc174fd5fc410b50eaa7e9523b2231d6fa6cb54248949fb958a2988acc29870e2fc9bf315dac0a750ff3d63616c9b1becf3792ab08c7b8ba826d6d8f466e2144f23f1075e8fe9a53d58b678f4624fc99405a52626c3eed9bee195030469d8e283f740a118435ac579d2a97122578af67342fabbcdb24e8253da5f99197a83536776623defdf4dc2d70ae2120fb52637c96e633307a7128b6c5a9d2e08fed543d29553c195909d410127a8565763497a625306878ba8a65ff7eb916b73766e60c7145edfc52349cc63911ca44be4546fe31488abd7478fa
 6	638	0.000553616	00:11:22:33:44:55	ff:ff:ff:ff:ff:ff						94a7392b0580000033333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333
 7	638	0.000558816	00:11:22:33:44:55	ff:ff:ff:ff:ff:ff						333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333... [truncated 3416 chars]
-[2025-10-03 21:15:06] [TSHARK-VLAN] cmd=tshark -r G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap -T fields -E header=n -E separator=	 -E occurrence=a -e vlan.id -e vlan.priority
-[2025-10-03 21:15:06] [TSHARK-VLAN] rc=0
-[2025-10-03 21:15:06] [TSHARK-VLAN OUT]
+[2025-10-04 21:02:01] [INFO] [PCAP-READ] tshark succeeded, parsing output...
+[2025-10-04 21:02:01] [INFO] [PCAP-READ] Parsed 8 frames from tshark output
+[2025-10-04 21:02:01] [INFO] [PCAP-READ] Extracting VLAN stack information...
+[2025-10-04 21:02:01] [TSHARK-VLAN] cmd=tshark -r G:\_GitHub\SW_Universal-Test-Framework\Nightly_regression\report_tc_pcap_create\test_pcap.pcap -T fields -E header=n -E separator=	 -E occurrence=a -e vlan.id -e vlan.priority
+[2025-10-04 21:02:01] [TSHARK-VLAN] rc=0
+[2025-10-04 21:02:01] [TSHARK-VLAN OUT]
 	
 	
 	
@@ -468,17 +584,20 @@ Session ID: 29bef53c &nbsp;
 	
 	
 
-[2025-10-03 21:15:06] [INFO] [PCAP-READ] parsed=8
-[2025-10-03 21:15:06] [INFO] [PCAP-READ] fnum=1 len=128 t=0ns src=00:11:22:33:44:55 dst=ff:ff:ff:ff:ff:ff vlan=[]
-[2025-10-03 21:15:06] [INFO] [PCAP-READ] fnum=2 len=200 t=200000ns src=aa:bb:cc:dd:ee:02 dst=aa:bb:cc:dd:ee:01 vlan=[]
-[2025-10-03 21:15:06] [INFO] [PCAP-READ] fnum=3 len=128 t=450000ns src=aa:bb:cc:dd:ee:02 dst=aa:bb:cc:dd:ee:01 vlan=[]
-[2025-10-03 21:15:06] [INFO] [PCAP-READ] fnum=4 len=256 t=451120ns src=aa:bb:cc:dd:ee:02 dst=aa:bb:cc:dd:ee:01 vlan=[]
-[2025-10-03 21:15:06] [INFO] [PCAP-READ] fnum=5 len=300 t=551120ns src=00:11:22:33:44:55 dst=ff:ff:ff:ff:ff:ff vlan=[]
-[2025-10-03 21:15:06] [INFO] [PCAP-READ] fnum=6 len=638 t=553616ns src=00:11:22:33:44:55 dst=ff:ff:ff:ff:ff:ff vlan=[]
-[2025-10-03 21:15:06] [INFO] [PCAP-READ] fnum=7 len=638 t=558816ns src=00:11:22:33:44:55 dst=ff:ff:ff:ff:ff:ff vlan=[]
-[2025-10-03 21:15:06] [INFO] [PCAP-READ] fnum=8 len=246 t=564016ns src=00:11:22:33:44:55 dst=ff:ff:ff:ff:ff:ff vlan=[]
-[2025-10-03 21:15:06] [PASS] STEP 4 completed successfully
-[2025-10-03 21:15:06] ===== tc_pcap_create: RESULT: PASS =====
+[2025-10-04 21:02:01] [INFO] [PCAP-READ] VLAN stack mismatch or empty, using single-level VLAN data
+[2025-10-04 21:02:01] [INFO] [PCAP-READ] Total frames parsed: 8
+[2025-10-04 21:02:01] [INFO] [PCAP-READ] Frame summary (showing up to 20):
+[2025-10-04 21:02:01] [INFO] [PCAP-READ]   fnum=1 len=128 t=0ns src=00:11:22:33:44:55 dst=ff:ff:ff:ff:ff:ff vlan=[]
+[2025-10-04 21:02:01] [INFO] [PCAP-READ]   fnum=2 len=200 t=200000ns src=aa:bb:cc:dd:ee:02 dst=aa:bb:cc:dd:ee:01 vlan=[]
+[2025-10-04 21:02:01] [INFO] [PCAP-READ]   fnum=3 len=128 t=450000ns src=aa:bb:cc:dd:ee:02 dst=aa:bb:cc:dd:ee:01 vlan=[]
+[2025-10-04 21:02:01] [INFO] [PCAP-READ]   fnum=4 len=256 t=451120ns src=aa:bb:cc:dd:ee:02 dst=aa:bb:cc:dd:ee:01 vlan=[]
+[2025-10-04 21:02:01] [INFO] [PCAP-READ]   fnum=5 len=300 t=551120ns src=00:11:22:33:44:55 dst=ff:ff:ff:ff:ff:ff vlan=[]
+[2025-10-04 21:02:01] [INFO] [PCAP-READ]   fnum=6 len=638 t=553616ns src=00:11:22:33:44:55 dst=ff:ff:ff:ff:ff:ff vlan=[]
+[2025-10-04 21:02:01] [INFO] [PCAP-READ]   fnum=7 len=638 t=558816ns src=00:11:22:33:44:55 dst=ff:ff:ff:ff:ff:ff vlan=[]
+[2025-10-04 21:02:01] [INFO] [PCAP-READ]   fnum=8 len=246 t=564016ns src=00:11:22:33:44:55 dst=ff:ff:ff:ff:ff:ff vlan=[]
+[2025-10-04 21:02:01] [INFO] [PCAP-READ] read_PCAPFrames() returning 8 frames
+[2025-10-04 21:02:01] [PASS] STEP 4 completed successfully
+[2025-10-04 21:02:01] ===== tc_pcap_create: RESULT: PASS =====
 </pre>
 </div>
 </details>

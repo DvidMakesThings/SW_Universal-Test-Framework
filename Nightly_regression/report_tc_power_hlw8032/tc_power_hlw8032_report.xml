@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ENERGIS Functional Test" tests="45" failures="0" skipped="0" time="0.0" session_id="167c53b2">
+<testsuite name="ENERGIS Functional Test" tests="48" failures="0" skipped="0" time="0.0" session_id="47e3980b">
+  <testcase classname="UTFW" name="PRE-STEP 1 Reboot device via UART" time="0.0">
+  </testcase>
   <testcase classname="UTFW" name="STEP 1 Test power monitoring per channel with ON/OFF cycles" time="0.0">
   </testcase>
   <testcase classname="UTFW" name="STEP 1.1 Turn ON Channel 1" time="0.0">
@@ -89,5 +91,9 @@
   <testcase classname="UTFW" name="STEP 3.1 Read all power data at once" time="0.0">
   </testcase>
   <testcase classname="UTFW" name="STEP 3.2 Validate bulk power response" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="TEARDOWN 1 Ensure all outputs OFF" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="TEARDOWN 2 Final verify all outputs OFF" time="0.0">
   </testcase>
 </testsuite>

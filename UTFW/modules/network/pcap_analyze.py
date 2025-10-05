@@ -300,32 +300,59 @@ def read_PCAPFrames(
     """
 
     def execute():
+        _log(f"[PCAP-READ] read_PCAPFrames() execute called")
+        _log(f"[PCAP-READ]   pcap_path={pcap_path}")
+        _log(f"[PCAP-READ]   display_filter={display_filter or 'none'}")
+
         if not os.path.exists(pcap_path):
+            _log(f"[PCAP-READ ERROR] File not found: {pcap_path}")
             raise PCAPAnalyzeError(f"PCAP not found: {pcap_path}")
-        _log(f"[PCAP-READ] path={pcap_path} filter={display_filter or 'none'}")
+
+        file_size = os.path.getsize(pcap_path)
+        _log(f"[PCAP-READ] File exists, size={file_size} bytes")
+        _log(f"[PCAP-READ] Running tshark to extract fields...")
+
         out, err, rc = _run_tshark_fields(pcap_path, display_filter)
         if rc != 0:
+            _log(f"[PCAP-READ ERROR] tshark failed with rc={rc}")
+            _log(f"[PCAP-READ ERROR]   stderr: {err.strip()}")
             raise PCAPAnalyzeError(f"tshark failed: {err.strip() or 'unknown error'}")
+
+        _log(f"[PCAP-READ] tshark succeeded, parsing output...")
         frames = _parse_field_lines(out)
+        _log(f"[PCAP-READ] Parsed {len(frames)} frames from tshark output")
+
+        _log(f"[PCAP-READ] Extracting VLAN stack information...")
         vlan_stack = _run_tshark_vlan_stack(pcap_path, display_filter)
+
         if vlan_stack and len(vlan_stack) == len(frames):
+            _log(f"[PCAP-READ] VLAN stack data matches frame count, merging...")
             for i, st in enumerate(vlan_stack):
                 frames[i]["vlan_stack"] = st
         else:
+            _log(f"[PCAP-READ] VLAN stack mismatch or empty, using single-level VLAN data")
             for f in frames:
                 f["vlan_stack"] = (
                     []
                     if f.get("vlan_id") is None
                     else [(f["vlan_id"], f.get("vlan_pcp"))]
                 )
-        _log(f"[PCAP-READ] parsed={len(frames)}")
+        _log(f"[PCAP-READ] Total frames parsed: {len(frames)}")
         # Dump concise summary
-        for f in frames[:20]:
-            _log(
-                f"[PCAP-READ] fnum={f['frame_number']} len={f['frame_len']} "
-                f"t={f['timestamp_ns']}ns src={f['eth_src']} dst={f['eth_dst']} "
-                f"vlan={f.get('vlan_stack')}"
-            )
+        if frames:
+            _log(f"[PCAP-READ] Frame summary (showing up to 20):")
+            for f in frames[:20]:
+                _log(
+                    f"[PCAP-READ]   fnum={f['frame_number']} len={f['frame_len']} "
+                    f"t={f['timestamp_ns']}ns src={f['eth_src']} dst={f['eth_dst']} "
+                    f"vlan={f.get('vlan_stack')}"
+                )
+            if len(frames) > 20:
+                _log(f"[PCAP-READ]   ... and {len(frames) - 20} more frames")
+        else:
+            _log(f"[PCAP-READ] No frames matched the filter")
+
+        _log(f"[PCAP-READ] read_PCAPFrames() returning {len(frames)} frames")
         return frames
 
     return TestAction(name, execute, negative_test=negative_test)
@@ -428,49 +455,66 @@ def analyze_PCAP(
             _log(f"[PCAP-CHECK] Δt array ns={deltas}")
             if "eq" in time_delta_ns:
                 want = int(time_delta_ns["eq"])
+                _log(f"[PCAP-CHECK] Checking all deltas equal {want}ns...")
                 for i, d in enumerate(deltas, start=2):
                     if d != want:
+                        _log(f"[PCAP-CHECK ERROR] Time delta mismatch at frames {i-1}->{i}: {d}ns != {want}ns")
                         raise PCAPAnalyzeError(f"Δt[{i-1}->{i}] {d}ns != {want}ns")
+                _log(f"[PCAP-CHECK] All {len(deltas)} time deltas equal {want}ns")
             elif "min" in time_delta_ns or "max" in time_delta_ns:
                 mn = time_delta_ns.get("min")
                 mx = time_delta_ns.get("max")
+                _log(f"[PCAP-CHECK] Checking deltas in range [min={mn}, max={mx}] ns...")
                 for i, d in enumerate(deltas, start=2):
                     if mn is not None and d < int(mn):
+                        _log(f"[PCAP-CHECK ERROR] Time delta too small at {i-1}->{i}: {d}ns < {mn}ns")
                         raise PCAPAnalyzeError(f"Δt[{i-1}->{i}] {d}ns < min {mn}ns")
                     if mx is not None and d > int(mx):
+                        _log(f"[PCAP-CHECK ERROR] Time delta too large at {i-1}->{i}: {d}ns > {mx}ns")
                         raise PCAPAnalyzeError(f"Δt[{i-1}->{i}] {d}ns > max {mx}ns")
+                _log(f"[PCAP-CHECK] All {len(deltas)} time deltas within range")
             elif "per_pair" in time_delta_ns:
                 arr = list(map(int, time_delta_ns["per_pair"] or []))
+                _log(f"[PCAP-CHECK] Checking per-pair deltas against {len(arr)} expected values...")
                 if len(arr) != len(deltas):
+                    _log(f"[PCAP-CHECK ERROR] Per-pair array length mismatch: {len(arr)} != {len(deltas)}")
                     raise PCAPAnalyzeError(f"time_delta_ns.per_pair length {len(arr)} != expected {len(deltas)}")
                 for i, (d, want) in enumerate(zip(deltas, arr), start=2):
                     if d != want:
+                        _log(f"[PCAP-CHECK ERROR] Per-pair time delta mismatch at {i-1}->{i}: {d}ns != {want}ns")
                         raise PCAPAnalyzeError(f"Δt[{i-1}->{i}] {d}ns != {want}ns")
+                _log(f"[PCAP-CHECK] All {len(deltas)} per-pair time deltas matched")
 
         # Payload patterns (apply to all frames)
         if payload_patterns:
-            _log(f"[PCAP-CHECK] payload patterns={payload_patterns}")
-            for f in frames:
+            _log(f"[PCAP-CHECK] Validating {len(payload_patterns)} payload patterns across {len(frames)} frames...")
+            _log(f"[PCAP-CHECK] Patterns: {payload_patterns}")
+            for idx, f in enumerate(frames, 1):
                 msg = _match_payload_patterns(f["payload"], payload_patterns)
                 if msg:
+                    _log(f"[PCAP-CHECK ERROR] Frame {f['frame_number']} payload pattern failed: {msg}")
                     raise PCAPAnalyzeError(f"Frame {f['frame_number']} {msg}")
+            _log(f"[PCAP-CHECK] All {len(frames)} frames passed payload pattern validation")
 
         # MAC checks
         if expect_mac:
             src = expect_mac.get("src")
             dst = expect_mac.get("dst")
-            _log(f"[PCAP-CHECK] expect_mac src={src} dst={dst}")
+            _log(f"[PCAP-CHECK] Validating MAC addresses: src={src} dst={dst}")
             for f in frames:
                 if src and f["eth_src"].lower() != src.lower():
+                    _log(f"[PCAP-CHECK ERROR] Frame {f['frame_number']} MAC src mismatch: {f['eth_src']} != {src}")
                     raise PCAPAnalyzeError(f"Frame {f['frame_number']} eth.src {f['eth_src']} != {src}")
                 if dst and f["eth_dst"].lower() != dst.lower():
+                    _log(f"[PCAP-CHECK ERROR] Frame {f['frame_number']} MAC dst mismatch: {f['eth_dst']} != {dst}")
                     raise PCAPAnalyzeError(f"Frame {f['frame_number']} eth.dst {f['eth_dst']} != {dst}")
+            _log(f"[PCAP-CHECK] All {len(frames)} frames passed MAC validation")
 
         # VLAN checks
         if vlan_expect:
             want_ids = vlan_expect.get("id")
             want_pcp = vlan_expect.get("priority")
-            _log(f"[PCAP-CHECK] vlan_expect ids={want_ids} pcp={want_pcp}")
+            _log(f"[PCAP-CHECK] Validating VLAN tags: ids={want_ids} pcp={want_pcp}")
             for f in frames:
                 stack = f.get("vlan_stack") or ([] if f.get("vlan_id") is None else [(f["vlan_id"], f.get("vlan_pcp"))])
                 ids = [vid for (vid, _pcp) in stack]
@@ -478,16 +522,25 @@ def analyze_PCAP(
                     if isinstance(want_ids, list):
                         missing = [v for v in want_ids if v not in ids]
                         if missing:
+                            _log(f"[PCAP-CHECK ERROR] Frame {f['frame_number']} missing VLAN IDs {missing}, got {ids}")
                             raise PCAPAnalyzeError(f"Frame {f['frame_number']} missing VLAN IDs {missing}, got {ids}")
                     else:
                         if int(want_ids) not in ids:
+                            _log(f"[PCAP-CHECK ERROR] Frame {f['frame_number']} VLAN ID {want_ids} not found in {ids}")
                             raise PCAPAnalyzeError(f"Frame {f['frame_number']} VLAN id {want_ids} not in {ids}")
                 if want_pcp is not None:
                     pcps = [p for (_, p) in stack if p is not None]
                     if not pcps or int(want_pcp) not in pcps:
+                        _log(f"[PCAP-CHECK ERROR] Frame {f['frame_number']} VLAN PCP {want_pcp} not found in {pcps or '[]'}")
                         raise PCAPAnalyzeError(f"Frame {f['frame_number']} VLAN priority {want_pcp} not in {pcps or '[]'}")
+            _log(f"[PCAP-CHECK] All {len(frames)} frames passed VLAN validation")
 
-        _log(f"[PCAP-CHECK] Filter '{display_filter}' passed on {len(frames)} frame(s) in {pcap_path}")
+        _log(f"[PCAP-CHECK] ========================================")
+        _log(f"[PCAP-CHECK] ALL VALIDATIONS PASSED")
+        _log(f"[PCAP-CHECK] Filter: '{display_filter}'")
+        _log(f"[PCAP-CHECK] Frames validated: {len(frames)}")
+        _log(f"[PCAP-CHECK] PCAP file: {pcap_path}")
+        _log(f"[PCAP-CHECK] ========================================")
         return True
 
     return TestAction(name, execute, negative_test=negative_test)
