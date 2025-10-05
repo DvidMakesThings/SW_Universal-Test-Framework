@@ -49,10 +49,10 @@ def test_regex_match(text: str, pattern: str, description: str = "") -> bool:
             regex pattern is invalid.
     
     Example:
-        >>> test_regex_match("192.168.1.1", r"^\d+\.\d+\.\d+\.\d+$", "IP address")
+        >>> test_regex_match("192.168.1.1", r"^\\d+\\.\\d+\\.\\d+\\.\\d+$", "IP address")
         True
-        >>> test_regex_match("invalid", r"^\d+\.\d+\.\d+\.\d+$", "IP address")
-        ValidationTestError: Regex match failed (IP address): 'invalid' does not match '^\d+\.\d+\.\d+\.\d+$'
+        >>> test_regex_match("invalid", r"^\\d+\\.\\d+\\.\\d+\\.\\d+$", "IP address")
+        ValidationTestError: Regex match failed (IP address): 'invalid' does not match '^\\d+\\.\\d+\\.\\d+\\.\\d+$'
     """
     try:
         if not re.match(pattern, text):
@@ -84,10 +84,10 @@ def test_regex_search(text: str, pattern: str, description: str = "") -> bool:
             regex pattern is invalid.
     
     Example:
-        >>> test_regex_search("Device IP: 192.168.1.1", r"\d+\.\d+\.\d+\.\d+", "IP in text")
+        >>> test_regex_search("Device IP: 192.168.1.1", r"\\d+\\.\\d+\\.\\d+\\.\\d+", "IP in text")
         True
-        >>> test_regex_search("No IP here", r"\d+\.\d+\.\d+\.\d+", "IP in text")
-        ValidationTestError: Regex search failed (IP in text): '\d+\.\d+\.\d+\.\d+' not found in 'No IP here'
+        >>> test_regex_search("No IP here", r"\\d+\\.\\d+\\.\\d+\\.\\d+", "IP in text")
+        ValidationTestError: Regex search failed (IP in text): '\\d+\\.\\d+\\.\\d+\\.\\d+' not found in 'No IP here'
     """
     try:
         if not re.search(pattern, text):
@@ -321,7 +321,7 @@ def test_firmware_version(version_string: str, expected_format: str = r"^\d+\.\d
         >>> test_firmware_version("1.2.3-beta")
         True
         >>> test_firmware_version("invalid")
-        ValidationTestError: Regex match failed (firmware version): 'invalid' does not match '^\d+\.\d+\.\d+(?:[-+].*)?$'
+        ValidationTestError: Regex match failed (firmware version): 'invalid' does not match '^\\d+\\.\\d+\\.\\d+(?:[-+].*)?$'
     """
     return test_regex_match(version_string, expected_format, "firmware version")
 
@@ -346,7 +346,7 @@ def test_ip_address(ip_string: str, description: str = "") -> bool:
         >>> test_ip_address("192.168.1.1")
         True
         >>> test_ip_address("256.1.1.1")
-        ValidationTestError: Regex match failed (IP address): '256.1.1.1' does not match '^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$'
+        ValidationTestError: Regex match failed (IP address): '256.1.1.1' does not match '^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$'
     """
     ip_pattern = r"^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
     return test_regex_match(ip_string, ip_pattern, description or "IP address")

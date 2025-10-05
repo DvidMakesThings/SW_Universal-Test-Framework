@@ -262,7 +262,7 @@ def extract_numeric_value(text: str, pattern: Optional[str] = None) -> Optional[
     Example:
         >>> extract_numeric_value("Voltage: 3.3V")
         3.3
-        >>> extract_numeric_value("Temperature: 25.5°C", r"Temperature: ([\d.]+)")
+        >>> extract_numeric_value("Temperature: 25.5°C", r"Temperature: ([\\d.]+)")
         25.5
         >>> extract_numeric_value("No numbers here")
         None

@@ -965,7 +965,7 @@ def test_sysinfo_complete(
     
     Example:
         >>> validation_rules = {
-        ...     "firmware_regex": r"^\d+\.\d+\.\d+$",
+        ...     "firmware_regex": r"^\\d+\\.\\d+\\.\\d+$",
         ...     "core_voltage_range": [3.0, 3.6],
         ...     "frequencies": {"sys_hz_min": 100000000}
         ... }

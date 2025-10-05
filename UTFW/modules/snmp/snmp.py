@@ -753,7 +753,7 @@ def expect_oid_regex(name: str,
     Example:
         >>> regex_action = expect_oid_regex(
         ...     "Validate firmware version", "192.168.1.100",
-        ...     "1.3.6.1.2.1.1.1.0", r"v\d+\.\d+\.\d+"
+        ...     "1.3.6.1.2.1.1.1.0", r"v\\d+\\.\\d+\\.\\d+"
         ... )
     """
     def execute():
