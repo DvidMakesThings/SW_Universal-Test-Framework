@@ -1010,7 +1010,7 @@ def get_oid_value(
         value = get_value(ip, oid, community, timeout)
         if value is None:
             if logger:
-                logger.warning(f"[SNMP] Failed to read OID {oid}")
+                logger.warn(f"[SNMP] Failed to read OID {oid}")
             raise SNMPTestError(f"Failed to read OID {oid}")
         if logger:
             logger.info(f"[SNMP] {name}: {value}")
@@ -1204,7 +1204,7 @@ def verify_hlw8032_all_channels(
                 if voltage_str is None:
                     errors.append(f"Channel {channel}: Failed to read voltage (OID: {voltage_oid})")
                     if logger:
-                        logger.warning(f"[SNMP] Channel {channel} voltage read failed")
+                        logger.warn(f"[SNMP] Channel {channel} voltage read failed")
                     continue
 
                 try:
@@ -1218,13 +1218,13 @@ def verify_hlw8032_all_channels(
                             f"({expected_voltage_min}-{expected_voltage_max}V)"
                         )
                         if logger:
-                            logger.warning(
+                            logger.warn(
                                 f"[SNMP] Channel {channel} voltage {voltage}V out of expected range"
                             )
                 except ValueError as e:
                     errors.append(f"Channel {channel}: Invalid voltage value '{voltage_str}': {e}")
                     if logger:
-                        logger.warning(f"[SNMP] Channel {channel} voltage parse error: {e}")
+                        logger.warn(f"[SNMP] Channel {channel} voltage parse error: {e}")
 
             # Check current if requested
             if check_current:
@@ -1234,7 +1234,7 @@ def verify_hlw8032_all_channels(
                 if current_str is None:
                     errors.append(f"Channel {channel}: Failed to read current (OID: {current_oid})")
                     if logger:
-                        logger.warning(f"[SNMP] Channel {channel} current read failed")
+                        logger.warn(f"[SNMP] Channel {channel} current read failed")
                     continue
 
                 try:
@@ -1244,7 +1244,7 @@ def verify_hlw8032_all_channels(
                 except ValueError as e:
                     errors.append(f"Channel {channel}: Invalid current value '{current_str}': {e}")
                     if logger:
-                        logger.warning(f"[SNMP] Channel {channel} current parse error: {e}")
+                        logger.warn(f"[SNMP] Channel {channel} current parse error: {e}")
 
         # Report results
         if errors:

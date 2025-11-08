@@ -22,7 +22,7 @@ The test suite runner (`run_test_suite.py`) executes multiple test cases sequent
 
 ```bash
 # Run a test suite with hardware config
-python UTFW/tools/run_test_suite.py --config test_suites/regression.yaml --hwcfg tests/hardware_config.py
+python UTFW/tools/run_test_suite.py --config test_suites/nightly.yaml --hwcfg tests/hardware_config.py
 
 # Run with custom reports directory
 python UTFW/tools/run_test_suite.py --config test_suites/nightly.yaml --hwcfg tests/hardware_config.py --reports-dir ./nightly_reports

@@ -138,7 +138,7 @@ class tc_network_pcap:
                     display_filter=f"http.response and ip.addr=={hw.BASELINE_IP}",
                     ordered=False,
                     expected_frames=[
-                        {"payload_patterns": [{"contains_ascii": "192.168.0.11"}]},
+                        {"payload_patterns": [{"contains_ascii": "192.168.0.12"}]},
                     ],
                 ),
                 # 3.2: Validate Gateway address
@@ -186,7 +186,7 @@ class tc_network_pcap:
                     display_filter=f"http.response and ip.addr=={hw.BASELINE_IP}",
                     ordered=False,
                     expected_frames=[
-                        {"payload_patterns": [{"contains_ascii": "ENERGIS-1.0.0"}]},
+                        {"payload_patterns": [{"contains_ascii": "ENERGIS-1.1.0"}]},
                     ],
                 ),
                 # 3.6: Validate Location

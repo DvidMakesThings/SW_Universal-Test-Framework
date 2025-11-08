@@ -550,15 +550,29 @@ def validate_sysinfo_data(sysinfo: Dict[str, str], validation: Dict[str, Any]):
         if freq_field in sysinfo:
             try:
                 freq_str = sysinfo[freq_field]
-                freq_match = re.search(r'(\d+)', freq_str)
+                # Match number and optional unit (Hz, kHz, MHz)
+                freq_match = re.search(r'(\d+(?:\.\d+)?)\s*(Hz|kHz|MHz)?', freq_str, re.IGNORECASE)
                 if freq_match:
-                    freq_value = int(freq_match.group(1))
+                    value = float(freq_match.group(1))
+                    unit = (freq_match.group(2) or 'Hz').lower()
+                    
+                    # Convert to Hz based on unit
+                    if unit == 'khz':
+                        freq_value = int(value * 1000)
+                    elif unit == 'mhz':
+                        freq_value = int(value * 1000000)
+                    else:  # Hz
+                        freq_value = int(value)
+                        
+                    if logger:
+                        logger.info(f"[SERIAL] Parsed frequency {value} {unit} = {freq_value} Hz")
+                        
                     if 'min' in freq_type:
                         if freq_value < expected_hz:
-                            failures.append(f"{freq_field} too low: {freq_value} < {expected_hz}")
+                            failures.append(f"{freq_field} too low: {freq_value} Hz < {expected_hz} Hz")
                     else:
                         if freq_value != expected_hz:
-                            failures.append(f"{freq_field} mismatch: {freq_value} != {expected_hz}")
+                            failures.append(f"{freq_field} mismatch: {freq_value} Hz != {expected_hz} Hz")
                 else:
                     failures.append(f"Could not parse frequency: {freq_str}")
             except ValueError:
@@ -606,7 +620,7 @@ def parse_get_ch_all(response: str) -> Dict[int, bool]:
 
     lines = response.replace("\r\n", "\n").replace("\r", "\n").splitlines()
     ch_map: Dict[int, bool] = {}
-    pat = re.compile(r"CH\s*([1-8])\s*:\s*(ON|OFF)", re.IGNORECASE)
+    pat = re.compile(r"CH\s*([1-8])\s*[=:]\s*(ON|OFF)", re.IGNORECASE)
 
     if logger:
         logger.info(f"[SERIAL] Parsing {len(lines)} lines for channel states")
@@ -630,7 +644,7 @@ def parse_get_ch_all(response: str) -> Dict[int, bool]:
     if logger:
         logger.info(f"[SERIAL] Parsed {len(ch_map)} channel states")
         if len(ch_map) < 8:
-            logger.warning(f"[SERIAL] Warning: Only {len(ch_map)} channels parsed, expected 8")
+            logger.warn(f"[SERIAL] Warning: Only {len(ch_map)} channels parsed, expected 8")
 
     return ch_map
 
@@ -830,7 +844,7 @@ def get_all_channels(
         if expected is not None:
             # Reuse validator to report detailed diff
             validate_all_channels_state(
-                name=f"{name} – validate",
+                name=f"{name} - validate",
                 response=resp,
                 expected=expected
             ).execute_func()
@@ -1655,9 +1669,9 @@ negative_test: bool = False) -> TestAction:
         # 5) Write summary
         summary_path = save_dir / "eeprom_summary.txt"
         with summary_path.open("w", encoding="utf-8") as sf:
-            sf.write(f"EEPROM Parse Summary – {name}\n")
+            sf.write(f"EEPROM Parse Summary - {name}\n")
             sf.write(f"Source lines parsed: {len(rows)}\n")
-            sf.write(f"Address span: 0x{min_addr:04X} – 0x{max_addr:04X} ({max_addr - min_addr + 1} bytes)\n")
+            sf.write(f"Address span: 0x{min_addr:04X} - 0x{max_addr:04X} ({max_addr - min_addr + 1} bytes)\n")
             sf.write(f"Dump (raw)   : {raw_path.name if raw_path.exists() else '<missing>'}\n")
             sf.write(f"Dump (ascii) : {ascii_path.name if ascii_path.exists() else '<missing>'}\n")
             sf.write(f"Checks file  : {checks_path.name}\n")

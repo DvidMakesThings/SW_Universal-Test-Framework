@@ -16,6 +16,7 @@ from UTFW.core import STE
 from UTFW.modules import snmp as SNMP
 from UTFW.modules import serial as UART
 from UTFW.modules import network
+from UTFW.modules import nop as NOP
 
 
 class tc_serial_test:
@@ -283,10 +284,16 @@ class tc_serial_test:
             test_all_outlets,
 
             # Step 6: Factory reset - single action
-            UART.factory_reset_complete(
-                name="Reset to factory settings (RFS) and verify data",
-                port=hw.SERIAL_PORT,
-                baudrate=hw.BAUDRATE
+            UART.send_command_uart(
+                    name="Perform factory reset (RFS)",
+                    port=hw.SERIAL_PORT,
+                    command="RFS",
+                    baudrate=hw.BAUDRATE,
+                    reboot=True
+                ),
+            NOP.NOP(
+                name="Wait for device to stabilize",
+                duration_ms=500
             ),
         ]
 

@@ -14,6 +14,7 @@ from UTFW.core import get_reports_dir
 from UTFW.core import STE
 from UTFW.modules import serial as UART
 from UTFW.modules import snmp as SNMP
+from UTFW.modules import nop as NOP
 
 
 class tc_eeprom_persistence_test:
@@ -191,16 +192,17 @@ class tc_eeprom_persistence_test:
 
             # Step 5: Factory reset
             STE(
-                UART.factory_reset_complete(
+                UART.send_command_uart(
                     name="Perform factory reset (RFS)",
                     port=hw.SERIAL_PORT,
-                    baudrate=hw.BAUDRATE
+                    command="RFS",
+                    baudrate=hw.BAUDRATE,
+                    reboot=True
                 ),
-                name="Factory reset device"
-            ),
-
-            # Step 6: Verify factory defaults restored
-            STE(
+                NOP.NOP(
+                    name="Wait for device to stabilize",
+                    duration_ms=500
+                ),
                 UART.send_command_uart(
                     name="Get network config after factory reset",
                     port=hw.SERIAL_PORT,
@@ -221,7 +223,7 @@ class tc_eeprom_persistence_test:
                 name="Verify factory defaults restored"
             ),
 
-            # Step 7: Multiple reboot cycles to test stability
+            # Step 6: Multiple reboot cycles to test stability
             STE(
                 UART.send_command_uart(
                     name="Reboot cycle 1",
@@ -270,7 +272,7 @@ class tc_eeprom_persistence_test:
                 name="Multiple reboot cycle stability test"
             ),
 
-            # Step 8: EEPROM dump analysis
+            # Step 7: EEPROM dump analysis
             STE(
                 UART.analyze_eeprom_dump(
                     name="Analyze EEPROM dump after all tests",

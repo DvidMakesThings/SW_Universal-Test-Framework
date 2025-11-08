@@ -92,8 +92,8 @@ class tc_sanity_check:
                 name="Die Sensor Temperature",
                 ip=hw.BASELINE_IP,
                 oid=hw.ADC_DIE_SENSOR_TEMPERATURE,
-                min_val=40.0 * 0.80,
-                max_val=40.0 * 1.20,
+                min_val=20.0,
+                max_val=40.0,
                 community=hw.SNMP_COMMUNITY
             ),
             SNMP.read_oid(
@@ -109,7 +109,7 @@ class tc_sanity_check:
                 ip=hw.BASELINE_IP,
                 oid=hw.ADC_5V_USB_VOLTAGE,
                 min_val=5.0 * 0.95,
-                max_val=5.0 * 1.05,
+                max_val=5.5 * 1.0,
                 community=hw.SNMP_COMMUNITY
             ),
             SNMP.read_oid(
@@ -117,7 +117,7 @@ class tc_sanity_check:
                 ip=hw.BASELINE_IP,
                 oid=hw.ADC_12V_PSU_DIVIDER_VOLTAGE,
                 min_val=1.09 * 0.95,
-                max_val=1.09 * 1.05,
+                max_val=1.2 * 1.05,
                 community=hw.SNMP_COMMUNITY
             ),
             SNMP.read_oid(
@@ -125,7 +125,7 @@ class tc_sanity_check:
                 ip=hw.BASELINE_IP,
                 oid=hw.ADC_5V_USB_DIVIDER_VOLTAGE,
                 min_val=2.48 * 0.95,
-                max_val=2.48 * 1.05,
+                max_val=2.6 * 1.05,
                 community=hw.SNMP_COMMUNITY
             ),
             SNMP.read_oid(

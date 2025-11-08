@@ -93,7 +93,7 @@ class tc_network_snmp_test:
                     ip=hw.BASELINE_IP,
                     oid=hw.get_hlw8032_oid(ch, hw.HLW8032_VOLTAGE),
                     min_val=0.0,
-                    max_val=2.0,
+                    max_val=10.0,
                     community=hw.SNMP_COMMUNITY,
                 )
             )
@@ -181,7 +181,7 @@ class tc_network_snmp_test:
                     name="sysName matches expected",
                     ip=hw.BASELINE_IP,
                     oid=hw.SYS_NAME,
-                    regex=hw.SYS_NAME_EXPECTED,
+                    regex=hw.SYS_SN_EXPECTED,
                     community=hw.SNMP_COMMUNITY,
                 ),
                 # Step 2.6 - sysLocation

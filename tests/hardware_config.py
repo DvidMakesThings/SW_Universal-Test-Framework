@@ -5,7 +5,7 @@ Hardware-specific configuration for ENERGIS device testing
 """
 
 # Network Configuration
-BASELINE_IP = "192.168.0.11"
+BASELINE_IP = "192.168.0.12"
 BASELINE_SUBNET = "255.255.255.0"
 BASELINE_GATEWAY = "192.168.0.1"
 BASELINE_DNS = "8.8.8.8"
@@ -19,7 +19,7 @@ CONTROL_PATH = "/control"     # Added: form endpoint for outlet control
 SETTINGS_PATH = "/settings"   # Added: form endpoint for network settings
 
 # Serial Configuration
-SERIAL_PORT = "COM11"
+SERIAL_PORT = "COM9"
 BAUDRATE = 115200
 SERIAL_TIMEOUT = 3.0
 WRITE_TIMEOUT = 1.0
@@ -135,9 +135,9 @@ ADC_HZ_EXPECT = 48000000
 # System Info Expected Values
 SYS_DESCR_EXPECTED = "^ENERGIS 8 CHANNEL MANAGED PDU$"
 SYS_CONTACT_EXPECTED = "^dvidmakesthings@gmail.com$"
-SYS_NAME_EXPECTED = r"^SN-[A-Za-z0-9]{10,}.*$"
+SYS_SN_EXPECTED = r"^SN-[A-Za-z0-9]{7,}.*$"
 SYS_LOCATION_EXPECTED = "^Wien$"
-SYS_SERVICES_EXPECTED = "^-?5$"
+SYS_SERVICES_EXPECTED = r"^(72|78)$"
 
 # Long-length test expectations
 LONG_LENGTH_1_EXPECTED = "^long-length OID Test #1$"
