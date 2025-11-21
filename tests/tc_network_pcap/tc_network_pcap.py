@@ -138,7 +138,7 @@ class tc_network_pcap:
                     display_filter=f"http.response and ip.addr=={hw.BASELINE_IP}",
                     ordered=False,
                     expected_frames=[
-                        {"payload_patterns": [{"contains_ascii": "192.168.0.12"}]},
+                        {f"payload_patterns": [{"contains_ascii": hw.BASELINE_IP}]},
                     ],
                 ),
                 # 3.2: Validate Gateway address
@@ -150,7 +150,7 @@ class tc_network_pcap:
                     display_filter=f"http.response and ip.addr=={hw.BASELINE_IP}",
                     ordered=False,
                     expected_frames=[
-                        {"payload_patterns": [{"contains_ascii": "192.168.0.1"}]},
+                        {f"payload_patterns": [{"contains_ascii": hw.BASELINE_GATEWAY}]},
                     ],
                 ),
                 # 3.3: Validate Subnet mask
@@ -162,7 +162,7 @@ class tc_network_pcap:
                     display_filter=f"http.response and ip.addr=={hw.BASELINE_IP}",
                     ordered=False,
                     expected_frames=[
-                        {"payload_patterns": [{"contains_ascii": "255.255.255.0"}]},
+                        {"payload_patterns": [{"contains_ascii": hw.BASELINE_SUBNET}]},
                     ],
                 ),
                 # 3.4: Validate DNS address
@@ -174,7 +174,7 @@ class tc_network_pcap:
                     display_filter=f"http.response and ip.addr=={hw.BASELINE_IP}",
                     ordered=False,
                     expected_frames=[
-                        {"payload_patterns": [{"contains_ascii": "8.8.8.8"}]},
+                        {"payload_patterns": [{"contains_ascii": hw.BASELINE_DNS}]},
                     ],
                 ),
                 # 3.5: Validate Device Name
@@ -186,7 +186,7 @@ class tc_network_pcap:
                     display_filter=f"http.response and ip.addr=={hw.BASELINE_IP}",
                     ordered=False,
                     expected_frames=[
-                        {"payload_patterns": [{"contains_ascii": "ENERGIS-1.1.0"}]},
+                        {f"payload_patterns": [{"contains_ascii": hw.DEVICE_NAME}]},
                     ],
                 ),
                 # 3.6: Validate Location
@@ -198,7 +198,7 @@ class tc_network_pcap:
                     display_filter=f"http.response and ip.addr=={hw.BASELINE_IP}",
                     ordered=False,
                     expected_frames=[
-                        {"payload_patterns": [{"contains_ascii": "Location"}]},
+                        {"payload_patterns": [{"contains_ascii": hw.DEVICE_LOCATION}]},
                     ],
                 ),
                 # 3.7: Validate page title

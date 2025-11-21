@@ -47,7 +47,7 @@ NOP = modules.nop
 # Import report helper
 from .tools import generate_test_report as REPORT_HELPER
 
-__version__ = "2.1.32"
+__version__ = "2.1.34"
 __all__ = [
     # Core framework
     "TestFramework",
@@ -77,6 +77,7 @@ __all__ = [
     "Ethernet",
     "FX2",
     "NOP",
+    "Metrics",
 
     # Module package
     "modules",

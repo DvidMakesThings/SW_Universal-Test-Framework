@@ -5,21 +5,29 @@ Hardware-specific configuration for ENERGIS device testing
 """
 
 # Network Configuration
-BASELINE_IP = "192.168.0.12"
+BASELINE_IP = "192.168.0.22"
 BASELINE_SUBNET = "255.255.255.0"
 BASELINE_GATEWAY = "192.168.0.1"
 BASELINE_DNS = "8.8.8.8"
+BASELINE_DHCP = "Disabled"
 SNMP_COMMUNITY = "public"
 HTTP_TIMEOUT = 3.0
 HTTP_PORT = 80  # Added: used by Ethernet tests to build base URL
-TEMP_NEW_IP = "192.168.0.72"  # Added: temporary IP used by IP change/revert test
+
+TEMP_NEW_IP = "192.168.0.72" 
+TEMP_NEW_SN = "255.255.0.0"
+TEMP_NEW_GW = "192.168.1.1"
+TEMP_NEW_DNS = "1.1.1.1"
+
+DEVICE_NAME = "ENERGIS-1.0.0"
+DEVICE_LOCATION = "Location"
 
 # Web UI paths & dumps (used by universal Ethernet test)
 CONTROL_PATH = "/control"     # Added: form endpoint for outlet control
 SETTINGS_PATH = "/settings"   # Added: form endpoint for network settings
 
 # Serial Configuration
-SERIAL_PORT = "COM9"
+SERIAL_PORT = "COM3"
 BAUDRATE = 115200
 SERIAL_TIMEOUT = 3.0
 WRITE_TIMEOUT = 1.0
@@ -108,26 +116,52 @@ GET_CH_CMD = "GET_CH"
 HELP_TOKENS = [
     "HELP",
     "SYSINFO",
+    "GET_TEMP",
     "REBOOT",
     "BOOTSEL",
-    "CONFIG_NETWORK",
-    "SET_IP",
-    "SET_DNS",
-    "SET_GW",
-    "SET_SN",
-    "NETINFO",
+    "CLR_ERR",
+    "RFS",
     "SET_CH",
+    "GET_CH",
     "READ_HLW8032",
     "READ_HLW8032 <ch>",
-    "DUMP_EEPROM",
-    "RFS"
+    "CALIBRATE",
+    "AUTO_CAL_ZERO",
+    "AUTO_CAL_V",
+    "SHOW_CALIB",
+    "NETINFO",
+    "SET_IP",
+    "SET_SN",
+    "SET_GW",
+    "SET_DNS",
+    "CONFIG_NETWORK",
 ]
+
+NETINFO_TOKENS = [
+    # Headline + section header
+    "[ECHO] NETWORK INFORMATION:",
+    "[ECHO] [ETH] Network Configuration:",
+
+    # Just make sure there is a MAC line (value itself is not critical here)
+    "[ECHO] [ETH]  MAC  :",
+
+    # These check both the label and the actual configured values
+    f"[ECHO] [ETH]  IP   : {BASELINE_IP}",
+    f"[ECHO] [ETH]  Mask : {BASELINE_SUBNET}",
+    f"[ECHO] [ETH]  GW   : {BASELINE_GATEWAY}",
+    f"[ECHO] [ETH]  DNS  : {BASELINE_DNS}",
+
+    # DHCP state
+    f"[ECHO] [ETH]  DHCP : {BASELINE_DHCP}",
+]
+
+
 
 FIRMWARE_REGEX = r"^\d+\.\d+\.\d+(?:[-+].*)?$"
 CORE_VOLTAGE_RANGE = [0.9, 1.5]
 
 # Frequency expectations
-SYS_HZ_MIN = 100000000
+SYS_HZ_MIN = 125000000
 USB_HZ_EXPECT = 48000000
 PER_HZ_EXPECT = 48000000
 ADC_HZ_EXPECT = 48000000

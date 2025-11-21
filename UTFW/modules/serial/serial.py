@@ -310,16 +310,21 @@ def wait_for_reboot_and_ready(port: str, ready_token: str = "SYSTEM READY",
                               baudrate: int = 115200, timeout: float = 10.0) -> bool:
     """Wait for device to reboot and display the ready signal.
     
-    This function monitors a serial port for a device reboot sequence and
-    waits for the specified ready token to appear in the output. It handles
-    connection retries and logs all received data during the wait period.
+    This function monitors a serial port for a complete reboot sequence:
+    1) Waits for the serial port to disappear (device starts rebooting).
+    2) Waits for the serial port to reappear (device back after reboot).
+    3) After reconnection, opens the port and waits for the ready banner
+       containing the specified token.
+    
+    All steps are logged via the active logger.
     
     Args:
-        port (str): Serial port identifier to monitor.
+        port (str): Serial port identifier to monitor (e.g. "COM3").
         ready_token (str, optional): Text token indicating device is ready.
             Defaults to "SYSTEM READY".
         baudrate (int, optional): Communication baud rate. Defaults to 115200.
-        timeout (float, optional): Maximum time to wait in seconds. Defaults to 10.0.
+        timeout (float, optional): Maximum total time to wait in seconds
+            (disappear + reappear + banner). Defaults to 10.0.
         
     Returns:
         bool: True if the ready token was detected within the timeout,
@@ -327,105 +332,150 @@ def wait_for_reboot_and_ready(port: str, ready_token: str = "SYSTEM READY",
     """
     _ensure_pyserial()
     import serial
+    import serial.tools.list_ports as list_ports
 
     logger = get_active_logger()
 
     if logger:
         logger.info(f"[SERIAL] wait_for_reboot_and_ready() called")
-        logger.info(f"[SERIAL]   port={port}, ready_token='{ready_token}', baudrate={baudrate}, timeout={timeout}s")
+        logger.info(f"[SERIAL]   port={port}, ready_token='{ready_token}', "
+                    f"baudrate={baudrate}, timeout={timeout}s")
 
-    deadline = time.time() + timeout
     start_time = time.time()
+    deadline = start_time + timeout
+
+    def _port_exists(p: str) -> bool:
+        """Check if a given serial port currently exists."""
+        try:
+            return any(info.device == p for info in list_ports.comports())
+        except Exception as e:
+            if logger:
+                logger.warning(f"[SERIAL] Failed to enumerate ports while checking '{p}': "
+                               f"{type(e).__name__}: {e}")
+            # Be conservative; if we cannot check properly, assume it still exists
+            return True
+
+    # PHASE 1: wait for port to disappear (device starts rebooting)
+    initial_exists = _port_exists(port)
+    if logger:
+        logger.info(f"[SERIAL] Phase 1: wait for '{port}' to disappear "
+                    f"(initial_exists={initial_exists})")
+
+    if initial_exists:
+        while _port_exists(port) and time.time() < deadline:
+            time.sleep(0.1)
+        if _port_exists(port):
+            if logger:
+                logger.warning(f"[SERIAL] Port {port} did not disappear before timeout phase 1")
+        else:
+            if logger:
+                logger.info(f"[SERIAL] Port {port} disappeared (device reboot in progress)")
+    else:
+        if logger:
+            logger.info(f"[SERIAL] Port {port} not present at start, skipping disappearance wait")
+
+    # PHASE 2: wait for port to reappear
+    if logger:
+        logger.info(f"[SERIAL] Phase 2: waiting for '{port}' to reappear")
+
+    while not _port_exists(port) and time.time() < deadline:
+        time.sleep(0.1)
+
+    if not _port_exists(port):
+        elapsed = time.time() - start_time
+        if logger:
+            logger.error(f"[SERIAL] Port {port} did not reappear within timeout "
+                         f"({elapsed:.1f}s)")
+        return False
 
     if logger:
-        logger.info(f"[SERIAL] Waiting 200ms for device to start rebooting...")
-    time.sleep(0.2)  # Give device time to start rebooting
+        logger.info(f"[SERIAL] Port {port} reappeared")
 
+    # PHASE 3: open port and wait for ready banner
     connection_attempts = 0
     while time.time() < deadline:
         connection_attempts += 1
         remaining_time = deadline - time.time()
+        if remaining_time <= 0:
+            break
 
         if logger:
-            logger.info(f"[SERIAL] Connection attempt #{connection_attempts} (remaining timeout: {remaining_time:.1f}s)")
+            logger.info(f"[SERIAL] Phase 3: connection attempt #{connection_attempts} "
+                        f"(remaining {remaining_time:.1f}s)")
 
         try:
             ser = serial.Serial(port=port, baudrate=baudrate, timeout=1.0)
-
-            if logger:
-                logger.info(f"[SERIAL] Connected to port {port} on attempt #{connection_attempts}")
-
-            try:
-                time.sleep(0.1)
-                response_bytes = bytearray()
-                banner_found = False
-                chunk_count = 0
-
-                if logger:
-                    logger.info(f"[SERIAL RX] Monitoring for ready token: '{ready_token}'")
-
-                while time.time() < deadline:
-                    if ser.in_waiting > 0:
-                        chunk = ser.read(ser.in_waiting)
-                        chunk_count += 1
-                        response_bytes.extend(chunk)
-                        text_chunk = chunk.decode('utf-8', errors='ignore')
-
-                        if logger:
-                            logger.info(f"[SERIAL RX] Chunk #{chunk_count}: {len(chunk)} bytes")
-                            logger.info(f"[SERIAL RX] Content: {text_chunk.replace(chr(13), '<CR>').replace(chr(10), '<LF>\n')}")
-
-                        if DEBUG: print(f"[DEBUG] Received during reboot: {text_chunk}")
-
-                        # Check for banner in the latest chunk
-                        if ready_token.lower() in text_chunk.lower():
-                            banner_found = True
-                            if logger:
-                                logger.info(f"[SERIAL] Ready token '{ready_token}' detected!")
-                            break
-                    time.sleep(0.05)
-
-                response = response_bytes.decode('utf-8', errors='ignore')
-                elapsed = time.time() - start_time
-
-                if logger:
-                    logger.info(f"[SERIAL RX] Total response: {len(response_bytes)} bytes in {chunk_count} chunks")
-                    logger.info(f"[SERIAL RX] Elapsed time: {elapsed:.3f}s")
-                    if response:
-                        logger.info(f"[SERIAL RX] Full response:")
-                        logger.info(response.replace("\r", "\\r").replace("\n", "\\n\n"))
-                        logger.info(f"[SERIAL RX] Hex dump:")
-                        logger.info(_format_hex_dump(response_bytes))
-
-                if banner_found:
-                    if logger:
-                        logger.info(f"[SERIAL] Device ready! Returning True")
-                    return True
-                else:
-                    if logger:
-                        logger.info(f"[SERIAL] Ready token not found in this attempt")
-
-            finally:
-                try:
-                    ser.close()
-                    if logger:
-                        logger.info(f"[SERIAL] Closed port {port}")
-                except Exception as e:
-                    if logger:
-                        logger.error(f"[SERIAL ERROR] Failed to close port: {e}")
-
         except Exception as e:
             if logger:
-                logger.info(f"[SERIAL] Connection attempt #{connection_attempts} failed: {type(e).__name__}: {e}")
-            pass
+                logger.info(f"[SERIAL] Connection attempt #{connection_attempts} failed: "
+                            f"{type(e).__name__}: {e}")
+            time.sleep(0.2)
+            continue
 
-        if logger:
-            logger.info(f"[SERIAL] Waiting 200ms before next attempt...")
+        try:
+            if logger:
+                logger.info(f"[SERIAL] Connected to {port}, monitoring for ready token '{ready_token}'")
+
+            response_bytes = bytearray()
+            chunk_count = 0
+            banner_found = False
+
+            while time.time() < deadline:
+                if ser.in_waiting > 0:
+                    chunk = ser.read(ser.in_waiting)
+                    chunk_count += 1
+                    response_bytes.extend(chunk)
+                    text_chunk = chunk.decode('utf-8', errors='ignore')
+
+                    if logger:
+                        logger.info(f"[SERIAL RX] Chunk #{chunk_count}: {len(chunk)} bytes")
+                        logger.info(f"[SERIAL RX] Content: "
+                                    f"{text_chunk.replace(chr(13), '<CR>').replace(chr(10), '<LF>\\n')}")
+
+                    if DEBUG:
+                        print(f"[DEBUG] Reboot RX: {text_chunk}")
+
+                    if ready_token.lower() in text_chunk.lower():
+                        banner_found = True
+                        if logger:
+                            logger.info(f"[SERIAL] Ready token '{ready_token}' detected")
+                        break
+
+                time.sleep(0.05)
+
+            total_response = response_bytes.decode('utf-8', errors='ignore')
+            elapsed_all = time.time() - start_time
+
+            if logger:
+                logger.info(f"[SERIAL RX] Total reboot-response bytes: {len(response_bytes)} "
+                            f"in {chunk_count} chunks (elapsed {elapsed_all:.3f}s)")
+                if total_response:
+                    logger.info(f"[SERIAL RX] Full reboot-response:")
+                    logger.info(total_response.replace("\r", "\\r").replace("\n", "\\n\n"))
+
+            if banner_found:
+                if logger:
+                    logger.info(f"[SERIAL] Device ready after reboot")
+                return True
+
+            if logger:
+                logger.info(f"[SERIAL] Ready token not found on this attempt, retrying...")
+
+        finally:
+            try:
+                ser.close()
+                if logger:
+                    logger.info(f"[SERIAL] Closed port {port} after reboot-monitoring attempt")
+            except Exception as e:
+                if logger:
+                    logger.error(f"[SERIAL] Failed to close port {port}: {e}")
+
         time.sleep(0.2)
 
     elapsed_total = time.time() - start_time
     if logger:
-        logger.error(f"[SERIAL] Timeout after {elapsed_total:.1f}s and {connection_attempts} attempts")
+        logger.error(f"[SERIAL] Timeout after {elapsed_total:.1f}s "
+                     f"and {connection_attempts} connection attempts")
         logger.error(f"[SERIAL] Ready token '{ready_token}' was NOT detected")
 
     return False
@@ -872,6 +922,10 @@ def send_command_uart(
     the device reboots), this function will automatically wait for the device
     to reboot and return a "DEVICE REBOOTED" message.
 
+    When ``reboot`` is True, the function will always wait for the reboot
+    sequence (port disappear + reappear + ready banner), even if the REBOOT
+    command itself returns a normal response.
+    
     Args:
         name (str): Base name for the test action(s). For multiple commands,
             each action gets a numbered suffix with the command text.
@@ -882,53 +936,35 @@ def send_command_uart(
         timeout (float, optional): Response timeout in seconds. Defaults to 2.0.
         reboot (bool, optional): If True, expect the device to reboot after
             the command. The action will handle waiting for the reboot.
-
+        negative_test (bool, optional): If True, mark the action as negative
+            test in the framework.
+    
     Returns:
         Union[TestAction, List[TestAction]]: Single TestAction if command
             is a string, or list of TestActions if command is a list.
-
-    Raises:
-        TypeError: If command is neither a string nor a list/tuple of strings.
-        SerialTestError: If communication fails or times out.
-
-    Example:
-        # Single command (legacy behavior, unchanged)
-        action = send_command_uart(
-            name="Read NETINFO",
-            port="COM5",
-            command="NETINFO",
-            baudrate=115200
-        )
-
-        # Multiple commands (new functionality)
-        actions = send_command_uart(
-            name="Run GET_CH on all channels",
-            port="COM5",
-            command=[f"GET_CH {i}" for i in range(1, 9)],
-            baudrate=115200
-        )
-    
-        # The function will automatically handle the reboot:
-        # 1. Send the command
-        # 2. Handle the expected connection drop
-        # 3. Wait for the device to come back online
     """
     def make_execute(cmd):
         def execute():
+            # First try the normal command/response path
             try:
-                # Try to send the command and get a response
                 resp = send_command(port, cmd, baudrate, timeout)
-                return resp
             except Exception as e:
                 # Connection may have dropped due to reboot; that's expected
                 if reboot:
-                    # Wait for device to reboot and become ready
-                    if not wait_for_reboot_and_ready(port, "SYSTEM READY", baudrate, 15.0):
-                        raise SerialTestError(f"Device did not become ready after '{cmd}'")
+                    if not wait_for_reboot_and_ready(port, "SYSTEM READY", baudrate, 20.0):
+                        raise SerialTestError(f"Device did not become ready after '{cmd}'") from e
                     return "DEVICE REBOOTED"
-                else:
-                    # If not expecting reboot, this is a real error
-                    raise
+                # Not expecting reboot -> real error
+                raise
+
+            # Command returned cleanly. If reboot is expected, still wait for full reboot.
+            if reboot:
+                if not wait_for_reboot_and_ready(port, "SYSTEM READY", baudrate, 20.0):
+                    raise SerialTestError(f"Device did not become ready after '{cmd}'")
+                return "DEVICE REBOOTED"
+
+            # No reboot expected: just return the response as before.
+            return resp
 
         return execute
 
@@ -938,7 +974,8 @@ def send_command_uart(
         actions = []
         for idx, cmd in enumerate(command, start=1):
             actions.append(
-                TestAction(f"{name} [{idx}] {cmd}", make_execute(cmd), negative_test=negative_test)
+                TestAction(f"{name} [{idx}] {cmd}", make_execute(cmd),
+                           negative_test=negative_test)
             )
         return actions
     else:

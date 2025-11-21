@@ -2,40 +2,82 @@
   {
     "label": "Device Serial",
     "start": "0x0000",
-    "length": 16,
+    "length": 11,
     "type": "ascii",
     "pattern": "SN-",
     "trim_nul": true,
-    "regex": "SN-[0-9]{12}"            
+    "regex": "^SN-[0-9]{7}$"
   },
   {
     "label": "FW Version",
-    "start": "0x0010",
-    "length": 16,
+    "start": "0x000B",
+    "length": 6,
     "type": "ascii",
-    "regex": "^1\\.0\\.0$",            
-    "trim_nul": true
+    "trim_nul": true,
+    "regex": "^1\\.0\\.0$"
   },
   {
     "label": "Relay Defaults (8x bytes)",
     "start": "0x0200",
     "length": 8,
     "type": "hex",
-    "expect": "00 00 00 00 00 00 00 00"  
+    "expect": "00 00 00 00 00 00 00 00"
   },
   {
-    "label": "Network Info (first 4 bytes)",
+    "label": "User MAC",
     "start": "0x0300",
+    "length": 6,
+    "type": "hex",
+    "expect": "02 45 4E 0C 7B 1C"
+  },
+  {
+    "label": "User IP",
+    "start": "0x0306",
     "length": 4,
     "type": "hex",
-    "expect": "C0 A8 00 0B"              
+    "expect": "C0 A8 00 16"
+  },
+  {
+    "label": "User Subnet Mask",
+    "start": "0x030A",
+    "length": 4,
+    "type": "hex",
+    "expect": "FF FF FF 00"
+  },
+  {
+    "label": "User Gateway",
+    "start": "0x030E",
+    "length": 4,
+    "type": "hex",
+    "expect": "C0 A8 00 01"
+  },
+  {
+    "label": "User DNS",
+    "start": "0x0312",
+    "length": 4,
+    "type": "hex",
+    "expect": "08 08 08 08"
+  },
+  {
+    "label": "DHCP Flag",
+    "start": "0x0316",
+    "length": 1,
+    "type": "hex",
+    "expect": "00"
+  },
+  {
+    "label": "Network CRC-8",
+    "start": "0x0317",
+    "length": 1,
+    "type": "hex",
+    "expect": "89"
   },
   {
     "label": "Device Name",
     "start": "0x2000",
     "length": 32,
     "type": "ascii",
-    "expect": "ENERGIS-1.0.0",           
+    "expect": "ENERGIS-1.0.0",
     "trim_nul": true
   },
   {
@@ -43,14 +85,21 @@
     "start": "0x2020",
     "length": 32,
     "type": "ascii",
-    "expect": "Location",                
+    "expect": "Location",
     "trim_nul": true
   },
   {
+    "label": "Temp Unit + CRC",
+    "start": "0x2040",
+    "length": 2,
+    "type": "hex",
+    "expect": "00 FC"
+  },
+  {
     "label": "Magic A55A Present",
-    "start": "0xFFF0",
+    "start": "0x7FF0",
     "length": 16,
     "type": "hex",
-    "contains": "5A A5"                  
+    "contains": "5A A5"
   }
 ]

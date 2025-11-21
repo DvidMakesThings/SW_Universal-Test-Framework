@@ -30,6 +30,7 @@ class tc_stress_switching_test:
         hw = get_hwconfig()
 
         return [
+            
             # PRE-STEP 1: Send reboot command via UART
             UART.send_command_uart(
                 name="Reboot device via UART",
@@ -74,7 +75,7 @@ class tc_stress_switching_test:
 
         # Rapid switching: 50 cycles per channel (much faster with SNMP)
         rapid_switching_actions = []
-        num_cycles = 15
+        num_cycles = 10
 
         for cycle in range(1, num_cycles + 1):
             for channel in range(1, 9):

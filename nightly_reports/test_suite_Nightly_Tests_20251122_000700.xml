@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Nightly Tests" tests="9" failures="1" skipped="0" time="467.637" session_id="4e5436c1">
+  <testcase classname="TestSuite" name="Sanity Check Test" time="16.862">
+  </testcase>
+  <testcase classname="TestSuite" name="Serial Communication Test" time="94.700">
+  </testcase>
+  <testcase classname="TestSuite" name="SNMP Test" time="43.557">
+    <failure message="Test failed (exit code: 1)"/>
+  </testcase>
+  <testcase classname="TestSuite" name="Network PCAP Test" time="43.010">
+  </testcase>
+  <testcase classname="TestSuite" name="PCAP Capture Test" time="20.253">
+  </testcase>
+  <testcase classname="TestSuite" name="PCAP Create Test" time="1.820">
+  </testcase>
+  <testcase classname="TestSuite" name="EEPROM Persistence Test" time="161.356">
+  </testcase>
+  <testcase classname="TestSuite" name="Power Meter HLW8032 Test" time="36.993">
+  </testcase>
+  <testcase classname="TestSuite" name="Stress Test - Rapid Switching" time="49.082">
+  </testcase>
+</testsuite>

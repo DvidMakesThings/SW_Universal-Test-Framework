@@ -44,8 +44,8 @@
 <h1>ENERGIS Test Report</h1>
 <div class='meta'>
 Overall: <b class='chip pass'>PASS</b> &nbsp;
-Started: 2025-11-08 23:45:20 &nbsp;
-Session ID: b8906571 &nbsp;
+Started: 2025-11-22 00:02:30 &nbsp;
+Session ID: 46108a07 &nbsp;
 </div>
 </header>
 <main>
@@ -58,11 +58,11 @@ Session ID: b8906571 &nbsp;
 <section>
 <h3>Environment</h3>
 <div class='kv'>
-<div>Test Session ID</div><div><code>b8906571</code></div>
+<div>Test Session ID</div><div><code>46108a07</code></div>
 <div>Hostname</div><div>DPC</div>
 <div>Os</div><div>Windows 11 (10.0.26100)</div>
 <div>Python</div><div>3.13.7 (tags/v3.13.7:bcee1c3, Aug 14 2025, 14:15:11) [MSC v.1944 64 bit (AMD64)]</div>
-<div>Generated_at</div><div>2025-11-08 23:45:29</div>
+<div>Generated_at</div><div>2025-11-22 00:02:50</div>
 <div>Log_file</div><div>G:\_GitHub\SW_Universal-Test-Framework\nightly_reports\report_tc_pcap_capture\tc_pcap_capture_results.log</div>
 </div>
 </section>
@@ -75,356 +75,150 @@ Session ID: b8906571 &nbsp;
 <div class='content'>
 <table>
 <tr><th>Started</th><th>Finished</th></tr>
-<tr><td>2025-11-08 23:45:20</td><td>2025-11-08 23:45:24</td></tr>
+<tr><td>2025-11-22 00:02:30</td><td>2025-11-22 00:02:45</td></tr>
 </table>
 <details>
 <summary><div class='step-title'><div>Step Log</div><div class='status unknown'>DETAIL</div></div></summary>
 <div class='content'>
 <h4>Log</h4>
 <pre>
-[2025-11-08 23:45:20] [PRE-STEP 1] Reboot device via UART
-[2025-11-08 23:45:20] [INFO] [SERIAL] send_command() called
-[2025-11-08 23:45:20] [INFO] [SERIAL]   port=COM9, command=&#x27;REBOOT&#x27;, baudrate=115200, timeout=2.0s
-[2025-11-08 23:45:20] [INFO] [SERIAL] Opening connection to port=COM9
-[2025-11-08 23:45:20] [INFO] [SERIAL]   Configuration: baudrate=115200, timeout=2.0s, write_timeout=2.0s
-[2025-11-08 23:45:20] [INFO] [SERIAL]   Flow control: xonxoff=False, rtscts=False, dsrdtr=False
-[2025-11-08 23:45:20] [INFO] [SERIAL] Port COM9 opened successfully
-[2025-11-08 23:45:20] [INFO] [SERIAL] Stabilizing connection (100ms delay)...
-[2025-11-08 23:45:20] [INFO] [SERIAL] Resetting input and output buffers
-[2025-11-08 23:45:20] [INFO] [SERIAL] Connection ready: port=COM9, baudrate=115200, timeout=2.0s
-[2025-11-08 23:45:20] [INFO] [SERIAL TX] Sending command: &#x27;REBOOT&#x27;
-[2025-11-08 23:45:20] [INFO] [SERIAL TX] Payload length: 8 bytes (including CR+LF)
-[2025-11-08 23:45:20] [INFO] [SERIAL TX] Hex dump:
-[2025-11-08 23:45:20] [INFO]   0000  52 45 42 4F 4F 54 0D 0A                           |REBOOT..|
-[2025-11-08 23:45:20] [INFO] [SERIAL TX] Wrote 8 bytes to port
-[2025-11-08 23:45:20] [INFO] [SERIAL TX] Waiting 50ms for device processing...
-[2025-11-08 23:45:20] [INFO] [SERIAL RX] Starting to read response (timeout=2.0s)
-[2025-11-08 23:45:20] [INFO] [SERIAL RX] Chunk #1: received 65 bytes (elapsed: 0.011s, total: 65 bytes)
-[2025-11-08 23:45:20] [ERROR] [SERIAL ERROR] Exception during send_command:
-[2025-11-08 23:45:20] [ERROR] [SERIAL ERROR]   Type: SerialException
-[2025-11-08 23:45:20] [ERROR] [SERIAL ERROR]   Message: ClearCommError failed (PermissionError(13, &#x27;The device does not recognize the command.&#x27;, None, 22))
-[2025-11-08 23:45:20] [ERROR] [SERIAL ERROR]   Port: COM9, Command: &#x27;REBOOT&#x27;
-[2025-11-08 23:45:20] [INFO] [SERIAL] Closing port COM9
-[2025-11-08 23:45:20] [INFO] [SERIAL] Port COM9 closed successfully
-[2025-11-08 23:45:20] [INFO] [SERIAL] wait_for_reboot_and_ready() called
-[2025-11-08 23:45:20] [INFO] [SERIAL]   port=COM9, ready_token=&#x27;SYSTEM READY&#x27;, baudrate=115200, timeout=15.0s
-[2025-11-08 23:45:20] [INFO] [SERIAL] Waiting 200ms for device to start rebooting...
-[2025-11-08 23:45:21] [INFO] [SERIAL] Connection attempt #1 (remaining timeout: 14.8s)
-[2025-11-08 23:45:21] [INFO] [SERIAL] Connection attempt #1 failed: SerialException: could not open port &#x27;COM9&#x27;: FileNotFoundError(2, &#x27;The system cannot find the file specified.&#x27;, None, 2)
-[2025-11-08 23:45:21] [INFO] [SERIAL] Waiting 200ms before next attempt...
-[2025-11-08 23:45:21] [INFO] [SERIAL] Connection attempt #2 (remaining timeout: 14.6s)
-[2025-11-08 23:45:21] [INFO] [SERIAL] Connection attempt #2 failed: SerialException: could not open port &#x27;COM9&#x27;: FileNotFoundError(2, &#x27;The system cannot find the file specified.&#x27;, None, 2)
-[2025-11-08 23:45:21] [INFO] [SERIAL] Waiting 200ms before next attempt...
-[2025-11-08 23:45:21] [INFO] [SERIAL] Connection attempt #3 (remaining timeout: 14.4s)
-[2025-11-08 23:45:21] [INFO] [SERIAL] Connection attempt #3 failed: SerialException: could not open port &#x27;COM9&#x27;: FileNotFoundError(2, &#x27;The system cannot find the file specified.&#x27;, None, 2)
-[2025-11-08 23:45:21] [INFO] [SERIAL] Waiting 200ms before next attempt...
-[2025-11-08 23:45:21] [INFO] [SERIAL] Connection attempt #4 (remaining timeout: 14.2s)
-[2025-11-08 23:45:21] [INFO] [SERIAL] Connection attempt #4 failed: SerialException: could not open port &#x27;COM9&#x27;: FileNotFoundError(2, &#x27;The system cannot find the file specified.&#x27;, None, 2)
-[2025-11-08 23:45:21] [INFO] [SERIAL] Waiting 200ms before next attempt...
-[2025-11-08 23:45:21] [INFO] [SERIAL] Connection attempt #5 (remaining timeout: 14.0s)
-[2025-11-08 23:45:21] [INFO] [SERIAL] Connection attempt #5 failed: SerialException: could not open port &#x27;COM9&#x27;: FileNotFoundError(2, &#x27;The system cannot find the file specified.&#x27;, None, 2)
-[2025-11-08 23:45:21] [INFO] [SERIAL] Waiting 200ms before next attempt...
-[2025-11-08 23:45:22] [INFO] [SERIAL] Connection attempt #6 (remaining timeout: 13.8s)
-[2025-11-08 23:45:22] [INFO] [SERIAL] Connection attempt #6 failed: SerialException: could not open port &#x27;COM9&#x27;: FileNotFoundError(2, &#x27;The system cannot find the file specified.&#x27;, None, 2)
-[2025-11-08 23:45:22] [INFO] [SERIAL] Waiting 200ms before next attempt...
-[2025-11-08 23:45:22] [INFO] [SERIAL] Connection attempt #7 (remaining timeout: 13.6s)
-[2025-11-08 23:45:22] [INFO] [SERIAL] Connected to port COM9 on attempt #7
-[2025-11-08 23:45:22] [INFO] [SERIAL RX] Monitoring for ready token: &#x27;SYSTEM READY&#x27;
-[2025-11-08 23:45:22] [INFO] [SERIAL RX] Chunk #1: 1273 bytes
-[2025-11-08 23:45:22] [INFO] [SERIAL RX] Content: [INFO] &lt;CR&gt;&lt;LF&gt;
-[INFO] ========================================&lt;CR&gt;&lt;LF&gt;
-[INFO]   ENERGIS PDU - System Bring-Alive&lt;CR&gt;&lt;LF&gt;
-[INFO] ========================================&lt;CR&gt;&lt;LF&gt;
-[INFO] Firmware: 1.1.0&lt;CR&gt;&lt;LF&gt;
-[INFO] Serial: SN-0167662&lt;CR&gt;&lt;LF&gt;
-[INFO] ========================================&lt;CR&gt;&lt;LF&gt;
-&lt;CR&gt;&lt;LF&gt;
-[INFO] [InitTask] Phase 1: Hardware Init&lt;CR&gt;&lt;LF&gt;
-[INFO] [InitTask] GPIO configured&lt;CR&gt;&lt;LF&gt;
-[INFO] [InitTask] I2C buses initialized&lt;CR&gt;&lt;LF&gt;
-[INFO] [InitTask] SPI initialized for W5500&lt;CR&gt;&lt;LF&gt;
-[INFO] [InitTask] ADC initialized&lt;CR&gt;&lt;LF&gt;
-[INFO] [CAT24C512] Driver initialized (I2C1: SDA=2, SCL=3)&lt;CR&gt;&lt;LF&gt;
-	[ECHO] [MCP] init 0x20 OK&lt;CR&gt;&lt;LF&gt;
-	[ECHO] [MCP] init 0x21 OK&lt;CR&gt;&lt;LF&gt;
-	[ECHO] [MCP] init 0x23 OK&lt;CR&gt;&lt;LF&gt;
-	[DEBUG] 	[MCP] Found devices:&lt;CR&gt;&lt;LF&gt;
-	[DEBUG] 	[MCP] relay=200248B4 &lt;CR&gt;&lt;LF&gt;
-	[DEBUG] 	[MCP] display=200248C4&lt;CR&gt;&lt;LF&gt;
-	[DEBUG] 	[MCP] selection=200248D4&lt;CR&gt;&lt;LF&gt;
-[INFO] &lt;CR&gt;&lt;LF&gt;
-[InitTask] Phase 2: Peripheral Probing&lt;CR&gt;&lt;LF&gt;
-[INFO] [InitTask] ✓ Relay MCP23017 detected at 0x20&lt;CR&gt;&lt;LF&gt;
-[INFO] [InitTask] ✓ Display MCP23017 detected at 0x21&lt;CR&gt;&lt;LF&gt;
-[INFO] [InitTask] ✓ Selection MCP23017 detected at 0x23&lt;CR&gt;&lt;LF&gt;
-[INFO] [InitTask] All MCP23017s detected&lt;CR&gt;&lt;LF&gt;
-[INFO] [InitTask] ✓ EEPROM CAT24C512 detected at 0x50&lt;CR&gt;&lt;LF&gt;
-[INFO] &lt;CR&gt;&lt;LF&gt;
-[InitTask] Phase 3: Subsystem Bring-up (deterministic)&lt;CR&gt;&lt;LF&gt;
-[INFO] [InitTask] Logger ready&lt;CR&gt;&lt;LF&gt;
-[INFO] [Console] Task initialized (polling USB-CDC @ 10ms)&lt;CR&gt;&lt;LF&gt;
-[INFO] [InitTask] Console ready&lt;CR&gt;&lt;LF&gt;
-[INFO] [Storage] Task initialized&lt;CR&gt;&lt;LF&gt;
-
-[2025-11-08 23:45:23] [INFO] [SERIAL RX] Chunk #2: 246 bytes
-[2025-11-08 23:45:23] [INFO] [SERIAL RX] Content: 	[ECHO] [Storage] Task started&lt;CR&gt;&lt;LF&gt;
-[INFO] [Storage] Magic value verified&lt;CR&gt;&lt;LF&gt;
-[INFO] [Storage] Loaded network config from EEPROM&lt;CR&gt;&lt;LF&gt;
-[INFO] [Storage] Loaded user prefs from EEPROM&lt;CR&gt;&lt;LF&gt;
-[INFO] [Storage] Config loaded from EEPROM&lt;CR&gt;&lt;LF&gt;
-[INFO] [Storage] Config ready&lt;CR&gt;&lt;LF&gt;
-
-[2025-11-08 23:45:23] [INFO] [SERIAL RX] Chunk #3: 707 bytes
-[2025-11-08 23:45:23] [INFO] [SERIAL RX] Content: [INFO] [InitTask] Storage ready&lt;CR&gt;&lt;LF&gt;
-[INFO] [InitTask] Button ready&lt;CR&gt;&lt;LF&gt;
-[INFO] [Net] Task created successfully&lt;CR&gt;&lt;LF&gt;
-[INFO] [InitTask] Network ready&lt;CR&gt;&lt;LF&gt;
-[INFO] [MeterTask]  MeterTask started&lt;CR&gt;&lt;LF&gt;
-[INFO] [InitTask] Meter ready&lt;CR&gt;&lt;LF&gt;
-[INFO] &lt;CR&gt;&lt;LF&gt;
-[InitTask] Phase 4: Configuration Load&lt;CR&gt;&lt;LF&gt;
-[INFO] [InitTask] Storage config ready&lt;CR&gt;&lt;LF&gt;
-[INFO] [Net] Task started&lt;CR&gt;&lt;LF&gt;
-[INFO] [InitTask] Saved Network config: &lt;CR&gt;&lt;LF&gt;
-[INFO]                  IP  : 192.168.0.12&lt;CR&gt;&lt;LF&gt;
-[INFO]                  SM  : 255.255.255.0&lt;CR&gt;&lt;LF&gt;
-[INFO]                  GW  : 192.168.0.1&lt;CR&gt;&lt;LF&gt;
-[INFO]                  DNS : 8.8.8.8&lt;CR&gt;&lt;LF&gt;
-[INFO] &lt;CR&gt;&lt;LF&gt;
-[InitTask] System bring-alive complete&lt;CR&gt;&lt;LF&gt;
-[INFO] ========================================&lt;CR&gt;&lt;LF&gt;
-[INFO] SYSTEM READY&lt;CR&gt;&lt;LF&gt;
-[INFO] ========================================&lt;CR&gt;&lt;LF&gt;
-&lt;CR&gt;&lt;LF&gt;
-
-[2025-11-08 23:45:23] [INFO] [SERIAL] Ready token &#x27;SYSTEM READY&#x27; detected!
-[2025-11-08 23:45:23] [INFO] [SERIAL RX] Total response: 2226 bytes in 3 chunks
-[2025-11-08 23:45:23] [INFO] [SERIAL RX] Elapsed time: 2.462s
-[2025-11-08 23:45:23] [INFO] [SERIAL RX] Full response:
-[2025-11-08 23:45:23] [INFO] [INFO] \r\n
+[2025-11-22 00:02:30] [PRE-STEP 1] Reboot device via UART
+[2025-11-22 00:02:30] [INFO] [SERIAL] send_command() called
+[2025-11-22 00:02:30] [INFO] [SERIAL]   port=COM3, command=&#x27;REBOOT&#x27;, baudrate=115200, timeout=2.0s
+[2025-11-22 00:02:30] [INFO] [SERIAL] Opening connection to port=COM3
+[2025-11-22 00:02:30] [INFO] [SERIAL]   Configuration: baudrate=115200, timeout=2.0s, write_timeout=2.0s
+[2025-11-22 00:02:30] [INFO] [SERIAL]   Flow control: xonxoff=False, rtscts=False, dsrdtr=False
+[2025-11-22 00:02:30] [INFO] [SERIAL] Port COM3 opened successfully
+[2025-11-22 00:02:30] [INFO] [SERIAL] Stabilizing connection (100ms delay)...
+[2025-11-22 00:02:30] [INFO] [SERIAL] Resetting input and output buffers
+[2025-11-22 00:02:30] [INFO] [SERIAL] Connection ready: port=COM3, baudrate=115200, timeout=2.0s
+[2025-11-22 00:02:30] [INFO] [SERIAL TX] Sending command: &#x27;REBOOT&#x27;
+[2025-11-22 00:02:30] [INFO] [SERIAL TX] Payload length: 8 bytes (including CR+LF)
+[2025-11-22 00:02:30] [INFO] [SERIAL TX] Hex dump:
+[2025-11-22 00:02:30] [INFO]   0000  52 45 42 4F 4F 54 0D 0A                           |REBOOT..|
+[2025-11-22 00:02:30] [INFO] [SERIAL TX] Wrote 8 bytes to port
+[2025-11-22 00:02:30] [INFO] [SERIAL TX] Waiting 50ms for device processing...
+[2025-11-22 00:02:30] [INFO] [SERIAL RX] Starting to read response (timeout=2.0s)
+[2025-11-22 00:02:30] [INFO] [SERIAL RX] Chunk #1: received 29 bytes (elapsed: 0.000s, total: 29 bytes)
+[2025-11-22 00:02:31] [INFO] [SERIAL RX] No data received for 500ms, assuming response complete
+[2025-11-22 00:02:31] [INFO] [SERIAL RX] Response complete:
+[2025-11-22 00:02:31] [INFO] [SERIAL RX]   Total bytes: 29
+[2025-11-22 00:02:31] [INFO] [SERIAL RX]   Chunks received: 1
+[2025-11-22 00:02:31] [INFO] [SERIAL RX]   Total time: 0.505s
+[2025-11-22 00:02:31] [INFO] [SERIAL RX] Decoded text (29 characters):
+[2025-11-22 00:02:31] [INFO]   	[ECHO] Rebooting system...\r\n
+  
+[2025-11-22 00:02:31] [INFO] [SERIAL RX] Hex dump:
+[2025-11-22 00:02:31] [INFO]   0000  09 5B 45 43 48 4F 5D 20 52 65 62 6F 6F 74 69 6E   |.[ECHO] Rebootin|
+  0010  67 20 73 79 73 74 65 6D 2E 2E 2E 0D 0A            |g system.....|
+[2025-11-22 00:02:31] [INFO] [SERIAL] Closing port COM3
+[2025-11-22 00:02:31] [INFO] [SERIAL] Port COM3 closed successfully
+[2025-11-22 00:02:31] [INFO] [SERIAL] wait_for_reboot_and_ready() called
+[2025-11-22 00:02:31] [INFO] [SERIAL]   port=COM3, ready_token=&#x27;SYSTEM READY&#x27;, baudrate=115200, timeout=20.0s
+[2025-11-22 00:02:31] [INFO] [SERIAL] Phase 1: wait for &#x27;COM3&#x27; to disappear (initial_exists=True)
+[2025-11-22 00:02:42] [INFO] [SERIAL] Port COM3 disappeared (device reboot in progress)
+[2025-11-22 00:02:42] [INFO] [SERIAL] Phase 2: waiting for &#x27;COM3&#x27; to reappear
+[2025-11-22 00:02:44] [INFO] [SERIAL] Port COM3 reappeared
+[2025-11-22 00:02:44] [INFO] [SERIAL] Phase 3: connection attempt #1 (remaining 7.5s)
+[2025-11-22 00:02:44] [INFO] [SERIAL] Connected to COM3, monitoring for ready token &#x27;SYSTEM READY&#x27;
+[2025-11-22 00:02:44] [INFO] [SERIAL RX] Chunk #1: 1167 bytes
+[2025-11-22 00:02:44] [INFO] [SERIAL RX] Content: &lt;CR&gt;&lt;LF&gt;\n[INFO] ========================================&lt;CR&gt;&lt;LF&gt;\n[INFO]   ENERGIS PDU - System Bring-Alive&lt;CR&gt;&lt;LF&gt;\n[INFO] ========================================&lt;CR&gt;&lt;LF&gt;\n[INFO] Firmware: 1.0.0&lt;CR&gt;&lt;LF&gt;\n[INFO] Serial: SN-0167663&lt;CR&gt;&lt;LF&gt;\n[INFO] ========================================&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ===== Phase 1: Hardware Init =====&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] GPIO configured&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] I2C buses initialized&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] SPI initialized for W5500&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ADC initialized&lt;CR&gt;&lt;LF&gt;\n[INFO] [CAT24DRV] Driver initialized &lt;CR&gt;&lt;LF&gt;\n	[ECHO] [MCP] init 0x20 OK&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [MCP] init 0x21 OK&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [MCP] init 0x23 OK&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ===== Phase 2: Peripheral Probing =====&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ✓ Relay MCP23017 detected at 0x20&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ✓ Display MCP23017 detected at 0x21&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ✓ Selection MCP23017 detected at 0x23&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ✓ All MCP23017s detected&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ✓ EEPROM CAT24C256 detected at 0x50&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ===== Phase 3: Subsystem Bring-up (deterministic) =====&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] LoggerTask ready&lt;CR&gt;&lt;LF&gt;\n[INFO] [Console] Task initialized (polling USB-CDC @ 10ms)&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ConsoleTask ready&lt;CR&gt;&lt;LF&gt;\n[INFO] [STORAGE] Task initialized&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [CONSOLE] Task started&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [LOGGER] Task started&lt;CR&gt;&lt;LF&gt;\n
+[2025-11-22 00:02:45] [INFO] [SERIAL RX] Chunk #2: 357 bytes
+[2025-11-22 00:02:45] [INFO] [SERIAL RX] Content: 	[ECHO] [STORAGE] Task started&lt;CR&gt;&lt;LF&gt;\n[INFO] [ST-FDEF] Magic value verified&lt;CR&gt;&lt;LF&gt;\n[INFO] [ST-USRPR] Loaded user prefs from EEPROM&lt;CR&gt;&lt;LF&gt;\n[INFO] [STORAGE] Config loaded from EEPROM&lt;CR&gt;&lt;LF&gt;\n[INFO] [STORAGE] Config ready&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] StorageTask ready&lt;CR&gt;&lt;LF&gt;\n[INFO] [PowerMgr] Power manager initialized (state=RUN)&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ButtonTask ready&lt;CR&gt;&lt;LF&gt;\n[INFO] [NET] Task created successfully&lt;CR&gt;&lt;LF&gt;\n
+[2025-11-22 00:02:45] [INFO] [SERIAL RX] Chunk #3: 874 bytes
+[2025-11-22 00:02:45] [INFO] [SERIAL RX] Content: [INFO] [INIT] NetTask ready&lt;CR&gt;&lt;LF&gt;\n[INFO] [MeterTask]  MeterTask started&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] MeterTask ready&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ===== Phase 4: Configuration Load =====&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] Storage config ready&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [NET] Task started&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [BUTTONTASK] Task started&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [MeterTask]  Task started&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] Saved Network config: &lt;CR&gt;&lt;LF&gt;\n[INFO]                  IP  : 192.168.0.22&lt;CR&gt;&lt;LF&gt;\n[INFO]                  SM  : 255.255.255.0&lt;CR&gt;&lt;LF&gt;\n[INFO]                  GW  : 192.168.0.1&lt;CR&gt;&lt;LF&gt;\n[INFO]                  DNS : 8.8.8.8&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ===== Finalization: entering =====&lt;CR&gt;&lt;LF&gt;\n[WARNING 0x61F4] [HEALTH] Offenders: LoggerTask ConsoleTask StorageTask MeterTask &lt;CR&gt;&lt;LF&gt;\n	[ECHO] [HEALTH] Task started&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] System bring-alive complete =====&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] ==========================================&lt;CR&gt;&lt;LF&gt;\n[INFO]                SYSTEM READY               &lt;CR&gt;&lt;LF&gt;\n[INFO] ==========================================&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n
+[2025-11-22 00:02:45] [INFO] [SERIAL] Ready token &#x27;SYSTEM READY&#x27; detected
+[2025-11-22 00:02:45] [INFO] [SERIAL RX] Total reboot-response bytes: 2398 in 3 chunks (elapsed 13.636s)
+[2025-11-22 00:02:45] [INFO] [SERIAL RX] Full reboot-response:
+[2025-11-22 00:02:45] [INFO] \r\n
 [INFO] ========================================\r\n
 [INFO]   ENERGIS PDU - System Bring-Alive\r\n
 [INFO] ========================================\r\n
-[INFO] Firmware: 1.1.0\r\n
-[INFO] Serial: SN-0167662\r\n
+[INFO] Firmware: 1.0.0\r\n
+[INFO] Serial: SN-0167663\r\n
 [INFO] ========================================\r\n
 \r\n
-[INFO] [InitTask] Phase 1: Hardware Init\r\n
-[INFO] [InitTask] GPIO configured\r\n
-[INFO] [InitTask] I2C buses initialized\r\n
-[INFO] [InitTask] SPI initialized for W5500\r\n
-[INFO] [InitTask] ADC initialized\r\n
-[INFO] [CAT24C512] Driver initialized (I2C1: SDA=2, SCL=3)\r\n
+[INFO] [INIT] ===== Phase 1: Hardware Init =====\r\n
+\r\n
+[INFO] [INIT] GPIO configured\r\n
+[INFO] [INIT] I2C buses initialized\r\n
+[INFO] [INIT] SPI initialized for W5500\r\n
+[INFO] [INIT] ADC initialized\r\n
+[INFO] [CAT24DRV] Driver initialized \r\n
 	[ECHO] [MCP] init 0x20 OK\r\n
 	[ECHO] [MCP] init 0x21 OK\r\n
 	[ECHO] [MCP] init 0x23 OK\r\n
-	[DEBUG] 	[MCP] Found devices:\r\n
-	[DEBUG] 	[MCP] relay=200248B4 \r\n
-	[DEBUG] 	[MCP] display=200248C4\r\n
-	[DEBUG] 	[MCP] selection=200248D4\r\n
-[INFO] \r\n
-[InitTask] Phase 2: Peripheral Probing\r\n
-[INFO] [InitTask] ✓ Relay MCP23017 detected at 0x20\r\n
-[INFO] [InitTask] ✓ Display MCP23017 detected at 0x21\r\n
-[INFO] [InitTask] ✓ Selection MCP23017 detected at 0x23\r\n
-[INFO] [InitTask] All MCP23017s detected\r\n
-[INFO] [InitTask] ✓ EEPROM CAT24C512 detected at 0x50\r\n
-[INFO] \r\n
-[InitTask] Phase 3: Subsystem Bring-up (deterministic)\r\n
-[INFO] [InitTask] Logger ready\r\n
+\r\n
+[INFO] [INIT] ===== Phase 2: Peripheral Probing =====\r\n
+[INFO] [INIT] ✓ Relay MCP23017 detected at 0x20\r\n
+[INFO] [INIT] ✓ Display MCP23017 detected at 0x21\r\n
+[INFO] [INIT] ✓ Selection MCP23017 detected at 0x23\r\n
+[INFO] [INIT] ✓ All MCP23017s detected\r\n
+[INFO] [INIT] ✓ EEPROM CAT24C256 detected at 0x50\r\n
+\r\n
+[INFO] [INIT] ===== Phase 3: Subsystem Bring-up (deterministic) =====\r\n
+[INFO] [INIT] LoggerTask ready\r\n
 [INFO] [Console] Task initialized (polling USB-CDC @ 10ms)\r\n
-[INFO] [InitTask] Console ready\r\n
-[INFO] [Storage] Task initialized\r\n
-	[ECHO] [Storage] Task started\r\n
-[INFO] [Storage] Magic value verified\r\n
-[INFO] [Storage] Loaded network config from EEPROM\r\n
-[INFO] [Storage] Loaded user prefs from EEPROM\r\n
-[INFO] [Storage] Config loaded from EEPROM\r\n
-[INFO] [Storage] Config ready\r\n
-[INFO] [InitTask] Storage ready\r\n
-[INFO] [InitTask] Button ready\r\n
-[INFO] [Net] Task created successfully\r\n
-[INFO] [InitTask] Network ready\r\n
+[INFO] [INIT] ConsoleTask ready\r\n
+[INFO] [STORAGE] Task initialized\r\n
+	[ECHO] [CONSOLE] Task started\r\n
+	[ECHO] [LOGGER] Task started\r\n
+	[ECHO] [STORAGE] Task started\r\n
+[INFO] [ST-FDEF] Magic value verified\r\n
+[INFO] [ST-USRPR] Loaded user prefs from EEPROM\r\n
+[INFO] [STORAGE] Config loaded from EEPROM\r\n
+[INFO] [STORAGE] Config ready\r\n
+[INFO] [INIT] StorageTask ready\r\n
+[INFO] [PowerMgr] Power manager initialized (state=RUN)\r\n
+[INFO] [INIT] ButtonTask ready\r\n
+[INFO] [NET] Task created successfully\r\n
+[INFO] [INIT] NetTask ready\r\n
 [INFO] [MeterTask]  MeterTask started\r\n
-[INFO] [InitTask] Meter ready\r\n
-[INFO] \r\n
-[InitTask] Phase 4: Configuration Load\r\n
-[INFO] [InitTask] Storage config ready\r\n
-[INFO] [Net] Task started\r\n
-[INFO] [InitTask] Saved Network config: \r\n
-[INFO]                  IP  : 192.168.0.12\r\n
+[INFO] [INIT] MeterTask ready\r\n
+\r\n
+[INFO] [INIT] ===== Phase 4: Configuration Load =====\r\n
+[INFO] [INIT] Storage config ready\r\n
+	[ECHO] [NET] Task started\r\n
+	[ECHO] [BUTTONTASK] Task started\r\n
+	[ECHO] [MeterTask]  Task started\r\n
+[INFO] [INIT] Saved Network config: \r\n
+[INFO]                  IP  : 192.168.0.22\r\n
 [INFO]                  SM  : 255.255.255.0\r\n
 [INFO]                  GW  : 192.168.0.1\r\n
 [INFO]                  DNS : 8.8.8.8\r\n
-[INFO] \r\n
-[InitTask] System bring-alive complete\r\n
-[INFO] ========================================\r\n
-[INFO] SYSTEM READY\r\n
-[INFO] ========================================\r\n
+\r\n
+[INFO] [INIT] ===== Finalization: entering =====\r\n
+[WARNING 0x61F4] [HEALTH] Offenders: LoggerTask ConsoleTask StorageTask MeterTask \r\n
+	[ECHO] [HEALTH] Task started\r\n
+\r\n
+[INFO] [INIT] System bring-alive complete =====\r\n
+\r\n
+[INFO] ==========================================\r\n
+[INFO]                SYSTEM READY               \r\n
+[INFO] ==========================================\r\n
 \r\n
 
-[2025-11-08 23:45:23] [INFO] [SERIAL RX] Hex dump:
-[2025-11-08 23:45:23] [INFO]   0000  5B 49 4E 46 4F 5D 20 0D 0A 5B 49 4E 46 4F 5D 20   |[INFO] ..[INFO] |
-  0010  3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D   |================|
-  0020  3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D   |================|
-  0030  3D 3D 3D 3D 3D 3D 3D 3D 0D 0A 5B 49 4E 46 4F 5D   |========..[INFO]|
-  0040  20 20 20 45 4E 45 52 47 49 53 20 50 44 55 20 2D   |   ENERGIS PDU -|
-  0050  20 53 79 73 74 65 6D 20 42 72 69 6E 67 2D 41 6C   | System Bring-Al|
-  0060  69 76 65 0D 0A 5B 49 4E 46 4F 5D 20 3D 3D 3D 3D   |ive..[INFO] ====|
-  0070  3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D   |================|
-  0080  3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D   |================|
-  0090  3D 3D 3D 3D 0D 0A 5B 49 4E 46 4F 5D 20 46 69 72   |====..[INFO] Fir|
-  00A0  6D 77 61 72 65 3A 20 31 2E 31 2E 30 0D 0A 5B 49   |mware: 1.1.0..[I|
-  00B0  4E 46 4F 5D 20 53 65 72 69 61 6C 3A 20 53 4E 2D   |NFO] Serial: SN-|
-  00C0  30 31 36 37 36 36 32 0D 0A 5B 49 4E 46 4F 5D 20   |0167662..[INFO] |
-  00D0  3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D   |================|
-  00E0  3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D   |================|
-  00F0  3D 3D 3D 3D 3D 3D 3D 3D 0D 0A 0D 0A 5B 49 4E 46   |========....[INF|
-  0100  4F 5D 20 5B 49 6E 69 74 54 61 73 6B 5D 20 50 68   |O] [InitTask] Ph|
-  0110  61 73 65 20 31 3A 20 48 61 72 64 77 61 72 65 20   |ase 1: Hardware |
-  0120  49 6E 69 74 0D 0A 5B 49 4E 46 4F 5D 20 5B 49 6E   |Init..[INFO] [In|
-  0130  69 74 54 61 73 6B 5D 20 47 50 49 4F 20 63 6F 6E   |itTask] GPIO con|
-  0140  66 69 67 75 72 65 64 0D 0A 5B 49 4E 46 4F 5D 20   |figured..[INFO] |
-  0150  5B 49 6E 69 74 54 61 73 6B 5D 20 49 32 43 20 62   |[InitTask] I2C b|
-  0160  75 73 65 73 20 69 6E 69 74 69 61 6C 69 7A 65 64   |uses initialized|
-  0170  0D 0A 5B 49 4E 46 4F 5D 20 5B 49 6E 69 74 54 61   |..[INFO] [InitTa|
-  0180  73 6B 5D 20 53 50 49 20 69 6E 69 74 69 61 6C 69   |sk] SPI initiali|
-  0190  7A 65 64 20 66 6F 72 20 57 35 35 30 30 0D 0A 5B   |zed for W5500..[|
-  01A0  49 4E 46 4F 5D 20 5B 49 6E 69 74 54 61 73 6B 5D   |INFO] [InitTask]|
-  01B0  20 41 44 43 20 69 6E 69 74 69 61 6C 69 7A 65 64   | ADC initialized|
-  01C0  0D 0A 5B 49 4E 46 4F 5D 20 5B 43 41 54 32 34 43   |..[INFO] [CAT24C|
-  01D0  35 31 32 5D 20 44 72 69 76 65 72 20 69 6E 69 74   |512] Driver init|
-  01E0  69 61 6C 69 7A 65 64 20 28 49 32 43 31 3A 20 53   |ialized (I2C1: S|
-  01F0  44 41 3D 32 2C 20 53 43 4C 3D 33 29 0D 0A 09 5B   |DA=2, SCL=3)...[|
-  0200  45 43 48 4F 5D 20 5B 4D 43 50 5D 20 69 6E 69 74   |ECHO] [MCP] init|
-  0210  20 30 78 32 30 20 4F 4B 0D 0A 09 5B 45 43 48 4F   | 0x20 OK...[ECHO|
-  0220  5D 20 5B 4D 43 50 5D 20 69 6E 69 74 20 30 78 32   |] [MCP] init 0x2|
-  0230  31 20 4F 4B 0D 0A 09 5B 45 43 48 4F 5D 20 5B 4D   |1 OK...[ECHO] [M|
-  0240  43 50 5D 20 69 6E 69 74 20 30 78 32 33 20 4F 4B   |CP] init 0x23 OK|
-  0250  0D 0A 09 5B 44 45 42 55 47 5D 20 09 5B 4D 43 50   |...[DEBUG] .[MCP|
-  0260  5D 20 46 6F 75 6E 64 20 64 65 76 69 63 65 73 3A   |] Found devices:|
-  0270  0D 0A 09 5B 44 45 42 55 47 5D 20 09 5B 4D 43 50   |...[DEBUG] .[MCP|
-  0280  5D 20 72 65 6C 61 79 3D 32 30 30 32 34 38 42 34   |] relay=200248B4|
-  0290  20 0D 0A 09 5B 44 45 42 55 47 5D 20 09 5B 4D 43   | ...[DEBUG] .[MC|
-  02A0  50 5D 20 64 69 73 70 6C 61 79 3D 32 30 30 32 34   |P] display=20024|
-  02B0  38 43 34 0D 0A 09 5B 44 45 42 55 47 5D 20 09 5B   |8C4...[DEBUG] .[|
-  02C0  4D 43 50 5D 20 73 65 6C 65 63 74 69 6F 6E 3D 32   |MCP] selection=2|
-  02D0  30 30 32 34 38 44 34 0D 0A 5B 49 4E 46 4F 5D 20   |00248D4..[INFO] |
-  02E0  0D 0A 5B 49 6E 69 74 54 61 73 6B 5D 20 50 68 61   |..[InitTask] Pha|
-  02F0  73 65 20 32 3A 20 50 65 72 69 70 68 65 72 61 6C   |se 2: Peripheral|
-  0300  20 50 72 6F 62 69 6E 67 0D 0A 5B 49 4E 46 4F 5D   | Probing..[INFO]|
-  0310  20 5B 49 6E 69 74 54 61 73 6B 5D 20 E2 9C 93 20   | [InitTask] ... |
-  0320  52 65 6C 61 79 20 4D 43 50 32 33 30 31 37 20 64   |Relay MCP23017 d|
-  0330  65 74 65 63 74 65 64 20 61 74 20 30 78 32 30 0D   |etected at 0x20.|
-  0340  0A 5B 49 4E 46 4F 5D 20 5B 49 6E 69 74 54 61 73   |.[INFO] [InitTas|
-  0350  6B 5D 20 E2 9C 93 20 44 69 73 70 6C 61 79 20 4D   |k] ... Display M|
-  0360  43 50 32 33 30 31 37 20 64 65 74 65 63 74 65 64   |CP23017 detected|
-  0370  20 61 74 20 30 78 32 31 0D 0A 5B 49 4E 46 4F 5D   | at 0x21..[INFO]|
-  0380  20 5B 49 6E 69 74 54 61 73 6B 5D 20 E2 9C 93 20   | [InitTask] ... |
-  0390  53 65 6C 65 63 74 69 6F 6E 20 4D 43 50 32 33 30   |Selection MCP230|
-  03A0  31 37 20 64 65 74 65 63 74 65 64 20 61 74 20 30   |17 detected at 0|
-  03B0  78 32 33 0D 0A 5B 49 4E 46 4F 5D 20 5B 49 6E 69   |x23..[INFO] [Ini|
-  03C0  74 54 61 73 6B 5D 20 41 6C 6C 20 4D 43 50 32 33   |tTask] All MCP23|
-  03D0  30 31 37 73 20 64 65 74 65 63 74 65 64 0D 0A 5B   |017s detected..[|
-  03E0  49 4E 46 4F 5D 20 5B 49 6E 69 74 54 61 73 6B 5D   |INFO] [InitTask]|
-  03F0  20 E2 9C 93 20 45 45 50 52 4F 4D 20 43 41 54 32   | ... EEPROM CAT2|
-  0400  34 43 35 31 32 20 64 65 74 65 63 74 65 64 20 61   |4C512 detected a|
-  0410  74 20 30 78 35 30 0D 0A 5B 49 4E 46 4F 5D 20 0D   |t 0x50..[INFO] .|
-  0420  0A 5B 49 6E 69 74 54 61 73 6B 5D 20 50 68 61 73   |.[InitTask] Phas|
-  0430  65 20 33 3A 20 53 75 62 73 79 73 74 65 6D 20 42   |e 3: Subsystem B|
-  0440  72 69 6E 67 2D 75 70 20 28 64 65 74 65 72 6D 69   |ring-up (determi|
-  0450  6E 69 73 74 69 63 29 0D 0A 5B 49 4E 46 4F 5D 20   |nistic)..[INFO] |
-  0460  5B 49 6E 69 74 54 61 73 6B 5D 20 4C 6F 67 67 65   |[InitTask] Logge|
-  0470  72 20 72 65 61 64 79 0D 0A 5B 49 4E 46 4F 5D 20   |r ready..[INFO] |
-  0480  5B 43 6F 6E 73 6F 6C 65 5D 20 54 61 73 6B 20 69   |[Console] Task i|
-  0490  6E 69 74 69 61 6C 69 7A 65 64 20 28 70 6F 6C 6C   |nitialized (poll|
-  04A0  69 6E 67 20 55 53 42 2D 43 44 43 20 40 20 31 30   |ing USB-CDC @ 10|
-  04B0  6D 73 29 0D 0A 5B 49 4E 46 4F 5D 20 5B 49 6E 69   |ms)..[INFO] [Ini|
-  04C0  74 54 61 73 6B 5D 20 43 6F 6E 73 6F 6C 65 20 72   |tTask] Console r|
-  04D0  65 61 64 79 0D 0A 5B 49 4E 46 4F 5D 20 5B 53 74   |eady..[INFO] [St|
-  04E0  6F 72 61 67 65 5D 20 54 61 73 6B 20 69 6E 69 74   |orage] Task init|
-  04F0  69 61 6C 69 7A 65 64 0D 0A 09 5B 45 43 48 4F 5D   |ialized...[ECHO]|
-  0500  20 5B 53 74 6F 72 61 67 65 5D 20 54 61 73 6B 20   | [Storage] Task |
-  0510  73 74 61 72 74 65 64 0D 0A 5B 49 4E 46 4F 5D 20   |started..[INFO] |
-  0520  5B 53 74 6F 72 61 67 65 5D 20 4D 61 67 69 63 20   |[Storage] Magic |
-  0530  76 61 6C 75 65 20 76 65 72 69 66 69 65 64 0D 0A   |value verified..|
-  0540  5B 49 4E 46 4F 5D 20 5B 53 74 6F 72 61 67 65 5D   |[INFO] [Storage]|
-  0550  20 4C 6F 61 64 65 64 20 6E 65 74 77 6F 72 6B 20   | Loaded network |
-  0560  63 6F 6E 66 69 67 20 66 72 6F 6D 20 45 45 50 52   |config from EEPR|
-  0570  4F 4D 0D 0A 5B 49 4E 46 4F 5D 20 5B 53 74 6F 72   |OM..[INFO] [Stor|
-  0580  61 67 65 5D 20 4C 6F 61 64 65 64 20 75 73 65 72   |age] Loaded user|
-  0590  20 70 72 65 66 73 20 66 72 6F 6D 20 45 45 50 52   | prefs from EEPR|
-  05A0  4F 4D 0D 0A 5B 49 4E 46 4F 5D 20 5B 53 74 6F 72   |OM..[INFO] [Stor|
-  05B0  61 67 65 5D 20 43 6F 6E 66 69 67 20 6C 6F 61 64   |age] Config load|
-  05C0  65 64 20 66 72 6F 6D 20 45 45 50 52 4F 4D 0D 0A   |ed from EEPROM..|
-  05D0  5B 49 4E 46 4F 5D 20 5B 53 74 6F 72 61 67 65 5D   |[INFO] [Storage]|
-  05E0  20 43 6F 6E 66 69 67 20 72 65 61 64 79 0D 0A 5B   | Config ready..[|
-  05F0  49 4E 46 4F 5D 20 5B 49 6E 69 74 54 61 73 6B 5D   |INFO] [InitTask]|
-  0600  20 53 74 6F 72 61 67 65 20 72 65 61 64 79 0D 0A   | Storage ready..|
-  0610  5B 49 4E 46 4F 5D 20 5B 49 6E 69 74 54 61 73 6B   |[INFO] [InitTask|
-  0620  5D 20 42 75 74 74 6F 6E 20 72 65 61 64 79 0D 0A   |] Button ready..|
-  0630  5B 49 4E 46 4F 5D 20 5B 4E 65 74 5D 20 54 61 73   |[INFO] [Net] Tas|
-  0640  6B 20 63 72 65 61 74 65 64 20 73 75 63 63 65 73   |k created succes|
-  0650  73 66 75 6C 6C 79 0D 0A 5B 49 4E 46 4F 5D 20 5B   |sfully..[INFO] [|
-  0660  49 6E 69 74 54 61 73 6B 5D 20 4E 65 74 77 6F 72   |InitTask] Networ|
-  0670  6B 20 72 65 61 64 79 0D 0A 5B 49 4E 46 4F 5D 20   |k ready..[INFO] |
-  0680  5B 4D 65 74 65 72 54 61 73 6B 5D 20 20 4D 65 74   |[MeterTask]  Met|
-  0690  65 72 54 61 73 6B 20 73 74 61 72 74 65 64 0D 0A   |erTask started..|
-  06A0  5B 49 4E 46 4F 5D 20 5B 49 6E 69 74 54 61 73 6B   |[INFO] [InitTask|
-  06B0  5D 20 4D 65 74 65 72 20 72 65 61 64 79 0D 0A 5B   |] Meter ready..[|
-  06C0  49 4E 46 4F 5D 20 0D 0A 5B 49 6E 69 74 54 61 73   |INFO] ..[InitTas|
-  06D0  6B 5D 20 50 68 61 73 65 20 34 3A 20 43 6F 6E 66   |k] Phase 4: Conf|
-  06E0  69 67 75 72 61 74 69 6F 6E 20 4C 6F 61 64 0D 0A   |iguration Load..|
-  06F0  5B 49 4E 46 4F 5D 20 5B 49 6E 69 74 54 61 73 6B   |[INFO] [InitTask|
-  0700  5D 20 53 74 6F 72 61 67 65 20 63 6F 6E 66 69 67   |] Storage config|
-  0710  20 72 65 61 64 79 0D 0A 5B 49 4E 46 4F 5D 20 5B   | ready..[INFO] [|
-  0720  4E 65 74 5D 20 54 61 73 6B 20 73 74 61 72 74 65   |Net] Task starte|
-  0730  64 0D 0A 5B 49 4E 46 4F 5D 20 5B 49 6E 69 74 54   |d..[INFO] [InitT|
-  0740  61 73 6B 5D 20 53 61 76 65 64 20 4E 65 74 77 6F   |ask] Saved Netwo|
-  0750  72 6B 20 63 6F 6E 66 69 67 3A 20 0D 0A 5B 49 4E   |rk config: ..[IN|
-  0760  46 4F 5D 20 20 20 20 20 20 20 20 20 20 20 20 20   |FO]             |
-  0770  20 20 20 20 20 49 50 20 20 3A 20 31 39 32 2E 31   |     IP  : 192.1|
-  0780  36 38 2E 30 2E 31 32 0D 0A 5B 49 4E 46 4F 5D 20   |68.0.12..[INFO] |
-  0790  20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20   |                |
-  07A0  20 53 4D 20 20 3A 20 32 35 35 2E 32 35 35 2E 32   | SM  : 255.255.2|
-  07B0  35 35 2E 30 0D 0A 5B 49 4E 46 4F 5D 20 20 20 20   |55.0..[INFO]    |
-  07C0  20 20 20 20 20 20 20 20 20 20 20 20 20 20 47 57   |              GW|
-  07D0  20 20 3A 20 31 39 32 2E 31 36 38 2E 30 2E 31 0D   |  : 192.168.0.1.|
-  07E0  0A 5B 49 4E 46 4F 5D 20 20 20 20 20 20 20 20 20   |.[INFO]         |
-  07F0  20 20 20 20 20 20 20 20 20 44 4E 53 20 3A 20 38   |         DNS : 8|
-  0800  2E 38 2E 38 2E 38 0D 0A 5B 49 4E 46 4F 5D 20 0D   |.8.8.8..[INFO] .|
-  0810  0A 5B 49 6E 69 74 54 61 73 6B 5D 20 53 79 73 74   |.[InitTask] Syst|
-  0820  65 6D 20 62 72 69 6E 67 2D 61 6C 69 76 65 20 63   |em bring-alive c|
-  0830  6F 6D 70 6C 65 74 65 0D 0A 5B 49 4E 46 4F 5D 20   |omplete..[INFO] |
-  0840  3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D   |================|
-  0850  3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D   |================|
-  0860  3D 3D 3D 3D 3D 3D 3D 3D 0D 0A 5B 49 4E 46 4F 5D   |========..[INFO]|
-  0870  20 53 59 53 54 45 4D 20 52 45 41 44 59 0D 0A 5B   | SYSTEM READY..[|
-  0880  49 4E 46 4F 5D 20 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D   |INFO] ==========|
-  0890  3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D   |================|
-  08A0  3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 3D 0D 0A   |==============..|
-  08B0  0D 0A                                             |..|
-[2025-11-08 23:45:23] [INFO] [SERIAL] Device ready! Returning True
-[2025-11-08 23:45:23] [INFO] [SERIAL] Closed port COM9
-[2025-11-08 23:45:23] [PASS] PRE-STEP 1 completed successfully
-[2025-11-08 23:45:24] [INFO] [PCAP-CAPTURE] _dumpcap_resolve_interface() called
-[2025-11-08 23:45:24] [INFO] [PCAP-CAPTURE]   requested=lo
-[2025-11-08 23:45:24] [INFO] [PCAP-CAPTURE] _dumpcap_list_interfaces() called
-[2025-11-08 23:45:24] [INFO] [PCAP-CAPTURE]   dumpcap_exe=C:\Program Files\Wireshark\dumpcap.exe
-[2025-11-08 23:45:24] [INFO] [PCAP-CAPTURE]   cwd=G:\_GitHub\SW_Universal-Test-Framework
-[2025-11-08 23:45:24] [INFO] [PCAP-CAPTURE] dumpcap -D returned 10 interfaces
-[2025-11-08 23:45:24] [INFO] [PCAP-CAPTURE]   1. \Device\NPF_{177C5353-D1DD-4AFF-BF4F-9EB29609B3C7} (vEthernet (Default Switch))
-[2025-11-08 23:45:24] [INFO] [PCAP-CAPTURE]   2. \Device\NPF_{CED0C9EE-D3D8-4AF6-A642-236D14517B9D} (Bluetooth Network Connection)
-[2025-11-08 23:45:24] [INFO] [PCAP-CAPTURE]   3. \Device\NPF_{F7EF8ACA-533A-4582-A44C-AA6FD3B30B80} (Local Area Connection* 10)
-[2025-11-08 23:45:24] [INFO] [PCAP-CAPTURE]   4. \Device\NPF_{D62A827E-C7BA-46D2-ACE5-772C43BD80F7} (Local Area Connection* 9)
-[2025-11-08 23:45:24] [INFO] [PCAP-CAPTURE]   5. \Device\NPF_{50788C95-4726-4446-BEF9-1BDAD79385DF} (Wi-Fi)
-[2025-11-08 23:45:24] [INFO] [PCAP-CAPTURE]   6. \Device\NPF_{FCE23F70-F218-4EDE-B551-6FCAD6766D9B} (Ethernet 4)
-[2025-11-08 23:45:24] [INFO] [PCAP-CAPTURE]   7. \Device\NPF_{1342939B-DAE3-4B54-A305-87408E83C962} (Ethernet 2)
-[2025-11-08 23:45:24] [INFO] [PCAP-CAPTURE]   8. \Device\NPF_{8FBED501-71F5-4B70-96B8-C2464A93CE8E} (Ethernet)
-[2025-11-08 23:45:24] [INFO] [PCAP-CAPTURE]   9. \Device\NPF_Loopback (Adapter for loopback traffic capture)
-[2025-11-08 23:45:24] [INFO] [PCAP-CAPTURE]   10. \Device\NPF_{80213CCA-E166-423E-90B6-11729F14C76B} (Ethernet 5)
-[2025-11-08 23:45:24] [INFO] [PCAP-CAPTURE] Windows loopback alias detected, searching for loopback interface...
-[2025-11-08 23:45:24] [INFO] [PCAP-CAPTURE] Resolved to loopback: idx=9, desc=Adapter for loopback traffic capture
+[2025-11-22 00:02:45] [INFO] [SERIAL] Device ready after reboot
+[2025-11-22 00:02:45] [INFO] [SERIAL] Closed port COM3 after reboot-monitoring attempt
+[2025-11-22 00:02:45] [PASS] PRE-STEP 1 completed successfully
+[2025-11-22 00:02:45] [INFO] [PCAP-CAPTURE] _dumpcap_resolve_interface() called
+[2025-11-22 00:02:45] [INFO] [PCAP-CAPTURE]   requested=lo
+[2025-11-22 00:02:45] [INFO] [PCAP-CAPTURE] _dumpcap_list_interfaces() called
+[2025-11-22 00:02:45] [INFO] [PCAP-CAPTURE]   dumpcap_exe=C:\Program Files\Wireshark\dumpcap.exe
+[2025-11-22 00:02:45] [INFO] [PCAP-CAPTURE]   cwd=G:\_GitHub\SW_Universal-Test-Framework
+[2025-11-22 00:02:45] [INFO] [PCAP-CAPTURE] dumpcap -D returned 10 interfaces
+[2025-11-22 00:02:45] [INFO] [PCAP-CAPTURE]   1. \Device\NPF_{2DA8982A-740A-48DD-AE87-2F87FB4AA1CB} (vEthernet (Default Switch))
+[2025-11-22 00:02:45] [INFO] [PCAP-CAPTURE]   2. \Device\NPF_{CED0C9EE-D3D8-4AF6-A642-236D14517B9D} (Bluetooth Network Connection)
+[2025-11-22 00:02:45] [INFO] [PCAP-CAPTURE]   3. \Device\NPF_{F7EF8ACA-533A-4582-A44C-AA6FD3B30B80} (Local Area Connection* 10)
+[2025-11-22 00:02:45] [INFO] [PCAP-CAPTURE]   4. \Device\NPF_{D62A827E-C7BA-46D2-ACE5-772C43BD80F7} (Local Area Connection* 9)
+[2025-11-22 00:02:45] [INFO] [PCAP-CAPTURE]   5. \Device\NPF_{50788C95-4726-4446-BEF9-1BDAD79385DF} (Wi-Fi)
+[2025-11-22 00:02:45] [INFO] [PCAP-CAPTURE]   6. \Device\NPF_{FCE23F70-F218-4EDE-B551-6FCAD6766D9B} (Ethernet 4)
+[2025-11-22 00:02:45] [INFO] [PCAP-CAPTURE]   7. \Device\NPF_{1342939B-DAE3-4B54-A305-87408E83C962} (Ethernet 2)
+[2025-11-22 00:02:45] [INFO] [PCAP-CAPTURE]   8. \Device\NPF_{8FBED501-71F5-4B70-96B8-C2464A93CE8E} (Ethernet)
+[2025-11-22 00:02:45] [INFO] [PCAP-CAPTURE]   9. \Device\NPF_Loopback (Adapter for loopback traffic capture)
+[2025-11-22 00:02:45] [INFO] [PCAP-CAPTURE]   10. \Device\NPF_{80213CCA-E166-423E-90B6-11729F14C76B} (Ethernet 5)
+[2025-11-22 00:02:45] [INFO] [PCAP-CAPTURE] Windows loopback alias detected, searching for loopback interface...
+[2025-11-22 00:02:45] [INFO] [PCAP-CAPTURE] Resolved to loopback: idx=9, desc=Adapter for loopback traffic capture
 </pre>
 </div>
 </details>
@@ -437,18 +231,18 @@ Session ID: b8906571 &nbsp;
 <div class='content'>
 <table>
 <tr><th>Started</th><th>Finished</th></tr>
-<tr><td>2025-11-08 23:45:24</td><td>2025-11-08 23:45:24</td></tr>
+<tr><td>2025-11-22 00:02:45</td><td>2025-11-22 00:02:45</td></tr>
 </table>
 <details>
 <summary><div class='step-title'><div>Step Log</div><div class='status unknown'>DETAIL</div></div></summary>
 <div class='content'>
 <h4>Log</h4>
 <pre>
-[2025-11-08 23:45:24] [STEP 1] Ping 127.0.0.1
-[2025-11-08 23:45:24] [INFO] [PING] mode=BG target=127.0.0.1 count=0 timeout_s=1.0 interval_s=0.2 duration_s=6.0
-[2025-11-08 23:45:24] [INFO] [PING] cmd=C:\Windows\system32\ping.exe -t -w 1000 127.0.0.1
-[2025-11-08 23:45:24] [INFO] [PING] started background ping pid=1995348
-[2025-11-08 23:45:24] [PASS] STEP 1 completed successfully
+[2025-11-22 00:02:45] [STEP 1] Ping 127.0.0.1
+[2025-11-22 00:02:45] [INFO] [PING] mode=BG target=127.0.0.1 count=0 timeout_s=1.0 interval_s=0.2 duration_s=6.0
+[2025-11-22 00:02:45] [INFO] [PING] cmd=C:\Windows\system32\ping.exe -t -w 1000 127.0.0.1
+[2025-11-22 00:02:45] [INFO] [PING] started background ping pid=182600
+[2025-11-22 00:02:45] [PASS] STEP 1 completed successfully
 </pre>
 </div>
 </details>
@@ -461,16 +255,16 @@ Session ID: b8906571 &nbsp;
 <div class='content'>
 <table>
 <tr><th>Started</th><th>Finished</th></tr>
-<tr><td>2025-11-08 23:45:24</td><td>2025-11-08 23:45:29</td></tr>
+<tr><td>2025-11-22 00:02:45</td><td>2025-11-22 00:02:50</td></tr>
 </table>
 <details>
 <summary><div class='step-title'><div>Step Log</div><div class='status unknown'>DETAIL</div></div></summary>
 <div class='content'>
 <h4>Log</h4>
 <pre>
-[2025-11-08 23:45:24] [STEP 2] Capture PCAP
-[2025-11-08 23:45:24] [INFO] [PCAP-CAPTURE] tag=AVBN23 dumpcap -D:
-1. \Device\NPF_{177C5353-D1DD-4AFF-BF4F-9EB29609B3C7} (vEthernet (Default Switch))
+[2025-11-22 00:02:45] [STEP 2] Capture PCAP
+[2025-11-22 00:02:45] [INFO] [PCAP-CAPTURE] tag=RBODE2 dumpcap -D:
+1. \Device\NPF_{2DA8982A-740A-48DD-AE87-2F87FB4AA1CB} (vEthernet (Default Switch))
 2. \Device\NPF_{CED0C9EE-D3D8-4AF6-A642-236D14517B9D} (Bluetooth Network Connection)
 3. \Device\NPF_{F7EF8ACA-533A-4582-A44C-AA6FD3B30B80} (Local Area Connection* 10)
 4. \Device\NPF_{D62A827E-C7BA-46D2-ACE5-772C43BD80F7} (Local Area Connection* 9)
@@ -480,35 +274,38 @@ Session ID: b8906571 &nbsp;
 8. \Device\NPF_{8FBED501-71F5-4B70-96B8-C2464A93CE8E} (Ethernet)
 9. \Device\NPF_Loopback (Adapter for loopback traffic capture)
 10. \Device\NPF_{80213CCA-E166-423E-90B6-11729F14C76B} (Ethernet 5)
-[2025-11-08 23:45:24] [INFO] [PCAP-CAPTURE] tag=AVBN23 resolved interface &#x27;lo&#x27; -&gt; &#x27;9&#x27;
-[2025-11-08 23:45:24] [INFO] [PCAP-CAPTURE] tag=AVBN23 validating BPF filter: icmp and host 127.0.0.1
-[2025-11-08 23:45:24] [INFO] [PCAP-CAPTURE] tag=AVBN23 tool=dumpcap exe=C:\Program Files\Wireshark\dumpcap.exe
-[2025-11-08 23:45:24] [INFO] [PCAP-CAPTURE] tag=AVBN23 interface=&#x27;lo&#x27; promiscuous=False snaplen=256 duration_s=5 packet_count=None file_format=pcap ring_files=None ring_megabytes=None
-[2025-11-08 23:45:24] [INFO] [PCAP-CAPTURE] tag=AVBN23 bpf=&#x27;icmp and host 127.0.0.1&#x27;
-[2025-11-08 23:45:24] [INFO] [PCAP-CAPTURE] tag=AVBN23 output_path=G:\_GitHub\SW_Universal-Test-Framework\nightly_reports\report_tc_pcap_capture\capture_test.pcap
-[2025-11-08 23:45:24] [INFO] [PCAP-CAPTURE] tag=AVBN23 cwd=G:\_GitHub\SW_Universal-Test-Framework
-[2025-11-08 23:45:24] [INFO] [PCAP-CAPTURE] tag=AVBN23 argv=&quot;C:\Program Files\Wireshark\dumpcap.exe&quot; -i 9 -F pcap -w G:\_GitHub\SW_Universal-Test-Framework\nightly_reports\report_tc_pcap_capture\capture_test.pcap -p -s 256 -a duration:5 -f &quot;icmp and host 127.0.0.1&quot;
-[2025-11-08 23:45:24] [INFO] [PCAP-CAPTURE] tag=AVBN23 waiting for capture tool to initialize...
-[2025-11-08 23:45:24] [INFO] [PCAP-CAPTURE] tag=AVBN23 output file created, dumpcap is ready
-[2025-11-08 23:45:29] [INFO] [PCAP-CAPTURE] tag=AVBN23 exit_code=0 elapsed_s=5.093 timed_stop=False
-[2025-11-08 23:45:29] [INFO] [PCAP-CAPTURE STDERR]
+[2025-11-22 00:02:45] [INFO] [PCAP-CAPTURE] tag=RBODE2 resolved interface &#x27;lo&#x27; -&gt; &#x27;9&#x27;
+[2025-11-22 00:02:45] [INFO] [PCAP-CAPTURE] tag=RBODE2 validating BPF filter: icmp and host 127.0.0.1
+[2025-11-22 00:02:45] [INFO] [PCAP-CAPTURE] tag=RBODE2 tool=dumpcap exe=C:\Program Files\Wireshark\dumpcap.exe
+[2025-11-22 00:02:45] [INFO] [PCAP-CAPTURE] tag=RBODE2 interface=&#x27;lo&#x27; promiscuous=False snaplen=256 duration_s=5 packet_count=None file_format=pcap ring_files=None ring_megabytes=None
+[2025-11-22 00:02:45] [INFO] [PCAP-CAPTURE] tag=RBODE2 bpf=&#x27;icmp and host 127.0.0.1&#x27;
+[2025-11-22 00:02:45] [INFO] [PCAP-CAPTURE] tag=RBODE2 output_path=G:\_GitHub\SW_Universal-Test-Framework\nightly_reports\report_tc_pcap_capture\capture_test.pcap
+[2025-11-22 00:02:45] [INFO] [PCAP-CAPTURE] tag=RBODE2 cwd=G:\_GitHub\SW_Universal-Test-Framework
+[2025-11-22 00:02:45] [INFO] [PCAP-CAPTURE] tag=RBODE2 argv=&quot;C:\Program Files\Wireshark\dumpcap.exe&quot; -i 9 -F pcap -w G:\_GitHub\SW_Universal-Test-Framework\nightly_reports\report_tc_pcap_capture\capture_test.pcap -p -s 256 -a duration:5 -f &quot;icmp and host 127.0.0.1&quot;
+[2025-11-22 00:02:45] [INFO] [PCAP-CAPTURE] tag=RBODE2 waiting for capture tool to initialize...
+[2025-11-22 00:02:45] [INFO] [PCAP-CAPTURE] tag=RBODE2 output file created, dumpcap is ready
+[2025-11-22 00:02:50] [INFO] [PCAP-CAPTURE] tag=RBODE2 exit_code=0 elapsed_s=5.148 timed_stop=False
+[2025-11-22 00:02:50] [INFO] [PCAP-CAPTURE STDERR]
 Capturing on &#x27;Adapter for loopback traffic capture&#x27;
 File: G:\_GitHub\SW_Universal-Test-Framework\nightly_reports\report_tc_pcap_capture\capture_test.pcap
 
 Packets: 1 
-Packets: 2 
-Packets: 3 
 Packets: 4 
 Packets: 5 
-Packets: 6 
-Packets: 7 
 Packets: 8 
 Packets: 9 
-Packets captured: 9
-Packets received/dropped on interface &#x27;Adapter for loopback traffic capture&#x27;: 9/0 (pcap:0/dumpcap:0/flushed:0/ps_ifdrop:0) (100.0%)
-[2025-11-08 23:45:29] [INFO] [PCAP-CAPTURE] tag=AVBN23 file size after capture: 744 bytes
-[2025-11-08 23:45:29] [INFO] [PCAP-CAPTURE] tag=AVBN23 output_size=744 bytes
-[2025-11-08 23:45:29] [PASS] STEP 2 completed successfully
+Packets: 11 
+Packets: 12 
+Packets: 13 
+Packets: 15 
+Packets: 16 
+Packets: 17 
+Packets: 19 
+Packets captured: 19
+Packets received/dropped on interface &#x27;Adapter for loopback traffic capture&#x27;: 19/0 (pcap:0/dumpcap:0/flushed:0/ps_ifdrop:0) (100.0%)
+[2025-11-22 00:02:50] [INFO] [PCAP-CAPTURE] tag=RBODE2 file size after capture: 1544 bytes
+[2025-11-22 00:02:50] [INFO] [PCAP-CAPTURE] tag=RBODE2 output_size=1544 bytes
+[2025-11-22 00:02:50] [PASS] STEP 2 completed successfully
 </pre>
 </div>
 </details>
@@ -521,40 +318,60 @@ Packets received/dropped on interface &#x27;Adapter for loopback traffic capture
 <div class='content'>
 <table>
 <tr><th>Started</th><th>Finished</th></tr>
-<tr><td>2025-11-08 23:45:29</td><td>2025-11-08 23:45:29</td></tr>
+<tr><td>2025-11-22 00:02:50</td><td>2025-11-22 00:02:50</td></tr>
 </table>
 <details>
 <summary><div class='step-title'><div>Step Log</div><div class='status unknown'>DETAIL</div></div></summary>
 <div class='content'>
 <h4>Log</h4>
 <pre>
-[2025-11-08 23:45:29] [STEP 3] Check_ICMP_Captured
-[2025-11-08 23:45:29] [INFO] [PCAP-CHECK] analyze start path=G:\_GitHub\SW_Universal-Test-Framework\nightly_reports\report_tc_pcap_capture\capture_test.pcap filter=icmp &amp;&amp; ip.addr==127.0.0.1
-[2025-11-08 23:45:29] [INFO] [PCAP-READ] read_PCAPFrames() execute called
-[2025-11-08 23:45:29] [INFO] [PCAP-READ]   pcap_path=G:\_GitHub\SW_Universal-Test-Framework\nightly_reports\report_tc_pcap_capture\capture_test.pcap
-[2025-11-08 23:45:29] [INFO] [PCAP-READ]   display_filter=icmp &amp;&amp; ip.addr==127.0.0.1
-[2025-11-08 23:45:29] [INFO] [PCAP-READ] File exists, size=744 bytes
-[2025-11-08 23:45:29] [INFO] [PCAP-READ] Running tshark to extract fields...
-[2025-11-08 23:45:29] [INFO] [PCAP-CHECK] tshark fields start filter=icmp &amp;&amp; ip.addr==127.0.0.1
-[2025-11-08 23:45:29] [TSHARK-FIELDS] cmd=tshark -r G:\_GitHub\SW_Universal-Test-Framework\nightly_reports\report_tc_pcap_capture\capture_test.pcap -o tcp.desegment_tcp_streams:TRUE -o http.desegment_body:TRUE -T fields -E header=n -E separator=	 -E occurrence=f -e frame.number -e frame.len -e frame.time_epoch -e eth.src -e eth.dst -e vlan.id -e vlan.priority -e http.file_data -e tcp.reassembled.data -e tcp.payload -e data.data -Y &quot;icmp &amp;&amp; ip.addr==127.0.0.1&quot;
-[2025-11-08 23:45:29] [TSHARK-FIELDS] rc=0
-[2025-11-08 23:45:29] [TSHARK-FIELDS OUT]
-1	64	1762641925.303669000								6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
-2	64	1762641925.303690000								6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
-3	64	1762641926.313797000								6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
-4	64	1762641926.313821000								6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
-5	64	1762641927.320662000								6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
-6	64	1762641927.320684000								6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
-7	64	1762641928.332665000								6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
-8	64	1762641928.332688000								6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
-9	64	1762641929.337572000								6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+[2025-11-22 00:02:50] [STEP 3] Check_ICMP_Captured
+[2025-11-22 00:02:50] [INFO] [PCAP-CHECK] analyze start path=G:\_GitHub\SW_Universal-Test-Framework\nightly_reports\report_tc_pcap_capture\capture_test.pcap filter=icmp &amp;&amp; ip.addr==127.0.0.1
+[2025-11-22 00:02:50] [INFO] [PCAP-READ] read_PCAPFrames() execute called
+[2025-11-22 00:02:50] [INFO] [PCAP-READ]   pcap_path=G:\_GitHub\SW_Universal-Test-Framework\nightly_reports\report_tc_pcap_capture\capture_test.pcap
+[2025-11-22 00:02:50] [INFO] [PCAP-READ]   display_filter=icmp &amp;&amp; ip.addr==127.0.0.1
+[2025-11-22 00:02:50] [INFO] [PCAP-READ] File exists, size=1544 bytes
+[2025-11-22 00:02:50] [INFO] [PCAP-READ] Running tshark to extract fields...
+[2025-11-22 00:02:50] [INFO] [PCAP-CHECK] tshark fields start filter=icmp &amp;&amp; ip.addr==127.0.0.1
+[2025-11-22 00:02:50] [TSHARK-FIELDS] cmd=tshark -r G:\_GitHub\SW_Universal-Test-Framework\nightly_reports\report_tc_pcap_capture\capture_test.pcap -o tcp.desegment_tcp_streams:TRUE -o http.desegment_body:TRUE -T fields -E header=n -E separator=	 -E occurrence=f -e frame.number -e frame.len -e frame.time_epoch -e eth.src -e eth.dst -e vlan.id -e vlan.priority -e http.file_data -e tcp.reassembled.data -e tcp.payload -e data.data -Y &quot;icmp &amp;&amp; ip.addr==127.0.0.1&quot;
+[2025-11-22 00:02:50] [TSHARK-FIELDS] rc=0
+[2025-11-22 00:02:50] [TSHARK-FIELDS OUT]
+1	64	1763766166.053123000								6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+2	64	1763766166.053152000								6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+3	64	1763766166.274235000								6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+4	64	1763766166.274260000								6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+5	64	1763766167.068286000								6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+6	64	1763766167.068318000								6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+7	64	1763766167.288306000								6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+8	64	1763766167.288343000								6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+9	64	1763766168.083260000								6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+10	64	1763766168.083283000								6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+11	64	1763766168.299268000								6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+12	64	1763766168.299293000								6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+13	64	1763766169.093246000								6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+14	64	1763766169.093271000								6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+15	64	1763766169.312276000								6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+16	64	1763766169.312301000								6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+17	64	1763766170.108376000								6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+18	64	1763766170.108415000								6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
+19	64	1763766170.327352000								6162636465666768696a6b6c6d6e6f7071727374757677616263646566676869
 
-[2025-11-08 23:45:29] [INFO] [PCAP-READ] tshark succeeded, parsing output...
-[2025-11-08 23:45:29] [INFO] [PCAP-READ] Parsed 9 frames from tshark output
-[2025-11-08 23:45:29] [INFO] [PCAP-READ] Extracting VLAN stack information...
-[2025-11-08 23:45:29] [TSHARK-VLAN] cmd=tshark -r G:\_GitHub\SW_Universal-Test-Framework\nightly_reports\report_tc_pcap_capture\capture_test.pcap -T fields -E header=n -E separator=	 -E occurrence=a -e vlan.id -e vlan.priority -Y &quot;icmp &amp;&amp; ip.addr==127.0.0.1&quot;
-[2025-11-08 23:45:29] [TSHARK-VLAN] rc=0
-[2025-11-08 23:45:29] [TSHARK-VLAN OUT]
+[2025-11-22 00:02:50] [INFO] [PCAP-READ] tshark succeeded, parsing output...
+[2025-11-22 00:02:50] [INFO] [PCAP-READ] Parsed 19 frames from tshark output
+[2025-11-22 00:02:50] [INFO] [PCAP-READ] Extracting VLAN stack information...
+[2025-11-22 00:02:50] [TSHARK-VLAN] cmd=tshark -r G:\_GitHub\SW_Universal-Test-Framework\nightly_reports\report_tc_pcap_capture\capture_test.pcap -T fields -E header=n -E separator=	 -E occurrence=a -e vlan.id -e vlan.priority -Y &quot;icmp &amp;&amp; ip.addr==127.0.0.1&quot;
+[2025-11-22 00:02:50] [TSHARK-VLAN] rc=0
+[2025-11-22 00:02:50] [TSHARK-VLAN OUT]
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
@@ -565,27 +382,37 @@ Packets received/dropped on interface &#x27;Adapter for loopback traffic capture
 	
 	
 
-[2025-11-08 23:45:29] [INFO] [PCAP-READ] VLAN stack mismatch or empty, using single-level VLAN data
-[2025-11-08 23:45:29] [INFO] [PCAP-READ] Total frames parsed: 9
-[2025-11-08 23:45:29] [INFO] [PCAP-READ] Frame summary (showing up to 20):
-[2025-11-08 23:45:29] [INFO] [PCAP-READ]   fnum=1 len=64 t=1762641925303668992ns src= dst= vlan=[]
-[2025-11-08 23:45:29] [INFO] [PCAP-READ]   fnum=2 len=64 t=1762641925303689984ns src= dst= vlan=[]
-[2025-11-08 23:45:29] [INFO] [PCAP-READ]   fnum=3 len=64 t=1762641926313797120ns src= dst= vlan=[]
-[2025-11-08 23:45:29] [INFO] [PCAP-READ]   fnum=4 len=64 t=1762641926313821184ns src= dst= vlan=[]
-[2025-11-08 23:45:29] [INFO] [PCAP-READ]   fnum=5 len=64 t=1762641927320662016ns src= dst= vlan=[]
-[2025-11-08 23:45:29] [INFO] [PCAP-READ]   fnum=6 len=64 t=1762641927320684032ns src= dst= vlan=[]
-[2025-11-08 23:45:29] [INFO] [PCAP-READ]   fnum=7 len=64 t=1762641928332665088ns src= dst= vlan=[]
-[2025-11-08 23:45:29] [INFO] [PCAP-READ]   fnum=8 len=64 t=1762641928332688128ns src= dst= vlan=[]
-[2025-11-08 23:45:29] [INFO] [PCAP-READ]   fnum=9 len=64 t=1762641929337572096ns src= dst= vlan=[]
-[2025-11-08 23:45:29] [INFO] [PCAP-READ] read_PCAPFrames() returning 9 frames
-[2025-11-08 23:45:29] [INFO] [PCAP-CHECK] filtered=9 (expect_count=None expect_count_min=1)
-[2025-11-08 23:45:29] [INFO] [PCAP-CHECK] ========================================
-[2025-11-08 23:45:29] [INFO] [PCAP-CHECK] ALL VALIDATIONS PASSED
-[2025-11-08 23:45:29] [INFO] [PCAP-CHECK] Filter: &#x27;icmp &amp;&amp; ip.addr==127.0.0.1&#x27;
-[2025-11-08 23:45:29] [INFO] [PCAP-CHECK] Frames validated: 9
-[2025-11-08 23:45:29] [INFO] [PCAP-CHECK] PCAP file: G:\_GitHub\SW_Universal-Test-Framework\nightly_reports\report_tc_pcap_capture\capture_test.pcap
-[2025-11-08 23:45:29] [INFO] [PCAP-CHECK] ========================================
-[2025-11-08 23:45:29] [PASS] STEP 3 completed successfully
+[2025-11-22 00:02:50] [INFO] [PCAP-READ] VLAN stack mismatch or empty, using single-level VLAN data
+[2025-11-22 00:02:50] [INFO] [PCAP-READ] Total frames parsed: 19
+[2025-11-22 00:02:50] [INFO] [PCAP-READ] Frame summary (showing up to 20):
+[2025-11-22 00:02:50] [INFO] [PCAP-READ]   fnum=1 len=64 t=1763766166053123072ns src= dst= vlan=[]
+[2025-11-22 00:02:50] [INFO] [PCAP-READ]   fnum=2 len=64 t=1763766166053152000ns src= dst= vlan=[]
+[2025-11-22 00:02:50] [INFO] [PCAP-READ]   fnum=3 len=64 t=1763766166274235136ns src= dst= vlan=[]
+[2025-11-22 00:02:50] [INFO] [PCAP-READ]   fnum=4 len=64 t=1763766166274259968ns src= dst= vlan=[]
+[2025-11-22 00:02:50] [INFO] [PCAP-READ]   fnum=5 len=64 t=1763766167068285952ns src= dst= vlan=[]
+[2025-11-22 00:02:50] [INFO] [PCAP-READ]   fnum=6 len=64 t=1763766167068317952ns src= dst= vlan=[]
+[2025-11-22 00:02:50] [INFO] [PCAP-READ]   fnum=7 len=64 t=1763766167288305920ns src= dst= vlan=[]
+[2025-11-22 00:02:50] [INFO] [PCAP-READ]   fnum=8 len=64 t=1763766167288343040ns src= dst= vlan=[]
+[2025-11-22 00:02:50] [INFO] [PCAP-READ]   fnum=9 len=64 t=1763766168083260160ns src= dst= vlan=[]
+[2025-11-22 00:02:50] [INFO] [PCAP-READ]   fnum=10 len=64 t=1763766168083282944ns src= dst= vlan=[]
+[2025-11-22 00:02:50] [INFO] [PCAP-READ]   fnum=11 len=64 t=1763766168299268096ns src= dst= vlan=[]
+[2025-11-22 00:02:50] [INFO] [PCAP-READ]   fnum=12 len=64 t=1763766168299292928ns src= dst= vlan=[]
+[2025-11-22 00:02:50] [INFO] [PCAP-READ]   fnum=13 len=64 t=1763766169093245952ns src= dst= vlan=[]
+[2025-11-22 00:02:50] [INFO] [PCAP-READ]   fnum=14 len=64 t=1763766169093271040ns src= dst= vlan=[]
+[2025-11-22 00:02:50] [INFO] [PCAP-READ]   fnum=15 len=64 t=1763766169312275968ns src= dst= vlan=[]
+[2025-11-22 00:02:50] [INFO] [PCAP-READ]   fnum=16 len=64 t=1763766169312300800ns src= dst= vlan=[]
+[2025-11-22 00:02:50] [INFO] [PCAP-READ]   fnum=17 len=64 t=1763766170108376064ns src= dst= vlan=[]
+[2025-11-22 00:02:50] [INFO] [PCAP-READ]   fnum=18 len=64 t=1763766170108414976ns src= dst= vlan=[]
+[2025-11-22 00:02:50] [INFO] [PCAP-READ]   fnum=19 len=64 t=1763766170327352064ns src= dst= vlan=[]
+[2025-11-22 00:02:50] [INFO] [PCAP-READ] read_PCAPFrames() returning 19 frames
+[2025-11-22 00:02:50] [INFO] [PCAP-CHECK] filtered=19 (expect_count=None expect_count_min=1)
+[2025-11-22 00:02:50] [INFO] [PCAP-CHECK] ========================================
+[2025-11-22 00:02:50] [INFO] [PCAP-CHECK] ALL VALIDATIONS PASSED
+[2025-11-22 00:02:50] [INFO] [PCAP-CHECK] Filter: &#x27;icmp &amp;&amp; ip.addr==127.0.0.1&#x27;
+[2025-11-22 00:02:50] [INFO] [PCAP-CHECK] Frames validated: 19
+[2025-11-22 00:02:50] [INFO] [PCAP-CHECK] PCAP file: G:\_GitHub\SW_Universal-Test-Framework\nightly_reports\report_tc_pcap_capture\capture_test.pcap
+[2025-11-22 00:02:50] [INFO] [PCAP-CHECK] ========================================
+[2025-11-22 00:02:50] [PASS] STEP 3 completed successfully
 </pre>
 </div>
 </details>
@@ -598,27 +425,27 @@ Packets received/dropped on interface &#x27;Adapter for loopback traffic capture
 <div class='content'>
 <table>
 <tr><th>Started</th><th>Finished</th></tr>
-<tr><td>2025-11-08 23:45:29</td><td>2025-11-08 23:45:29</td></tr>
+<tr><td>2025-11-22 00:02:50</td><td>2025-11-22 00:02:50</td></tr>
 </table>
 <details>
 <summary><div class='step-title'><div>Step Log</div><div class='status unknown'>DETAIL</div></div></summary>
 <div class='content'>
 <h4>Log</h4>
 <pre>
-[2025-11-08 23:45:29] [TEARDOWN 1] Ensure all outputs OFF
-[2025-11-08 23:45:29] [INFO] [SNMP] Executing set_all_outlets: state=OFF
-[2025-11-08 23:45:29] [INFO] [SNMP] Using trigger OID: 1.3.6.1.4.1.19865.2.9.0
-[2025-11-08 23:45:29] [INFO] [SNMP] set_integer() called
-[2025-11-08 23:45:29] [INFO] [SNMP]   Target: 192.168.0.12, OID: 1.3.6.1.4.1.19865.2.9.0, Value: 1, Community: public, Timeout: 3.0s
-[2025-11-08 23:45:29] [INFO] [SNMP] cmd=snmpset -v1 -c public 192.168.0.12 1.3.6.1.4.1.19865.2.9.0 i 1
-[2025-11-08 23:45:29] [INFO] [SNMP] rc=0
-[2025-11-08 23:45:29] [INFO] [SNMP OUT]
+[2025-11-22 00:02:50] [TEARDOWN 1] Ensure all outputs OFF
+[2025-11-22 00:02:50] [INFO] [SNMP] Executing set_all_outlets: state=OFF
+[2025-11-22 00:02:50] [INFO] [SNMP] Using trigger OID: 1.3.6.1.4.1.19865.2.9.0
+[2025-11-22 00:02:50] [INFO] [SNMP] set_integer() called
+[2025-11-22 00:02:50] [INFO] [SNMP]   Target: 192.168.0.22, OID: 1.3.6.1.4.1.19865.2.9.0, Value: 1, Community: public, Timeout: 3.0s
+[2025-11-22 00:02:50] [INFO] [SNMP] cmd=snmpset -v1 -c public 192.168.0.22 1.3.6.1.4.1.19865.2.9.0 i 1
+[2025-11-22 00:02:50] [INFO] [SNMP] rc=0
+[2025-11-22 00:02:50] [INFO] [SNMP OUT]
 SNMPv2-SMI::enterprises.19865.2.9.0 = INTEGER: 1
 
-[2025-11-08 23:45:29] [INFO] [SNMP] snmpset returned: rc=0, success=True
-[2025-11-08 23:45:29] [INFO] [SNMP SET] 192.168.0.12 1.3.6.1.4.1.19865.2.9.0 = 1 -&gt; OK (v1/public)
-[2025-11-08 23:45:29] [INFO] [SNMP] Successfully set ALL outlets OFF
-[2025-11-08 23:45:29] [PASS] TEARDOWN 1 completed successfully
+[2025-11-22 00:02:50] [INFO] [SNMP] snmpset returned: rc=0, success=True
+[2025-11-22 00:02:50] [INFO] [SNMP SET] 192.168.0.22 1.3.6.1.4.1.19865.2.9.0 = 1 -&gt; OK (v1/public)
+[2025-11-22 00:02:50] [INFO] [SNMP] Successfully set ALL outlets OFF
+[2025-11-22 00:02:50] [PASS] TEARDOWN 1 completed successfully
 </pre>
 </div>
 </details>
@@ -631,122 +458,122 @@ SNMPv2-SMI::enterprises.19865.2.9.0 = INTEGER: 1
 <div class='content'>
 <table>
 <tr><th>Started</th><th>Finished</th></tr>
-<tr><td>2025-11-08 23:45:29</td><td>2025-11-08 23:45:29</td></tr>
+<tr><td>2025-11-22 00:02:50</td><td>2025-11-22 00:02:50</td></tr>
 </table>
 <details>
 <summary><div class='step-title'><div>Step Log</div><div class='status unknown'>DETAIL</div></div></summary>
 <div class='content'>
 <h4>Log</h4>
 <pre>
-[2025-11-08 23:45:29] [TEARDOWN 2] Final verify all outputs OFF
-[2025-11-08 23:45:29] [INFO] [SNMP] Executing verify_all_outlets: expected_state=OFF
-[2025-11-08 23:45:29] [INFO] [SNMP] Checking channel 1...
-[2025-11-08 23:45:29] [INFO] [SNMP] get_value() called
-[2025-11-08 23:45:29] [INFO] [SNMP]   Target: 192.168.0.12, OID: 1.3.6.1.4.1.19865.2.1.0, Community: public, Timeout: 3.0s
-[2025-11-08 23:45:29] [INFO] [SNMP] cmd=snmpget -v1 -c public 192.168.0.12 1.3.6.1.4.1.19865.2.1.0
-[2025-11-08 23:45:29] [INFO] [SNMP] rc=0
-[2025-11-08 23:45:29] [INFO] [SNMP OUT]
+[2025-11-22 00:02:50] [TEARDOWN 2] Final verify all outputs OFF
+[2025-11-22 00:02:50] [INFO] [SNMP] Executing verify_all_outlets: expected_state=OFF
+[2025-11-22 00:02:50] [INFO] [SNMP] Checking channel 1...
+[2025-11-22 00:02:50] [INFO] [SNMP] get_value() called
+[2025-11-22 00:02:50] [INFO] [SNMP]   Target: 192.168.0.22, OID: 1.3.6.1.4.1.19865.2.1.0, Community: public, Timeout: 3.0s
+[2025-11-22 00:02:50] [INFO] [SNMP] cmd=snmpget -v1 -c public 192.168.0.22 1.3.6.1.4.1.19865.2.1.0
+[2025-11-22 00:02:50] [INFO] [SNMP] rc=0
+[2025-11-22 00:02:50] [INFO] [SNMP OUT]
 SNMPv2-SMI::enterprises.19865.2.1.0 = INTEGER: 0
 
-[2025-11-08 23:45:29] [INFO] [SNMP] snmpget returned: rc=0
-[2025-11-08 23:45:29] [INFO] [SNMP] _parse_snmp_value() called, output length: 49 chars
-[2025-11-08 23:45:29] [INFO] [SNMP] Parsed value: &#x27;0&#x27;
-[2025-11-08 23:45:29] [INFO] [SNMP GET] 192.168.0.12 1.3.6.1.4.1.19865.2.1.0 -&gt; &#x27;0&#x27; (v1/public)
-[2025-11-08 23:45:29] [INFO] [SNMP] CH1 state: OFF
-[2025-11-08 23:45:29] [INFO] [SNMP] Checking channel 2...
-[2025-11-08 23:45:29] [INFO] [SNMP] get_value() called
-[2025-11-08 23:45:29] [INFO] [SNMP]   Target: 192.168.0.12, OID: 1.3.6.1.4.1.19865.2.2.0, Community: public, Timeout: 3.0s
-[2025-11-08 23:45:29] [INFO] [SNMP] cmd=snmpget -v1 -c public 192.168.0.12 1.3.6.1.4.1.19865.2.2.0
-[2025-11-08 23:45:29] [INFO] [SNMP] rc=0
-[2025-11-08 23:45:29] [INFO] [SNMP OUT]
+[2025-11-22 00:02:50] [INFO] [SNMP] snmpget returned: rc=0
+[2025-11-22 00:02:50] [INFO] [SNMP] _parse_snmp_value() called, output length: 49 chars
+[2025-11-22 00:02:50] [INFO] [SNMP] Parsed value: &#x27;0&#x27;
+[2025-11-22 00:02:50] [INFO] [SNMP GET] 192.168.0.22 1.3.6.1.4.1.19865.2.1.0 -&gt; &#x27;0&#x27; (v1/public)
+[2025-11-22 00:02:50] [INFO] [SNMP] CH1 state: OFF
+[2025-11-22 00:02:50] [INFO] [SNMP] Checking channel 2...
+[2025-11-22 00:02:50] [INFO] [SNMP] get_value() called
+[2025-11-22 00:02:50] [INFO] [SNMP]   Target: 192.168.0.22, OID: 1.3.6.1.4.1.19865.2.2.0, Community: public, Timeout: 3.0s
+[2025-11-22 00:02:50] [INFO] [SNMP] cmd=snmpget -v1 -c public 192.168.0.22 1.3.6.1.4.1.19865.2.2.0
+[2025-11-22 00:02:50] [INFO] [SNMP] rc=0
+[2025-11-22 00:02:50] [INFO] [SNMP OUT]
 SNMPv2-SMI::enterprises.19865.2.2.0 = INTEGER: 0
 
-[2025-11-08 23:45:29] [INFO] [SNMP] snmpget returned: rc=0
-[2025-11-08 23:45:29] [INFO] [SNMP] _parse_snmp_value() called, output length: 49 chars
-[2025-11-08 23:45:29] [INFO] [SNMP] Parsed value: &#x27;0&#x27;
-[2025-11-08 23:45:29] [INFO] [SNMP GET] 192.168.0.12 1.3.6.1.4.1.19865.2.2.0 -&gt; &#x27;0&#x27; (v1/public)
-[2025-11-08 23:45:29] [INFO] [SNMP] CH2 state: OFF
-[2025-11-08 23:45:29] [INFO] [SNMP] Checking channel 3...
-[2025-11-08 23:45:29] [INFO] [SNMP] get_value() called
-[2025-11-08 23:45:29] [INFO] [SNMP]   Target: 192.168.0.12, OID: 1.3.6.1.4.1.19865.2.3.0, Community: public, Timeout: 3.0s
-[2025-11-08 23:45:29] [INFO] [SNMP] cmd=snmpget -v1 -c public 192.168.0.12 1.3.6.1.4.1.19865.2.3.0
-[2025-11-08 23:45:29] [INFO] [SNMP] rc=0
-[2025-11-08 23:45:29] [INFO] [SNMP OUT]
+[2025-11-22 00:02:50] [INFO] [SNMP] snmpget returned: rc=0
+[2025-11-22 00:02:50] [INFO] [SNMP] _parse_snmp_value() called, output length: 49 chars
+[2025-11-22 00:02:50] [INFO] [SNMP] Parsed value: &#x27;0&#x27;
+[2025-11-22 00:02:50] [INFO] [SNMP GET] 192.168.0.22 1.3.6.1.4.1.19865.2.2.0 -&gt; &#x27;0&#x27; (v1/public)
+[2025-11-22 00:02:50] [INFO] [SNMP] CH2 state: OFF
+[2025-11-22 00:02:50] [INFO] [SNMP] Checking channel 3...
+[2025-11-22 00:02:50] [INFO] [SNMP] get_value() called
+[2025-11-22 00:02:50] [INFO] [SNMP]   Target: 192.168.0.22, OID: 1.3.6.1.4.1.19865.2.3.0, Community: public, Timeout: 3.0s
+[2025-11-22 00:02:50] [INFO] [SNMP] cmd=snmpget -v1 -c public 192.168.0.22 1.3.6.1.4.1.19865.2.3.0
+[2025-11-22 00:02:50] [INFO] [SNMP] rc=0
+[2025-11-22 00:02:50] [INFO] [SNMP OUT]
 SNMPv2-SMI::enterprises.19865.2.3.0 = INTEGER: 0
 
-[2025-11-08 23:45:29] [INFO] [SNMP] snmpget returned: rc=0
-[2025-11-08 23:45:29] [INFO] [SNMP] _parse_snmp_value() called, output length: 49 chars
-[2025-11-08 23:45:29] [INFO] [SNMP] Parsed value: &#x27;0&#x27;
-[2025-11-08 23:45:29] [INFO] [SNMP GET] 192.168.0.12 1.3.6.1.4.1.19865.2.3.0 -&gt; &#x27;0&#x27; (v1/public)
-[2025-11-08 23:45:29] [INFO] [SNMP] CH3 state: OFF
-[2025-11-08 23:45:29] [INFO] [SNMP] Checking channel 4...
-[2025-11-08 23:45:29] [INFO] [SNMP] get_value() called
-[2025-11-08 23:45:29] [INFO] [SNMP]   Target: 192.168.0.12, OID: 1.3.6.1.4.1.19865.2.4.0, Community: public, Timeout: 3.0s
-[2025-11-08 23:45:29] [INFO] [SNMP] cmd=snmpget -v1 -c public 192.168.0.12 1.3.6.1.4.1.19865.2.4.0
-[2025-11-08 23:45:29] [INFO] [SNMP] rc=0
-[2025-11-08 23:45:29] [INFO] [SNMP OUT]
+[2025-11-22 00:02:50] [INFO] [SNMP] snmpget returned: rc=0
+[2025-11-22 00:02:50] [INFO] [SNMP] _parse_snmp_value() called, output length: 49 chars
+[2025-11-22 00:02:50] [INFO] [SNMP] Parsed value: &#x27;0&#x27;
+[2025-11-22 00:02:50] [INFO] [SNMP GET] 192.168.0.22 1.3.6.1.4.1.19865.2.3.0 -&gt; &#x27;0&#x27; (v1/public)
+[2025-11-22 00:02:50] [INFO] [SNMP] CH3 state: OFF
+[2025-11-22 00:02:50] [INFO] [SNMP] Checking channel 4...
+[2025-11-22 00:02:50] [INFO] [SNMP] get_value() called
+[2025-11-22 00:02:50] [INFO] [SNMP]   Target: 192.168.0.22, OID: 1.3.6.1.4.1.19865.2.4.0, Community: public, Timeout: 3.0s
+[2025-11-22 00:02:50] [INFO] [SNMP] cmd=snmpget -v1 -c public 192.168.0.22 1.3.6.1.4.1.19865.2.4.0
+[2025-11-22 00:02:50] [INFO] [SNMP] rc=0
+[2025-11-22 00:02:50] [INFO] [SNMP OUT]
 SNMPv2-SMI::enterprises.19865.2.4.0 = INTEGER: 0
 
-[2025-11-08 23:45:29] [INFO] [SNMP] snmpget returned: rc=0
-[2025-11-08 23:45:29] [INFO] [SNMP] _parse_snmp_value() called, output length: 49 chars
-[2025-11-08 23:45:29] [INFO] [SNMP] Parsed value: &#x27;0&#x27;
-[2025-11-08 23:45:29] [INFO] [SNMP GET] 192.168.0.12 1.3.6.1.4.1.19865.2.4.0 -&gt; &#x27;0&#x27; (v1/public)
-[2025-11-08 23:45:29] [INFO] [SNMP] CH4 state: OFF
-[2025-11-08 23:45:29] [INFO] [SNMP] Checking channel 5...
-[2025-11-08 23:45:29] [INFO] [SNMP] get_value() called
-[2025-11-08 23:45:29] [INFO] [SNMP]   Target: 192.168.0.12, OID: 1.3.6.1.4.1.19865.2.5.0, Community: public, Timeout: 3.0s
-[2025-11-08 23:45:29] [INFO] [SNMP] cmd=snmpget -v1 -c public 192.168.0.12 1.3.6.1.4.1.19865.2.5.0
-[2025-11-08 23:45:29] [INFO] [SNMP] rc=0
-[2025-11-08 23:45:29] [INFO] [SNMP OUT]
+[2025-11-22 00:02:50] [INFO] [SNMP] snmpget returned: rc=0
+[2025-11-22 00:02:50] [INFO] [SNMP] _parse_snmp_value() called, output length: 49 chars
+[2025-11-22 00:02:50] [INFO] [SNMP] Parsed value: &#x27;0&#x27;
+[2025-11-22 00:02:50] [INFO] [SNMP GET] 192.168.0.22 1.3.6.1.4.1.19865.2.4.0 -&gt; &#x27;0&#x27; (v1/public)
+[2025-11-22 00:02:50] [INFO] [SNMP] CH4 state: OFF
+[2025-11-22 00:02:50] [INFO] [SNMP] Checking channel 5...
+[2025-11-22 00:02:50] [INFO] [SNMP] get_value() called
+[2025-11-22 00:02:50] [INFO] [SNMP]   Target: 192.168.0.22, OID: 1.3.6.1.4.1.19865.2.5.0, Community: public, Timeout: 3.0s
+[2025-11-22 00:02:50] [INFO] [SNMP] cmd=snmpget -v1 -c public 192.168.0.22 1.3.6.1.4.1.19865.2.5.0
+[2025-11-22 00:02:50] [INFO] [SNMP] rc=0
+[2025-11-22 00:02:50] [INFO] [SNMP OUT]
 SNMPv2-SMI::enterprises.19865.2.5.0 = INTEGER: 0
 
-[2025-11-08 23:45:29] [INFO] [SNMP] snmpget returned: rc=0
-[2025-11-08 23:45:29] [INFO] [SNMP] _parse_snmp_value() called, output length: 49 chars
-[2025-11-08 23:45:29] [INFO] [SNMP] Parsed value: &#x27;0&#x27;
-[2025-11-08 23:45:29] [INFO] [SNMP GET] 192.168.0.12 1.3.6.1.4.1.19865.2.5.0 -&gt; &#x27;0&#x27; (v1/public)
-[2025-11-08 23:45:29] [INFO] [SNMP] CH5 state: OFF
-[2025-11-08 23:45:29] [INFO] [SNMP] Checking channel 6...
-[2025-11-08 23:45:29] [INFO] [SNMP] get_value() called
-[2025-11-08 23:45:29] [INFO] [SNMP]   Target: 192.168.0.12, OID: 1.3.6.1.4.1.19865.2.6.0, Community: public, Timeout: 3.0s
-[2025-11-08 23:45:29] [INFO] [SNMP] cmd=snmpget -v1 -c public 192.168.0.12 1.3.6.1.4.1.19865.2.6.0
-[2025-11-08 23:45:29] [INFO] [SNMP] rc=0
-[2025-11-08 23:45:29] [INFO] [SNMP OUT]
+[2025-11-22 00:02:50] [INFO] [SNMP] snmpget returned: rc=0
+[2025-11-22 00:02:50] [INFO] [SNMP] _parse_snmp_value() called, output length: 49 chars
+[2025-11-22 00:02:50] [INFO] [SNMP] Parsed value: &#x27;0&#x27;
+[2025-11-22 00:02:50] [INFO] [SNMP GET] 192.168.0.22 1.3.6.1.4.1.19865.2.5.0 -&gt; &#x27;0&#x27; (v1/public)
+[2025-11-22 00:02:50] [INFO] [SNMP] CH5 state: OFF
+[2025-11-22 00:02:50] [INFO] [SNMP] Checking channel 6...
+[2025-11-22 00:02:50] [INFO] [SNMP] get_value() called
+[2025-11-22 00:02:50] [INFO] [SNMP]   Target: 192.168.0.22, OID: 1.3.6.1.4.1.19865.2.6.0, Community: public, Timeout: 3.0s
+[2025-11-22 00:02:50] [INFO] [SNMP] cmd=snmpget -v1 -c public 192.168.0.22 1.3.6.1.4.1.19865.2.6.0
+[2025-11-22 00:02:50] [INFO] [SNMP] rc=0
+[2025-11-22 00:02:50] [INFO] [SNMP OUT]
 SNMPv2-SMI::enterprises.19865.2.6.0 = INTEGER: 0
 
-[2025-11-08 23:45:29] [INFO] [SNMP] snmpget returned: rc=0
-[2025-11-08 23:45:29] [INFO] [SNMP] _parse_snmp_value() called, output length: 49 chars
-[2025-11-08 23:45:29] [INFO] [SNMP] Parsed value: &#x27;0&#x27;
-[2025-11-08 23:45:29] [INFO] [SNMP GET] 192.168.0.12 1.3.6.1.4.1.19865.2.6.0 -&gt; &#x27;0&#x27; (v1/public)
-[2025-11-08 23:45:29] [INFO] [SNMP] CH6 state: OFF
-[2025-11-08 23:45:29] [INFO] [SNMP] Checking channel 7...
-[2025-11-08 23:45:29] [INFO] [SNMP] get_value() called
-[2025-11-08 23:45:29] [INFO] [SNMP]   Target: 192.168.0.12, OID: 1.3.6.1.4.1.19865.2.7.0, Community: public, Timeout: 3.0s
-[2025-11-08 23:45:29] [INFO] [SNMP] cmd=snmpget -v1 -c public 192.168.0.12 1.3.6.1.4.1.19865.2.7.0
-[2025-11-08 23:45:29] [INFO] [SNMP] rc=0
-[2025-11-08 23:45:29] [INFO] [SNMP OUT]
+[2025-11-22 00:02:50] [INFO] [SNMP] snmpget returned: rc=0
+[2025-11-22 00:02:50] [INFO] [SNMP] _parse_snmp_value() called, output length: 49 chars
+[2025-11-22 00:02:50] [INFO] [SNMP] Parsed value: &#x27;0&#x27;
+[2025-11-22 00:02:50] [INFO] [SNMP GET] 192.168.0.22 1.3.6.1.4.1.19865.2.6.0 -&gt; &#x27;0&#x27; (v1/public)
+[2025-11-22 00:02:50] [INFO] [SNMP] CH6 state: OFF
+[2025-11-22 00:02:50] [INFO] [SNMP] Checking channel 7...
+[2025-11-22 00:02:50] [INFO] [SNMP] get_value() called
+[2025-11-22 00:02:50] [INFO] [SNMP]   Target: 192.168.0.22, OID: 1.3.6.1.4.1.19865.2.7.0, Community: public, Timeout: 3.0s
+[2025-11-22 00:02:50] [INFO] [SNMP] cmd=snmpget -v1 -c public 192.168.0.22 1.3.6.1.4.1.19865.2.7.0
+[2025-11-22 00:02:50] [INFO] [SNMP] rc=0
+[2025-11-22 00:02:50] [INFO] [SNMP OUT]
 SNMPv2-SMI::enterprises.19865.2.7.0 = INTEGER: 0
 
-[2025-11-08 23:45:29] [INFO] [SNMP] snmpget returned: rc=0
-[2025-11-08 23:45:29] [INFO] [SNMP] _parse_snmp_value() called, output length: 49 chars
-[2025-11-08 23:45:29] [INFO] [SNMP] Parsed value: &#x27;0&#x27;
-[2025-11-08 23:45:29] [INFO] [SNMP GET] 192.168.0.12 1.3.6.1.4.1.19865.2.7.0 -&gt; &#x27;0&#x27; (v1/public)
-[2025-11-08 23:45:29] [INFO] [SNMP] CH7 state: OFF
-[2025-11-08 23:45:29] [INFO] [SNMP] Checking channel 8...
-[2025-11-08 23:45:29] [INFO] [SNMP] get_value() called
-[2025-11-08 23:45:29] [INFO] [SNMP]   Target: 192.168.0.12, OID: 1.3.6.1.4.1.19865.2.8.0, Community: public, Timeout: 3.0s
-[2025-11-08 23:45:29] [INFO] [SNMP] cmd=snmpget -v1 -c public 192.168.0.12 1.3.6.1.4.1.19865.2.8.0
-[2025-11-08 23:45:29] [INFO] [SNMP] rc=0
-[2025-11-08 23:45:29] [INFO] [SNMP OUT]
+[2025-11-22 00:02:50] [INFO] [SNMP] snmpget returned: rc=0
+[2025-11-22 00:02:50] [INFO] [SNMP] _parse_snmp_value() called, output length: 49 chars
+[2025-11-22 00:02:50] [INFO] [SNMP] Parsed value: &#x27;0&#x27;
+[2025-11-22 00:02:50] [INFO] [SNMP GET] 192.168.0.22 1.3.6.1.4.1.19865.2.7.0 -&gt; &#x27;0&#x27; (v1/public)
+[2025-11-22 00:02:50] [INFO] [SNMP] CH7 state: OFF
+[2025-11-22 00:02:50] [INFO] [SNMP] Checking channel 8...
+[2025-11-22 00:02:50] [INFO] [SNMP] get_value() called
+[2025-11-22 00:02:50] [INFO] [SNMP]   Target: 192.168.0.22, OID: 1.3.6.1.4.1.19865.2.8.0, Community: public, Timeout: 3.0s
+[2025-11-22 00:02:50] [INFO] [SNMP] cmd=snmpget -v1 -c public 192.168.0.22 1.3.6.1.4.1.19865.2.8.0
+[2025-11-22 00:02:50] [INFO] [SNMP] rc=0
+[2025-11-22 00:02:50] [INFO] [SNMP OUT]
 SNMPv2-SMI::enterprises.19865.2.8.0 = INTEGER: 0
 
-[2025-11-08 23:45:29] [INFO] [SNMP] snmpget returned: rc=0
-[2025-11-08 23:45:29] [INFO] [SNMP] _parse_snmp_value() called, output length: 49 chars
-[2025-11-08 23:45:29] [INFO] [SNMP] Parsed value: &#x27;0&#x27;
-[2025-11-08 23:45:29] [INFO] [SNMP GET] 192.168.0.12 1.3.6.1.4.1.19865.2.8.0 -&gt; &#x27;0&#x27; (v1/public)
-[2025-11-08 23:45:29] [INFO] [SNMP] CH8 state: OFF
-[2025-11-08 23:45:29] [INFO] [SNMP] All 8 channels verified: OFF
-[2025-11-08 23:45:29] [PASS] TEARDOWN 2 completed successfully
-[2025-11-08 23:45:29] ===== tc_pcap_capture: RESULT: PASS =====
+[2025-11-22 00:02:50] [INFO] [SNMP] snmpget returned: rc=0
+[2025-11-22 00:02:50] [INFO] [SNMP] _parse_snmp_value() called, output length: 49 chars
+[2025-11-22 00:02:50] [INFO] [SNMP] Parsed value: &#x27;0&#x27;
+[2025-11-22 00:02:50] [INFO] [SNMP GET] 192.168.0.22 1.3.6.1.4.1.19865.2.8.0 -&gt; &#x27;0&#x27; (v1/public)
+[2025-11-22 00:02:50] [INFO] [SNMP] CH8 state: OFF
+[2025-11-22 00:02:50] [INFO] [SNMP] All 8 channels verified: OFF
+[2025-11-22 00:02:50] [PASS] TEARDOWN 2 completed successfully
+[2025-11-22 00:02:50] ===== tc_pcap_capture: RESULT: PASS =====
 </pre>
 </div>
 </details>

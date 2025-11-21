@@ -35,4 +35,5 @@ __all__ = [
     "ethernet",
     "fx2LA",
     "nop"
+    "metrics"
 ]

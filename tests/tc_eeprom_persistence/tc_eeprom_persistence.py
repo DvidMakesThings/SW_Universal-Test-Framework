@@ -37,7 +37,7 @@ class tc_eeprom_persistence_test:
                 port=hw.SERIAL_PORT,
                 command="REBOOT",
                 baudrate=hw.BAUDRATE,
-                reboot=True  # Special handling for reboot
+                reboot=True,  # Special handling for reboot
             ),
         ]
 
@@ -57,16 +57,22 @@ class tc_eeprom_persistence_test:
                 all_on_oid=hw.ALL_ON_OID,
                 all_off_oid=hw.ALL_OFF_OID,
                 state=False,
-                community=hw.SNMP_COMMUNITY
+                community=hw.SNMP_COMMUNITY,
             ),
-
             # TEARDOWN 1.2: Final verification all outputs are OFF
             SNMP.verify_all_outlets(
                 name="Final verify all outputs OFF",
                 ip=hw.BASELINE_IP,
                 outlet_base_oid=hw.OUTLET_BASE_OID,
                 expected_state=False,
-                community=hw.SNMP_COMMUNITY
+                community=hw.SNMP_COMMUNITY,
+            ),
+            UART.send_command_uart(
+                name=f"Set custom network config",
+                port=hw.SERIAL_PORT,
+                command=f"CONFIG_NETWORK {hw.BASELINE_IP}${hw.BASELINE_SUBNET}${hw.BASELINE_GATEWAY}${hw.BASELINE_DNS}",
+                baudrate=hw.BAUDRATE,
+                reboot=False,
             ),
         ]
 
@@ -78,12 +84,6 @@ class tc_eeprom_persistence_test:
         test_script_dir = Path(__file__).parent
         checks_file = str(test_script_dir.parent / "eeprom_checks.json")
 
-        # Test configuration values
-        test_ip = "192.168.0.12"
-        test_subnet = "255.255.255.0"
-        test_gateway = "192.168.1.1"
-        test_dns = "1.1.1.1"
-
         # Channel states to test
         test_channel_states = []
         for channel in range(1, 9):
@@ -93,7 +93,7 @@ class tc_eeprom_persistence_test:
                     name=f"Set CH{channel} to {state}",
                     port=hw.SERIAL_PORT,
                     command=f"SET_CH {channel} {state}",
-                    baudrate=hw.BAUDRATE
+                    baudrate=hw.BAUDRATE,
                 )
             )
 
@@ -104,63 +104,88 @@ class tc_eeprom_persistence_test:
             verify_channel_states.append(
                 SNMP.get_outlet(
                     name=f"Verify CH{channel} state via SNMP",
-                    ip=test_ip,
+                    ip=hw.BASELINE_IP,
                     channel=channel,
                     expected_state=expected_state,
                     outlet_base_oid=hw.OUTLET_BASE_OID,
-                    community=hw.SNMP_COMMUNITY
+                    community=hw.SNMP_COMMUNITY,
                 )
             )
-        
+
         verify_channel_states_negative = []
         for channel in range(1, 9):
             verify_channel_states_negative.append(
                 SNMP.get_outlet(
                     name=f"MUST FAIL - Verify CH{channel} state via SNMP",
-                    ip=test_ip,
+                    ip=hw.BASELINE_IP,
                     channel=channel,
                     expected_state=True,
                     outlet_base_oid=hw.OUTLET_BASE_OID,
                     community=hw.SNMP_COMMUNITY,
-                    negative_test=True
+                    negative_test=True,
                 )
             )
 
         return [
             # Step 1: Set custom network configuration
             STE(
-                UART.set_network_parameter(
+                UART.send_command_uart(
                     name=f"Set custom network config",
                     port=hw.SERIAL_PORT,
-                    param="CONFIG_NETWORK",
-                    value=f"{test_ip}${test_subnet}${test_gateway}${test_dns}",
+                    command=f"CONFIG_NETWORK {hw.TEMP_NEW_IP}${hw.TEMP_NEW_SN}${hw.TEMP_NEW_GW}${hw.TEMP_NEW_DNS}",
                     baudrate=hw.BAUDRATE,
-                    reboot_timeout=20
+                    reboot=True,
                 ),
+
+                NOP.NOP(name="Wait for device to fully boot", duration_ms=2000),
                 UART.verify_network_change(
                     name="Verify custom IP",
                     port=hw.SERIAL_PORT,
                     param="IP",
-                    expected_value=test_ip,
-                    baudrate=hw.BAUDRATE
+                    expected_value=hw.TEMP_NEW_IP,
+                    baudrate=hw.BAUDRATE,
                 ),
                 UART.verify_network_change(
                     name="Verify custom Gateway",
                     port=hw.SERIAL_PORT,
                     param="Gateway",
-                    expected_value=test_gateway,
-                    baudrate=hw.BAUDRATE
+                    expected_value=hw.TEMP_NEW_GW,
+                    baudrate=hw.BAUDRATE,
                 ),
-                name="Set custom network configuration"
-            ),
+                UART.verify_network_change(
+                    name="Verify custom Subnet Mask",
+                    port=hw.SERIAL_PORT,
+                    param="Subnet Mask",
+                    expected_value=hw.TEMP_NEW_SN,
+                    baudrate=hw.BAUDRATE,
+                ),
+                UART.verify_network_change(
+                    name="Verify custom DNS",
+                    port=hw.SERIAL_PORT,
+                    param="DNS",
+                    expected_value=hw.TEMP_NEW_DNS,
+                    baudrate=hw.BAUDRATE,
+                ),
+                UART.send_command_uart(
+                    name=f"Revert to baseline network config",
+                    port=hw.SERIAL_PORT,
+                    command=f"CONFIG_NETWORK {hw.BASELINE_IP}${hw.BASELINE_SUBNET}${hw.BASELINE_GATEWAY}${hw.BASELINE_DNS}",
+                    baudrate=hw.BAUDRATE,
+                    reboot=True,
+                ),
 
+                NOP.NOP(
+                    name="Wait for device to fully boot", 
+                    duration_ms=2000
+                ),
+                name="Test custom network configuration",
+            ),
             # Step 2: Set alternating channel states
             STE(
                 *test_channel_states,
                 *verify_channel_states,
-                name="Set alternating channel states (odd ON, even OFF)"
+                name="Set alternating channel states (odd ON, even OFF)",
             ),
-
             # Step 3: Reboot and verify persistence
             STE(
                 UART.send_command_uart(
@@ -168,28 +193,26 @@ class tc_eeprom_persistence_test:
                     port=hw.SERIAL_PORT,
                     command=hw.REBOOT_CMD,
                     baudrate=hw.BAUDRATE,
-                    reboot=True
+                    reboot=True,
                 ),
                 UART.send_command_uart(
                     name="Get network config after reboot",
                     port=hw.SERIAL_PORT,
                     command=hw.NETINFO_CMD,
-                    baudrate=hw.BAUDRATE
+                    baudrate=hw.BAUDRATE,
                 ),
                 UART.validate_tokens(
                     name="Verify network config persisted",
                     response="",
-                    tokens=[test_ip, test_gateway]
+                    tokens=[hw.BASELINE_IP, hw.BASELINE_GATEWAY],
                 ),
-                name="Reboot and verify network config persistence"
+                name="Reboot and verify network config persistence",
             ),
-
             # Step 4: Verify channel states persisted
             STE(
                 *verify_channel_states_negative,
-                name="Verify channel states not persisted after reboot"
+                name="Verify channel states not persisted after reboot",
             ),
-
             # Step 5: Factory reset
             STE(
                 UART.send_command_uart(
@@ -197,32 +220,28 @@ class tc_eeprom_persistence_test:
                     port=hw.SERIAL_PORT,
                     command="RFS",
                     baudrate=hw.BAUDRATE,
-                    reboot=True
+                    reboot=True,
                 ),
-                NOP.NOP(
-                    name="Wait for device to stabilize",
-                    duration_ms=500
-                ),
+                NOP.NOP(name="Wait for device to stabilize", duration_ms=500),
                 UART.send_command_uart(
                     name="Get network config after factory reset",
                     port=hw.SERIAL_PORT,
                     command=hw.NETINFO_CMD,
-                    baudrate=hw.BAUDRATE
+                    baudrate=hw.BAUDRATE,
                 ),
                 UART.validate_tokens(
                     name="Verify baseline network config restored",
                     response="",
-                    tokens=[hw.BASELINE_IP, hw.BASELINE_GATEWAY]
+                    tokens=[hw.BASELINE_IP, hw.BASELINE_GATEWAY],
                 ),
                 UART.get_all_channels(
                     name="Verify all channels reset to OFF",
                     port=hw.SERIAL_PORT,
                     baudrate=hw.BAUDRATE,
-                    expected=[False] * 8
+                    expected=[False] * 8,
                 ),
-                name="Verify factory defaults restored"
+                name="Verify factory defaults restored",
             ),
-
             # Step 6: Multiple reboot cycles to test stability
             STE(
                 UART.send_command_uart(
@@ -230,48 +249,49 @@ class tc_eeprom_persistence_test:
                     port=hw.SERIAL_PORT,
                     command=hw.REBOOT_CMD,
                     baudrate=hw.BAUDRATE,
-                    reboot=True
+                    reboot=True,
                 ),
                 UART.send_command_uart(
                     name="Verify ready after reboot 1",
                     port=hw.SERIAL_PORT,
                     command=hw.NETINFO_CMD,
-                    baudrate=hw.BAUDRATE
+                    baudrate=hw.BAUDRATE,
                 ),
                 UART.send_command_uart(
                     name="Reboot cycle 2",
                     port=hw.SERIAL_PORT,
                     command=hw.REBOOT_CMD,
                     baudrate=hw.BAUDRATE,
-                    reboot=True
+                    reboot=True,
                 ),
                 UART.send_command_uart(
                     name="Verify ready after reboot 2",
                     port=hw.SERIAL_PORT,
                     command=hw.NETINFO_CMD,
-                    baudrate=hw.BAUDRATE
+                    baudrate=hw.BAUDRATE,
                 ),
                 UART.send_command_uart(
                     name="Reboot cycle 3",
                     port=hw.SERIAL_PORT,
                     command=hw.REBOOT_CMD,
                     baudrate=hw.BAUDRATE,
-                    reboot=True
+                    reboot=True,
                 ),
+                NOP.NOP(name="Wait for device to stabilize", duration_ms=1500),
                 UART.send_command_uart(
                     name="Verify ready after reboot 3",
                     port=hw.SERIAL_PORT,
                     command=hw.NETINFO_CMD,
-                    baudrate=hw.BAUDRATE
+                    baudrate=hw.BAUDRATE,
                 ),
                 UART.validate_tokens(
                     name="Verify config stable after multiple reboots",
                     response="",
-                    tokens=[hw.BASELINE_IP]
+                    tokens=hw.NETINFO_TOKENS,
                 ),
-                name="Multiple reboot cycle stability test"
-            ),
 
+                name="Multiple reboot cycle stability test",
+            ),
             # Step 7: EEPROM dump analysis
             STE(
                 UART.analyze_eeprom_dump(
@@ -279,10 +299,10 @@ class tc_eeprom_persistence_test:
                     port=hw.SERIAL_PORT,
                     baudrate=hw.BAUDRATE,
                     checks=checks_file,
-                    reports_dir=Path(reports_dir)
+                    reports_dir=Path(reports_dir),
                 ),
-                name="Final EEPROM dump and analysis"
-            )
+                name="Final EEPROM dump and analysis",
+            ),
         ]
 
 
@@ -292,7 +312,7 @@ def main():
     return run_test_with_teardown(
         test_class_instance=test_instance,
         test_name="tc_eeprom_persistence",
-        reports_dir="report_tc_eeprom_persistence"
+        reports_dir="report_tc_eeprom_persistence",
     )
 
 

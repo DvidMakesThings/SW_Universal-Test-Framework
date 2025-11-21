@@ -40,9 +40,9 @@
 <h1>Test Suite: Nightly Tests</h1>
 <div class='meta'>
 Overall: <b class='chip fail'>FAIL</b> &nbsp;
-Started: 2025-11-08 23:43:13 &nbsp;
-Duration: 285.79s &nbsp;
-Session ID: fc4f2440 &nbsp;
+Started: 2025-11-21 23:59:12 &nbsp;
+Duration: 467.64s &nbsp;
+Session ID: 4e5436c1 &nbsp;
 <br>Extended nightly test suite with stress testing
 </div>
 </header>
@@ -65,7 +65,7 @@ Session ID: fc4f2440 &nbsp;
 <a href='report_tc_sanity_check/tc_sanity_check_report.html' target='_blank' class='test-link'>Sanity Check Test</a><span class='report-badge'>📄 Report</span>
 </td>
 <td><span class='status pass'>PASS</span></td>
-<td>7.28s</td>
+<td>16.86s</td>
 <td>
 </td>
 </tr>
@@ -75,7 +75,7 @@ Session ID: fc4f2440 &nbsp;
 <a href='report_tc_serial_utfw/tc_serial_utfw_report.html' target='_blank' class='test-link'>Serial Communication Test</a><span class='report-badge'>📄 Report</span>
 </td>
 <td><span class='status pass'>PASS</span></td>
-<td>54.30s</td>
+<td>94.70s</td>
 <td>
 </td>
 </tr>
@@ -85,40 +85,40 @@ Session ID: fc4f2440 &nbsp;
 <a href='report_tc_network_snmp/tc_network_snmp_report.html' target='_blank' class='test-link'>SNMP Test</a><span class='report-badge'>📄 Report</span>
 </td>
 <td><span class='status fail'>FAIL</span></td>
-<td>32.98s</td>
+<td>43.56s</td>
 <td>
 Exit code: 1
 <details>
 <summary>View Output</summary>
 <h4>Standard Output</h4>
 <pre>lled
-[2025-11-08 23:44:46] [INFO] [SNMP]   Target: 192.168.0.12, OID: 1.3.6.1.4.1.19865.2.7.0, Community: public, Timeout: 3.0s
-[2025-11-08 23:44:46] [INFO] [SNMP] cmd=snmpget -v1 -c public 192.168.0.12 1.3.6.1.4.1.19865.2.7.0
-[2025-11-08 23:44:46] [INFO] [SNMP] rc=0
-[2025-11-08 23:44:46] [INFO] [SNMP OUT]
+[2025-11-22 00:01:47] [INFO] [SNMP]   Target: 192.168.0.22, OID: 1.3.6.1.4.1.19865.2.7.0, Community: public, Timeout: 3.0s
+[2025-11-22 00:01:47] [INFO] [SNMP] cmd=snmpget -v1 -c public 192.168.0.22 1.3.6.1.4.1.19865.2.7.0
+[2025-11-22 00:01:47] [INFO] [SNMP] rc=0
+[2025-11-22 00:01:47] [INFO] [SNMP OUT]
 SNMPv2-SMI::enterprises.19865.2.7.0 = INTEGER: 0
 
-[2025-11-08 23:44:46] [INFO] [SNMP] snmpget returned: rc=0
-[2025-11-08 23:44:46] [INFO] [SNMP] _parse_snmp_value() called, output length: 49 chars
-[2025-11-08 23:44:46] [INFO] [SNMP] Parsed value: &#x27;0&#x27;
-[2025-11-08 23:44:46] [INFO] [SNMP GET] 192.168.0.12 1.3.6.1.4.1.19865.2.7.0 -&gt; &#x27;0&#x27; (v1/public)
-[2025-11-08 23:44:46] [INFO] [SNMP] CH7 state: OFF
-[2025-11-08 23:44:46] [INFO] [SNMP] Checking channel 8...
-[2025-11-08 23:44:46] [INFO] [SNMP] get_value() called
-[2025-11-08 23:44:46] [INFO] [SNMP]   Target: 192.168.0.12, OID: 1.3.6.1.4.1.19865.2.8.0, Community: public, Timeout: 3.0s
-[2025-11-08 23:44:46] [INFO] [SNMP] cmd=snmpget -v1 -c public 192.168.0.12 1.3.6.1.4.1.19865.2.8.0
-[2025-11-08 23:44:46] [INFO] [SNMP] rc=0
-[2025-11-08 23:44:46] [INFO] [SNMP OUT]
+[2025-11-22 00:01:47] [INFO] [SNMP] snmpget returned: rc=0
+[2025-11-22 00:01:47] [INFO] [SNMP] _parse_snmp_value() called, output length: 49 chars
+[2025-11-22 00:01:47] [INFO] [SNMP] Parsed value: &#x27;0&#x27;
+[2025-11-22 00:01:47] [INFO] [SNMP GET] 192.168.0.22 1.3.6.1.4.1.19865.2.7.0 -&gt; &#x27;0&#x27; (v1/public)
+[2025-11-22 00:01:47] [INFO] [SNMP] CH7 state: OFF
+[2025-11-22 00:01:47] [INFO] [SNMP] Checking channel 8...
+[2025-11-22 00:01:47] [INFO] [SNMP] get_value() called
+[2025-11-22 00:01:47] [INFO] [SNMP]   Target: 192.168.0.22, OID: 1.3.6.1.4.1.19865.2.8.0, Community: public, Timeout: 3.0s
+[2025-11-22 00:01:47] [INFO] [SNMP] cmd=snmpget -v1 -c public 192.168.0.22 1.3.6.1.4.1.19865.2.8.0
+[2025-11-22 00:01:47] [INFO] [SNMP] rc=0
+[2025-11-22 00:01:47] [INFO] [SNMP OUT]
 SNMPv2-SMI::enterprises.19865.2.8.0 = INTEGER: 0
 
-[2025-11-08 23:44:46] [INFO] [SNMP] snmpget returned: rc=0
-[2025-11-08 23:44:46] [INFO] [SNMP] _parse_snmp_value() called, output length: 49 chars
-[2025-11-08 23:44:46] [INFO] [SNMP] Parsed value: &#x27;0&#x27;
-[2025-11-08 23:44:46] [INFO] [SNMP GET] 192.168.0.12 1.3.6.1.4.1.19865.2.8.0 -&gt; &#x27;0&#x27; (v1/public)
-[2025-11-08 23:44:46] [INFO] [SNMP] CH8 state: OFF
-[2025-11-08 23:44:46] [INFO] [SNMP] All 8 channels verified: OFF
-[2025-11-08 23:44:46] [PASS] TEARDOWN 2 completed successfully
-[2025-11-08 23:44:46] ===== tc_network_snmp: RESULT: FAIL =====
+[2025-11-22 00:01:47] [INFO] [SNMP] snmpget returned: rc=0
+[2025-11-22 00:01:47] [INFO] [SNMP] _parse_snmp_value() called, output length: 49 chars
+[2025-11-22 00:01:47] [INFO] [SNMP] Parsed value: &#x27;0&#x27;
+[2025-11-22 00:01:47] [INFO] [SNMP GET] 192.168.0.22 1.3.6.1.4.1.19865.2.8.0 -&gt; &#x27;0&#x27; (v1/public)
+[2025-11-22 00:01:47] [INFO] [SNMP] CH8 state: OFF
+[2025-11-22 00:01:47] [INFO] [SNMP] All 8 channels verified: OFF
+[2025-11-22 00:01:47] [PASS] TEARDOWN 2 completed successfully
+[2025-11-22 00:01:47] ===== tc_network_snmp: RESULT: FAIL =====
 [INFO] HTML test report generated at: G:\_GitHub\SW_Universal-Test-Framework\nightly_reports\report_tc_network_snmp\tc_network_snmp_report.html
 [INFO] JUnit test report generated at: G:\_GitHub\SW_Universal-Test-Framework\nightly_reports\report_tc_network_snmp\tc_network_snmp_report.xml
 </pre>
@@ -131,7 +131,7 @@ SNMPv2-SMI::enterprises.19865.2.8.0 = INTEGER: 0
 <a href='report_tc_network_pcap/tc_network_pcap_report.html' target='_blank' class='test-link'>Network PCAP Test</a><span class='report-badge'>📄 Report</span>
 </td>
 <td><span class='status pass'>PASS</span></td>
-<td>32.75s</td>
+<td>43.01s</td>
 <td>
 </td>
 </tr>
@@ -141,7 +141,7 @@ SNMPv2-SMI::enterprises.19865.2.8.0 = INTEGER: 0
 <a href='report_tc_pcap_capture/tc_pcap_capture_report.html' target='_blank' class='test-link'>PCAP Capture Test</a><span class='report-badge'>📄 Report</span>
 </td>
 <td><span class='status pass'>PASS</span></td>
-<td>9.52s</td>
+<td>20.25s</td>
 <td>
 </td>
 </tr>
@@ -151,7 +151,7 @@ SNMPv2-SMI::enterprises.19865.2.8.0 = INTEGER: 0
 <a href='report_tc_pcap_create/tc_pcap_create_report.html' target='_blank' class='test-link'>PCAP Create Test</a><span class='report-badge'>📄 Report</span>
 </td>
 <td><span class='status pass'>PASS</span></td>
-<td>3.59s</td>
+<td>1.82s</td>
 <td>
 </td>
 </tr>
@@ -161,7 +161,7 @@ SNMPv2-SMI::enterprises.19865.2.8.0 = INTEGER: 0
 <a href='report_tc_eeprom_persistence/tc_eeprom_persistence_report.html' target='_blank' class='test-link'>EEPROM Persistence Test</a><span class='report-badge'>📄 Report</span>
 </td>
 <td><span class='status pass'>PASS</span></td>
-<td>61.48s</td>
+<td>161.36s</td>
 <td>
 </td>
 </tr>
@@ -171,7 +171,7 @@ SNMPv2-SMI::enterprises.19865.2.8.0 = INTEGER: 0
 <a href='report_tc_power_hlw8032/tc_power_hlw8032_report.html' target='_blank' class='test-link'>Power Meter HLW8032 Test</a><span class='report-badge'>📄 Report</span>
 </td>
 <td><span class='status pass'>PASS</span></td>
-<td>29.04s</td>
+<td>36.99s</td>
 <td>
 </td>
 </tr>
@@ -181,7 +181,7 @@ SNMPv2-SMI::enterprises.19865.2.8.0 = INTEGER: 0
 <a href='report_tc_stress_switching/tc_stress_switching_report.html' target='_blank' class='test-link'>Stress Test - Rapid Switching</a><span class='report-badge'>📄 Report</span>
 </td>
 <td><span class='status pass'>PASS</span></td>
-<td>54.85s</td>
+<td>49.08s</td>
 <td>
 </td>
 </tr>
@@ -190,7 +190,7 @@ SNMPv2-SMI::enterprises.19865.2.8.0 = INTEGER: 0
 <section>
 <h3>Environment</h3>
 <div class='kv'>
-<div>Session ID</div><div><code>fc4f2440</code></div>
+<div>Session ID</div><div><code>4e5436c1</code></div>
 <div>Hostname</div><div>DPC</div>
 <div>OS</div><div>Windows 11</div>
 <div>Python</div><div>3.13.7</div>
