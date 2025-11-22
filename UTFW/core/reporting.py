@@ -15,7 +15,7 @@ from typing import Dict, Any, Optional, List, Callable, Union
 # Import TestStep from core module
 from .core import TestStep
 from .substep import SubStepExecutor
-from UTFW.modules import REPORT_HELPER
+from UTFW.tools import generate_test_report as REPORT_HELPER
 
 # Use the universal logger so helpers (pcapgen/pcap_analyze/etc.) can emit details
 from .logger import (

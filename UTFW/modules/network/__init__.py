@@ -1,20 +1,17 @@
 """
+UTFW/modules/network/__init__.py
+
 UTFW Network Module
 ===================
 
-High-level network test functions and TestAction factories for universal testing.
+High-level network TestAction factories.
 
-This module provides:
-- ICMP ping operations
-- HTTP GET/POST requests
+Provides:
+- ICMP ping
+- HTTP GET/POST
 - Web form submission testing
-- Network endpoint validation
-- Basic connectivity verification
-- PCAP generation (pcapgen)
-- PCAP analysis (pcap_analyze)
-
-All functions integrate with the UTFW logging system and can return TestAction
-instances for use in test steps or STE groups.
+- Endpoint validation & connectivity checks
+- PCAP generation & analysis
 
 Author: DvidMakesThings
 """

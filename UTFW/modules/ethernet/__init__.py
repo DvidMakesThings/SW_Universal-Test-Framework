@@ -1,19 +1,10 @@
 """
+UTFW/modules/ethernet/__init__.py
+
 UTFW Ethernet Module
 ====================
 
-Advanced HTTP and web testing utilities for the UTFW framework.
-
-This module provides comprehensive HTTP testing capabilities including:
-- Advanced HTTP operations with detailed logging and dumping
-- Request pacing and rate limiting for hardware safety
-- Comprehensive response validation and content checking
-- ETag validation and conditional requests
-- Link crawling and asset verification
-- Tolerance for connection drops during device reboots
-
-All functions integrate with the UTFW logging system and return TestAction
-instances for use in test steps or STE groups.
+Advanced HTTP/web TestAction factories (rate limiting, ETag, crawling).
 
 Author: DvidMakesThings
 """

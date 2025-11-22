@@ -1,19 +1,18 @@
 """
+UTFW/modules/serial/__init__.py
+
 UTFW Serial Module
 ==================
 
-High-level serial/UART test functions and TestAction factories for universal testing.
+High-level serial/UART TestAction factories.
 
-This module provides comprehensive serial communication testing capabilities including:
+Capabilities:
 - Command sending and response validation
-- Device reboot detection and ready state monitoring
+- Reboot detection and ready state monitoring
 - System information parsing and validation
-- Network parameter configuration via serial
+- Network parameter configuration
 - EEPROM dump capture and analysis
 - Channel state management and verification
-
-All functions return TestAction instances that can be used directly in test steps
-or combined using STE (Sub-step Test Executor) for complex test scenarios.
 
 Author: DvidMakesThings
 """

@@ -1,12 +1,10 @@
 """
+UTFW/modules/fx2LA/__init__.py
+
 UTFW FX2LA Module
 =================
 
-Logic analyzer integration for the UTFW framework (experimental).
-
-This module provides integration with FX2-based logic analyzers for
-hardware signal analysis and verification. It's currently experimental
-and may have limited functionality.
+Logic analyzer integration (experimental).
 
 Author: DvidMakesThings
 """

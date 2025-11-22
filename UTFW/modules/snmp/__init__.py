@@ -1,19 +1,18 @@
 """
+UTFW/modules/snmp/__init__.py
+
 UTFW SNMP Module
 ================
 
-High-level SNMP test functions and TestAction factories for universal testing.
+High-level SNMP TestAction factories.
 
-This module provides comprehensive SNMP testing capabilities including:
-- Basic SNMP GET/SET operations with detailed logging
-- Outlet control and verification for managed PDUs
-- Enterprise MIB walking and validation
-- System information retrieval and validation
-- Bulk operations for multiple outlets
+Capabilities:
+- GET/SET operations with logging
+- Outlet control & verification
+- Enterprise MIB walking
+- System info retrieval & validation
+- Bulk outlet operations
 - Error condition testing
-
-All functions return TestAction instances that integrate with the UTFW
-logging system and can be used in test steps or STE groups.
 
 Author: DvidMakesThings
 """

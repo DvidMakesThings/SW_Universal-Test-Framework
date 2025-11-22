@@ -1,5 +1,7 @@
 """
-UTFW (Universal Test Framework) 
+UTFW/__init__.py
+
+UTFW (Universal Test Framework)
 ========================================
 
 A comprehensive framework for hardware device testing that provides:
@@ -33,21 +35,20 @@ from .core import (
     load_hardware_config, get_hwconfig
 )
 
-# Import test modules
-from . import modules
-
-# Create convenient aliases for modules
-SNMP = modules.snmp
-Serial = modules.serial
-Network = modules.network
-Ethernet = modules.ethernet
-FX2 = modules.fx2LA
-NOP = modules.nop
-
-# Import report helper
+# Import test modules directly (lazy loader in UTFW.modules prevents circulars)
+from .modules import serial, snmp, network, ethernet, fx2LA, nop, failuremem
 from .tools import generate_test_report as REPORT_HELPER
 
-__version__ = "2.1.34"
+# Convenient aliases exposed at top-level
+Serial = serial
+SNMP = snmp
+Network = network
+Ethernet = ethernet
+FX2 = fx2LA
+NOP = nop.NOP
+FailureMemory = failuremem
+
+__version__ = "2.2.12"
 __all__ = [
     # Core framework
     "TestFramework",
@@ -78,6 +79,7 @@ __all__ = [
     "FX2",
     "NOP",
     "Metrics",
+    "FailureMemory",
 
     # Module package
     "modules",

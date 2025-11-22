@@ -1,4 +1,7 @@
-"""UTFW Metrics Package
+"""
+UTFW\modules\metrics\__init__.py
+
+UTFW Metrics Package
 =======================
 
 Public re-export layer for the metrics testing utilities. Provides
