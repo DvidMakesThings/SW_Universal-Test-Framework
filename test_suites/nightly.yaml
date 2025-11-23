@@ -12,19 +12,31 @@ tests:
     enabled: true
     timeout: 300
 
+  - name: "Failure Memory Test"
+    path: "tests/tc_failure_memory/tc_failure_memory.py"
+    enabled: true
+    timeout: 300
+
   # Serial Communication Tests
   - name: "Serial Communication Test"
     path: "tests/tc_serial/tc_serial_utfw.py"
     enabled: true
     timeout: 300
 
-  - name: "SNMP Test"
-    path: "tests/tc_network_snmp/tc_network_snmp.py"
+  - name: "EEPROM Persistence Test"
+    path: "tests/tc_eeprom_persistence/tc_eeprom_persistence.py"
     enabled: true
     timeout: 300
 
+  # Network Communication Tests
+
   - name: "Network PCAP Test"
     path: "tests/tc_network_pcap/tc_network_pcap.py"
+    enabled: true
+    timeout: 300
+
+  - name: "Metrics Collection Test"
+    path: "tests/tc_metrics/tc_metrics.py"
     enabled: true
     timeout: 300
 
@@ -38,12 +50,6 @@ tests:
     path: "tests/tc_pcap_create/tc_pcap_create.py"
     enabled: true
     timeout: 180
-
-  # Persistence Tests
-  - name: "EEPROM Persistence Test"
-    path: "tests/tc_eeprom_persistence/tc_eeprom_persistence.py"
-    enabled: true
-    timeout: 300
 
   # Power Tests
   - name: "Power Meter HLW8032 Test"

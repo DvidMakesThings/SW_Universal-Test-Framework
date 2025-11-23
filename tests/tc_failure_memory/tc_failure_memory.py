@@ -291,7 +291,7 @@ class tc_failure_memory_test:
 
                 # 7.5: Verify specific warning code is present
                 FAILMEM.verify_error_present(
-                    name="Verify multiple error codes present",
+                    name="Verify multiple warning codes present",
                     port=hw.SERIAL_PORT,
                     expected_codes=[0x22B0, 0x22F5],  # List of codes
                     log_type="WARNING",

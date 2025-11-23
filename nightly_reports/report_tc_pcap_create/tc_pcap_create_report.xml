@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ENERGIS Functional Test" tests="15" failures="0" skipped="0" time="0.0" session_id="104041c1">
+<testsuite name="ENERGIS Functional Test" tests="15" failures="0" skipped="0" time="0.0" session_id="583ec005">
   <testcase classname="UTFW" name="STEP 1 Generate PCAP" time="0.0">
   </testcase>
   <testcase classname="UTFW" name="STEP 1.1 UDP128" time="0.0">

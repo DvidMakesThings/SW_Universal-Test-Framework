@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ENERGIS Functional Test" tests="836" failures="0" skipped="0" time="0.0" session_id="3dd4a569">
+<testsuite name="ENERGIS Functional Test" tests="836" failures="0" skipped="0" time="0.0" session_id="7532b367">
   <testcase classname="UTFW" name="PRE-STEP 1 Reboot device via UART" time="0.0">
   </testcase>
   <testcase classname="UTFW" name="STEP 1 Rapid SNMP switching test - 10 cycles per channel" time="0.0">
