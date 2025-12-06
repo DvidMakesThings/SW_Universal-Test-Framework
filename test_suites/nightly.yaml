@@ -1,63 +1,43 @@
-# Nightly Test Suite
-# Extended test suite including stress tests and long-running validations
-# Typical duration: 2-4 hours
-
-name: "Nightly Tests"
-description: "Extended nightly test suite with stress testing"
-
+name: Nightly Tests
+description: Extended nightly test suite with stress testing
 tests:
-  # Sanity Check Test
-  - name: "Sanity Check Test"
-    path: "tests/tc_sanity_check/tc_sanity_check.py"
-    enabled: true
-    timeout: 300
-
-  - name: "Failure Memory Test"
-    path: "tests/tc_failure_memory/tc_failure_memory.py"
-    enabled: true
-    timeout: 300
-
-  # Serial Communication Tests
-  - name: "Serial Communication Test"
-    path: "tests/tc_serial/tc_serial_utfw.py"
-    enabled: true
-    timeout: 300
-
-  - name: "EEPROM Persistence Test"
-    path: "tests/tc_eeprom_persistence/tc_eeprom_persistence.py"
-    enabled: true
-    timeout: 300
-
-  # Network Communication Tests
-
-  - name: "Network PCAP Test"
-    path: "tests/tc_network_pcap/tc_network_pcap.py"
-    enabled: true
-    timeout: 300
-
-  - name: "Metrics Collection Test"
-    path: "tests/tc_metrics/tc_metrics.py"
-    enabled: true
-    timeout: 300
-
-  # PCAP Tests
-  - name: "PCAP Capture Test"
-    path: "tests/tc_pcap_capture/tc_pcap_capture.py"
-    enabled: true
-    timeout: 300
-
-  - name: "PCAP Create Test"
-    path: "tests/tc_pcap_create/tc_pcap_create.py"
-    enabled: true
-    timeout: 180
-
-  # Power Tests
-  - name: "Power Meter HLW8032 Test"
-    path: "tests/tc_power_hlw8032/tc_power_hlw8032.py"
-    enabled: true
-    timeout: 300
-
-  - name: "Stress Test - Rapid Switching"
-    path: "tests/tc_stress_switching/tc_stress_switching.py"
-    enabled: true
-    timeout: 3600  # 1 hour
+- name: Sanity Check Test
+  path: tests/tc_sanity_check/tc_sanity_check.py
+  enabled: true
+  timeout: 300
+- name: Failure Memory Test
+  path: tests/tc_failure_memory/tc_failure_memory.py
+  enabled: true
+  timeout: 300
+- name: Serial Communication Test
+  path: tests/tc_serial/tc_serial_utfw.py
+  enabled: true
+  timeout: 300
+- name: EEPROM Persistence Test
+  path: tests/tc_eeprom_persistence/tc_eeprom_persistence.py
+  enabled: true
+  timeout: 300
+- name: Network PCAP Test
+  path: tests/tc_network_pcap/tc_network_pcap.py
+  enabled: true
+  timeout: 300
+- name: Metrics Collection Test
+  path: tests/tc_metrics/tc_metrics.py
+  enabled: true
+  timeout: 300
+- name: PCAP Capture Test
+  path: tests/tc_pcap_capture/tc_pcap_capture.py
+  enabled: true
+  timeout: 300
+- name: PCAP Create Test
+  path: tests/tc_pcap_create/tc_pcap_create.py
+  enabled: true
+  timeout: 180
+- name: Power Meter HLW8032 Test
+  path: tests/tc_power_hlw8032/tc_power_hlw8032.py
+  enabled: true
+  timeout: 300
+- name: Stress Test - Rapid Switching
+  path: tests/tc_stress_switching/tc_stress_switching.py
+  enabled: true
+  timeout: 3600

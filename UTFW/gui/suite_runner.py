@@ -103,7 +103,7 @@ class SuiteRunnerWidget(QWidget):
         self.tests_tree.setColumnWidth(3, 80)
         self.tests_tree.setMaximumHeight(120)
         self.tests_tree.setMinimumHeight(120)
-        self.tests_tree.setVisible(False)  # Hidden by default
+        self.tests_tree.setVisible(True)  # Visible by default
         layout.addWidget(self.tests_tree)
 
         # Current test details (collapsible)
@@ -128,27 +128,34 @@ class SuiteRunnerWidget(QWidget):
     def _load_test_metadata(self):
         """Load metadata for all tests in the suite."""
         available_tests = discover_tests(self.tests_root)
-        test_map = {t.relative_path: t for t in available_tests}
+        # Use test ID (directory name like tc_xxx) as key for simpler matching
+        test_map_by_id = {t.id: t for t in available_tests}
+        test_map_by_path = {t.relative_path: t for t in available_tests}
 
         for suite_test in self.suite.tests:
             if not suite_test.enabled:
                 continue
 
-            # Find matching test metadata
-            test_path = suite_test.path
-            test_found = False
-            if test_path in test_map:
-                self.all_tests_metadata.append(test_map[test_path])
-                test_found = True
-            else:
-                # Try with tests/ prefix if not found
-                alt_path = f"tests/{Path(test_path).name}/{Path(test_path).name}.py"
-                if alt_path in test_map:
-                    self.all_tests_metadata.append(test_map[alt_path])
-                    test_found = True
+            test_metadata = None
 
-            # Only add to tree if test was found
-            if test_found:
+            # Method 1: Extract test directory name from path and match by ID
+            path_parts = Path(suite_test.path).parts
+            for part in path_parts:
+                if part.startswith('tc_'):
+                    if part in test_map_by_id:
+                        test_metadata = test_map_by_id[part]
+                        break
+
+            # Method 2: Try direct path match after stripping "tests/" prefix
+            if not test_metadata:
+                test_path = suite_test.path
+                if test_path.startswith("tests/"):
+                    test_path = test_path[6:]
+                if test_path in test_map_by_path:
+                    test_metadata = test_map_by_path[test_path]
+
+            if test_metadata:
+                self.all_tests_metadata.append(test_metadata)
                 item = QTreeWidgetItem([
                     suite_test.name,
                     "PENDING",
