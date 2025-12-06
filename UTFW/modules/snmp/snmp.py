@@ -303,7 +303,16 @@ def set_outlet(name: str, ip: str, channel: int, state: bool,
             logger.info("=" * 80)
             logger.info("")
         return True
-    return TestAction(name, execute, negative_test=negative_test)
+
+    # Populate metadata for GUI display
+    oid = f"{outlet_base_oid}.{channel}.0"
+    set_value = 1 if state else 0
+    metadata = {
+        'sent': f"snmpset -v1 -c {community} {ip} {oid} i {set_value}",
+        'display_expected': f"State: {'ON' if state else 'OFF'}"
+    }
+
+    return TestAction(name, execute, negative_test=negative_test, metadata=metadata)
 
 
 def get_outlet(name: str, ip: str, channel: int, expected_state: bool,
@@ -410,7 +419,15 @@ def get_outlet(name: str, ip: str, channel: int, expected_state: bool,
             logger.info("=" * 80)
             logger.info("")
         return True
-    return TestAction(name, execute, negative_test=negative_test)
+
+    # Populate metadata for GUI display
+    oid = f"{outlet_base_oid}.{channel}.0"
+    metadata = {
+        'sent': f"snmpget -v1 -c {community} {ip} {oid}",
+        'display_expected': f"State: {'ON' if expected_state else 'OFF'}"
+    }
+
+    return TestAction(name, execute, negative_test=negative_test, metadata=metadata)
 
 
 def set_all_outlets(name: str, ip: str, state: bool, all_on_oid: str, all_off_oid: str,
@@ -476,7 +493,15 @@ def set_all_outlets(name: str, ip: str, state: bool, all_on_oid: str, all_off_oi
             logger.info("=" * 80)
             logger.info("")
         return True
-    return TestAction(name, execute, negative_test=negative_test)
+
+    # Populate metadata for GUI display
+    trigger_oid = all_on_oid if state else all_off_oid
+    metadata = {
+        'sent': f"snmpset -v1 -c {community} {ip} {trigger_oid} i 1",
+        'display_expected': f"State: {'ON' if state else 'OFF'}"
+    }
+
+    return TestAction(name, execute, negative_test=negative_test, metadata=metadata)
 
 
 def verify_all_outlets(name: str, ip: str, expected_state: bool, outlet_base_oid: str,
@@ -567,7 +592,14 @@ def verify_all_outlets(name: str, ip: str, expected_state: bool, outlet_base_oid
             logger.info("=" * 80)
             logger.info("")
         return True
-    return TestAction(name, execute, negative_test=negative_test)
+
+    # Populate metadata for GUI display
+    metadata = {
+        'sent': '',  # Multiple operations, no single command
+        'display_expected': f"State: {'ON' if expected_state else 'OFF'}"
+    }
+
+    return TestAction(name, execute, negative_test=negative_test, metadata=metadata)
 
 
 def test_single_outlet(channel: int, state: bool, ip: str, outlet_base_oid: str, community: str = "public") -> bool:
@@ -824,7 +856,14 @@ def cycle_outlets_all_channels(name: str,
         if failures:
             raise SNMPTestError("Outlet cycle failures: " + "; ".join(failures))
         return True
-    return TestAction(name, execute, negative_test=negative_test)
+
+    # Populate metadata for GUI display
+    metadata = {
+        'sent': '',  # Multiple operations
+        'display_expected': f"Cycle {len(list(channels))} channels, {settle_s}s settle"
+    }
+
+    return TestAction(name, execute, negative_test=negative_test, metadata=metadata)
 
 
 def walk_enterprise(name: str,
@@ -891,7 +930,14 @@ def walk_enterprise(name: str,
             if get_value(ip, oid, community) is None:
                 raise SNMPTestError(f"SNMP GET probe failed for {oid}")
         return True
-    return TestAction(name, execute, negative_test=negative_test)
+
+    # Populate metadata for GUI display
+    metadata = {
+        'sent': f"snmpwalk -v1 -c {community} -Ci -Cc {ip} {root_oid}",
+        'display_expected': ''
+    }
+
+    return TestAction(name, execute, negative_test=negative_test, metadata=metadata)
 
 
 def expect_oid_regex(name: str,
@@ -937,7 +983,14 @@ def expect_oid_regex(name: str,
         if re.search(regex, str(val)) is None:
             raise SNMPTestError(f"Value '{val}' for {oid} does not match /{regex}/")
         return True
-    return TestAction(name, execute, negative_test=negative_test)
+
+    # Populate metadata for GUI display
+    metadata = {
+        'sent': f"snmpget -v1 -c {community} {ip} {oid}",
+        'display_expected': f"Regex: {regex}"
+    }
+
+    return TestAction(name, execute, negative_test=negative_test, metadata=metadata)
 
 
 def expect_oid_equals(name: str,
@@ -988,7 +1041,15 @@ def expect_oid_equals(name: str,
         if s != expected:
             raise SNMPTestError(f"Value mismatch for {oid}: expected '{expected}', got '{s}'")
         return True
-    return TestAction(name, execute, negative_test=negative_test)
+
+    # Populate metadata for GUI display
+    from ...core.display_helpers import format_value_expected
+    metadata = {
+        'sent': f"snmpget -v1 -c {community} {ip} {oid}",
+        'display_expected': format_value_expected(expected)
+    }
+
+    return TestAction(name, execute, negative_test=negative_test, metadata=metadata)
 
 
 def expect_oid_error(name: str,
@@ -1181,7 +1242,22 @@ def read_oid(
                 logger.info("")
 
         return True
-    return TestAction(name, execute, negative_test=negative_test)
+
+    # Populate metadata for GUI display
+    from ...core.display_helpers import format_range_expected, format_value_expected, combine_expected
+
+    expected_str = ""
+    if min_val is not None and max_val is not None:
+        expected_str = format_range_expected(min_val, max_val)
+    elif expected is not None:
+        expected_str = format_value_expected(expected)
+
+    metadata = {
+        'sent': f"snmpget -v1 -c {community} {ip} {oid}",
+        'display_expected': expected_str if expected_str else "-"
+    }
+
+    return TestAction(name, execute, negative_test=negative_test, metadata=metadata)
 
 
 def get_oid_value(

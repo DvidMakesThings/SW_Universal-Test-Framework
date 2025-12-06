@@ -741,8 +741,10 @@ def check_metric_exists(
             labels_str = f" with labels {labels}" if labels else ""
             raise MetricsTestError(f"Metric '{metric_name}'{labels_str} not found")
         return True
-    
-    return TestAction(name, execute, negative_test=negative_test)
+
+    labels_desc = f" {labels}" if labels else ""
+    metadata = {'sent': f"GET {url} (check metric: {metric_name}{labels_desc})"}
+    return TestAction(name, execute, metadata=metadata, negative_test=negative_test)
 
 
 def check_metric_value(
@@ -802,8 +804,10 @@ def check_metric_value(
                 f"Metric '{metric_name}'{labels_str} value does not match expected"
             )
         return True
-    
-    return TestAction(name, execute, negative_test=negative_test)
+
+    labels_desc = f" {labels}" if labels else ""
+    metadata = {'sent': f"GET {url} (check {metric_name}{labels_desc}={expected_value})"}
+    return TestAction(name, execute, metadata=metadata, negative_test=negative_test)
 
 
 def check_metric_range(
@@ -876,8 +880,17 @@ def check_metric_range(
             url, metric_name, min_value, max_value, labels, timeout
         )
         return value
-    
-    return TestAction(name, execute, negative_test=negative_test)
+
+    labels_desc = f" {labels}" if labels else ""
+    range_desc = ""
+    if min_value is not None and max_value is not None:
+        range_desc = f" in [{min_value}, {max_value}]"
+    elif min_value is not None:
+        range_desc = f" >= {min_value}"
+    elif max_value is not None:
+        range_desc = f" <= {max_value}"
+    metadata = {'sent': f"GET {url} (check {metric_name}{labels_desc}{range_desc})"}
+    return TestAction(name, execute, metadata=metadata, negative_test=negative_test)
 
 
 def check_metrics_comparison(
@@ -955,8 +968,11 @@ def check_metrics_comparison(
             metric1_labels, metric2_labels, tolerance, timeout
         )
         return values
-    
-    return TestAction(name, execute, negative_test=negative_test)
+
+    m1_labels = f"{metric1_labels}" if metric1_labels else ""
+    m2_labels = f"{metric2_labels}" if metric2_labels else ""
+    metadata = {'sent': f"GET {url} (compare {metric1_name}{m1_labels} {comparison} {metric2_name}{m2_labels})"}
+    return TestAction(name, execute, metadata=metadata, negative_test=negative_test)
 
 
 def read_metric(
@@ -1018,10 +1034,13 @@ def read_metric(
         if logger:
             labels_str = f" {labels}" if labels else ""
             logger.info(f"[METRICS] Read metric '{metric_name}'{labels_str}: {value}")
-        
+
+
         return value
-    
-    return TestAction(name, execute, negative_test=negative_test)
+
+    labels_desc = f" {labels}" if labels else ""
+    metadata = {'sent': f"GET {url} (read {metric_name}{labels_desc})"}
+    return TestAction(name, execute, metadata=metadata, negative_test=negative_test)
 
 
 def check_all_channels_state(
@@ -1105,10 +1124,13 @@ def check_all_channels_state(
             logger.info(
                 f"[METRICS]  All {channel_count} channels in state {expected_state}"
             )
-        
+
+
         return True
-    
-    return TestAction(name, execute, negative_test=negative_test)
+
+    state_desc = "ON" if expected_state == 1 else "OFF" if expected_state == 0 else str(expected_state)
+    metadata = {'sent': f"GET {url} (check all {channel_count} channels {state_desc})"}
+    return TestAction(name, execute, metadata=metadata, negative_test=negative_test)
 
 
 def wait_for_metric_condition(
@@ -1299,5 +1321,7 @@ def wait_for_metric_condition(
                 if logger:
                     logger.error(f"[METRICS ERROR] Poll {poll_count} failed: {e}")
                 time.sleep(poll_interval)
-    
-    return TestAction(name, execute, negative_test=negative_test)
+
+    labels_desc = f" {labels}" if labels else ""
+    metadata = {'sent': f"GET {url} (wait for {metric_name}{labels_desc} {condition} {target_value})"}
+    return TestAction(name, execute, metadata=metadata, negative_test=negative_test)

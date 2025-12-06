@@ -26,6 +26,9 @@ from .model import (
     discover_tests, build_step_model, run_test_in_thread,
     TestMetadata, TestStepModel, StepInfo
 )
+from .suite_model import discover_suites, TestSuite
+from .suite_runner import SuiteRunnerWidget
+from .suite_editor import SuiteEditorDialog
 
 
 class StepStatus(Enum):
@@ -57,13 +60,33 @@ class TestTabWidget(QWidget):
         self.running = False
         self.error_messages: List[str] = []
         self.report_path: Optional[str] = None
+        self.is_cleaning_up = False  # Flag to prevent updates during cleanup
+
+        # Performance optimization: batch log updates
+        self.pending_logs: List[str] = []
+        self.log_batch_timer = QTimer(self)
+        self.log_batch_timer.timeout.connect(self._flush_pending_logs)
+        self.log_batch_timer.setInterval(100)  # Flush logs every 100ms
+
+        # Performance optimization: throttle table updates
+        self.needs_table_update = False
+        self.table_update_timer = QTimer(self)
+        self.table_update_timer.timeout.connect(self._process_table_update)
+        self.table_update_timer.setInterval(200)  # Update table every 200ms
 
         # Timer for updating running step durations
         self.duration_timer = QTimer(self)
         self.duration_timer.timeout.connect(self._update_durations)
-        self.duration_timer.setInterval(100)  # Update every 100ms
+        self.duration_timer.setInterval(500)  # Update every 500ms (reduced frequency for performance)
 
         self._setup_ui()
+
+    def cleanup(self):
+        """Stop all timers and prepare for deletion."""
+        self.is_cleaning_up = True
+        self.log_batch_timer.stop()
+        self.table_update_timer.stop()
+        self.duration_timer.stop()
 
     def _setup_ui(self):
         """Set up the test tab UI."""
@@ -100,19 +123,20 @@ class TestTabWidget(QWidget):
 
         # Steps table
         self.steps_table = QTableWidget()
-        self.steps_table.setColumnCount(7)
+        self.steps_table.setColumnCount(8)
         self.steps_table.setHorizontalHeaderLabels([
-            "Phase", "Step ID", "Description", "Negative", "Expected", "Result", "Duration"
+            "Phase", "Step ID", "Description", "Sent", "Negative", "Expected", "Result", "Duration"
         ])
         self.steps_table.horizontalHeader().setSectionResizeMode(QHeaderView.Interactive)
         self.steps_table.horizontalHeader().setStretchLastSection(False)
-        self.steps_table.setColumnWidth(0, 100)
-        self.steps_table.setColumnWidth(1, 100)
-        self.steps_table.setColumnWidth(2, 500)
-        self.steps_table.setColumnWidth(3, 80)
-        self.steps_table.setColumnWidth(4, 200)
-        self.steps_table.setColumnWidth(5, 80)
-        self.steps_table.setColumnWidth(6, 100)
+        self.steps_table.setColumnWidth(0, 100)   # Phase
+        self.steps_table.setColumnWidth(1, 100)   # Step ID
+        self.steps_table.setColumnWidth(2, 400)   # Description (reduced from 500)
+        self.steps_table.setColumnWidth(3, 400)   # Sent (NEW)
+        self.steps_table.setColumnWidth(4, 80)    # Negative
+        self.steps_table.setColumnWidth(5, 200)   # Expected
+        self.steps_table.setColumnWidth(6, 80)    # Result
+        self.steps_table.setColumnWidth(7, 100)   # Duration
         layout.addWidget(self.steps_table, stretch=1)
 
         # Log toggle button
@@ -154,6 +178,32 @@ class TestTabWidget(QWidget):
     def _toggle_logs(self, checked: bool):
         """Toggle log output visibility."""
         self.log_group.setVisible(checked)
+
+    def _handle_event_direct(self, event: Dict[str, Any]):
+        """Handle reporter event directly (for suite runner)."""
+        if self.is_cleaning_up:
+            return  # Ignore events during cleanup
+
+        event_type = event.get("type")
+
+        if event_type == "step_start":
+            step_id = event.get("step_id", "")
+            self.update_step_status(step_id, StepStatus.RUNNING)
+
+        elif event_type == "log_message":
+            level = event.get("level", "")
+            message = event.get("message", "")
+
+            # Extract step ID from message
+            import re
+            match = re.match(r"((?:PRE-STEP|STEP|POST-STEP|TEARDOWN)\s+[\d.]+)", message)
+            if match:
+                step_id = match.group(1)
+                if level == "PASS":
+                    self.update_step_status(step_id, StepStatus.PASS)
+                elif level == "FAIL":
+                    self.update_step_status(step_id, StepStatus.FAIL)
+                    self.error_messages.append(message)
 
     def load_steps(self):
         """Load and display test steps."""
@@ -217,83 +267,27 @@ class TestTabWidget(QWidget):
                 desc_item.setText("  → " + step.name)
             self.steps_table.setItem(idx, 2, desc_item)
 
-            negative_text = "Yes" if step.negative else "No"
-            self.steps_table.setItem(idx, 3, QTableWidgetItem(negative_text))
+            # Sent column (UNIVERSAL - uses 'sent' metadata field)
+            sent_text = step.metadata.get('sent', '')
+            self.steps_table.setItem(idx, 3, QTableWidgetItem(sent_text))
 
-            expected_text = self._format_expected(step.metadata)
-            self.steps_table.setItem(idx, 4, QTableWidgetItem(expected_text))
+            negative_text = "Yes" if step.negative else "No"
+            self.steps_table.setItem(idx, 4, QTableWidgetItem(negative_text))
+
+            # Expected column (UNIVERSAL - no hardcoding!)
+            expected_text = step.metadata.get('display_expected', '')
+            self.steps_table.setItem(idx, 5, QTableWidgetItem(expected_text))
 
             result_item = QTableWidgetItem(StepStatus.PENDING.value)
-            self.steps_table.setItem(idx, 5, result_item)
+            self.steps_table.setItem(idx, 6, result_item)
 
-            self.steps_table.setItem(idx, 6, QTableWidgetItem(""))
+            self.steps_table.setItem(idx, 7, QTableWidgetItem(""))
 
             self.step_status[step.step_label] = StepStatus.PENDING
 
-    def _format_expected(self, metadata: Dict[str, Any]) -> str:
-        """Format expected values from metadata."""
-        parts = []
-
-        if "expected_state" in metadata:
-            state = "ON" if metadata['expected_state'] else "OFF"
-            parts.append(f"State: {state}")
-
-        # Check for expected value (either "expected" or "expected_value")
-        expected_key = None
-        if "expected" in metadata and "expected_state" not in metadata:
-            expected_key = "expected"
-        elif "expected_value" in metadata and "expected_state" not in metadata:
-            expected_key = "expected_value"
-
-        if expected_key:
-            expected_val = metadata[expected_key]
-            # Format lists nicely
-            if isinstance(expected_val, list):
-                if len(expected_val) <= 4:
-                    parts.append(f"= {expected_val}")
-                else:
-                    parts.append(f"= [{len(expected_val)} items]")
-            else:
-                parts.append(f"= {expected_val}")
-
-        if "min_val" in metadata and "max_val" in metadata:
-            parts.append(f"[{metadata['min_val']}, {metadata['max_val']}]")
-        elif "min_val" in metadata:
-            parts.append(f">= {metadata['min_val']}")
-        elif "max_val" in metadata:
-            parts.append(f"<= {metadata['max_val']}")
-
-        # Extract expected values from command strings
-        if "command" in metadata and not parts:
-            command = str(metadata['command'])
-            # For CONFIG_NETWORK commands, extract the network parameters
-            if "CONFIG_NETWORK" in command:
-                # Format: CONFIG_NETWORK IP$SUBNET$GATEWAY$DNS
-                params = command.replace("CONFIG_NETWORK ", "").split("$")
-                if len(params) >= 1:
-                    parts.append(f"IP: {params[0]}")
-            # For SET_CH commands, extract channel and state
-            elif "SET_CH" in command:
-                parts_cmd = command.split()
-                if len(parts_cmd) >= 3:
-                    parts.append(f"CH{parts_cmd[1]}: {parts_cmd[2]}")
-
-        # Show expected_value if present (for validate_tokens and similar)
-        if "expected_value" in metadata:
-            parts.append(f"= {metadata['expected_value']}")
-
-        # Show tokens if present
-        if "tokens" in metadata:
-            tokens = metadata['tokens']
-            if isinstance(tokens, list) and len(tokens) <= 3:
-                tokens_str = ", ".join(str(t) for t in tokens)
-                parts.append(f"Tokens: {tokens_str}")
-
-        return ", ".join(parts) if parts else "-"
-
     def update_step_status(self, step_id: str, status: StepStatus):
-        """Update a step's status and color."""
-        if not self.model or step_id not in self.step_status:
+        """Update a step's status and color (throttled for performance)."""
+        if self.is_cleaning_up or not self.model or step_id not in self.step_status:
             return
 
         self.step_status[step_id] = status
@@ -311,7 +305,18 @@ class TestTabWidget(QWidget):
             # Check if this step completion should trigger parent completion
             self._check_parent_completion(step_id, status)
 
-        self._update_table_display()
+        # Throttle table updates for performance
+        self.needs_table_update = True
+        if not self.table_update_timer.isActive():
+            self.table_update_timer.start()
+
+    def _process_table_update(self):
+        """Process pending table updates (throttled)."""
+        if self.needs_table_update:
+            self._update_table_display()
+            self.needs_table_update = False
+        else:
+            self.table_update_timer.stop()
 
     def _check_parent_completion(self, completed_step_id: str, completed_status: StepStatus):
         """Check if completing a substep should mark its parent as complete."""
@@ -370,6 +375,9 @@ class TestTabWidget(QWidget):
         if not self.model:
             return
 
+        # Block signals during bulk update for performance
+        self.steps_table.blockSignals(True)
+
         all_steps = (
             self.model.pre_steps +
             self.model.main_steps +
@@ -381,7 +389,7 @@ class TestTabWidget(QWidget):
 
         for idx, step in enumerate(all_steps):
             status = self.step_status.get(step.step_label, StepStatus.PENDING)
-            result_item = self.steps_table.item(idx, 5)
+            result_item = self.steps_table.item(idx, 6)  # Result column is now at index 6
             if result_item:
                 result_item.setText(status.value)
 
@@ -413,6 +421,9 @@ class TestTabWidget(QWidget):
                 QTableWidget.ScrollHint.PositionAtCenter
             )
 
+        # Unblock signals after bulk update
+        self.steps_table.blockSignals(False)
+
     def _update_durations(self):
         """Update duration display for running and completed steps."""
         if not self.model:
@@ -428,7 +439,7 @@ class TestTabWidget(QWidget):
         has_running = False
         for idx, step in enumerate(all_steps):
             status = self.step_status.get(step.step_label, StepStatus.PENDING)
-            duration_item = self.steps_table.item(idx, 6)
+            duration_item = self.steps_table.item(idx, 7)  # Duration column is now at index 7
 
             if duration_item:
                 if status == StepStatus.RUNNING and step.step_label in self.step_start_times:
@@ -463,11 +474,45 @@ class TestTabWidget(QWidget):
             QMessageBox.warning(self, "Report Not Found", "The HTML report file was not found.")
 
     def append_log(self, line: str):
-        """Append a log line."""
-        self.log_output.append(line)
+        """Append a log line with performance optimization (batched)."""
+        if self.is_cleaning_up:
+            return  # Ignore logs during cleanup
+
+        # Batch logs to reduce GUI overhead
+        self.pending_logs.append(line)
+
+        # Start timer if not already running
+        if not self.log_batch_timer.isActive():
+            self.log_batch_timer.start()
+
+    def _flush_pending_logs(self):
+        """Flush batched log lines to display."""
+        if not self.pending_logs:
+            self.log_batch_timer.stop()
+            return
+
+        MAX_LOG_LINES = 1000
+
+        # Process all pending logs at once
+        text_to_add = '\n'.join(self.pending_logs) + '\n'
+        self.pending_logs.clear()
+
         cursor = self.log_output.textCursor()
-        cursor.movePosition(QTextCursor.MoveOperation.End)
-        self.log_output.setTextCursor(cursor)
+        cursor.movePosition(QTextCursor.End)
+        cursor.insertText(text_to_add)
+
+        # Trim old lines if exceeding maximum
+        doc = self.log_output.document()
+        if doc.blockCount() > MAX_LOG_LINES:
+            cursor.movePosition(QTextCursor.Start)
+            cursor.movePosition(QTextCursor.Down, QTextCursor.KeepAnchor, doc.blockCount() - MAX_LOG_LINES)
+            cursor.removeSelectedText()
+
+        # Auto-scroll only if log is visible
+        if self.log_group.isVisible():
+            self.log_output.verticalScrollBar().setValue(
+                self.log_output.verticalScrollBar().maximum()
+            )
 
     def set_test_status(self, passed: bool, error_msg: str = ""):
         """Set the overall test status."""
@@ -515,7 +560,7 @@ class TestTabWidget(QWidget):
                 self.model.teardown_steps
             )
             for idx in range(len(all_steps)):
-                duration_item = self.steps_table.item(idx, 6)
+                duration_item = self.steps_table.item(idx, 7)  # Duration column is now at index 7
                 if duration_item:
                     duration_item.setText("-")
 
@@ -531,7 +576,9 @@ class MainWindow(QMainWindow):
         self.test_root: Optional[Path] = default_test_root
         self.hardware_config_path: Optional[Path] = None
         self.tests: List[TestMetadata] = []
+        self.suites: List[TestSuite] = []
         self.test_tabs: Dict[str, TestTabWidget] = {}
+        self.suite_tabs: Dict[str, SuiteRunnerWidget] = {}
         self.running_test: bool = False
 
         # Event bridge for thread safety
@@ -593,11 +640,27 @@ class MainWindow(QMainWindow):
 
         toolbar.addSeparator()
 
+        # Suite actions
+        new_suite_action = QAction("New Suite", self)
+        new_suite_action.triggered.connect(self._create_new_suite)
+        toolbar.addAction(new_suite_action)
+
+        edit_suite_action = QAction("Edit Suite", self)
+        edit_suite_action.triggered.connect(self._edit_selected_suite)
+        toolbar.addAction(edit_suite_action)
+
+        toolbar.addSeparator()
+
         # Run test action with play icon
         self.run_action = QAction("▶ Run Selected Test", self)
         self.run_action.triggered.connect(self._run_selected_test)
         self.run_action.setEnabled(False)
         toolbar.addAction(self.run_action)
+
+        self.run_suite_action = QAction("▶▶ Run Selected Suite", self)
+        self.run_suite_action.triggered.connect(self._run_selected_suite)
+        self.run_suite_action.setEnabled(False)
+        toolbar.addAction(self.run_suite_action)
 
     def _create_test_list_tab(self):
         """Create the test list tab."""
@@ -613,14 +676,41 @@ class MainWindow(QMainWindow):
         self.test_info_label.setStyleSheet("color: gray; font-size: 10px; padding: 5px;")
         layout.addWidget(self.test_info_label)
 
-        self.test_tree = QTreeWidget()
-        self.test_tree.setHeaderLabel("Test")
-        self.test_tree.itemDoubleClicked.connect(self._on_test_double_clicked)
-        layout.addWidget(self.test_tree)
+        # Create tab widget for suites and tests
+        self.list_tabs = QTabWidget()
+        layout.addWidget(self.list_tabs)
 
-        help_label = QLabel("Double-click a test to open it in a new tab")
-        help_label.setStyleSheet("color: gray; font-style: italic; padding: 5px;")
-        layout.addWidget(help_label)
+        # Suites tab
+        suites_widget = QWidget()
+        suites_layout = QVBoxLayout(suites_widget)
+        suites_layout.setContentsMargins(0, 0, 0, 0)
+
+        self.suites_tree = QTreeWidget()
+        self.suites_tree.setHeaderLabel("Test Suites")
+        self.suites_tree.itemDoubleClicked.connect(self._on_test_double_clicked)
+        suites_layout.addWidget(self.suites_tree)
+
+        suite_help = QLabel("Double-click a suite to open it")
+        suite_help.setStyleSheet("color: gray; font-style: italic; padding: 5px;")
+        suites_layout.addWidget(suite_help)
+
+        self.list_tabs.addTab(suites_widget, "Test Suites")
+
+        # Individual tests tab
+        tests_widget = QWidget()
+        tests_layout = QVBoxLayout(tests_widget)
+        tests_layout.setContentsMargins(0, 0, 0, 0)
+
+        self.test_tree = QTreeWidget()
+        self.test_tree.setHeaderLabel("Individual Tests")
+        self.test_tree.itemDoubleClicked.connect(self._on_test_double_clicked)
+        tests_layout.addWidget(self.test_tree)
+
+        test_help = QLabel("Double-click a test to open it")
+        test_help.setStyleSheet("color: gray; font-style: italic; padding: 5px;")
+        tests_layout.addWidget(test_help)
+
+        self.list_tabs.addTab(tests_widget, "Individual Tests")
 
         self.tab_widget.addTab(list_widget, "Test List")
 
@@ -667,21 +757,38 @@ class MainWindow(QMainWindow):
             self.statusBar().showMessage("No test root selected")
             return
 
-        self.statusBar().showMessage("Discovering tests...")
+        self.statusBar().showMessage("Discovering tests and suites...")
 
         try:
             self.tests = discover_tests(self.test_root)
+
+            # Discover suites from test_suites directory
+            suites_dir = self.test_root.parent / "test_suites"
+            self.suites = discover_suites(suites_dir)
+
             self._populate_test_tree()
-            self.test_info_label.setText(f"Found {len(self.tests)} test(s) in {self.test_root}")
-            self.statusBar().showMessage(f"Found {len(self.tests)} tests")
+            self.test_info_label.setText(
+                f"Found {len(self.tests)} test(s) and {len(self.suites)} suite(s) in {self.test_root}"
+            )
+            self.statusBar().showMessage(f"Found {len(self.tests)} tests and {len(self.suites)} suites")
         except Exception as e:
             self.statusBar().showMessage(f"Error discovering tests: {e}")
             QMessageBox.warning(self, "Discovery Error", f"Failed to discover tests:\n{e}")
 
     def _populate_test_tree(self):
-        """Populate the test tree with discovered tests."""
+        """Populate the test tree with discovered tests and suites."""
+        # Clear both trees
+        self.suites_tree.clear()
         self.test_tree.clear()
 
+        # Populate suites tree
+        for suite in self.suites:
+            item = QTreeWidgetItem([f"📋 {suite.name}"])
+            item.setData(0, Qt.UserRole, suite)
+            item.setToolTip(0, f"{suite.description}\n{len(suite.tests)} tests")
+            self.suites_tree.addTopLevelItem(item)
+
+        # Populate individual tests tree
         for test in self.tests:
             item = QTreeWidgetItem([test.id])
             item.setData(0, Qt.UserRole, test)
@@ -689,11 +796,19 @@ class MainWindow(QMainWindow):
             self.test_tree.addTopLevelItem(item)
 
     def _on_test_double_clicked(self, item: QTreeWidgetItem, column: int):
-        """Handle double-click on test to open in new tab."""
-        test = item.data(0, Qt.UserRole)
-        if not test:
+        """Handle double-click on test/suite to open in new tab."""
+        data = item.data(0, Qt.UserRole)
+        if not data:
             return
 
+        # Check if it's a suite
+        if isinstance(data, TestSuite):
+            self._open_suite_tab(data)
+        elif isinstance(data, TestMetadata):
+            self._open_test_tab(data)
+
+    def _open_test_tab(self, test: TestMetadata):
+        """Open a test in a new tab."""
         # Check if already open
         if test.id in self.test_tabs:
             existing_tab = self.test_tabs[test.id]
@@ -713,8 +828,28 @@ class MainWindow(QMainWindow):
         self.run_action.setEnabled(not self.running_test)
         self.statusBar().showMessage(f"Opened test: {test.id}")
 
+    def _open_suite_tab(self, suite: TestSuite):
+        """Open a suite in a new tab."""
+        # Check if already open
+        if suite.name in self.suite_tabs:
+            existing_tab = self.suite_tabs[suite.name]
+            index = self.tab_widget.indexOf(existing_tab)
+            self.tab_widget.setCurrentIndex(index)
+            return
+
+        # Create new suite tab
+        suite_tab = SuiteRunnerWidget(suite, self.test_root, self.hardware_config_path, self)
+
+        self.suite_tabs[suite.name] = suite_tab
+        tab_index = self.tab_widget.addTab(suite_tab, f"📋 {suite.name}")
+        self.tab_widget.setCurrentIndex(tab_index)
+
+        # Enable run suite button
+        self.run_suite_action.setEnabled(not self.running_test)
+        self.statusBar().showMessage(f"Opened suite: {suite.name}")
+
     def _close_test_tab(self, index: int):
-        """Close a test tab."""
+        """Close a test or suite tab."""
         if index == 0:  # Don't close the test list tab
             return
 
@@ -723,12 +858,18 @@ class MainWindow(QMainWindow):
             test_id = widget.test.id
             if test_id in self.test_tabs:
                 del self.test_tabs[test_id]
+        elif isinstance(widget, SuiteRunnerWidget):
+            suite_name = widget.suite.name
+            if suite_name in self.suite_tabs:
+                del self.suite_tabs[suite_name]
 
         self.tab_widget.removeTab(index)
 
-        # Disable run button if no test tabs open
+        # Disable run buttons if no tabs open
         if len(self.test_tabs) == 0:
             self.run_action.setEnabled(False)
+        if len(self.suite_tabs) == 0:
+            self.run_suite_action.setEnabled(False)
 
     def _run_selected_test(self):
         """Run the currently selected test tab."""
@@ -810,3 +951,53 @@ class MainWindow(QMainWindow):
 
             result_text = "PASS" if passed else "FAIL"
             self.statusBar().showMessage(f"Test finished: {result_text}")
+
+    def _run_selected_suite(self):
+        """Run the currently selected suite tab."""
+        current_widget = self.tab_widget.currentWidget()
+
+        if not isinstance(current_widget, SuiteRunnerWidget):
+            QMessageBox.information(self, "No Suite Selected", "Please select a suite tab to run.")
+            return
+
+        if self.running_test:
+            return
+
+        self.running_test = True
+        self.run_suite_action.setEnabled(False)
+        self.run_action.setEnabled(False)
+
+        current_widget.start_suite()
+        self.statusBar().showMessage(f"Running suite: {current_widget.suite.name}")
+
+    def _create_new_suite(self):
+        """Create a new test suite."""
+        if not self.test_root or not self.tests:
+            QMessageBox.warning(self, "No Tests", "Please select a test root and discover tests first.")
+            return
+
+        suites_dir = self.test_root.parent / "test_suites"
+        suites_dir.mkdir(parents=True, exist_ok=True)
+
+        dialog = SuiteEditorDialog(self.tests, default_save_dir=suites_dir, parent=self)
+        if dialog.exec():
+            self._refresh_tests()
+
+    def _edit_selected_suite(self):
+        """Edit the selected suite."""
+        # Get selected item from suites tree
+        current_item = self.suites_tree.currentItem()
+        if not current_item:
+            QMessageBox.information(self, "No Selection", "Please select a suite from the Test Suites tab to edit.")
+            return
+
+        data = current_item.data(0, Qt.UserRole)
+        if not isinstance(data, TestSuite):
+            QMessageBox.information(self, "Invalid Selection", "Please select a suite to edit.")
+            return
+
+        suites_dir = self.test_root.parent / "test_suites" if self.test_root else Path.cwd()
+
+        dialog = SuiteEditorDialog(self.tests, suite=data, default_save_dir=suites_dir, parent=self)
+        if dialog.exec():
+            self._refresh_tests()

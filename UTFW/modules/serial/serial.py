@@ -405,7 +405,7 @@ def wait_for_reboot_and_ready(port: str, ready_token: str = "SYSTEM READY",
             return any(info.device == p for info in list_ports.comports())
         except Exception as e:
             if logger:
-                logger.warn(f"[SERIAL] Failed to enumerate ports while checking '{p}': "
+                logger.warning(f"[SERIAL] Failed to enumerate ports while checking '{p}': "
                                f"{type(e).__name__}: {e}")
             # Be conservative; if we cannot check properly, assume it still exists
             return True
@@ -422,7 +422,7 @@ def wait_for_reboot_and_ready(port: str, ready_token: str = "SYSTEM READY",
             time.sleep(0.1)
         if _port_exists(port):
             if logger:
-                logger.warn(f"  ⚠ Port {port} did not disappear")
+                logger.warning(f"  ⚠ Port {port} did not disappear")
         else:
             if logger:
                 logger.info(f"  ✓ Port {port} disappeared (reboot in progress)")
@@ -995,7 +995,18 @@ def get_all_channels(
             ).execute_func()
         return states
 
-    return TestAction(name, execute, negative_test=negative_test)
+    if expected is not None:
+        if isinstance(expected, bool):
+            exp_desc = f"All {'ON' if expected else 'OFF'}"
+        elif isinstance(expected, list):
+            exp_desc = f"[{', '.join('ON' if e else 'OFF' for e in expected)}]"
+        else:
+            exp_desc = f"Specific channels: {expected}"
+        metadata = {'sent': f"GET_CH ALL (expect {exp_desc})"}
+    else:
+        metadata = {'sent': "GET_CH ALL"}
+
+    return TestAction(name, execute, metadata=metadata, negative_test=negative_test)
 
 
 def send_command_uart(
@@ -1008,7 +1019,7 @@ def send_command_uart(
         negative_test: bool = False
         ):
     """Create TestAction(s) for sending command(s) via UART with response caching.
-    
+
     This function creates TestAction instances for sending commands via UART.
     It supports both single commands and multiple commands, with automatic
     response caching for use by subsequent validation actions.
@@ -1020,7 +1031,7 @@ def send_command_uart(
     When ``reboot`` is True, the function will always wait for the reboot
     sequence (port disappear + reappear + ready banner), even if the REBOOT
     command itself returns a normal response.
-    
+
     Args:
         name (str): Base name for the test action(s). For multiple commands,
             each action gets a numbered suffix with the command text.
@@ -1033,7 +1044,7 @@ def send_command_uart(
             the command. The action will handle waiting for the reboot.
         negative_test (bool, optional): If True, mark the action as negative
             test in the framework.
-    
+
     Returns:
         Union[TestAction, List[TestAction]]: Single TestAction if command
             is a string, or list of TestActions if command is a list.
@@ -1064,13 +1075,15 @@ def send_command_uart(
         return execute
 
     if isinstance(command, str):
-        return TestAction(name, make_execute(command), negative_test=negative_test)
+        metadata = {'sent': command}
+        return TestAction(name, make_execute(command), metadata=metadata, negative_test=negative_test)
     elif isinstance(command, (list, tuple)):
         actions = []
         for idx, cmd in enumerate(command, start=1):
+            metadata = {'sent': cmd}
             actions.append(
                 TestAction(f"{name} [{idx}] {cmd}", make_execute(cmd),
-                           negative_test=negative_test)
+                           metadata=metadata, negative_test=negative_test)
             )
         return actions
     else:
@@ -1199,7 +1212,14 @@ def validate_tokens(
         if missing:
             raise SerialTestError(f"Missing required tokens: {', '.join(missing)}")
         return True
-    return TestAction(name, execute, negative_test=negative_test)
+    # Populate metadata for GUI display
+    from ...core.display_helpers import format_tokens_expected
+    metadata = {
+        'sent': f"Validate {len(tokens)} tokens in cached response",
+        'display_expected': format_tokens_expected(tokens)
+    }
+
+    return TestAction(name, execute, metadata=metadata, negative_test=negative_test)
 
 
 def set_network_parameter(
@@ -1333,11 +1353,11 @@ def verify_network_change(
         negative_test: bool = False
         ) -> TestAction:
     """Create a TestAction that verifies network parameter changes.
-    
+
     This TestAction factory creates an action that sends a NETINFO command
     and verifies that the expected value appears in the response, confirming
     that a network parameter change was successful.
-    
+
     Args:
         name (str): Human-readable name for the test action.
         port (str): Serial port identifier to use.
@@ -1345,15 +1365,15 @@ def verify_network_change(
         expected_value (str): Expected value that should appear in the NETINFO response.
         baudrate (int, optional): Serial communication baud rate.
             Defaults to 115200.
-            
+
     Returns:
         TestAction: TestAction that returns the NETINFO response if
             verification succeeds.
-            
+
     Raises:
         SerialTestError: When executed, raises this exception if the expected
             value is not found in the NETINFO response.
-    
+
     Example:
         >>> verify_action = verify_network_change(
         ...     "Verify IP change", "COM3", "IP", "192.168.1.100"
@@ -1364,7 +1384,8 @@ def verify_network_change(
         if expected_value not in response:
             raise SerialTestError(f"{param} verification failed: {expected_value} not found in NETINFO")
         return response
-    return TestAction(name, execute, negative_test=negative_test)
+    metadata = {'sent': f"NETINFO (checking {param}={expected_value})"}
+    return TestAction(name, execute, metadata=metadata, negative_test=negative_test)
 
 
 def factory_reset_complete(
@@ -1568,7 +1589,14 @@ negative_test: bool = False) -> TestAction:
         if "EE_DUMP_START" not in response or "EE_DUMP_END" not in response:
             raise SerialTestError("EEPROM dump missing expected markers")
         return True
-    return TestAction(name, execute, negative_test=negative_test)
+
+    # Populate metadata for GUI display
+    metadata = {
+        'sent': 'UART: DUMP_EEPROM',
+        'display_expected': 'Markers: EE_DUMP_START, EE_DUMP_END'
+    }
+
+    return TestAction(name, execute, metadata=metadata, negative_test=negative_test)
 
 
 def analyze_eeprom_dump(name: str, port: str, baudrate: int, checks: str, reports_dir: Optional[str] = None,
@@ -1971,7 +1999,9 @@ negative_test: bool = False) -> TestAction:
             "findings": findings,
         }
 
-    return TestAction(name, execute, negative_test=negative_test)
+    checks_file = Path(checks).name
+    metadata = {'sent': f"DUMP_EEPROM + validate ({checks_file})"}
+    return TestAction(name, execute, metadata=metadata, negative_test=negative_test)
 
 
 def load_eeprom_checks_from_json(json_path: str) -> list:

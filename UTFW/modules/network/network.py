@@ -606,4 +606,7 @@ negative_test: bool = False) -> TestAction:
             raise NetworkTestError(f"Ping to {ip} failed")
         return True
 
-    return TestAction(name, execute, negative_test=negative_test)
+    # Populate metadata for GUI display
+    metadata = {'sent': f"ping {ip} (count={count})", 'display_expected': 'Reachable'}
+
+    return TestAction(name, execute, metadata=metadata, negative_test=negative_test)

@@ -677,8 +677,9 @@ def read_failure_log(
             "error_codes": error_codes,
             "decoded": decoded,
         }
-    
-    return TestAction(name, execute, negative_test=negative_test)
+
+    metadata = {'sent': f"read_{log_type.lower()} (read {log_type.upper()} log)"}
+    return TestAction(name, execute, metadata=metadata, negative_test=negative_test)
 
 
 def clear_failure_log(
@@ -728,10 +729,11 @@ def clear_failure_log(
         
         if logger:
             logger.info(f"[FAILMEM TEST] Clear {log_type_upper} log complete")
-        
+
         return response
-    
-    return TestAction(name, execute, negative_test=negative_test)
+
+    metadata = {'sent': f"CLEAR_{log_type.upper()}"}
+    return TestAction(name, execute, metadata=metadata, negative_test=negative_test)
 
 
 def verify_error_present(
@@ -820,10 +822,13 @@ def verify_error_present(
                 f"Found {len(error_codes)} entries: {actual_codes_str if actual_codes_str else 'none'}"
             )
             raise FailureMemoryError(error_msg)
-        
+
         return True
-    
-    return TestAction(name, execute, negative_test=negative_test)
+
+    codes_list = [expected_codes] if isinstance(expected_codes, int) else expected_codes
+    codes_str = ', '.join([f"0x{c:04X}" for c in codes_list])
+    metadata = {'sent': f"read_{log_type.lower()} (verify codes: {codes_str})"}
+    return TestAction(name, execute, metadata=metadata, negative_test=negative_test)
 
 
 def verify_log_empty(
@@ -892,5 +897,6 @@ def verify_log_empty(
             if logger:
                 logger.error(f"[FAILMEM TEST] ✗ {error_msg}")
             raise FailureMemoryError(error_msg)
-    
-    return TestAction(name, execute, negative_test=negative_test)
+
+    metadata = {'sent': f"read_{log_type.lower()} (verify empty)"}
+    return TestAction(name, execute, metadata=metadata, negative_test=negative_test)

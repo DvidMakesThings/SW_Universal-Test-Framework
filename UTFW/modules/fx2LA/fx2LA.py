@@ -237,7 +237,9 @@ def capture_uart_and_check(
 
         return {"ascii": ascii_joined, "hex": hex_joined}
 
-    return TestAction(name, execute, negative_test=negative_test)
+    exp_desc = f" (expect: {expected})" if expected else ""
+    metadata = {'sent': f"FX2 UART capture {duration_s}s @ {baud} baud{exp_desc}"}
+    return TestAction(name, execute, metadata=metadata, negative_test=negative_test)
 
 
 # ======================== I2C ========================
@@ -295,7 +297,9 @@ def capture_i2c_and_check(
 
         return {"hex": hex_joined}
 
-    return TestAction(name, execute, negative_test=negative_test)
+    exp_desc = f" (expect: {expected})" if expected else ""
+    metadata = {'sent': f"FX2 I2C capture {duration_s}s{exp_desc}"}
+    return TestAction(name, execute, metadata=metadata, negative_test=negative_test)
 
 
 # ======================== SPI ========================
@@ -354,7 +358,9 @@ def capture_spi_and_check(
 
         return {"hex": hex_joined}
 
-    return TestAction(name, execute, negative_test=negative_test)
+    exp_desc = f" (expect: {expected})" if expected else ""
+    metadata = {'sent': f"FX2 SPI capture {duration_s}s ({lane}){exp_desc}"}
+    return TestAction(name, execute, metadata=metadata, negative_test=negative_test)
 
 
 # ======================== PulseView ========================
@@ -382,7 +388,9 @@ negative_test: bool = False) -> TestAction:
 
         return True
 
-    return TestAction(name, execute, negative_test=negative_test)
+    proj_desc = f" (project: {project_file})" if project_file else ""
+    metadata = {'sent': f"Launch PulseView{proj_desc}"}
+    return TestAction(name, execute, metadata=metadata, negative_test=negative_test)
 
 
 def convert_sr_to_vcd(name: str, sr_file: str, vcd_file: Optional[str] = None,
@@ -408,4 +416,5 @@ negative_test: bool = False) -> TestAction:
 
         return vcd_path
 
-    return TestAction(name, execute, negative_test=negative_test)
+    metadata = {'sent': f"Convert {sr_file} → VCD"}
+    return TestAction(name, execute, metadata=metadata, negative_test=negative_test)

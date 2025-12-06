@@ -548,7 +548,10 @@ def ping_action(
                 raise EthernetTestError(f"Ping to {ip} failed")
         return True
 
-    return TestAction(name, execute, negative_test=negative_test)
+    # Populate metadata for GUI display
+    metadata = {'display_command': '', 'display_expected': ''}
+
+    return TestAction(name, execute, metadata=metadata, negative_test=negative_test)
 
 
 def http_get_action(
@@ -824,7 +827,10 @@ def expect_header_prefix_action(
             )
         return True
 
-    return TestAction(name, execute, negative_test=negative_test)
+    # Populate metadata for GUI display
+    metadata = {'display_command': '', 'display_expected': ''}
+
+    return TestAction(name, execute, metadata=metadata, negative_test=negative_test)
 
 
 def etag_roundtrip_action(
@@ -901,7 +907,10 @@ def etag_roundtrip_action(
                 )
         return True
 
-    return TestAction(name, execute, negative_test=negative_test)
+    # Populate metadata for GUI display
+    metadata = {'display_command': '', 'display_expected': ''}
+
+    return TestAction(name, execute, metadata=metadata, negative_test=negative_test)
 
 
 def crawl_links_action(
@@ -964,7 +973,10 @@ def crawl_links_action(
             )
         return True
 
-    return TestAction(name, execute, negative_test=negative_test)
+    # Populate metadata for GUI display
+    metadata = {'display_command': '', 'display_expected': ''}
+
+    return TestAction(name, execute, metadata=metadata, negative_test=negative_test)
 
 
 def expect_status_action(
@@ -1024,7 +1036,10 @@ def expect_status_action(
             )
         return True
 
-    return TestAction(name, execute, negative_test=negative_test)
+    # Populate metadata for GUI display
+    metadata = {'display_command': '', 'display_expected': ''}
+
+    return TestAction(name, execute, metadata=metadata, negative_test=negative_test)
 
 
 def wait_http_ready_action(

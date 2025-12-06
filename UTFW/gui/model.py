@@ -1,34 +1,30 @@
 """
-UTFW GUI Model Layer
-====================
-Non-GUI logic for test discovery, metadata extraction, and execution.
-
-This module provides all the core functionality needed by the GUI without
-any GUI dependencies. It can be tested independently.
+UTFW GUI Model
+==============
+Data structures and functions for building test step models.
 """
 
-import sys
-import importlib.util
-import inspect
-import threading
 from pathlib import Path
 from typing import List, Dict, Any, Optional, Callable
-from dataclasses import dataclass, field
+from dataclasses import dataclass
+import sys
+import threading
+import importlib.util
 
 
 @dataclass
 class TestMetadata:
-    """Metadata about a discovered test module."""
+    """Metadata about a discovered test."""
     id: str
+    class_name: str
     description: str
     module_path: Path
-    class_name: str
     relative_path: str
 
 
 @dataclass
 class StepInfo:
-    """Information about a single test step or sub-step."""
+    """Information about a test step."""
     phase: str
     step_label: str
     name: str
@@ -39,297 +35,132 @@ class StepInfo:
 
 @dataclass
 class TestStepModel:
-    """Complete model of all steps in a test."""
-    test_id: str
-    pre_steps: List[StepInfo] = field(default_factory=list)
-    main_steps: List[StepInfo] = field(default_factory=list)
-    post_steps: List[StepInfo] = field(default_factory=list)
-    teardown_steps: List[StepInfo] = field(default_factory=list)
+    """Model containing all test steps."""
+    pre_steps: List[StepInfo]
+    main_steps: List[StepInfo]
+    post_steps: List[StepInfo]
+    teardown_steps: List[StepInfo]
 
 
-def discover_tests(test_root: Path) -> List[TestMetadata]:
-    """Discover all UTFW test modules under the given root directory.
-
-    Searches for test modules using patterns:
-    - Directories named tc_* containing a tc_*.py file
-    - Standalone tc_*.py files
+def discover_tests(root_dir: Path) -> List[TestMetadata]:
+    """Discover all test cases in the given root directory.
 
     Args:
-        test_root: Root directory to search for tests
+        root_dir: Root directory to search for tests
 
     Returns:
         List of discovered test metadata
     """
     tests = []
 
-    if not test_root.exists() or not test_root.is_dir():
-        return tests
-
-    # Pattern 1: tc_*/tc_*.py directories
-    for test_dir in test_root.glob("tc_*"):
+    # Look for tc_* directories
+    for test_dir in root_dir.iterdir():
         if not test_dir.is_dir():
             continue
+        if not test_dir.name.startswith('tc_'):
+            continue
 
-        # Look for matching .py file
+        # Look for test file with same name
         test_file = test_dir / f"{test_dir.name}.py"
-        if test_file.exists():
-            try:
-                metadata = _load_test_metadata(test_file, test_root)
-                if metadata:
-                    tests.append(metadata)
-            except Exception:
-                # Skip tests that fail to load
-                pass
+        if not test_file.exists():
+            continue
 
-    # Pattern 2: Standalone tc_*.py files
-    for test_file in test_root.glob("tc_*.py"):
-        if test_file.is_file():
-            try:
-                metadata = _load_test_metadata(test_file, test_root)
-                if metadata:
-                    tests.append(metadata)
-            except Exception:
-                # Skip tests that fail to load
-                pass
-
-    return tests
-
-
-def _load_test_metadata(test_file: Path, test_root: Path) -> Optional[TestMetadata]:
-    """Load metadata for a single test module.
-
-    Args:
-        test_file: Path to the test .py file
-        test_root: Root directory for relative path calculation
-
-    Returns:
-        TestMetadata if valid test found, None otherwise
-    """
-    # Load module
-    spec = importlib.util.spec_from_file_location(test_file.stem, test_file)
-    if not spec or not spec.loader:
-        return None
-
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-
-    # Find test class
-    test_class = _find_test_class(module, test_file.stem)
-    if not test_class:
-        return None
-
-    # Extract metadata
-    test_id = test_file.stem
-    description = getattr(test_class, "__doc__", test_id) or test_id
-    if description:
-        description = description.strip().split("\n")[0]
-
-    relative_path = str(test_file.relative_to(test_root))
-
-    return TestMetadata(
-        id=test_id,
-        description=description,
-        module_path=test_file,
-        class_name=test_class.__name__,
-        relative_path=relative_path
-    )
-
-
-def _find_test_class(module, module_name: str):
-    """Find the test class in a module.
-
-    Prefers a class whose name matches the module name, or any class
-    with a setup() method.
-
-    Args:
-        module: Loaded module object
-        module_name: Name of the module (for matching)
-
-    Returns:
-        Test class if found, None otherwise
-    """
-    # First try: exact name match
-    if hasattr(module, module_name):
-        candidate = getattr(module, module_name)
-        if inspect.isclass(candidate) and hasattr(candidate, "setup"):
-            return candidate
-
-    # Second try: any class with setup method
-    for name, obj in inspect.getmembers(module, inspect.isclass):
-        if hasattr(obj, "setup") and callable(obj.setup):
-            return obj
-
-    return None
-
-
-def _setup_mock_context(hwconfig_path: Optional[Path] = None):
-    """Set up mock context for step parsing in GUI.
-
-    Args:
-        hwconfig_path: Optional path to hardware_config.py file.
-                      If not provided, tries to auto-discover.
-    """
-    from types import ModuleType
-
-    # Determine which hardware_config to load
-    real_hw_path = None
-
-    if hwconfig_path:
-        # Use user-provided path
-        real_hw_path = Path(hwconfig_path)
-    else:
-        # Try to auto-discover
-        real_hw_path = Path(__file__).resolve().parent.parent.parent / "tests" / "hardware_config.py"
-
-    mock_hw = ModuleType("hardware_config")
-
-    # Try to import real values
-    if real_hw_path and real_hw_path.exists():
+        # Try to extract test class name and description
         try:
-            import importlib.util
-            spec = importlib.util.spec_from_file_location("_temp_hw_config", real_hw_path)
-            if spec and spec.loader:
-                real_hw = importlib.util.module_from_spec(spec)
-                spec.loader.exec_module(real_hw)
-                # Copy all attributes from real config to mock
-                for attr in dir(real_hw):
-                    if not attr.startswith('_'):
-                        setattr(mock_hw, attr, getattr(real_hw, attr))
-        except Exception as e:
-            print(f"Warning: Could not load real hardware_config from {real_hw_path}: {e}")
+            with open(test_file, 'r') as f:
+                content = f.read()
 
-    # Ensure essential attributes exist (fallback values if not loaded)
-    if not hasattr(mock_hw, 'SERIAL_PORT'):
-        mock_hw.SERIAL_PORT = "COM1"
-    if not hasattr(mock_hw, 'BAUDRATE'):
-        mock_hw.BAUDRATE = 115200
-    if not hasattr(mock_hw, 'BASELINE_IP'):
-        mock_hw.BASELINE_IP = "192.168.1.100"
-    if not hasattr(mock_hw, 'SNMP_COMMUNITY'):
-        mock_hw.SNMP_COMMUNITY = "public"
+            # Look for class definition
+            import re
+            class_match = re.search(r'class\s+(\w+)[\s\(:]', content)
+            if not class_match:
+                continue
 
-    # Save original if it exists
-    original_hw = sys.modules.get("hardware_config")
+            class_name = class_match.group(1)
 
-    # Inject mock into sys.modules
-    sys.modules["hardware_config"] = mock_hw
+            # Try to extract description from docstring
+            desc_match = re.search(r'class\s+\w+.*?"""(.+?)"""', content, re.DOTALL)
+            description = desc_match.group(1).strip().split('\n')[0] if desc_match else test_dir.name
 
-    # Mock get_hwconfig to return the mock hardware config
-    from UTFW.core import utilities
-    _original_get_hwconfig = utilities.get_hwconfig
-    _original_load_hardware_config = utilities.load_hardware_config
+            tests.append(TestMetadata(
+                id=test_dir.name,
+                class_name=class_name,
+                description=description,
+                module_path=test_file,
+                relative_path=str(test_file.relative_to(root_dir))
+            ))
+        except Exception:
+            continue
 
-    utilities.get_hwconfig = lambda argv=None: mock_hw
-    utilities.load_hardware_config = lambda hwcfg=None: mock_hw
-
-    # Mock the test context for get_reports_dir
-    _original_test_context = utilities._test_context.copy()
-    utilities._test_context['reports_dir'] = "/tmp/reports"
-
-    _original_get_reports_dir = utilities.get_reports_dir
-
-    return (original_hw, _original_get_hwconfig, _original_load_hardware_config, _original_get_reports_dir, _original_test_context)
+    return sorted(tests, key=lambda t: t.id)
 
 
-def _cleanup_mock_context(originals):
-    """Restore original functions after step parsing."""
-    if originals:
-        original_hw, _original_get_hwconfig, _original_load_hardware_config, _original_get_reports_dir, _original_test_context = originals
-
-        # Restore hardware_config module
-        if original_hw is not None:
-            sys.modules["hardware_config"] = original_hw
-        elif "hardware_config" in sys.modules:
-            del sys.modules["hardware_config"]
-
-        # Restore functions and context
-        from UTFW.core import utilities
-        utilities.get_hwconfig = _original_get_hwconfig
-        utilities.load_hardware_config = _original_load_hardware_config
-        utilities.get_reports_dir = _original_get_reports_dir
-        utilities._test_context.clear()
-        utilities._test_context.update(_original_test_context)
-
-
-def build_step_model(test_cls, hwconfig_path: Optional[Path] = None) -> TestStepModel:
-    """Build a complete model of all steps in a test without executing them.
-
-    This instantiates the test class and calls pre(), setup(), post(), and
-    teardown() to collect action lists, then analyzes each action to build
-    a step model.
+def build_step_model(test_class, hwconfig_path: Optional[Path] = None) -> TestStepModel:
+    """Build a step model from a test class.
 
     Args:
-        test_cls: Test class to analyze
-        hwconfig_path: Optional path to hardware_config.py file
+        test_class: Test class to analyze
+        hwconfig_path: Optional hardware config path
 
     Returns:
-        TestStepModel with all step information
+        TestStepModel with all steps
     """
-    # Set up mock context for step parsing
-    originals = _setup_mock_context(hwconfig_path)
+    import os
+
+    # Set hardware config env variable if provided
+    original_hwconfig = os.environ.get('UTFW_HWCONFIG_PATH')
+    if hwconfig_path:
+        os.environ['UTFW_HWCONFIG_PATH'] = str(hwconfig_path)
 
     try:
-        # Instantiate test class
-        test_instance = test_cls()
+        test_instance = test_class()
 
-        model = TestStepModel(test_id=test_cls.__name__)
+        pre_steps = []
+        main_steps = []
+        post_steps = []
+        teardown_steps = []
 
-        # Collect pre-steps
-        if hasattr(test_instance, "pre") and callable(test_instance.pre):
-            try:
-                pre_actions = test_instance.pre()
-                if pre_actions:
-                    model.pre_steps = _analyze_actions(pre_actions, "PRE-STEP")
-            except Exception as e:
-                print(f"Warning: Failed to parse pre-steps: {e}")
+        # Extract steps from each phase
+        if hasattr(test_instance, 'pre') and callable(test_instance.pre):
+            actions = test_instance.pre()
+            if actions:
+                pre_steps = _build_step_list(actions, "PRE-STEP")
 
-        # Collect main steps (check both 'setup' and 'test' methods)
-        main_method = None
-        if hasattr(test_instance, "setup") and callable(test_instance.setup):
-            main_method = test_instance.setup
-        elif hasattr(test_instance, "test") and callable(test_instance.test):
-            main_method = test_instance.test
+        if hasattr(test_instance, 'setup') and callable(test_instance.setup):
+            actions = test_instance.setup()
+            if actions:
+                main_steps = _build_step_list(actions, "STEP")
 
-        if main_method:
-            try:
-                main_actions = main_method()
-                if main_actions:
-                    model.main_steps = _analyze_actions(main_actions, "STEP")
-            except Exception as e:
-                print(f"Warning: Failed to parse main steps: {e}")
-                import traceback
-                traceback.print_exc()
+        if hasattr(test_instance, 'post') and callable(test_instance.post):
+            actions = test_instance.post()
+            if actions:
+                post_steps = _build_step_list(actions, "POST-STEP")
 
-        # Collect post-steps
-        if hasattr(test_instance, "post") and callable(test_instance.post):
-            try:
-                post_actions = test_instance.post()
-                if post_actions:
-                    model.post_steps = _analyze_actions(post_actions, "POST-STEP")
-            except Exception as e:
-                print(f"Warning: Failed to parse post-steps: {e}")
+        if hasattr(test_instance, 'teardown') and callable(test_instance.teardown):
+            actions = test_instance.teardown()
+            if actions:
+                teardown_steps = _build_step_list(actions, "TEARDOWN")
 
-        # Collect teardown steps
-        if hasattr(test_instance, "teardown") and callable(test_instance.teardown):
-            try:
-                teardown_actions = test_instance.teardown()
-                if teardown_actions:
-                    model.teardown_steps = _analyze_actions(teardown_actions, "TEARDOWN")
-            except Exception as e:
-                print(f"Warning: Failed to parse teardown steps: {e}")
-
-        return model
+        return TestStepModel(
+            pre_steps=pre_steps,
+            main_steps=main_steps,
+            post_steps=post_steps,
+            teardown_steps=teardown_steps
+        )
     finally:
-        # Clean up mock context
-        _cleanup_mock_context(originals)
+        # Restore original hwconfig
+        if original_hwconfig is not None:
+            os.environ['UTFW_HWCONFIG_PATH'] = original_hwconfig
+        elif 'UTFW_HWCONFIG_PATH' in os.environ:
+            del os.environ['UTFW_HWCONFIG_PATH']
 
 
-def _analyze_actions(actions: List, phase_prefix: str) -> List[StepInfo]:
-    """Analyze a list of actions and extract step information.
+def _build_step_list(actions: List, phase_prefix: str) -> List[StepInfo]:
+    """Build a list of StepInfo from actions.
 
     Args:
-        actions: List of TestAction, STE, PTE, or callables
-        phase_prefix: Prefix for step labels (e.g., "STEP", "PRE-STEP")
+        actions: List of TestAction objects
+        phase_prefix: Phase prefix (PRE-STEP, STEP, etc.)
 
     Returns:
         List of StepInfo objects
@@ -341,12 +172,11 @@ def _analyze_actions(actions: List, phase_prefix: str) -> List[StepInfo]:
     for idx, action in enumerate(actions, 1):
         step_label = f"{phase_prefix} {idx}"
 
-        # Handle STE (sub-step executor)
+        # Handle STE (Sub-step Test Executor)
         if isinstance(action, STE):
-            name = getattr(action, "name", f"Sub-step group {idx}")
-            metadata = {"type": "STE", "sub_count": len(action.actions)}
+            name = action.name if hasattr(action, 'name') else f"Multi-action step with {len(action.actions)} sub-steps"
+            metadata = getattr(action, 'metadata', {"type": "STE"})
 
-            # Add parent step
             steps.append(StepInfo(
                 phase=phase_prefix,
                 step_label=step_label,
@@ -358,6 +188,11 @@ def _analyze_actions(actions: List, phase_prefix: str) -> List[StepInfo]:
             # Add sub-steps
             for sub_idx, sub_action in enumerate(action.actions, 1):
                 sub_label = f"{step_label}.{sub_idx}"
+                # Unwrap startFirstWith wrapper if present
+                from UTFW.core.parallelstep import _startFirstWithWrapper
+                if isinstance(sub_action, _startFirstWithWrapper):
+                    sub_action = sub_action.action
+
                 sub_info = _extract_action_info(sub_action)
                 steps.append(StepInfo(
                     phase=phase_prefix,
@@ -368,12 +203,11 @@ def _analyze_actions(actions: List, phase_prefix: str) -> List[StepInfo]:
                     parent_label=step_label
                 ))
 
-        # Handle PTE (parallel test executor)
+        # Handle PTE (Parallel Test Executor)
         elif isinstance(action, PTE):
-            name = getattr(action, "name", f"Parallel step group {idx}")
-            metadata = {"type": "PTE", "sub_count": len(action.actions)}
+            name = action.name if hasattr(action, 'name') else f"Parallel step with {len(action.actions)} sub-steps"
+            metadata = getattr(action, 'metadata', {"type": "PTE"})
 
-            # Add parent step
             steps.append(StepInfo(
                 phase=phase_prefix,
                 step_label=step_label,
@@ -415,7 +249,7 @@ def _analyze_actions(actions: List, phase_prefix: str) -> List[StepInfo]:
 
 
 def _extract_action_info(action) -> Dict[str, Any]:
-    """Extract name, negative_test flag, and metadata from an action.
+    """Extract name, negative_test flag, and metadata from an action (UNIVERSAL).
 
     Args:
         action: TestAction, callable, or action-like object
@@ -433,14 +267,23 @@ def _extract_action_info(action) -> Dict[str, Any]:
     if isinstance(action, TestAction):
         name = action.name
         negative = getattr(action, "negative_test", False)
+        # UNIVERSAL: Prefer action.metadata if available (NEW WAY)
+        if hasattr(action, 'metadata') and action.metadata:
+            metadata = action.metadata.copy()
+        else:
+            # Fall back to closure introspection (OLD WAY)
+            metadata = extract_action_metadata(action)
     elif hasattr(action, "name"):
         name = action.name
         negative = getattr(action, "negative_test", False)
+        if hasattr(action, 'metadata') and getattr(action, 'metadata'):
+            metadata = getattr(action, 'metadata').copy()
+        else:
+            metadata = extract_action_metadata(action)
     elif callable(action):
         name = getattr(action, "__name__", "Unknown action")
+        metadata = extract_action_metadata(action)
 
-    # Extract metadata from closure
-    metadata = extract_action_metadata(action)
     metadata["negative_test"] = negative
 
     return {"name": name, "negative": negative, "metadata": metadata}
@@ -449,8 +292,8 @@ def _extract_action_info(action) -> Dict[str, Any]:
 def extract_action_metadata(action) -> Dict[str, Any]:
     """Extract metadata from a TestAction by inspecting its execute_func closure.
 
-    This attempts to extract captured variables like expected, min_val, max_val,
-    ip, oid, command, etc. from the closure.
+    This is the FALLBACK method for backwards compatibility.
+    New modules should populate action.metadata directly.
 
     Args:
         action: TestAction or action-like object
@@ -484,10 +327,11 @@ def extract_action_metadata(action) -> Dict[str, Any]:
                 # Whitelist of interesting variable names
                 interesting_vars = {
                     "expected", "expected_state", "expected_value", "min_val", "max_val",
-                    "ip", "oid", "community",
+                    "ip", "oid", "community", "root_oid",
                     "timeout", "cmd", "command", "port", "baudrate", "channel",
-                    "state", "value", "param", "tokens", "description", "pattern",
-                    "response", "name", "outlet_base_oid", "all_on_oid", "all_off_oid"
+                    "state", "value", "param", "tokens", "description", "pattern", "regex",
+                    "response", "name", "outlet_base_oid", "all_on_oid", "all_off_oid",
+                    "reboot", "settle_s", "duration_ms"
                 }
 
                 for var_name, cell in zip(var_names, var_values):
@@ -555,7 +399,7 @@ def run_test_in_thread(
                 test_metadata.module_path
             )
             if not spec or not spec.loader:
-                on_finished(1)
+                on_finished(1, "")
                 return
 
             module = importlib.util.module_from_spec(spec)
@@ -569,7 +413,7 @@ def run_test_in_thread(
                 # Get test class
                 test_cls = getattr(module, test_metadata.class_name, None)
                 if not test_cls:
-                    on_finished(1)
+                    on_finished(1, "")
                     return
 
                 # Instantiate test
@@ -590,9 +434,9 @@ def run_test_in_thread(
                     # Use run_test_with_teardown
                     from UTFW.core import run_test_with_teardown, get_active_reporter, get_active_logger
 
-                    # Use Reports directory in the project root
-                    reports_dir = test_root / "Reports"
-                    reports_dir.mkdir(exist_ok=True)
+                    # Use test's own folder for reports
+                    reports_dir = test_metadata.module_path.parent
+                    reports_dir.mkdir(parents=True, exist_ok=True)
 
                     # Register listeners via monkey-patching approach
                     original_init = None

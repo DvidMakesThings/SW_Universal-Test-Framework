@@ -105,10 +105,12 @@ class TestAction:
         >>> result = action.execute()  # Alternative execution method
     """
 
-    def __init__(self, name: str, execute_func: Callable[..., Any], negative_test: bool = False):
+    def __init__(self, name: str, execute_func: Callable[..., Any], negative_test: bool = False,
+                 metadata: Optional[Dict[str, Any]] = None):
         self.name = name
         self.execute_func = execute_func
         self.negative_test = negative_test
+        self.metadata = metadata or {}
 
     def __call__(self, *args, **kwargs) -> Any:
         """Execute the action by calling the instance directly.
@@ -150,7 +152,7 @@ class TestAction:
 
     def run(self, *args, **kwargs) -> Any:
         """Execute the action via the run method (alias for execute).
-        
+
         This method is an alias for execute() provided for compatibility
         and alternative naming preferences.
 
@@ -160,12 +162,34 @@ class TestAction:
 
         Returns:
             Any: The return value of the underlying execute_func.
-        
+
         Raises:
             Exception: Any exception raised by the underlying execute_func,
                 typically indicating test failure.
         """
         return self.execute_func(*args, **kwargs)
+
+    def get_display_command(self) -> str:
+        """Get formatted command string for GUI display.
+
+        Returns the command that will be sent when this action executes.
+        Modules populate this in metadata['display_command'].
+
+        Returns:
+            str: Formatted command string or empty string if not available.
+        """
+        return self.metadata.get('display_command', '')
+
+    def get_display_expected(self) -> str:
+        """Get formatted expected value/result for GUI display.
+
+        Returns the expected result/value for this action.
+        Modules populate this in metadata['display_expected'].
+
+        Returns:
+            str: Formatted expected value or empty string if not available.
+        """
+        return self.metadata.get('display_expected', '')
 
 
 class STE:
@@ -200,6 +224,15 @@ class STE:
     def __init__(self, *actions, name: str | None = None):
         self.actions = actions
         self.name = name or f"Multi-action step with {len(actions)} sub-steps"
+        self.metadata = {"type": "STE"}
+
+    def get_display_command(self) -> str:
+        """STE groups don't send commands themselves."""
+        return ""
+
+    def get_display_expected(self) -> str:
+        """STE groups don't have expected values themselves."""
+        return ""
 
 
 class PTE:
@@ -229,6 +262,15 @@ class PTE:
         self.actions = actions
         self.name = name or f"Parallel step with {len(actions)} sub-steps"
         self.stagger_s = float(stagger_s)
+        self.metadata = {"type": "PTE"}
+
+    def get_display_command(self) -> str:
+        """PTE groups don't send commands themselves."""
+        return ""
+
+    def get_display_expected(self) -> str:
+        """PTE groups don't have expected values themselves."""
+        return ""
 
 
 class TestFramework:

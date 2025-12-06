@@ -311,14 +311,14 @@ class tc_eeprom_persistence_test:
 
                 name="Multiple reboot cycle stability test",
             ),
-            # Step 7: EEPROM dump analysis
+             # Step 7: EEPROM dump analysis
             STE(
                 UART.analyze_eeprom_dump(
                     name="Analyze EEPROM dump after all tests",
                     port=hw.SERIAL_PORT,
                     baudrate=hw.BAUDRATE,
                     checks=checks_file,
-                    reports_dir=Path(reports_dir),
+                    reports_dir=reports_dir,
                 ),
                 name="Final EEPROM dump and analysis",
             ),

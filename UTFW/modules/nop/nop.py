@@ -55,7 +55,9 @@ def NOP(name: str, duration_ms: int) -> TestAction:
             "message": f"Waited {actual_duration_ms:.2f}ms (target: {duration_ms}ms)"
         }
 
+    metadata = {'sent': f"Wait {duration_ms}ms"}
     return TestAction(
         name=name,
-        execute_func=execute
+        execute_func=execute,
+        metadata=metadata
     )
