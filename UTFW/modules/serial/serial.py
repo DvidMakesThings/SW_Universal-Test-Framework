@@ -134,9 +134,14 @@ def _open_connection(port: str, baudrate: int = 115200, timeout: float = 2.0):
     logger = get_active_logger()
 
     if logger:
-        logger.info(f"[SERIAL] Opening connection to port={port}")
-        logger.info(f"[SERIAL]   Configuration: baudrate={baudrate}, timeout={timeout}s, write_timeout=2.0s")
-        logger.info(f"[SERIAL]   Flow control: xonxoff=False, rtscts=False, dsrdtr=False")
+        logger.info("=" * 80)
+        logger.info("[SERIAL] OPENING CONNECTION")
+        logger.info("=" * 80)
+        logger.info(f"  Port:          {port}")
+        logger.info(f"  Baudrate:      {baudrate}")
+        logger.info(f"  Timeout:       {timeout}s")
+        logger.info(f"  Write Timeout: 2.0s")
+        logger.info(f"  Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)")
 
     try:
         # Attempt to open the serial port
@@ -151,41 +156,56 @@ def _open_connection(port: str, baudrate: int = 115200, timeout: float = 2.0):
         )
 
         if logger:
-            logger.info(f"[SERIAL] Port {port} opened successfully")
-            logger.info(f"[SERIAL] Stabilizing connection (100ms delay)...")
+            logger.info(f"✓ Port {port} opened successfully")
+            logger.info("  Stabilizing connection (100ms delay)...")
 
         time.sleep(0.1)  # Allow connection to stabilize
 
         # Clear any stale data from buffers
         if logger:
-            logger.info(f"[SERIAL] Resetting input and output buffers")
+            logger.info("  Resetting input and output buffers...")
         ser.reset_input_buffer()
         ser.reset_output_buffer()
 
         if logger:
-            logger.info(f"[SERIAL] Connection ready: port={port}, baudrate={baudrate}, timeout={timeout}s")
+            logger.info(f"✓ Connection ready and buffers cleared")
+            logger.info("-" * 80)
 
         return ser
 
     except FileNotFoundError as e:
         error_msg = f"Serial port {port} not found. Please verify the port exists."
         if logger:
-            logger.error(f"[SERIAL ERROR] {error_msg}")
-            logger.error(f"[SERIAL ERROR] Exception details: {type(e).__name__}: {e}")
+            logger.error("=" * 80)
+            logger.error("[SERIAL ERROR] PORT NOT FOUND")
+            logger.error("=" * 80)
+            logger.error(f"  Port:      {port}")
+            logger.error(f"  Exception: {type(e).__name__}: {e}")
+            logger.error("-" * 80)
         raise SerialTestError(error_msg)
 
     except PermissionError as e:
         error_msg = f"Permission denied accessing port {port}. Port may be in use by another process."
         if logger:
-            logger.error(f"[SERIAL ERROR] {error_msg}")
-            logger.error(f"[SERIAL ERROR] Exception details: {type(e).__name__}: {e}")
+            logger.error("=" * 80)
+            logger.error("[SERIAL ERROR] PERMISSION DENIED")
+            logger.error("=" * 80)
+            logger.error(f"  Port:      {port}")
+            logger.error(f"  Exception: {type(e).__name__}: {e}")
+            logger.error("  Hint:      Port may be in use by another process")
+            logger.error("-" * 80)
         raise SerialTestError(error_msg)
 
     except Exception as e:
         error_msg = f"Failed to open serial port {port}: {type(e).__name__}: {e}"
         if logger:
-            logger.error(f"[SERIAL ERROR] {error_msg}")
-            logger.error(f"[SERIAL ERROR] Port: {port}, Baudrate: {baudrate}")
+            logger.error("=" * 80)
+            logger.error("[SERIAL ERROR] CONNECTION FAILED")
+            logger.error("=" * 80)
+            logger.error(f"  Port:      {port}")
+            logger.error(f"  Baudrate:  {baudrate}")
+            logger.error(f"  Exception: {type(e).__name__}: {e}")
+            logger.error("-" * 80)
         raise SerialTestError(error_msg)
 
 
@@ -211,8 +231,13 @@ def send_command(port: str, command: str, baudrate: int = 115200, timeout: float
     logger = get_active_logger()
 
     if logger:
-        logger.info(f"[SERIAL] send_command() called")
-        logger.info(f"[SERIAL]   port={port}, command='{command}', baudrate={baudrate}, timeout={timeout}s")
+        logger.info("")
+        logger.info("=" * 80)
+        logger.info("[SERIAL] SEND COMMAND")
+        logger.info("=" * 80)
+        logger.info(f"  Command: '{command}'")
+        logger.info(f"  Port:    {port}")
+        logger.info("")
 
     ser = _open_connection(port, baudrate, timeout)
 
@@ -222,18 +247,24 @@ def send_command(port: str, command: str, baudrate: int = 115200, timeout: float
         cmd_bytes = payload.encode('utf-8')
 
         if logger:
-            logger.info(f"[SERIAL TX] Sending command: '{command.strip()}'")
-            logger.info(f"[SERIAL TX] Payload length: {len(cmd_bytes)} bytes (including CR+LF)")
-            logger.info(f"[SERIAL TX] Hex dump:")
-            logger.info(_format_hex_dump(cmd_bytes))
+            logger.info("[SERIAL TX] TRANSMITTING")
+            logger.info("-" * 80)
+            logger.info(f"  Command:  '{command.strip()}'")
+            logger.info(f"  Length:   {len(cmd_bytes)} bytes (including CR+LF)")
+            logger.info("")
+            logger.info("  Hex Dump:")
+            for line in _format_hex_dump(cmd_bytes).split('\n'):
+                logger.info(f"    {line}")
 
         # Write command to serial port
         bytes_written = ser.write(cmd_bytes)
         ser.flush()
 
         if logger:
-            logger.info(f"[SERIAL TX] Wrote {bytes_written} bytes to port")
-            logger.info(f"[SERIAL TX] Waiting 50ms for device processing...")
+            logger.info("")
+            logger.info(f"✓ Transmitted {bytes_written} bytes")
+            logger.info("  Waiting 50ms for device processing...")
+            logger.info("")
 
         time.sleep(0.05)
 
@@ -244,7 +275,10 @@ def send_command(port: str, command: str, baudrate: int = 115200, timeout: float
         chunk_count = 0
 
         if logger:
-            logger.info(f"[SERIAL RX] Starting to read response (timeout={timeout}s)")
+            logger.info("[SERIAL RX] RECEIVING RESPONSE")
+            logger.info("-" * 80)
+            logger.info(f"  Timeout: {timeout}s")
+            logger.info("")
 
         while (time.time() - start_time) < timeout:
             if ser.in_waiting > 0:
@@ -255,11 +289,12 @@ def send_command(port: str, command: str, baudrate: int = 115200, timeout: float
                 elapsed = time.time() - start_time
 
                 if logger:
-                    logger.info(f"[SERIAL RX] Chunk #{chunk_count}: received {len(chunk)} bytes (elapsed: {elapsed:.3f}s, total: {len(response_bytes)} bytes)")
+                    logger.info(f"  Chunk #{chunk_count}: {len(chunk)} bytes | Elapsed: {elapsed:.3f}s | Total: {len(response_bytes)} bytes")
 
             elif (time.time() - last_data_time) > 0.5:
                 if logger:
-                    logger.info(f"[SERIAL RX] No data received for 500ms, assuming response complete")
+                    logger.info("")
+                    logger.info("  No data for 500ms, response complete")
                 break
 
             time.sleep(0.01)
@@ -267,40 +302,54 @@ def send_command(port: str, command: str, baudrate: int = 115200, timeout: float
         total_time = time.time() - start_time
 
         if logger:
-            logger.info(f"[SERIAL RX] Response complete:")
-            logger.info(f"[SERIAL RX]   Total bytes: {len(response_bytes)}")
-            logger.info(f"[SERIAL RX]   Chunks received: {chunk_count}")
-            logger.info(f"[SERIAL RX]   Total time: {total_time:.3f}s")
+            logger.info("")
+            logger.info(f"✓ Response Complete:")
+            logger.info(f"    Total Bytes:    {len(response_bytes)}")
+            logger.info(f"    Chunks:         {chunk_count}")
+            logger.info(f"    Total Time:     {total_time:.3f}s")
+            logger.info("")
 
         # Decode response
         text = response_bytes.decode('utf-8', errors='ignore')
 
         if logger:
-            logger.info(f"[SERIAL RX] Decoded text ({len(text)} characters):")
+            logger.info("  Decoded Text:")
+            logger.info("  " + "-" * 78)
             # Log response with visible control characters
             visible_text = text.replace("\r", "\\r").replace("\n", "\\n\n  ")
             logger.info(f"  {visible_text}")
-            logger.info(f"[SERIAL RX] Hex dump:")
-            logger.info(_format_hex_dump(response_bytes))
+            logger.info("  " + "-" * 78)
+            logger.info("")
+            logger.info("  Hex Dump:")
+            for line in _format_hex_dump(response_bytes).split('\n'):
+                logger.info(f"    {line}")
+            logger.info("")
 
         _set_last_response(text)
         return text
 
     except Exception as e:
         if logger:
-            logger.error(f"[SERIAL ERROR] Exception during send_command:")
-            logger.error(f"[SERIAL ERROR]   Type: {type(e).__name__}")
-            logger.error(f"[SERIAL ERROR]   Message: {e}")
-            logger.error(f"[SERIAL ERROR]   Port: {port}, Command: '{command}'")
+            logger.error("")
+            logger.error("=" * 80)
+            logger.error("[SERIAL ERROR] COMMUNICATION EXCEPTION")
+            logger.error("=" * 80)
+            logger.error(f"  Type:    {type(e).__name__}")
+            logger.error(f"  Message: {e}")
+            logger.error(f"  Port:    {port}")
+            logger.error(f"  Command: '{command}'")
+            logger.error("-" * 80)
         raise SerialTestError(f"Communication error on {port}: {type(e).__name__}: {e}")
 
     finally:
         try:
             if logger:
-                logger.info(f"[SERIAL] Closing port {port}")
+                logger.info("[SERIAL] Closing connection...")
             ser.close()
             if logger:
-                logger.info(f"[SERIAL] Port {port} closed successfully")
+                logger.info(f"✓ Port {port} closed")
+                logger.info("=" * 80)
+                logger.info("")
         except Exception as e:
             if logger:
                 logger.error(f"[SERIAL ERROR] Failed to close port {port}: {e}")
@@ -337,9 +386,15 @@ def wait_for_reboot_and_ready(port: str, ready_token: str = "SYSTEM READY",
     logger = get_active_logger()
 
     if logger:
-        logger.info(f"[SERIAL] wait_for_reboot_and_ready() called")
-        logger.info(f"[SERIAL]   port={port}, ready_token='{ready_token}', "
-                    f"baudrate={baudrate}, timeout={timeout}s")
+        logger.info("")
+        logger.info("=" * 80)
+        logger.info("[SERIAL] WAIT FOR REBOOT AND READY")
+        logger.info("=" * 80)
+        logger.info(f"  Port:         {port}")
+        logger.info(f"  Ready Token:  '{ready_token}'")
+        logger.info(f"  Baudrate:     {baudrate}")
+        logger.info(f"  Timeout:      {timeout}s")
+        logger.info("")
 
     start_time = time.time()
     deadline = start_time + timeout
@@ -358,25 +413,29 @@ def wait_for_reboot_and_ready(port: str, ready_token: str = "SYSTEM READY",
     # PHASE 1: wait for port to disappear (device starts rebooting)
     initial_exists = _port_exists(port)
     if logger:
-        logger.info(f"[SERIAL] Phase 1: wait for '{port}' to disappear "
-                    f"(initial_exists={initial_exists})")
+        logger.info("[REBOOT] Phase 1: Waiting for port to disappear")
+        logger.info("-" * 80)
+        logger.info(f"  Port exists initially: {initial_exists}")
 
     if initial_exists:
         while _port_exists(port) and time.time() < deadline:
             time.sleep(0.1)
         if _port_exists(port):
             if logger:
-                logger.warning(f"[SERIAL] Port {port} did not disappear before timeout phase 1")
+                logger.warning(f"  ⚠ Port {port} did not disappear")
         else:
             if logger:
-                logger.info(f"[SERIAL] Port {port} disappeared (device reboot in progress)")
+                logger.info(f"  ✓ Port {port} disappeared (reboot in progress)")
+        logger.info("")
     else:
         if logger:
-            logger.info(f"[SERIAL] Port {port} not present at start, skipping disappearance wait")
+            logger.info(f"  Port not present initially, skipping")
+            logger.info("")
 
     # PHASE 2: wait for port to reappear
     if logger:
-        logger.info(f"[SERIAL] Phase 2: waiting for '{port}' to reappear")
+        logger.info("[REBOOT] Phase 2: Waiting for port to reappear")
+        logger.info("-" * 80)
 
     while not _port_exists(port) and time.time() < deadline:
         time.sleep(0.1)
@@ -384,12 +443,14 @@ def wait_for_reboot_and_ready(port: str, ready_token: str = "SYSTEM READY",
     if not _port_exists(port):
         elapsed = time.time() - start_time
         if logger:
-            logger.error(f"[SERIAL] Port {port} did not reappear within timeout "
-                         f"({elapsed:.1f}s)")
+            logger.error(f"  ✗ Port did not reappear within timeout ({elapsed:.1f}s)")
+            logger.error("=" * 80)
+            logger.error("")
         return False
 
     if logger:
-        logger.info(f"[SERIAL] Port {port} reappeared")
+        logger.info(f"  ✓ Port {port} reappeared")
+        logger.info("")
 
     # PHASE 3: open port and wait for ready banner
     connection_attempts = 0
@@ -400,8 +461,10 @@ def wait_for_reboot_and_ready(port: str, ready_token: str = "SYSTEM READY",
             break
 
         if logger:
-            logger.info(f"[SERIAL] Phase 3: connection attempt #{connection_attempts} "
-                        f"(remaining {remaining_time:.1f}s)")
+            if connection_attempts == 1:
+                logger.info("[REBOOT] Phase 3: Monitoring for ready signal")
+                logger.info("-" * 80)
+            logger.info(f"  Attempt #{connection_attempts} (timeout: {remaining_time:.1f}s remaining)")
 
         try:
             ser = serial.Serial(port=port, baudrate=baudrate, timeout=1.0)
@@ -414,7 +477,7 @@ def wait_for_reboot_and_ready(port: str, ready_token: str = "SYSTEM READY",
 
         try:
             if logger:
-                logger.info(f"[SERIAL] Connected to {port}, monitoring for ready token '{ready_token}'")
+                logger.info(f"    Connected, monitoring for '{ready_token}'...")
 
             response_bytes = bytearray()
             chunk_count = 0
@@ -438,7 +501,8 @@ def wait_for_reboot_and_ready(port: str, ready_token: str = "SYSTEM READY",
                     if ready_token.lower() in text_chunk.lower():
                         banner_found = True
                         if logger:
-                            logger.info(f"[SERIAL] Ready token '{ready_token}' detected")
+                            logger.info("")
+                            logger.info(f"    ✓ Ready token '{ready_token}' DETECTED!")
                         break
 
                 time.sleep(0.05)
@@ -455,11 +519,15 @@ def wait_for_reboot_and_ready(port: str, ready_token: str = "SYSTEM READY",
 
             if banner_found:
                 if logger:
-                    logger.info(f"[SERIAL] Device ready after reboot")
+                    logger.info("")
+                    logger.info("=" * 80)
+                    logger.info("[REBOOT] DEVICE READY")
+                    logger.info("=" * 80)
+                    logger.info("")
                 return True
 
             if logger:
-                logger.info(f"[SERIAL] Ready token not found on this attempt, retrying...")
+                logger.info("    Ready token not found, retrying...")
 
         finally:
             try:
@@ -474,9 +542,15 @@ def wait_for_reboot_and_ready(port: str, ready_token: str = "SYSTEM READY",
 
     elapsed_total = time.time() - start_time
     if logger:
-        logger.error(f"[SERIAL] Timeout after {elapsed_total:.1f}s "
-                     f"and {connection_attempts} connection attempts")
-        logger.error(f"[SERIAL] Ready token '{ready_token}' was NOT detected")
+        logger.error("")
+        logger.error("=" * 80)
+        logger.error("[REBOOT] TIMEOUT")
+        logger.error("=" * 80)
+        logger.error(f"  Elapsed Time:        {elapsed_total:.1f}s")
+        logger.error(f"  Connection Attempts: {connection_attempts}")
+        logger.error(f"  Ready token '{ready_token}' was NOT detected")
+        logger.error("-" * 80)
+        logger.error("")
 
     return False
 
@@ -498,14 +572,16 @@ def parse_sysinfo_response(response: str) -> Dict[str, str]:
     logger = get_active_logger()
 
     if logger:
-        logger.info(f"[SERIAL] parse_sysinfo_response() called")
-        logger.info(f"[SERIAL]   Response length: {len(response)} characters")
+        logger.info("")
+        logger.info("=" * 80)
+        logger.info("[SERIAL] PARSE SYSINFO RESPONSE")
+        logger.info("=" * 80)
+        logger.info(f"  Response Length: {len(response)} characters")
+        logger.info(f"  Lines to Parse:  {response.count(chr(10)) + 1}")
+        logger.info("")
 
     sysinfo = {}
     lines = response.replace("\r\n", "\n").replace("\r", "\n").splitlines()
-
-    if logger:
-        logger.info(f"[SERIAL] Parsing {len(lines)} lines from response")
 
     for line in lines:
         line = line.strip()
@@ -541,9 +617,14 @@ def parse_sysinfo_response(response: str) -> Dict[str, str]:
                 sysinfo[key] = value
 
     if logger:
-        logger.info(f"[SERIAL] Parsed {len(sysinfo)} fields from SYSINFO:")
+        logger.info(f"[SYSINFO] Parsed Fields:")
+        logger.info("-" * 80)
         for key, value in sysinfo.items():
-            logger.info(f"[SERIAL]   {key}: {value}")
+            logger.info(f"  {key:20s} : {value}")
+        logger.info("")
+        logger.info(f"✓ Successfully parsed {len(sysinfo)} fields")
+        logger.info("=" * 80)
+        logger.info("")
 
     return sysinfo
 
@@ -566,8 +647,13 @@ def validate_sysinfo_data(sysinfo: Dict[str, str], validation: Dict[str, Any]):
     logger = get_active_logger()
 
     if logger:
-        logger.info(f"[SERIAL] validate_sysinfo_data() called")
-        logger.info(f"[SERIAL]   Validating {len(sysinfo)} SYSINFO fields against {len(validation)} rules")
+        logger.info("")
+        logger.info("=" * 80)
+        logger.info("[SERIAL] VALIDATE SYSINFO DATA")
+        logger.info("=" * 80)
+        logger.info(f"  Fields to Validate: {len(sysinfo)}")
+        logger.info(f"  Validation Rules:   {len(validation)}")
+        logger.info("")
 
     failures = []
 
@@ -630,13 +716,22 @@ def validate_sysinfo_data(sysinfo: Dict[str, str], validation: Dict[str, Any]):
 
     if failures:
         if logger:
-            logger.error(f"[SERIAL] Validation failed with {len(failures)} errors:")
+            logger.error("")
+            logger.error("[VALIDATION] FAILED")
+            logger.error("-" * 80)
             for i, failure in enumerate(failures, 1):
-                logger.error(f"[SERIAL]   {i}. {failure}")
+                logger.error(f"  {i}. {failure}")
+            logger.error("")
+            logger.error("=" * 80)
+            logger.error("")
         raise SerialTestError(f"SYSINFO validation failed: {'; '.join(failures)}")
     else:
         if logger:
-            logger.info(f"[SERIAL] All validations passed successfully")
+            logger.info("[VALIDATION] All checks passed")
+            logger.info("-" * 80)
+            logger.info("✓ SYSINFO data validated successfully")
+            logger.info("=" * 80)
+            logger.info("")
 
 
 def parse_get_ch_all(response: str) -> Dict[int, bool]:
@@ -1520,6 +1615,19 @@ negative_test: bool = False) -> TestAction:
         from ...core import utilities
         from ...core.logger import get_active_logger
 
+        logger = get_active_logger()
+        
+        if logger:
+            logger.info("")
+            logger.info("=" * 80)
+            logger.info("[EEPROM] ANALYZE EEPROM DUMP")
+            logger.info("=" * 80)
+            logger.info(f"  Test:     {name}")
+            logger.info(f"  Port:     {port}")
+            logger.info(f"  Baudrate: {baudrate}")
+            logger.info(f"  Checks:   {checks}")
+            logger.info("")
+
         def _find_testcases_root() -> Path:
             """Return nearest 'TestCases' directory from stack or CWD."""
             for frame in inspect.stack():
@@ -1576,7 +1684,19 @@ negative_test: bool = False) -> TestAction:
         save_dir.mkdir(parents=True, exist_ok=True)
 
         # 1) Run helper to capture raw/ascii dumps (over serial)
+        if logger:
+            logger.info("[EEPROM] Step 1: Reading EEPROM dump from device")
+            logger.info("-" * 80)
+            logger.info(f"  Port:     {port}")
+            logger.info(f"  Baudrate: {baudrate}")
+            logger.info(f"  Save Dir: {save_dir}")
+            logger.info("")
+        
         parsed = utilities.parse_eeprom_data(port=port, baudrate=baudrate, save_to_dir=str(save_dir))
+        
+        if logger:
+            logger.info("✓ EEPROM dump retrieved")
+            logger.info("")
         ascii_text = (parsed.get("ascii") or "").replace("\r\n", "\n").replace("\r", "\n")
         raw_path = save_dir / "eeprom_dump_raw.log"
         ascii_path = save_dir / "eeprom_dump_ascii.log"
@@ -1588,6 +1708,12 @@ negative_test: bool = False) -> TestAction:
                 raise SerialTestError("ASCII EEPROM dump is empty after helper processing.")
 
         # 2) Load checks JSON
+        if logger:
+            logger.info("[EEPROM] Step 2: Loading validation checks")
+            logger.info("-" * 80)
+            logger.info(f"  Checks File: {checks}")
+            logger.info("")
+        
         checks_path = Path(checks)
         if not checks_path.exists():
             raise FileNotFoundError(f"Checks JSON not found: {checks_path}")
@@ -1595,6 +1721,10 @@ negative_test: bool = False) -> TestAction:
             check_list = json.load(cf)
         if not isinstance(check_list, list):
             raise ValueError("Checks JSON must be a list of check objects.")
+        
+        if logger:
+            logger.info(f"✓ Loaded {len(check_list)} validation checks")
+            logger.info("")
 
         # 3) Parse ASCII hexdump into rows and contiguous image
         hex_line_pat = re.compile(
@@ -1622,6 +1752,11 @@ negative_test: bool = False) -> TestAction:
             image[a:a+len(b)] = b
 
         # 4) Execute checks
+        if logger:
+            logger.info("[EEPROM] Step 4: Executing validation checks")
+            logger.info("=" * 80)
+            logger.info("")
+        
         findings = []
 
         def _slice(addr_start: int, length: int = None, addr_end: int = None) -> bytes:
@@ -1651,6 +1786,13 @@ negative_test: bool = False) -> TestAction:
                 if start is None:
                     raise _LocalError("missing 'start'")
                 buf = _slice(start, length, end)
+                
+                if logger:
+                    logger.info(f"[CHECK {idx}/{len(check_list)}] {label}")
+                    logger.info("-" * 80)
+                    logger.info(f"  Address:  0x{start:04X}")
+                    logger.info(f"  Length:   {len(buf)} bytes")
+                    logger.info(f"  Type:     {typ}")
 
                 if typ == "ascii":
                     if trim_nul and b"\x00" in buf:
@@ -1667,6 +1809,34 @@ negative_test: bool = False) -> TestAction:
                         status, notes = "MISS", notes + [f"regex '{regex}' not matched"]
                     if isinstance(expect, str) and expect != "" and s != expect:
                         status, notes = "MISS", notes + ["exact string mismatch"]
+                    
+                    if logger:
+                        if status == "OK":
+                            logger.info(f"  Actual:   '{s}'")
+                            if expect:
+                                logger.info(f"  Expected: '{expect}'")
+                            if pattern:
+                                logger.info(f"  Pattern:  '{pattern}'")
+                            if regex:
+                                logger.info(f"  Regex:    '{regex}'")
+                            logger.info(f"  Result:   ✓ PASS")
+                        else:
+                            logger.error(f"  Result:   ✗ FAIL")
+                            if expect and s != expect:
+                                logger.error(f"            Expected: '{expect}'")
+                                logger.error(f"            Got:      '{s}'")
+                            elif pattern and pattern not in s:
+                                logger.error(f"            Pattern expected: '{pattern}'")
+                                logger.error(f"            Got:              '{s}'")
+                            elif regex and not re.search(regex, s):
+                                logger.error(f"            Regex expected: '{regex}'")
+                                logger.error(f"            Got:            '{s}'")
+                            else:
+                                logger.error(f"            Got: '{s}'")
+                            for note in notes:
+                                logger.error(f"            - {note}")
+                        logger.info("")
+                    
                     findings.append({
                         "label": label, "type": "ascii", "addr": f"0x{start:04X}",
                         "length": len(buf), "value": s, "status": status,
@@ -1684,6 +1854,29 @@ negative_test: bool = False) -> TestAction:
                         sub = bytes(int(b, 16) for b in contains.split())
                         if sub not in buf:
                             status, notes = "MISS", notes + [f"missing subsequence {contains}"]
+                    
+                    if logger:
+                        if status == "OK":
+                            logger.info(f"  Actual:   {hex_str}")
+                            if expect and expect.strip():
+                                logger.info(f"  Expected: {expect}")
+                            if contains and contains.strip():
+                                logger.info(f"  Contains: {contains}")
+                            logger.info(f"  Result:   ✓ PASS")
+                        else:
+                            logger.error(f"  Result:   ✗ FAIL")
+                            if expect and expect.strip():
+                                logger.error(f"            Expected: {expect}")
+                                logger.error(f"            Got:      {hex_str}")
+                            elif contains and contains.strip():
+                                logger.error(f"            Must contain: {contains}")
+                                logger.error(f"            Got:          {hex_str}")
+                            else:
+                                logger.error(f"            Got: {hex_str}")
+                            for note in notes:
+                                logger.error(f"            - {note}")
+                        logger.info("")
+                    
                     findings.append({
                         "label": label, "type": "hex", "addr": f"0x{start:04X}",
                         "length": len(buf), "value": hex_str, "status": status,
@@ -1693,6 +1886,11 @@ negative_test: bool = False) -> TestAction:
                     raise _LocalError(f"unknown type '{typ}'")
 
             except Exception as e:
+                if logger:
+                    logger.info(f"  Result:   ✗ ERROR")
+                    logger.info(f"            {str(e)}")
+                    logger.info("")
+                
                 findings.append({
                     "label": chk.get("label", f"check_{idx}"),
                     "type": chk.get("type", "?"),
@@ -1703,7 +1901,37 @@ negative_test: bool = False) -> TestAction:
                     "notes": str(e),
                 })
 
-        # 5) Write summary
+        # 5) Generate summary statistics
+        if logger:
+            logger.info("=" * 80)
+            logger.info("[EEPROM] VALIDATION SUMMARY")
+            logger.info("=" * 80)
+            
+            total_checks = len(findings)
+            passed = sum(1 for f in findings if f["status"] == "OK")
+            failed = sum(1 for f in findings if f["status"] == "MISS")
+            errors = sum(1 for f in findings if f["status"] == "ERROR")
+            
+            logger.info(f"  Total Checks:   {total_checks}")
+            logger.info(f"  Passed:         {passed}")
+            logger.info(f"  Failed:         {failed}")
+            logger.info(f"  Errors:         {errors}")
+            logger.info("")
+            
+            if failed > 0 or errors > 0:
+                logger.info("  Failed/Error Checks:")
+                for f in findings:
+                    if f["status"] in ("MISS", "ERROR"):
+                        logger.info(f"    - {f['label']} @ {f['addr']}: {f['status']}")
+                        if f["notes"]:
+                            logger.info(f"      {f['notes']}")
+                logger.info("")
+            
+            logger.info(f"  Address Range:  0x{min_addr:04X} - 0x{max_addr:04X}")
+            logger.info(f"  Total Bytes:    {max_addr - min_addr + 1}")
+            logger.info("")
+        
+        # 6) Write summary
         summary_path = save_dir / "eeprom_summary.txt"
         with summary_path.open("w", encoding="utf-8") as sf:
             sf.write(f"EEPROM Parse Summary - {name}\n")

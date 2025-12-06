@@ -9,7 +9,7 @@ Supports:
 - ns timestamps (libpcap nanosecond variant)
 - FCS generation (CRC-32) with optional XOR mask corruption
 - Payload per frame: user-provided or randomly generated
-- Inter-frame timing: either Δt (first-to-first) or IFG bytes converted via link speed
+- Inter-frame timing: either Î”t (first-to-first) or IFG bytes converted via link speed
 - Total frame size control (including FCS) with automatic padding
 - IPv4:
     * Manual flags DF/MF/frag offset
@@ -174,7 +174,14 @@ def _pcap_write_global_header_if_missing(
 
     logger = get_active_logger()
     if logger:
-        logger.log(f"[PCAPGEN] Wrote ns-global-header to {path} (linktype={linktype})")
+        logger.log("")
+        logger.log("=" * 80)
+        logger.log("[PCAPGEN] CREATE PCAP FILE")
+        logger.log("=" * 80)
+        logger.log(f"  File:     {path}")
+        logger.log(f"  LinkType: {linktype}")
+        logger.log(f"  Format:   libpcap nanosecond")
+        logger.log("")
 
 
 def _pcap_append_record_ns(path: str, ts_ns: int, frame: bytes) -> None:
@@ -186,9 +193,7 @@ def _pcap_append_record_ns(path: str, ts_ns: int, frame: bytes) -> None:
         f.write(frame)
     logger = get_active_logger()
     if logger:
-        logger.log(
-            f"[PCAPGEN] wrote rec ts={ts_ns}ns (sec={ts_sec} ns={ts_nano}) len={caplen}"
-        )
+        logger.log(f"  Frame: {caplen} bytes @ {ts_ns} ns")
 
 
 def _pcap_read_last_record(path: str) -> Tuple[Optional[int], Optional[int]]:
@@ -487,8 +492,8 @@ def pcap_create(
         ip_payload (Optional[bytes], optional): IPv4 payload bytes; overrides `ip_payload_len` if provided.
         ip_payload_len (Optional[int], optional): If `ip_payload` is None, generate random payload of this length.
         ip_identification (Optional[int], optional): IPv4 Identification field; random if None.
-        ip_df (bool, optional): IPv4 “Dont Fragment” flag. Defaults to False.
-        ip_mf (bool, optional): IPv4 “More Fragments” flag (manual mode). Defaults to False.
+        ip_df (bool, optional): IPv4 â€œDont Fragmentâ€ flag. Defaults to False.
+        ip_mf (bool, optional): IPv4 â€œMore Fragmentsâ€ flag (manual mode). Defaults to False.
         ip_frag_offset_units8 (int, optional): Fragment offset in 8-byte units (manual mode). Defaults to 0.
         ip_ttl (int, optional): IPv4 TTL. Defaults to 64.
         ip_tos (int, optional): IPv4 TOS/DSCP field. Defaults to 0.
@@ -651,7 +656,7 @@ def pcap_create(
                     ) + int(d_ns)
                     if logger:
                         logger.log(
-                            f"[PCAPGEN] Δt=explicit {int(d_ns)} ns -> ts={current_ts}"
+                            f"[PCAPGEN] Î”t=explicit {int(d_ns)} ns -> ts={current_ts}"
                         )
                 elif ifg_bytes is not None:
                     if not link_bps:
@@ -669,7 +674,7 @@ def pcap_create(
                     ) + add_ns
                     if logger:
                         logger.log(
-                            f"[PCAPGEN] Δt=serialize({prev_len}B)+IFG({ifg_bytes}B) @ {link_bps}bps "
+                            f"[PCAPGEN] Î”t=serialize({prev_len}B)+IFG({ifg_bytes}B) @ {link_bps}bps "
                             f"= {add_ns} ns -> ts={current_ts}"
                         )
                 else:
@@ -683,11 +688,11 @@ def pcap_create(
                         ) + ser_ns
                         if logger:
                             logger.log(
-                                f"[PCAPGEN] Δt=serialize-only {ser_ns} ns -> ts={current_ts}"
+                                f"[PCAPGEN] Î”t=serialize-only {ser_ns} ns -> ts={current_ts}"
                             )
                     else:
                         if logger:
-                            logger.log("[PCAPGEN] Δt=0 ns (same timestamp)")
+                            logger.log("[PCAPGEN] Î”t=0 ns (same timestamp)")
                         current_ts = (
                             last_ts_ns
                             if (i == 1 and last_ts_ns is not None)
@@ -942,7 +947,7 @@ def pcap_from_spec_action(
                         ) + int(d_ns)
                         if logger:
                             logger.log(
-                                f"[PCAPGEN] Δt=explicit {int(d_ns)} ns -> ts={current_ts}"
+                                f"[PCAPGEN] Î”t=explicit {int(d_ns)} ns -> ts={current_ts}"
                             )
                     elif this_ifg is not None:
                         use_bps = this_link or default_bps
@@ -961,7 +966,7 @@ def pcap_from_spec_action(
                         ) + add_ns
                         if logger:
                             logger.log(
-                                f"[PCAPGEN] Δt=serialize({prev_len}B)+IFG({this_ifg}B) @ {use_bps}bps "
+                                f"[PCAPGEN] Î”t=serialize({prev_len}B)+IFG({this_ifg}B) @ {use_bps}bps "
                                 f"= {add_ns} ns -> ts={current_ts}"
                             )
                     else:
@@ -977,11 +982,11 @@ def pcap_from_spec_action(
                             ) + ser_ns
                             if logger:
                                 logger.log(
-                                    f"[PCAPGEN] Δt=serialize-only {ser_ns} ns -> ts={current_ts}"
+                                    f"[PCAPGEN] Î”t=serialize-only {ser_ns} ns -> ts={current_ts}"
                                 )
                         else:
                             if logger:
-                                logger.log("[PCAPGEN] Δt=0 ns (same timestamp)")
+                                logger.log("[PCAPGEN] Î”t=0 ns (same timestamp)")
                             current_ts = (
                                 last_ts_ns
                                 if (not out_ts and last_ts_ns is not None)
@@ -1017,5 +1022,3 @@ def pcap_from_spec_action(
         return output_path
 
     return TestAction(name, execute, negative_test=negative_test)
-
-

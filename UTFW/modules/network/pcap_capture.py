@@ -379,7 +379,7 @@ def CapturePcap(name: str,
                 elif v is not None:
                     proc_env[str(k)] = str(v)
 
-        # Logging – pre-exec
+        # Logging â€“ pre-exec
         if logger:
             logger.log(f"[PCAP-CAPTURE] tag={tag} tool={tool_name} exe={tool_exe}")
             logger.log(f"[PCAP-CAPTURE] tag={tag} interface={interface!r} promiscuous={promiscuous} "
@@ -475,7 +475,7 @@ def CapturePcap(name: str,
         rc = proc.returncode
         elapsed = time.time() - start_time
 
-        # Logging – post-exec
+        # Logging â€“ post-exec
         if logger:
             logger.log(f"[PCAP-CAPTURE] tag={tag} exit_code={rc} elapsed_s={elapsed:.3f} timed_stop={timed_stop}")
             if stdout:
@@ -621,9 +621,20 @@ def Ping(name: str,
                 argv.append(str(target))
 
         if logger:
-            logger.log(f"[PING] mode={'BG' if background else 'FG'} target={target} "
-                       f"count={count} timeout_s={timeout_s} interval_s={interval_s} duration_s={duration_s}")
-            logger.log(f"[PING] cmd={_quote_list(argv)}")
+            logger.log("")
+            logger.log("=" * 80)
+            logger.log(f"[PING] {'BACKGROUND' if background else 'FOREGROUND'} MODE")
+            logger.log("=" * 80)
+            logger.log(f"  Target:   {target}")
+            logger.log(f"  Count:    {count}")
+            logger.log(f"  Timeout:  {timeout_s}s")
+            if interval_s:
+                logger.log(f"  Interval: {interval_s}s")
+            if duration_s:
+                logger.log(f"  Duration: {duration_s}s")
+            logger.log("")
+            logger.log(f"  Command: {_quote_list(argv)}")
+            logger.log("")
 
         if background:
             # Start process and optionally schedule a watchdog to stop it
@@ -638,7 +649,9 @@ def Ping(name: str,
                 raise PCAPCaptureError(f"Failed to start ping: {e}") from e
 
             if logger:
-                logger.log(f"[PING] started background ping pid={proc.pid}")
+                logger.log(f"✓ Background ping started (PID: {proc.pid})")
+                logger.log("=" * 80)
+                logger.log("")
 
             # If user wants a bounded background run and it's continuous (count<=0), stop after duration_s
             if duration_s is not None and duration_s > 0:
@@ -690,11 +703,26 @@ def Ping(name: str,
             raise PCAPCaptureError(f"Failed to execute ping: {e}") from e
 
         if logger:
-            logger.log(f"[PING] rc={proc.returncode}")
+            if proc.returncode == 0:
+                logger.log(f"✓ Ping successful (RC: {proc.returncode})")
+            else:
+                logger.log(f"✗ Ping failed (RC: {proc.returncode})")
+            logger.log("-" * 80)
             if proc.stdout:
-                logger.log("[PING STDOUT]\n" + proc.stdout.rstrip())
+                logger.log("")
+                logger.log("  Output:")
+                for line in proc.stdout.rstrip().splitlines():
+                    if line.strip():
+                        logger.log(f"    {line}")
             if proc.stderr:
-                logger.log("[PING STDERR]\n" + proc.stderr.rstrip())
+                logger.log("")
+                logger.log("  Errors:")
+                for line in proc.stderr.rstrip().splitlines():
+                    if line.strip():
+                        logger.log(f"    {line}")
+            logger.log("")
+            logger.log("=" * 80)
+            logger.log("")
 
         if proc.returncode != 0:
             raise PCAPCaptureError(f"ping failed (rc={proc.returncode}) for target {target!r}")

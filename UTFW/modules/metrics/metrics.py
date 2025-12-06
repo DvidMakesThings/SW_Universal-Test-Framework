@@ -111,31 +111,41 @@ def fetch_metrics(url: str, timeout: float = 5.0) -> str:
     logger = get_active_logger()
     
     if logger:
-        logger.info(f"[METRICS] fetch_metrics() called")
-        logger.info(f"[METRICS]   URL: {url}, Timeout: {timeout}s")
+        logger.info("")
+        logger.info("=" * 80)
+        logger.info("[METRICS] FETCH METRICS")
+        logger.info("=" * 80)
+        logger.info(f"  URL:     {url}")
+        logger.info(f"  Timeout: {timeout}s")
+        logger.info("")
     
     try:
         req = urllib.request.Request(url)
-        
-        if logger:
-            logger.info(f"[METRICS] Sending GET request to {url}...")
         
         with urllib.request.urlopen(req, timeout=timeout) as response:
             status_code = response.getcode()
             content = response.read().decode("utf-8")
             
             if logger:
-                logger.info(f"[METRICS] Response received: status={status_code}")
-                logger.info(f"[METRICS]   Content length: {len(content)} bytes")
                 line_count = len(content.split('\n'))
-                logger.info(f"[METRICS]   Lines: {line_count}")
+                logger.info(f"✓ Metrics received")
+                logger.info("-" * 80)
+                logger.info(f"  Status:  {status_code}")
+                logger.info(f"  Size:    {len(content)} bytes")
+                logger.info(f"  Lines:   {line_count}")
+                logger.info("")
                 
                 # Log preview of content
                 preview_lines = content.split('\n')[:10]
-                preview = '\n'.join(preview_lines)
-                if len(content.split('\n')) > 10:
-                    preview += f"\n... [{len(content.split('\n')) - 10} more lines]"
-                logger.info(f"[METRICS]   Content preview:\n{preview}")
+                logger.info("  Content Preview:")
+                for line in preview_lines:
+                    if line.strip():
+                        logger.info(f"    {line}")
+                if line_count > 10:
+                    logger.info(f"    ... [{line_count - 10} more lines]")
+                logger.info("")
+                logger.info("=" * 80)
+                logger.info("")
             
             if status_code != 200:
                 raise MetricsTestError(f"HTTP GET {url} returned status {status_code}")
@@ -144,20 +154,40 @@ def fetch_metrics(url: str, timeout: float = 5.0) -> str:
     
     except urllib.error.HTTPError as e:
         if logger:
-            logger.error(f"[METRICS ERROR] HTTP error: {e.code} {e.reason}")
-            logger.error(f"[METRICS ERROR]   URL: {url}")
+            logger.error("")
+            logger.error("✗ HTTP Error")
+            logger.error("-" * 80)
+            logger.error(f"  Status: {e.code}")
+            logger.error(f"  Reason: {e.reason}")
+            logger.error(f"  URL:    {url}")
+            logger.error("")
+            logger.error("=" * 80)
+            logger.error("")
         raise MetricsTestError(f"HTTP request failed: {e.code} {e.reason}")
     
     except urllib.error.URLError as e:
         if logger:
-            logger.error(f"[METRICS ERROR] URL error: {e.reason}")
-            logger.error(f"[METRICS ERROR]   URL: {url}")
+            logger.error("")
+            logger.error("✗ URL Error")
+            logger.error("-" * 80)
+            logger.error(f"  Reason: {e.reason}")
+            logger.error(f"  URL:    {url}")
+            logger.error("")
+            logger.error("=" * 80)
+            logger.error("")
         raise MetricsTestError(f"URL error: {e.reason}")
     
     except Exception as e:
         if logger:
-            logger.error(f"[METRICS ERROR] Exception: {type(e).__name__}: {e}")
-            logger.error(f"[METRICS ERROR]   URL: {url}")
+            logger.error("")
+            logger.error("✗ Exception")
+            logger.error("-" * 80)
+            logger.error(f"  Type:    {type(e).__name__}")
+            logger.error(f"  Message: {e}")
+            logger.error(f"  URL:     {url}")
+            logger.error("")
+            logger.error("=" * 80)
+            logger.error("")
         raise MetricsTestError(f"Failed to fetch metrics: {type(e).__name__}: {e}")
 
 
@@ -191,8 +221,8 @@ def parse_metrics(metrics_text: str) -> Dict[str, List[Tuple[Dict[str, str], str
     logger = get_active_logger()
     
     if logger:
-        logger.info(f"[METRICS] parse_metrics() called")
-        logger.info(f"[METRICS]   Input length: {len(metrics_text)} chars")
+        logger.info("[METRICS] Parsing metrics")
+        logger.info(f"  Size: {len(metrics_text)} chars")
     
     metrics: Dict[str, List[Tuple[Dict[str, str], str]]] = {}
     
@@ -322,9 +352,9 @@ def validate_metric_exists(
     
     if logger:
         if exists:
-            logger.info(f"[METRICS] ✓ Metric '{metric_name}' exists with value: {value}")
+            logger.info(f"[METRICS]  Metric '{metric_name}' exists with value: {value}")
         else:
-            logger.info(f"[METRICS] ✗ Metric '{metric_name}' not found")
+            logger.info(f"[METRICS] âœ— Metric '{metric_name}' not found")
     
     return exists
 
@@ -376,7 +406,7 @@ def validate_metric_value(
     
     if logger:
         if matches:
-            logger.info(f"[METRICS] ✓ Metric value matches: {value}")
+            logger.info(f"[METRICS]  Metric value matches: {value}")
         else:
             logger.error(f"[METRICS ERROR] Value mismatch: expected '{expected_value}', got '{value}'")
     
@@ -417,14 +447,20 @@ def validate_metric_range(
     logger = get_active_logger()
     
     if logger:
-        logger.info(f"[METRICS] validate_metric_range() called")
-        logger.info(f"[METRICS]   Metric: {metric_name}")
-        if min_value is not None:
-            logger.info(f"[METRICS]   Min: {min_value}")
-        if max_value is not None:
-            logger.info(f"[METRICS]   Max: {max_value}")
+        logger.info("")
+        logger.info("=" * 80)
+        logger.info("[METRICS] VALIDATE METRIC RANGE")
+        logger.info("=" * 80)
+        logger.info(f"  Metric: {metric_name}")
         if labels:
-            logger.info(f"[METRICS]   Labels: {labels}")
+            logger.info(f"  Labels: {labels}")
+        if min_value is not None and max_value is not None:
+            logger.info(f"  Range:  {min_value} {max_value}")
+        elif min_value is not None:
+            logger.info(f"  Min:    {min_value}")
+        elif max_value is not None:
+            logger.info(f"  Max:    {max_value}")
+        logger.info("")
     
     if min_value is None and max_value is None:
         raise MetricsTestError("At least one of min_value or max_value must be specified")
@@ -435,14 +471,29 @@ def validate_metric_range(
     
     if value_str is None:
         if logger:
-            logger.error(f"[METRICS ERROR] Metric '{metric_name}' not found")
+            logger.error("")
+            logger.error("✗ Metric not found")
+            logger.error("-" * 80)
+            logger.error(f"  Metric: {metric_name}")
+            if labels:
+                logger.error(f"  Labels: {labels}")
+            logger.error("")
+            logger.error("=" * 80)
+            logger.error("")
         raise MetricsTestError(f"Metric '{metric_name}' not found")
     
     try:
         value = float(value_str)
     except ValueError as e:
         if logger:
-            logger.error(f"[METRICS ERROR] Cannot parse '{value_str}' as float: {e}")
+            logger.error("")
+            logger.error("✗ Cannot parse as float")
+            logger.error("-" * 80)
+            logger.error(f"  Value:   {value_str}")
+            logger.error(f"  Error:   {e}")
+            logger.error("")
+            logger.error("=" * 80)
+            logger.error("")
         raise MetricsTestError(f"Cannot parse metric value '{value_str}' as float")
     
     # Validate range
@@ -468,7 +519,7 @@ def validate_metric_range(
             range_str = f" (min: {min_value})"
         elif max_value is not None:
             range_str = f" (max: {max_value})"
-        logger.info(f"[METRICS] ✓ Value {value} within range{range_str}")
+        logger.info(f"[METRICS]  Value {value} within range{range_str}")
     
     return value
 
@@ -580,7 +631,7 @@ def compare_metrics(
         )
     
     if logger:
-        logger.info(f"[METRICS] ✓ Comparison passed: {value1} {comparison} {value2}")
+        logger.info(f"[METRICS]  Comparison passed: {value1} {comparison} {value2}")
     
     return (value1, value2)
 
@@ -1052,7 +1103,7 @@ def check_all_channels_state(
         
         if logger:
             logger.info(
-                f"[METRICS] ✓ All {channel_count} channels in state {expected_state}"
+                f"[METRICS]  All {channel_count} channels in state {expected_state}"
             )
         
         return True
@@ -1134,11 +1185,18 @@ def wait_for_metric_condition(
         logger = get_active_logger()
         
         if logger:
-            logger.info(f"[METRICS] Waiting for metric condition...")
-            logger.info(f"[METRICS]   Metric: {metric_name}")
-            logger.info(f"[METRICS]   Condition: {condition}")
-            logger.info(f"[METRICS]   Target: {target_value}")
-            logger.info(f"[METRICS]   Timeout: {timeout}s, Poll interval: {poll_interval}s")
+            logger.info("")
+            logger.info("=" * 80)
+            logger.info("[METRICS] WAIT FOR CONDITION")
+            logger.info("=" * 80)
+            logger.info(f"  Metric:    {metric_name}")
+            if labels:
+                logger.info(f"  Labels:    {labels}")
+            logger.info(f"  Condition: {condition}")
+            logger.info(f"  Target:    {target_value}")
+            logger.info(f"  Timeout:   {timeout}s")
+            logger.info(f"  Poll:      {poll_interval}s")
+            logger.info("")
         
         valid_conditions = [
             "equals", "not_equals", "greater", "less", "greater_equal", "less_equal"
@@ -1157,10 +1215,15 @@ def wait_for_metric_condition(
             
             if elapsed > timeout:
                 if logger:
-                    logger.error(
-                        f"[METRICS ERROR] Timeout waiting for metric condition "
-                        f"after {elapsed:.1f}s ({poll_count} polls)"
-                    )
+                    logger.error("")
+                    logger.error(f"✗ Timeout after {elapsed:.1f}s ({poll_count} polls)")
+                    logger.error("-" * 80)
+                    logger.error(f"  Metric:    {metric_name}")
+                    logger.error(f"  Condition: {condition}")
+                    logger.error(f"  Target:    {target_value}")
+                    logger.error("")
+                    logger.error("=" * 80)
+                    logger.error("")
                 raise MetricsTestError(
                     f"Timeout waiting for {metric_name} {condition} {target_value} "
                     f"(waited {elapsed:.1f}s)"
@@ -1215,7 +1278,7 @@ def wait_for_metric_condition(
                 if condition_met:
                     if logger:
                         logger.info(
-                            f"[METRICS] ✓ Condition met after {elapsed:.1f}s "
+                            f"[METRICS]  Condition met after {elapsed:.1f}s "
                             f"({poll_count} polls): {value_str} {condition} {target_value}"
                         )
                     return value_str

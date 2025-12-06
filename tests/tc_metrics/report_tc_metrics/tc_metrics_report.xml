@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ENERGIS Functional Test" tests="3" failures="1" skipped="0" time="0.0" session_id="3c12af06">
+  <testcase classname="UTFW" name="PRE-STEP 1 Reboot device via UART" time="0.0">
+    <failure message="Test failed: &apos;UniversalLogger&apos; object has no attribute &apos;warning&apos;"/>
+  </testcase>
+  <testcase classname="UTFW" name="TEARDOWN 1 Ensure all outputs OFF" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="TEARDOWN 2 Final verify all outputs OFF" time="0.0">
+  </testcase>
+</testsuite>

@@ -34,14 +34,6 @@ class tc_pcap_capture:
         hw = get_hwconfig()
 
         return [
-            # PRE-STEP 1: Send reboot command via UART
-            UART.send_command_uart(
-                name="Reboot device via UART",
-                port=hw.SERIAL_PORT,
-                command="REBOOT",
-                baudrate=hw.BAUDRATE,
-                reboot=True  # Special handling for reboot
-            ),
         ]
     
     def teardown(self):

@@ -58,13 +58,16 @@ def ping_host(ip: str, count: int = 1, timeout: int = 1) -> bool:
     logger = get_active_logger()
 
     if logger:
-        logger.info(f"[NETWORK] ping_host() called")
-        logger.info(f"[NETWORK]   Target: {ip}, Count: {count}, Timeout: {timeout}s")
+        logger.info("")
+        logger.info("=" * 80)
+        logger.info("[NETWORK] PING")
+        logger.info("=" * 80)
+        logger.info(f"  Target:  {ip}")
+        logger.info(f"  Count:   {count}")
+        logger.info(f"  Timeout: {timeout}s")
+        logger.info("")
 
     system = platform.system().lower()
-
-    if logger:
-        logger.info(f"[NETWORK] Detected system: {system}")
 
     if "windows" in system:
         cmd = ["ping", "-n", str(count), "-w", str(timeout * 1000), ip]
@@ -72,28 +75,55 @@ def ping_host(ip: str, count: int = 1, timeout: int = 1) -> bool:
         cmd = ["ping", "-c", str(count), "-W", str(timeout), ip]
 
     if logger:
-        logger.info(f"[NETWORK] Executing ping command: {' '.join(cmd)}")
+        logger.info(f"  System:  {system}")
+        logger.info(f"  Command: {' '.join(cmd)}")
+        logger.info("")
 
     try:
         result = subprocess.run(cmd, capture_output=True, timeout=timeout + 3)
         success = result.returncode == 0
 
         if logger:
-            logger.info(f"[NETWORK] Ping result: rc={result.returncode}, success={success}")
+            if success:
+                logger.info(f"✓ Ping successful (rc={result.returncode})")
+            else:
+                logger.error(f"✗ Ping failed (rc={result.returncode})")
+            
             if result.stdout:
-                logger.info(f"[NETWORK] STDOUT:\n{result.stdout.decode('utf-8', errors='ignore')}")
+                stdout_text = result.stdout.decode('utf-8', errors='ignore')
+                logger.info("")
+                logger.info("  Output:")
+                for line in stdout_text.splitlines():
+                    if line.strip():
+                        logger.info(f"    {line}")
+            
             if result.stderr:
-                logger.info(f"[NETWORK] STDERR:\n{result.stderr.decode('utf-8', errors='ignore')}")
+                stderr_text = result.stderr.decode('utf-8', errors='ignore')
+                logger.info("")
+                logger.info("  Errors:")
+                for line in stderr_text.splitlines():
+                    if line.strip():
+                        logger.error(f"    {line}")
+            
+            logger.info("")
+            logger.info("=" * 80)
+            logger.info("")
 
         return success
 
     except subprocess.TimeoutExpired as e:
         if logger:
-            logger.error(f"[NETWORK ERROR] Ping command timed out after {timeout + 3}s")
+            logger.error("")
+            logger.error(f"✗ Ping timed out after {timeout + 3}s")
+            logger.error("=" * 80)
+            logger.error("")
         return False
     except Exception as e:
         if logger:
-            logger.error(f"[NETWORK ERROR] Ping exception: {type(e).__name__}: {e}")
+            logger.error("")
+            logger.error(f"✗ Ping exception: {type(e).__name__}: {e}")
+            logger.error("=" * 80)
+            logger.error("")
         return False
 
 
@@ -124,10 +154,17 @@ def http_get(
     logger = get_active_logger()
 
     if logger:
-        logger.info(f"[NETWORK] http_get() called")
-        logger.info(f"[NETWORK]   URL: {url}, Timeout: {timeout}s")
+        logger.info("")
+        logger.info("=" * 80)
+        logger.info("[NETWORK] HTTP GET")
+        logger.info("=" * 80)
+        logger.info(f"  URL:     {url}")
+        logger.info(f"  Timeout: {timeout}s")
         if headers:
-            logger.info(f"[NETWORK]   Headers: {headers}")
+            logger.info("  Headers:")
+            for key, value in headers.items():
+                logger.info(f"    {key}: {value}")
+        logger.info("")
 
     try:
         req = urllib.request.Request(url)
@@ -136,20 +173,30 @@ def http_get(
             for key, value in headers.items():
                 req.add_header(key, value)
 
-        if logger:
-            logger.info(f"[NETWORK] Sending GET request...")
-
         with urllib.request.urlopen(req, timeout=timeout) as response:
             status_code = response.getcode()
             response_headers = dict(response.headers)
             content = response.read().decode("utf-8")
 
             if logger:
-                logger.info(f"[NETWORK] GET response received: status={status_code}")
-                logger.info(f"[NETWORK]   Content length: {len(content)} bytes")
-                logger.info(f"[NETWORK]   Response headers: {response_headers}")
+                logger.info(f"✓ Response received")
+                logger.info("-" * 80)
+                logger.info(f"  Status:  {status_code}")
+                logger.info(f"  Size:    {len(content)} bytes")
+                logger.info("")
+                logger.info("  Response Headers:")
+                for key, value in response_headers.items():
+                    logger.info(f"    {key}: {value}")
+                logger.info("")
+                logger.info("  Content Preview:")
                 content_preview = content[:200] + "..." if len(content) > 200 else content
-                logger.info(f"[NETWORK]   Content preview: {content_preview}")
+                for line in content_preview.splitlines()[:10]:
+                    logger.info(f"    {line}")
+                if len(content) > 200:
+                    logger.info(f"    ... (truncated, full size: {len(content)} bytes)")
+                logger.info("")
+                logger.info("=" * 80)
+                logger.info("")
 
             return {
                 "status_code": status_code,
@@ -160,8 +207,15 @@ def http_get(
 
     except urllib.error.HTTPError as e:
         if logger:
-            logger.error(f"[NETWORK ERROR] HTTP error: {e.code} {e.reason}")
-            logger.error(f"[NETWORK ERROR]   URL: {url}")
+            logger.error("")
+            logger.error("✗ HTTP Error")
+            logger.error("-" * 80)
+            logger.error(f"  Status: {e.code}")
+            logger.error(f"  Reason: {e.reason}")
+            logger.error(f"  URL:    {url}")
+            logger.error("")
+            logger.error("=" * 80)
+            logger.error("")
         return {
             "status_code": e.code,
             "headers": dict(e.headers) if hasattr(e, "headers") else {},
@@ -171,8 +225,14 @@ def http_get(
         }
     except urllib.error.URLError as e:
         if logger:
-            logger.error(f"[NETWORK ERROR] URL error: {e.reason}")
-            logger.error(f"[NETWORK ERROR]   URL: {url}")
+            logger.error("")
+            logger.error("✗ URL Error")
+            logger.error("-" * 80)
+            logger.error(f"  Reason: {e.reason}")
+            logger.error(f"  URL:    {url}")
+            logger.error("")
+            logger.error("=" * 80)
+            logger.error("")
         return {
             "status_code": 0,
             "headers": {},
@@ -182,8 +242,15 @@ def http_get(
         }
     except Exception as e:
         if logger:
-            logger.error(f"[NETWORK ERROR] Exception: {type(e).__name__}: {e}")
-            logger.error(f"[NETWORK ERROR]   URL: {url}")
+            logger.error("")
+            logger.error("✗ Exception")
+            logger.error("-" * 80)
+            logger.error(f"  Type:    {type(e).__name__}")
+            logger.error(f"  Message: {e}")
+            logger.error(f"  URL:     {url}")
+            logger.error("")
+            logger.error("=" * 80)
+            logger.error("")
         return {
             "status_code": 0,
             "headers": {},

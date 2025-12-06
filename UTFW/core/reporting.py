@@ -198,7 +198,43 @@ class TestReporter:
     def log_test_end(self, test_name: str, result: str) -> None:
         """Mark test suite end in the log."""
         self.test_end_time = _now_ts()
-        self._ulog._write_line(f"===== {test_name}: RESULT: {result} =====")
+        # Preserve original single-line summary (required for parsers)
+        summary_line = f"===== {test_name}: RESULT: {result} ====="
+        self._ulog._write_line(summary_line)
+
+        # Append ASCII art banner for visual emphasis (without affecting parsers)
+        banner = self._make_result_banner(result)
+        for line in banner:
+            self._ulog._write_line(line)
+
+    @staticmethod
+    def _make_result_banner(result: str) -> List[str]:  # pragma: no cover - cosmetic
+        r = (result or "").strip().upper()
+        if r == "PASS":
+            art = [
+                "██████   █████  ███████ ███████ ",
+                "██   ██ ██   ██ ██      ██      ",
+                "██████  ███████ ███████ ███████ ",
+                "██      ██   ██      ██      ██ ",
+                "██      ██   ██ ███████ ███████ ",             
+            ]
+        elif r == "FAIL":
+            art = [
+                "███████  █████  ██ ██      ",
+                "██      ██   ██ ██ ██      ",
+                "█████   ███████ ██ ██      ",
+                "██      ██   ██ ██ ██      ",
+                "██      ██   ██ ██ ███████ ",
+            ]
+        else:
+            art = [f"  RESULT: {r}"]
+        box_width = max(len(line) for line in art)
+        top = "+" + "-" * (box_width + 2) + "+"
+        framed = [top]
+        for line in art:
+            framed.append(f"| {line.ljust(box_width)} |")
+        framed.append(top)
+        return framed
 
     def log_step_start(self, step_id: str, description: str, negative_test: bool = False) -> None:
         """Log test step start line."""

@@ -1,0 +1,3380 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<title>ENERGIS Test Report - PASS</title>
+<style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;background:#0f1216;color:#e7eaf0;margin:0}
+    header{padding:20px;background:#151a21;border-bottom:1px solid #2a2f37}
+    h1{margin:0;font-size:20px}
+    .meta{font-size:12px;color:#a6adbb;margin-top:6px}
+    .summary{display:flex;gap:16px;flex-wrap:wrap;margin:16px 0}
+    .chip{padding:8px 12px;border-radius:20px;border:1px solid #2a2f37;background:#151a21}
+    .chip.pass{border-color:#1e7f45;color:#d7ffe6;background:#0e2017}
+    .chip.fail{border-color:#a23b3b;color:#ffe1e1;background:#210e0e}
+    .chip.unknown{border-color:#6b7280;color:#e7eaf0;background:#1b2028}
+    main{padding:20px}
+    details{border:1px solid #2a2f37;border-radius:12px;margin-bottom:12px;overflow:hidden}
+    summary{padding:12px 14px;background:#151a21;cursor:pointer;font-weight:600}
+    .content{padding:12px 14px;background:#11161b}
+    .step-title{display:flex;justify-content:space-between;align-items:center}
+    .status{padding:3px 8px;border-radius:12px;border:1px solid #2a2f37;font-size:12px}
+    .status.pass{border-color:#1e7f45;color:#d7ffe6;background:#0e2017}
+    .status.fail{border-color:#a23b3b;color:#ffe1e1;background:#210e0e}
+    .status.unknown{border-color:#6b7280;background:#1b2028}
+    details.pre-step{border-left:4px solid #6366f1}
+    details.pre-step summary{background:#1a1c2e}
+    details.post-step{border-left:4px solid #22c55e}
+    details.post-step summary{background:#152419}
+    details.teardown{border-left:4px solid#f59e0b}
+    details.teardown summary{background:#2a1f0e}
+    pre{background:#0b0f14;border:1px solid #2a2f37;border-radius:8px;padding:10px;overflow:auto}
+    table{width:100%;border-collapse:collapse;margin-top:8px}
+    th,td{border-bottom:1px solid #1f2530;padding:8px 6px;text-align:left;font-size:13px}
+    th{color:#a6adbb;font-weight:600;background:#131820}
+    .kv{display:grid;grid-template-columns:180px 1fr;gap:8px}
+    a{color:#9ad0ff;text-decoration:none}
+    a:hover{text-decoration:underline}
+    .img-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:10px}
+    .img-grid figure{margin:0;padding:8px;background:#0b0f14;border:1px solid #2a2f37;border-radius:8px}
+    .img-grid img{max-width:100%;height:auto;display:block;border-radius:6px}
+    .img-grid figcaption{font-size:12px;color:#a6adbb;margin-top:6px}
+    .substeps{margin-top:10px}
+    .substeps details{margin-bottom:8px}
+    </style></head><body>
+<header>
+<h1>ENERGIS Test Report</h1>
+<div class='meta'>
+Overall: <b class='chip pass'>PASS</b> &nbsp;
+Started: 2025-11-23 14:26:35 &nbsp;
+Session ID: 3fc2892a &nbsp;
+</div>
+</header>
+<main>
+<section class='summary'>
+<div class='chip pass'>Passed: 6</div>
+<div class='chip fail'>Failed: 0</div>
+<div class='chip unknown'>Unknown: 0</div>
+<div class='chip'>Total: 6</div>
+</section>
+<section>
+<h3>Environment</h3>
+<div class='kv'>
+<div>Test Session ID</div><div><code>3fc2892a</code></div>
+<div>Hostname</div><div>DPC</div>
+<div>Os</div><div>Windows 11 (10.0.26100)</div>
+<div>Python</div><div>3.13.7 (tags/v3.13.7:bcee1c3, Aug 14 2025, 14:15:11) [MSC v.1944 64 bit (AMD64)]</div>
+<div>Generated_at</div><div>2025-11-23 14:27:07</div>
+<div>Log_file</div><div>G:\_GitHub\SW_Universal-Test-Framework\tests\tc_power_hlw8032\report_tc_power_hlw8032\tc_power_hlw8032_results.log</div>
+</div>
+</section>
+<section>
+<h3>Steps</h3>
+<details class='pre-step'>
+<summary>
+<div class='step-title'><div>PRE-STEP 1 Reboot device via UART</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:26:35</td><td>2025-11-23 14:26:43</td></tr>
+</table>
+<details>
+<summary><div class='step-title'><div>Step Log</div><div class='status unknown'>DETAIL</div></div></summary>
+<div class='content'>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:26:35] [PRE-STEP 1] Reboot device via UART
+[2025-11-23 14:26:35] [INFO] 
+[2025-11-23 14:26:35] [INFO] ================================================================================
+[2025-11-23 14:26:35] [INFO] [SERIAL] SEND COMMAND
+[2025-11-23 14:26:35] [INFO] ================================================================================
+[2025-11-23 14:26:35] [INFO]   Command: &#x27;REBOOT&#x27;
+[2025-11-23 14:26:35] [INFO]   Port:    COM3
+[2025-11-23 14:26:35] [INFO] 
+[2025-11-23 14:26:35] [INFO] ================================================================================
+[2025-11-23 14:26:35] [INFO] [SERIAL] OPENING CONNECTION
+[2025-11-23 14:26:35] [INFO] ================================================================================
+[2025-11-23 14:26:35] [INFO]   Port:          COM3
+[2025-11-23 14:26:35] [INFO]   Baudrate:      115200
+[2025-11-23 14:26:35] [INFO]   Timeout:       2.0s
+[2025-11-23 14:26:35] [INFO]   Write Timeout: 2.0s
+[2025-11-23 14:26:35] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-11-23 14:26:35] [INFO] ✓ Port COM3 opened successfully
+[2025-11-23 14:26:35] [INFO]   Stabilizing connection (100ms delay)...
+[2025-11-23 14:26:35] [INFO]   Resetting input and output buffers...
+[2025-11-23 14:26:35] [INFO] ✓ Connection ready and buffers cleared
+[2025-11-23 14:26:35] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:35] [INFO] [SERIAL TX] TRANSMITTING
+[2025-11-23 14:26:35] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:35] [INFO]   Command:  &#x27;REBOOT&#x27;
+[2025-11-23 14:26:35] [INFO]   Length:   8 bytes (including CR+LF)
+[2025-11-23 14:26:35] [INFO] 
+[2025-11-23 14:26:35] [INFO]   Hex Dump:
+[2025-11-23 14:26:35] [INFO]       0000  52 45 42 4F 4F 54 0D 0A                           |REBOOT..|
+[2025-11-23 14:26:35] [INFO] 
+[2025-11-23 14:26:35] [INFO] ✓ Transmitted 8 bytes
+[2025-11-23 14:26:35] [INFO]   Waiting 50ms for device processing...
+[2025-11-23 14:26:35] [INFO] 
+[2025-11-23 14:26:35] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-11-23 14:26:35] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:35] [INFO]   Timeout: 2.0s
+[2025-11-23 14:26:35] [INFO] 
+[2025-11-23 14:26:35] [INFO]   Chunk #1: 29 bytes | Elapsed: 0.000s | Total: 29 bytes
+[2025-11-23 14:26:36] [INFO] 
+[2025-11-23 14:26:36] [INFO]   No data for 500ms, response complete
+[2025-11-23 14:26:36] [INFO] 
+[2025-11-23 14:26:36] [INFO] ✓ Response Complete:
+[2025-11-23 14:26:36] [INFO]     Total Bytes:    29
+[2025-11-23 14:26:36] [INFO]     Chunks:         1
+[2025-11-23 14:26:36] [INFO]     Total Time:     0.505s
+[2025-11-23 14:26:36] [INFO] 
+[2025-11-23 14:26:36] [INFO]   Decoded Text:
+[2025-11-23 14:26:36] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:36] [INFO]   	[ECHO] Rebooting system...\r\n
+  
+[2025-11-23 14:26:36] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:36] [INFO] 
+[2025-11-23 14:26:36] [INFO]   Hex Dump:
+[2025-11-23 14:26:36] [INFO]       0000  09 5B 45 43 48 4F 5D 20 52 65 62 6F 6F 74 69 6E   |.[ECHO] Rebootin|
+[2025-11-23 14:26:36] [INFO]       0010  67 20 73 79 73 74 65 6D 2E 2E 2E 0D 0A            |g system.....|
+[2025-11-23 14:26:36] [INFO] 
+[2025-11-23 14:26:36] [INFO] [SERIAL] Closing connection...
+[2025-11-23 14:26:36] [INFO] ✓ Port COM3 closed
+[2025-11-23 14:26:36] [INFO] ================================================================================
+[2025-11-23 14:26:36] [INFO] 
+[2025-11-23 14:26:36] [INFO] 
+[2025-11-23 14:26:36] [INFO] ================================================================================
+[2025-11-23 14:26:36] [INFO] [SERIAL] WAIT FOR REBOOT AND READY
+[2025-11-23 14:26:36] [INFO] ================================================================================
+[2025-11-23 14:26:36] [INFO]   Port:         COM3
+[2025-11-23 14:26:36] [INFO]   Ready Token:  &#x27;SYSTEM READY&#x27;
+[2025-11-23 14:26:36] [INFO]   Baudrate:     115200
+[2025-11-23 14:26:36] [INFO]   Timeout:      20.0s
+[2025-11-23 14:26:36] [INFO] 
+[2025-11-23 14:26:36] [INFO] [REBOOT] Phase 1: Waiting for port to disappear
+[2025-11-23 14:26:36] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:36] [INFO]   Port exists initially: True
+[2025-11-23 14:26:41] [INFO]   ✓ Port COM3 disappeared (reboot in progress)
+[2025-11-23 14:26:41] [INFO] 
+[2025-11-23 14:26:41] [INFO] [REBOOT] Phase 2: Waiting for port to reappear
+[2025-11-23 14:26:41] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:42] [INFO]   ✓ Port COM3 reappeared
+[2025-11-23 14:26:42] [INFO] 
+[2025-11-23 14:26:42] [INFO] [REBOOT] Phase 3: Monitoring for ready signal
+[2025-11-23 14:26:42] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:42] [INFO]   Attempt #1 (timeout: 13.2s remaining)
+[2025-11-23 14:26:42] [INFO]     Connected, monitoring for &#x27;SYSTEM READY&#x27;...
+[2025-11-23 14:26:43] [INFO] [SERIAL RX] Chunk #1: 1167 bytes
+[2025-11-23 14:26:43] [INFO] [SERIAL RX] Content: &lt;CR&gt;&lt;LF&gt;\n[INFO] ========================================&lt;CR&gt;&lt;LF&gt;\n[INFO]   ENERGIS PDU - System Bring-Alive&lt;CR&gt;&lt;LF&gt;\n[INFO] ========================================&lt;CR&gt;&lt;LF&gt;\n[INFO] Firmware: 1.0.0&lt;CR&gt;&lt;LF&gt;\n[INFO] Serial: SN-0167663&lt;CR&gt;&lt;LF&gt;\n[INFO] ========================================&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ===== Phase 1: Hardware Init =====&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] GPIO configured&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] I2C buses initialized&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] SPI initialized for W5500&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ADC initialized&lt;CR&gt;&lt;LF&gt;\n[INFO] [CAT24DRV] Driver initialized &lt;CR&gt;&lt;LF&gt;\n	[ECHO] [MCP] init 0x20 OK&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [MCP] init 0x21 OK&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [MCP] init 0x23 OK&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ===== Phase 2: Peripheral Probing =====&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ✓ Relay MCP23017 detected at 0x20&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ✓ Display MCP23017 detected at 0x21&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ✓ Selection MCP23017 detected at 0x23&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ✓ All MCP23017s detected&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ✓ EEPROM CAT24C256 detected at 0x50&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ===== Phase 3: Subsystem Bring-up (deterministic) =====&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] LoggerTask ready&lt;CR&gt;&lt;LF&gt;\n[INFO] [Console] Task initialized (polling USB-CDC @ 10ms)&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ConsoleTask ready&lt;CR&gt;&lt;LF&gt;\n[INFO] [STORAGE] Task initialized&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [CONSOLE] Task started&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [LOGGER] Task started&lt;CR&gt;&lt;LF&gt;\n
+[2025-11-23 14:26:43] [INFO] [SERIAL RX] Chunk #2: 71 bytes
+[2025-11-23 14:26:43] [INFO] [SERIAL RX] Content: 	[ECHO] [STORAGE] Task started&lt;CR&gt;&lt;LF&gt;\n[INFO] [ST-FDEF] Magic value verified&lt;CR&gt;&lt;LF&gt;\n
+[2025-11-23 14:26:43] [INFO] [SERIAL RX] Chunk #3: 1208 bytes
+[2025-11-23 14:26:43] [INFO] [SERIAL RX] Content: [INFO] [ST-USRPR] Loaded user prefs from EEPROM&lt;CR&gt;&lt;LF&gt;\n[INFO] [STORAGE] Config loaded from EEPROM&lt;CR&gt;&lt;LF&gt;\n[INFO] [STORAGE] Config ready&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] StorageTask ready&lt;CR&gt;&lt;LF&gt;\n[INFO] [PowerMgr] Power manager initialized (state=RUN)&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ButtonTask ready&lt;CR&gt;&lt;LF&gt;\n[INFO] [NET] Task created successfully&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] NetTask ready&lt;CR&gt;&lt;LF&gt;\n[INFO] [MeterTask]  MeterTask started&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] MeterTask ready&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ===== Phase 4: Configuration Load =====&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] Storage config ready&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [NET] Task started&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [BUTTONTASK] Task started&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [MeterTask]  Task started&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] Saved Network config: &lt;CR&gt;&lt;LF&gt;\n[INFO]                  IP  : 192.168.0.22&lt;CR&gt;&lt;LF&gt;\n[INFO]                  SM  : 255.255.255.0&lt;CR&gt;&lt;LF&gt;\n[INFO]                  GW  : 192.168.0.1&lt;CR&gt;&lt;LF&gt;\n[INFO]                  DNS : 8.8.8.8&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ===== Finalization: entering =====&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [HEALTH] Task started&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ===================================&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] 	Crash logs:&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ===================================&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] System bring-alive complete =====&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] ==========================================&lt;CR&gt;&lt;LF&gt;\n[INFO]                SYSTEM READY               &lt;CR&gt;&lt;LF&gt;\n[INFO] ==========================================&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n
+[2025-11-23 14:26:43] [INFO] 
+[2025-11-23 14:26:43] [INFO]     ✓ Ready token &#x27;SYSTEM READY&#x27; DETECTED!
+[2025-11-23 14:26:43] [INFO] [SERIAL RX] Total reboot-response bytes: 2446 in 3 chunks (elapsed 7.836s)
+[2025-11-23 14:26:43] [INFO] [SERIAL RX] Full reboot-response:
+[2025-11-23 14:26:43] [INFO] \r\n
+[INFO] ========================================\r\n
+[INFO]   ENERGIS PDU - System Bring-Alive\r\n
+[INFO] ========================================\r\n
+[INFO] Firmware: 1.0.0\r\n
+[INFO] Serial: SN-0167663\r\n
+[INFO] ========================================\r\n
+\r\n
+[INFO] [INIT] ===== Phase 1: Hardware Init =====\r\n
+\r\n
+[INFO] [INIT] GPIO configured\r\n
+[INFO] [INIT] I2C buses initialized\r\n
+[INFO] [INIT] SPI initialized for W5500\r\n
+[INFO] [INIT] ADC initialized\r\n
+[INFO] [CAT24DRV] Driver initialized \r\n
+	[ECHO] [MCP] init 0x20 OK\r\n
+	[ECHO] [MCP] init 0x21 OK\r\n
+	[ECHO] [MCP] init 0x23 OK\r\n
+\r\n
+[INFO] [INIT] ===== Phase 2: Peripheral Probing =====\r\n
+[INFO] [INIT] ✓ Relay MCP23017 detected at 0x20\r\n
+[INFO] [INIT] ✓ Display MCP23017 detected at 0x21\r\n
+[INFO] [INIT] ✓ Selection MCP23017 detected at 0x23\r\n
+[INFO] [INIT] ✓ All MCP23017s detected\r\n
+[INFO] [INIT] ✓ EEPROM CAT24C256 detected at 0x50\r\n
+\r\n
+[INFO] [INIT] ===== Phase 3: Subsystem Bring-up (deterministic) =====\r\n
+[INFO] [INIT] LoggerTask ready\r\n
+[INFO] [Console] Task initialized (polling USB-CDC @ 10ms)\r\n
+[INFO] [INIT] ConsoleTask ready\r\n
+[INFO] [STORAGE] Task initialized\r\n
+	[ECHO] [CONSOLE] Task started\r\n
+	[ECHO] [LOGGER] Task started\r\n
+	[ECHO] [STORAGE] Task started\r\n
+[INFO] [ST-FDEF] Magic value verified\r\n
+[INFO] [ST-USRPR] Loaded user prefs from EEPROM\r\n
+[INFO] [STORAGE] Config loaded from EEPROM\r\n
+[INFO] [STORAGE] Config ready\r\n
+[INFO] [INIT] StorageTask ready\r\n
+[INFO] [PowerMgr] Power manager initialized (state=RUN)\r\n
+[INFO] [INIT] ButtonTask ready\r\n
+[INFO] [NET] Task created successfully\r\n
+[INFO] [INIT] NetTask ready\r\n
+[INFO] [MeterTask]  MeterTask started\r\n
+[INFO] [INIT] MeterTask ready\r\n
+\r\n
+[INFO] [INIT] ===== Phase 4: Configuration Load =====\r\n
+[INFO] [INIT] Storage config ready\r\n
+	[ECHO] [NET] Task started\r\n
+	[ECHO] [BUTTONTASK] Task started\r\n
+	[ECHO] [MeterTask]  Task started\r\n
+[INFO] [INIT] Saved Network config: \r\n
+[INFO]                  IP  : 192.168.0.22\r\n
+[INFO]                  SM  : 255.255.255.0\r\n
+[INFO]                  GW  : 192.168.0.1\r\n
+[INFO]                  DNS : 8.8.8.8\r\n
+\r\n
+[INFO] [INIT] ===== Finalization: entering =====\r\n
+	[ECHO] [HEALTH] Task started\r\n
+[INFO] [INIT] ===================================\r\n
+[INFO] [INIT] 	Crash logs:\r\n
+[INFO] [INIT] ===================================\r\n
+\r\n
+\r\n
+[INFO] [INIT] System bring-alive complete =====\r\n
+\r\n
+[INFO] ==========================================\r\n
+[INFO]                SYSTEM READY               \r\n
+[INFO] ==========================================\r\n
+\r\n
+
+[2025-11-23 14:26:43] [INFO] 
+[2025-11-23 14:26:43] [INFO] ================================================================================
+[2025-11-23 14:26:43] [INFO] [REBOOT] DEVICE READY
+[2025-11-23 14:26:43] [INFO] ================================================================================
+[2025-11-23 14:26:43] [INFO] 
+[2025-11-23 14:26:43] [INFO] [SERIAL] Closed port COM3 after reboot-monitoring attempt
+[2025-11-23 14:26:43] [PASS] PRE-STEP 1 completed successfully
+</pre>
+</div>
+</details>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1 Test power monitoring per channel with ON/OFF cycles</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:26:43</td><td>2025-11-23 14:27:00</td></tr>
+</table>
+<div class='substeps'>
+<h4>Substeps</h4>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.1 Turn ON Channel 1</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:26:43</td><td>2025-11-23 14:26:44</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:26:43] [STEP 1.1] Turn ON Channel 1
+[2025-11-23 14:26:43] [INFO] 
+[2025-11-23 14:26:43] [INFO] ================================================================================
+[2025-11-23 14:26:43] [INFO] [SERIAL] SEND COMMAND
+[2025-11-23 14:26:43] [INFO] ================================================================================
+[2025-11-23 14:26:43] [INFO]   Command: &#x27;SET_CH 1 ON&#x27;
+[2025-11-23 14:26:43] [INFO]   Port:    COM3
+[2025-11-23 14:26:43] [INFO] 
+[2025-11-23 14:26:43] [INFO] ================================================================================
+[2025-11-23 14:26:43] [INFO] [SERIAL] OPENING CONNECTION
+[2025-11-23 14:26:43] [INFO] ================================================================================
+[2025-11-23 14:26:43] [INFO]   Port:          COM3
+[2025-11-23 14:26:43] [INFO]   Baudrate:      115200
+[2025-11-23 14:26:43] [INFO]   Timeout:       2.0s
+[2025-11-23 14:26:43] [INFO]   Write Timeout: 2.0s
+[2025-11-23 14:26:43] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-11-23 14:26:43] [INFO] ✓ Port COM3 opened successfully
+[2025-11-23 14:26:43] [INFO]   Stabilizing connection (100ms delay)...
+[2025-11-23 14:26:44] [INFO]   Resetting input and output buffers...
+[2025-11-23 14:26:44] [INFO] ✓ Connection ready and buffers cleared
+[2025-11-23 14:26:44] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:44] [INFO] [SERIAL TX] TRANSMITTING
+[2025-11-23 14:26:44] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:44] [INFO]   Command:  &#x27;SET_CH 1 ON&#x27;
+[2025-11-23 14:26:44] [INFO]   Length:   13 bytes (including CR+LF)
+[2025-11-23 14:26:44] [INFO] 
+[2025-11-23 14:26:44] [INFO]   Hex Dump:
+[2025-11-23 14:26:44] [INFO]       0000  53 45 54 5F 43 48 20 31 20 4F 4E 0D 0A            |SET_CH 1 ON..|
+[2025-11-23 14:26:44] [INFO] 
+[2025-11-23 14:26:44] [INFO] ✓ Transmitted 13 bytes
+[2025-11-23 14:26:44] [INFO]   Waiting 50ms for device processing...
+[2025-11-23 14:26:44] [INFO] 
+[2025-11-23 14:26:44] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-11-23 14:26:44] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:44] [INFO]   Timeout: 2.0s
+[2025-11-23 14:26:44] [INFO] 
+[2025-11-23 14:26:44] [INFO]   Chunk #1: 50 bytes | Elapsed: 0.032s | Total: 50 bytes
+[2025-11-23 14:26:44] [INFO]   Chunk #2: 123 bytes | Elapsed: 0.294s | Total: 173 bytes
+[2025-11-23 14:26:44] [INFO] 
+[2025-11-23 14:26:44] [INFO]   No data for 500ms, response complete
+[2025-11-23 14:26:44] [INFO] 
+[2025-11-23 14:26:44] [INFO] ✓ Response Complete:
+[2025-11-23 14:26:44] [INFO]     Total Bytes:    173
+[2025-11-23 14:26:44] [INFO]     Chunks:         2
+[2025-11-23 14:26:44] [INFO]     Total Time:     0.799s
+[2025-11-23 14:26:44] [INFO] 
+[2025-11-23 14:26:44] [INFO]   Decoded Text:
+[2025-11-23 14:26:44] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:44] [INFO]   [INFO] [ETH] Hardware initialized (SPI @ 40 MHz)\r\n
+  	[ECHO] \r\n
+  	[ECHO] === ENERGIS Console Ready ===\r\n
+  	[ECHO] Type HELP for available commands\r\n
+  	[ECHO] \r\n
+  	[ECHO] CH1 = ON\r\n
+  \r\n
+  \r\n
+  
+[2025-11-23 14:26:44] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:44] [INFO] 
+[2025-11-23 14:26:44] [INFO]   Hex Dump:
+[2025-11-23 14:26:44] [INFO]       0000  5B 49 4E 46 4F 5D 20 5B 45 54 48 5D 20 48 61 72   |[INFO] [ETH] Har|
+[2025-11-23 14:26:44] [INFO]       0010  64 77 61 72 65 20 69 6E 69 74 69 61 6C 69 7A 65   |dware initialize|
+[2025-11-23 14:26:44] [INFO]       0020  64 20 28 53 50 49 20 40 20 34 30 20 4D 48 7A 29   |d (SPI @ 40 MHz)|
+[2025-11-23 14:26:44] [INFO]       0030  0D 0A 09 5B 45 43 48 4F 5D 20 0D 0A 09 5B 45 43   |...[ECHO] ...[EC|
+[2025-11-23 14:26:44] [INFO]       0040  48 4F 5D 20 3D 3D 3D 20 45 4E 45 52 47 49 53 20   |HO] === ENERGIS |
+[2025-11-23 14:26:44] [INFO]       0050  43 6F 6E 73 6F 6C 65 20 52 65 61 64 79 20 3D 3D   |Console Ready ==|
+[2025-11-23 14:26:44] [INFO]       0060  3D 0D 0A 09 5B 45 43 48 4F 5D 20 54 79 70 65 20   |=...[ECHO] Type |
+[2025-11-23 14:26:44] [INFO]       0070  48 45 4C 50 20 66 6F 72 20 61 76 61 69 6C 61 62   |HELP for availab|
+[2025-11-23 14:26:44] [INFO]       0080  6C 65 20 63 6F 6D 6D 61 6E 64 73 0D 0A 09 5B 45   |le commands...[E|
+[2025-11-23 14:26:44] [INFO]       0090  43 48 4F 5D 20 0D 0A 09 5B 45 43 48 4F 5D 20 43   |CHO] ...[ECHO] C|
+[2025-11-23 14:26:44] [INFO]       00A0  48 31 20 3D 20 4F 4E 0D 0A 0D 0A 0D 0A            |H1 = ON......|
+[2025-11-23 14:26:44] [INFO] 
+[2025-11-23 14:26:44] [INFO] [SERIAL] Closing connection...
+[2025-11-23 14:26:44] [INFO] ✓ Port COM3 closed
+[2025-11-23 14:26:44] [INFO] ================================================================================
+[2025-11-23 14:26:44] [INFO] 
+[2025-11-23 14:26:44] [PASS] STEP 1.1 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.2 Read power data for Channel 1</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:26:44</td><td>2025-11-23 14:26:45</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:26:44] [STEP 1.2] Read power data for Channel 1
+[2025-11-23 14:26:44] [INFO] 
+[2025-11-23 14:26:44] [INFO] ================================================================================
+[2025-11-23 14:26:44] [INFO] [SERIAL] SEND COMMAND
+[2025-11-23 14:26:44] [INFO] ================================================================================
+[2025-11-23 14:26:44] [INFO]   Command: &#x27;READ_HLW8032 1&#x27;
+[2025-11-23 14:26:44] [INFO]   Port:    COM3
+[2025-11-23 14:26:44] [INFO] 
+[2025-11-23 14:26:44] [INFO] ================================================================================
+[2025-11-23 14:26:44] [INFO] [SERIAL] OPENING CONNECTION
+[2025-11-23 14:26:44] [INFO] ================================================================================
+[2025-11-23 14:26:44] [INFO]   Port:          COM3
+[2025-11-23 14:26:44] [INFO]   Baudrate:      115200
+[2025-11-23 14:26:44] [INFO]   Timeout:       2.0s
+[2025-11-23 14:26:44] [INFO]   Write Timeout: 2.0s
+[2025-11-23 14:26:44] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-11-23 14:26:44] [INFO] ✓ Port COM3 opened successfully
+[2025-11-23 14:26:44] [INFO]   Stabilizing connection (100ms delay)...
+[2025-11-23 14:26:44] [INFO]   Resetting input and output buffers...
+[2025-11-23 14:26:44] [INFO] ✓ Connection ready and buffers cleared
+[2025-11-23 14:26:44] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:44] [INFO] [SERIAL TX] TRANSMITTING
+[2025-11-23 14:26:44] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:44] [INFO]   Command:  &#x27;READ_HLW8032 1&#x27;
+[2025-11-23 14:26:44] [INFO]   Length:   16 bytes (including CR+LF)
+[2025-11-23 14:26:44] [INFO] 
+[2025-11-23 14:26:44] [INFO]   Hex Dump:
+[2025-11-23 14:26:44] [INFO]       0000  52 45 41 44 5F 48 4C 57 38 30 33 32 20 31 0D 0A   |READ_HLW8032 1..|
+[2025-11-23 14:26:44] [INFO] 
+[2025-11-23 14:26:44] [INFO] ✓ Transmitted 16 bytes
+[2025-11-23 14:26:44] [INFO]   Waiting 50ms for device processing...
+[2025-11-23 14:26:44] [INFO] 
+[2025-11-23 14:26:45] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-11-23 14:26:45] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:45] [INFO]   Timeout: 2.0s
+[2025-11-23 14:26:45] [INFO] 
+[2025-11-23 14:26:45] [INFO]   Chunk #1: 50 bytes | Elapsed: 0.000s | Total: 50 bytes
+[2025-11-23 14:26:45] [INFO] 
+[2025-11-23 14:26:45] [INFO]   No data for 500ms, response complete
+[2025-11-23 14:26:45] [INFO] 
+[2025-11-23 14:26:45] [INFO] ✓ Response Complete:
+[2025-11-23 14:26:45] [INFO]     Total Bytes:    50
+[2025-11-23 14:26:45] [INFO]     Chunks:         1
+[2025-11-23 14:26:45] [INFO]     Total Time:     0.504s
+[2025-11-23 14:26:45] [INFO] 
+[2025-11-23 14:26:45] [INFO]   Decoded Text:
+[2025-11-23 14:26:45] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:45] [INFO]   	[ECHO] CH1: V=0.00 V, I=0.000 A, P=0.00 W\r\n
+  \r\n
+  \r\n
+  \r\n
+  
+[2025-11-23 14:26:45] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:45] [INFO] 
+[2025-11-23 14:26:45] [INFO]   Hex Dump:
+[2025-11-23 14:26:45] [INFO]       0000  09 5B 45 43 48 4F 5D 20 43 48 31 3A 20 56 3D 30   |.[ECHO] CH1: V=0|
+[2025-11-23 14:26:45] [INFO]       0010  2E 30 30 20 56 2C 20 49 3D 30 2E 30 30 30 20 41   |.00 V, I=0.000 A|
+[2025-11-23 14:26:45] [INFO]       0020  2C 20 50 3D 30 2E 30 30 20 57 0D 0A 0D 0A 0D 0A   |, P=0.00 W......|
+[2025-11-23 14:26:45] [INFO]       0030  0D 0A                                             |..|
+[2025-11-23 14:26:45] [INFO] 
+[2025-11-23 14:26:45] [INFO] [SERIAL] Closing connection...
+[2025-11-23 14:26:45] [INFO] ✓ Port COM3 closed
+[2025-11-23 14:26:45] [INFO] ================================================================================
+[2025-11-23 14:26:45] [INFO] 
+[2025-11-23 14:26:45] [PASS] STEP 1.2 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.3 Validate power response for CH1</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:26:45</td><td>2025-11-23 14:26:45</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:26:45] [STEP 1.3] Validate power response for CH1
+[2025-11-23 14:26:45] [PASS] STEP 1.3 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.4 Turn OFF Channel 1</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:26:45</td><td>2025-11-23 14:26:46</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:26:45] [STEP 1.4] Turn OFF Channel 1
+[2025-11-23 14:26:45] [INFO] 
+[2025-11-23 14:26:45] [INFO] ================================================================================
+[2025-11-23 14:26:45] [INFO] [SERIAL] SEND COMMAND
+[2025-11-23 14:26:45] [INFO] ================================================================================
+[2025-11-23 14:26:45] [INFO]   Command: &#x27;SET_CH 1 OFF&#x27;
+[2025-11-23 14:26:45] [INFO]   Port:    COM3
+[2025-11-23 14:26:45] [INFO] 
+[2025-11-23 14:26:45] [INFO] ================================================================================
+[2025-11-23 14:26:45] [INFO] [SERIAL] OPENING CONNECTION
+[2025-11-23 14:26:45] [INFO] ================================================================================
+[2025-11-23 14:26:45] [INFO]   Port:          COM3
+[2025-11-23 14:26:45] [INFO]   Baudrate:      115200
+[2025-11-23 14:26:45] [INFO]   Timeout:       2.0s
+[2025-11-23 14:26:45] [INFO]   Write Timeout: 2.0s
+[2025-11-23 14:26:45] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-11-23 14:26:45] [INFO] ✓ Port COM3 opened successfully
+[2025-11-23 14:26:45] [INFO]   Stabilizing connection (100ms delay)...
+[2025-11-23 14:26:45] [INFO]   Resetting input and output buffers...
+[2025-11-23 14:26:45] [INFO] ✓ Connection ready and buffers cleared
+[2025-11-23 14:26:45] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:45] [INFO] [SERIAL TX] TRANSMITTING
+[2025-11-23 14:26:45] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:45] [INFO]   Command:  &#x27;SET_CH 1 OFF&#x27;
+[2025-11-23 14:26:45] [INFO]   Length:   14 bytes (including CR+LF)
+[2025-11-23 14:26:45] [INFO] 
+[2025-11-23 14:26:45] [INFO]   Hex Dump:
+[2025-11-23 14:26:45] [INFO]       0000  53 45 54 5F 43 48 20 31 20 4F 46 46 0D 0A         |SET_CH 1 OFF..|
+[2025-11-23 14:26:45] [INFO] 
+[2025-11-23 14:26:45] [INFO] ✓ Transmitted 14 bytes
+[2025-11-23 14:26:45] [INFO]   Waiting 50ms for device processing...
+[2025-11-23 14:26:45] [INFO] 
+[2025-11-23 14:26:45] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-11-23 14:26:45] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:45] [INFO]   Timeout: 2.0s
+[2025-11-23 14:26:45] [INFO] 
+[2025-11-23 14:26:45] [INFO]   Chunk #1: 23 bytes | Elapsed: 0.001s | Total: 23 bytes
+[2025-11-23 14:26:45] [INFO]   Chunk #2: 341 bytes | Elapsed: 0.125s | Total: 364 bytes
+[2025-11-23 14:26:46] [INFO]   Chunk #3: 91 bytes | Elapsed: 0.462s | Total: 455 bytes
+[2025-11-23 14:26:46] [INFO] 
+[2025-11-23 14:26:46] [INFO]   No data for 500ms, response complete
+[2025-11-23 14:26:46] [INFO] 
+[2025-11-23 14:26:46] [INFO] ✓ Response Complete:
+[2025-11-23 14:26:46] [INFO]     Total Bytes:    455
+[2025-11-23 14:26:46] [INFO]     Chunks:         3
+[2025-11-23 14:26:46] [INFO]     Total Time:     0.966s
+[2025-11-23 14:26:46] [INFO] 
+[2025-11-23 14:26:46] [INFO]   Decoded Text:
+[2025-11-23 14:26:46] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:46] [INFO]   	[ECHO] CH1 = OFF\r\n
+  \r\n
+  \r\n
+  [INFO] [ETH] PHY link established\r\n
+  [INFO] [ETH] Chip initialized\r\n
+  [INFO] [NET] Initial PHY link detected, ETH LED ON\r\n
+  [INFO] [NET] Ethernet HW up, starting services\r\n
+  [INFO] [SERVER] Listening on port 80\r\n
+  [INFO] [NET] HTTP server initialized\r\n
+  [INFO] [SNMPDRV] ready on UDP socket 1, port 161\r\n
+  [INFO] [SNMP] Agent running on UDP/161 (sock 1)\r\n
+  [WARNING 0x61F1] [HEALTH] GRACE PERIOD ENDED \r\n
+  [WARNING 0x61F1] [HEALTH] ARMING WATCHDOG \r\n
+  
+[2025-11-23 14:26:46] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:46] [INFO] 
+[2025-11-23 14:26:46] [INFO]   Hex Dump:
+[2025-11-23 14:26:46] [INFO]       0000  09 5B 45 43 48 4F 5D 20 43 48 31 20 3D 20 4F 46   |.[ECHO] CH1 = OF|
+[2025-11-23 14:26:46] [INFO]       0010  46 0D 0A 0D 0A 0D 0A 5B 49 4E 46 4F 5D 20 5B 45   |F......[INFO] [E|
+[2025-11-23 14:26:46] [INFO]       0020  54 48 5D 20 50 48 59 20 6C 69 6E 6B 20 65 73 74   |TH] PHY link est|
+[2025-11-23 14:26:46] [INFO]       0030  61 62 6C 69 73 68 65 64 0D 0A 5B 49 4E 46 4F 5D   |ablished..[INFO]|
+[2025-11-23 14:26:46] [INFO]       0040  20 5B 45 54 48 5D 20 43 68 69 70 20 69 6E 69 74   | [ETH] Chip init|
+[2025-11-23 14:26:46] [INFO]       0050  69 61 6C 69 7A 65 64 0D 0A 5B 49 4E 46 4F 5D 20   |ialized..[INFO] |
+[2025-11-23 14:26:46] [INFO]       0060  5B 4E 45 54 5D 20 49 6E 69 74 69 61 6C 20 50 48   |[NET] Initial PH|
+[2025-11-23 14:26:46] [INFO]       0070  59 20 6C 69 6E 6B 20 64 65 74 65 63 74 65 64 2C   |Y link detected,|
+[2025-11-23 14:26:46] [INFO]       0080  20 45 54 48 20 4C 45 44 20 4F 4E 0D 0A 5B 49 4E   | ETH LED ON..[IN|
+[2025-11-23 14:26:46] [INFO]       0090  46 4F 5D 20 5B 4E 45 54 5D 20 45 74 68 65 72 6E   |FO] [NET] Ethern|
+[2025-11-23 14:26:46] [INFO]       00A0  65 74 20 48 57 20 75 70 2C 20 73 74 61 72 74 69   |et HW up, starti|
+[2025-11-23 14:26:46] [INFO]       00B0  6E 67 20 73 65 72 76 69 63 65 73 0D 0A 5B 49 4E   |ng services..[IN|
+[2025-11-23 14:26:46] [INFO]       00C0  46 4F 5D 20 5B 53 45 52 56 45 52 5D 20 4C 69 73   |FO] [SERVER] Lis|
+[2025-11-23 14:26:46] [INFO]       00D0  74 65 6E 69 6E 67 20 6F 6E 20 70 6F 72 74 20 38   |tening on port 8|
+[2025-11-23 14:26:46] [INFO]       00E0  30 0D 0A 5B 49 4E 46 4F 5D 20 5B 4E 45 54 5D 20   |0..[INFO] [NET] |
+[2025-11-23 14:26:46] [INFO]       00F0  48 54 54 50 20 73 65 72 76 65 72 20 69 6E 69 74   |HTTP server init|
+[2025-11-23 14:26:46] [INFO]       0100  69 61 6C 69 7A 65 64 0D 0A 5B 49 4E 46 4F 5D 20   |ialized..[INFO] |
+[2025-11-23 14:26:46] [INFO]       0110  5B 53 4E 4D 50 44 52 56 5D 20 72 65 61 64 79 20   |[SNMPDRV] ready |
+[2025-11-23 14:26:46] [INFO]       0120  6F 6E 20 55 44 50 20 73 6F 63 6B 65 74 20 31 2C   |on UDP socket 1,|
+[2025-11-23 14:26:46] [INFO]       0130  20 70 6F 72 74 20 31 36 31 0D 0A 5B 49 4E 46 4F   | port 161..[INFO|
+[2025-11-23 14:26:46] [INFO]       0140  5D 20 5B 53 4E 4D 50 5D 20 41 67 65 6E 74 20 72   |] [SNMP] Agent r|
+[2025-11-23 14:26:46] [INFO]       0150  75 6E 6E 69 6E 67 20 6F 6E 20 55 44 50 2F 31 36   |unning on UDP/16|
+[2025-11-23 14:26:46] [INFO]       0160  31 20 28 73 6F 63 6B 20 31 29 0D 0A 5B 57 41 52   |1 (sock 1)..[WAR|
+[2025-11-23 14:26:46] [INFO]       0170  4E 49 4E 47 20 30 78 36 31 46 31 5D 20 5B 48 45   |NING 0x61F1] [HE|
+[2025-11-23 14:26:46] [INFO]       0180  41 4C 54 48 5D 20 47 52 41 43 45 20 50 45 52 49   |ALTH] GRACE PERI|
+[2025-11-23 14:26:46] [INFO]       0190  4F 44 20 45 4E 44 45 44 20 0D 0A 5B 57 41 52 4E   |OD ENDED ..[WARN|
+[2025-11-23 14:26:46] [INFO]       01A0  49 4E 47 20 30 78 36 31 46 31 5D 20 5B 48 45 41   |ING 0x61F1] [HEA|
+[2025-11-23 14:26:46] [INFO]       01B0  4C 54 48 5D 20 41 52 4D 49 4E 47 20 57 41 54 43   |LTH] ARMING WATC|
+[2025-11-23 14:26:46] [INFO]       01C0  48 44 4F 47 20 0D 0A                              |HDOG ..|
+[2025-11-23 14:26:46] [INFO] 
+[2025-11-23 14:26:46] [INFO] [SERIAL] Closing connection...
+[2025-11-23 14:26:46] [INFO] ✓ Port COM3 closed
+[2025-11-23 14:26:46] [INFO] ================================================================================
+[2025-11-23 14:26:46] [INFO] 
+[2025-11-23 14:26:46] [PASS] STEP 1.4 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.5 Turn ON Channel 2</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:26:46</td><td>2025-11-23 14:26:47</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:26:46] [STEP 1.5] Turn ON Channel 2
+[2025-11-23 14:26:46] [INFO] 
+[2025-11-23 14:26:46] [INFO] ================================================================================
+[2025-11-23 14:26:46] [INFO] [SERIAL] SEND COMMAND
+[2025-11-23 14:26:46] [INFO] ================================================================================
+[2025-11-23 14:26:46] [INFO]   Command: &#x27;SET_CH 2 ON&#x27;
+[2025-11-23 14:26:46] [INFO]   Port:    COM3
+[2025-11-23 14:26:46] [INFO] 
+[2025-11-23 14:26:46] [INFO] ================================================================================
+[2025-11-23 14:26:46] [INFO] [SERIAL] OPENING CONNECTION
+[2025-11-23 14:26:46] [INFO] ================================================================================
+[2025-11-23 14:26:46] [INFO]   Port:          COM3
+[2025-11-23 14:26:46] [INFO]   Baudrate:      115200
+[2025-11-23 14:26:46] [INFO]   Timeout:       2.0s
+[2025-11-23 14:26:46] [INFO]   Write Timeout: 2.0s
+[2025-11-23 14:26:46] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-11-23 14:26:46] [INFO] ✓ Port COM3 opened successfully
+[2025-11-23 14:26:46] [INFO]   Stabilizing connection (100ms delay)...
+[2025-11-23 14:26:46] [INFO]   Resetting input and output buffers...
+[2025-11-23 14:26:46] [INFO] ✓ Connection ready and buffers cleared
+[2025-11-23 14:26:46] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:46] [INFO] [SERIAL TX] TRANSMITTING
+[2025-11-23 14:26:46] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:46] [INFO]   Command:  &#x27;SET_CH 2 ON&#x27;
+[2025-11-23 14:26:46] [INFO]   Length:   13 bytes (including CR+LF)
+[2025-11-23 14:26:46] [INFO] 
+[2025-11-23 14:26:46] [INFO]   Hex Dump:
+[2025-11-23 14:26:46] [INFO]       0000  53 45 54 5F 43 48 20 32 20 4F 4E 0D 0A            |SET_CH 2 ON..|
+[2025-11-23 14:26:46] [INFO] 
+[2025-11-23 14:26:46] [INFO] ✓ Transmitted 13 bytes
+[2025-11-23 14:26:46] [INFO]   Waiting 50ms for device processing...
+[2025-11-23 14:26:46] [INFO] 
+[2025-11-23 14:26:46] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-11-23 14:26:46] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:46] [INFO]   Timeout: 2.0s
+[2025-11-23 14:26:46] [INFO] 
+[2025-11-23 14:26:46] [INFO]   Chunk #1: 22 bytes | Elapsed: 0.001s | Total: 22 bytes
+[2025-11-23 14:26:47] [INFO] 
+[2025-11-23 14:26:47] [INFO]   No data for 500ms, response complete
+[2025-11-23 14:26:47] [INFO] 
+[2025-11-23 14:26:47] [INFO] ✓ Response Complete:
+[2025-11-23 14:26:47] [INFO]     Total Bytes:    22
+[2025-11-23 14:26:47] [INFO]     Chunks:         1
+[2025-11-23 14:26:47] [INFO]     Total Time:     0.504s
+[2025-11-23 14:26:47] [INFO] 
+[2025-11-23 14:26:47] [INFO]   Decoded Text:
+[2025-11-23 14:26:47] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:47] [INFO]   	[ECHO] CH2 = ON\r\n
+  \r\n
+  \r\n
+  
+[2025-11-23 14:26:47] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:47] [INFO] 
+[2025-11-23 14:26:47] [INFO]   Hex Dump:
+[2025-11-23 14:26:47] [INFO]       0000  09 5B 45 43 48 4F 5D 20 43 48 32 20 3D 20 4F 4E   |.[ECHO] CH2 = ON|
+[2025-11-23 14:26:47] [INFO]       0010  0D 0A 0D 0A 0D 0A                                 |......|
+[2025-11-23 14:26:47] [INFO] 
+[2025-11-23 14:26:47] [INFO] [SERIAL] Closing connection...
+[2025-11-23 14:26:47] [INFO] ✓ Port COM3 closed
+[2025-11-23 14:26:47] [INFO] ================================================================================
+[2025-11-23 14:26:47] [INFO] 
+[2025-11-23 14:26:47] [PASS] STEP 1.5 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.6 Read power data for Channel 2</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:26:47</td><td>2025-11-23 14:26:47</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:26:47] [STEP 1.6] Read power data for Channel 2
+[2025-11-23 14:26:47] [INFO] 
+[2025-11-23 14:26:47] [INFO] ================================================================================
+[2025-11-23 14:26:47] [INFO] [SERIAL] SEND COMMAND
+[2025-11-23 14:26:47] [INFO] ================================================================================
+[2025-11-23 14:26:47] [INFO]   Command: &#x27;READ_HLW8032 2&#x27;
+[2025-11-23 14:26:47] [INFO]   Port:    COM3
+[2025-11-23 14:26:47] [INFO] 
+[2025-11-23 14:26:47] [INFO] ================================================================================
+[2025-11-23 14:26:47] [INFO] [SERIAL] OPENING CONNECTION
+[2025-11-23 14:26:47] [INFO] ================================================================================
+[2025-11-23 14:26:47] [INFO]   Port:          COM3
+[2025-11-23 14:26:47] [INFO]   Baudrate:      115200
+[2025-11-23 14:26:47] [INFO]   Timeout:       2.0s
+[2025-11-23 14:26:47] [INFO]   Write Timeout: 2.0s
+[2025-11-23 14:26:47] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-11-23 14:26:47] [INFO] ✓ Port COM3 opened successfully
+[2025-11-23 14:26:47] [INFO]   Stabilizing connection (100ms delay)...
+[2025-11-23 14:26:47] [INFO]   Resetting input and output buffers...
+[2025-11-23 14:26:47] [INFO] ✓ Connection ready and buffers cleared
+[2025-11-23 14:26:47] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:47] [INFO] [SERIAL TX] TRANSMITTING
+[2025-11-23 14:26:47] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:47] [INFO]   Command:  &#x27;READ_HLW8032 2&#x27;
+[2025-11-23 14:26:47] [INFO]   Length:   16 bytes (including CR+LF)
+[2025-11-23 14:26:47] [INFO] 
+[2025-11-23 14:26:47] [INFO]   Hex Dump:
+[2025-11-23 14:26:47] [INFO]       0000  52 45 41 44 5F 48 4C 57 38 30 33 32 20 32 0D 0A   |READ_HLW8032 2..|
+[2025-11-23 14:26:47] [INFO] 
+[2025-11-23 14:26:47] [INFO] ✓ Transmitted 16 bytes
+[2025-11-23 14:26:47] [INFO]   Waiting 50ms for device processing...
+[2025-11-23 14:26:47] [INFO] 
+[2025-11-23 14:26:47] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-11-23 14:26:47] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:47] [INFO]   Timeout: 2.0s
+[2025-11-23 14:26:47] [INFO] 
+[2025-11-23 14:26:47] [INFO]   Chunk #1: 50 bytes | Elapsed: 0.000s | Total: 50 bytes
+[2025-11-23 14:26:47] [INFO] 
+[2025-11-23 14:26:47] [INFO]   No data for 500ms, response complete
+[2025-11-23 14:26:47] [INFO] 
+[2025-11-23 14:26:47] [INFO] ✓ Response Complete:
+[2025-11-23 14:26:47] [INFO]     Total Bytes:    50
+[2025-11-23 14:26:47] [INFO]     Chunks:         1
+[2025-11-23 14:26:47] [INFO]     Total Time:     0.505s
+[2025-11-23 14:26:47] [INFO] 
+[2025-11-23 14:26:47] [INFO]   Decoded Text:
+[2025-11-23 14:26:47] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:47] [INFO]   	[ECHO] CH2: V=0.00 V, I=0.000 A, P=0.00 W\r\n
+  \r\n
+  \r\n
+  \r\n
+  
+[2025-11-23 14:26:47] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:47] [INFO] 
+[2025-11-23 14:26:47] [INFO]   Hex Dump:
+[2025-11-23 14:26:47] [INFO]       0000  09 5B 45 43 48 4F 5D 20 43 48 32 3A 20 56 3D 30   |.[ECHO] CH2: V=0|
+[2025-11-23 14:26:47] [INFO]       0010  2E 30 30 20 56 2C 20 49 3D 30 2E 30 30 30 20 41   |.00 V, I=0.000 A|
+[2025-11-23 14:26:47] [INFO]       0020  2C 20 50 3D 30 2E 30 30 20 57 0D 0A 0D 0A 0D 0A   |, P=0.00 W......|
+[2025-11-23 14:26:47] [INFO]       0030  0D 0A                                             |..|
+[2025-11-23 14:26:47] [INFO] 
+[2025-11-23 14:26:47] [INFO] [SERIAL] Closing connection...
+[2025-11-23 14:26:47] [INFO] ✓ Port COM3 closed
+[2025-11-23 14:26:47] [INFO] ================================================================================
+[2025-11-23 14:26:47] [INFO] 
+[2025-11-23 14:26:47] [PASS] STEP 1.6 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.7 Validate power response for CH2</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:26:47</td><td>2025-11-23 14:26:47</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:26:47] [STEP 1.7] Validate power response for CH2
+[2025-11-23 14:26:47] [PASS] STEP 1.7 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.8 Turn OFF Channel 2</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:26:47</td><td>2025-11-23 14:26:48</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:26:47] [STEP 1.8] Turn OFF Channel 2
+[2025-11-23 14:26:47] [INFO] 
+[2025-11-23 14:26:47] [INFO] ================================================================================
+[2025-11-23 14:26:47] [INFO] [SERIAL] SEND COMMAND
+[2025-11-23 14:26:47] [INFO] ================================================================================
+[2025-11-23 14:26:47] [INFO]   Command: &#x27;SET_CH 2 OFF&#x27;
+[2025-11-23 14:26:47] [INFO]   Port:    COM3
+[2025-11-23 14:26:47] [INFO] 
+[2025-11-23 14:26:47] [INFO] ================================================================================
+[2025-11-23 14:26:47] [INFO] [SERIAL] OPENING CONNECTION
+[2025-11-23 14:26:47] [INFO] ================================================================================
+[2025-11-23 14:26:47] [INFO]   Port:          COM3
+[2025-11-23 14:26:47] [INFO]   Baudrate:      115200
+[2025-11-23 14:26:47] [INFO]   Timeout:       2.0s
+[2025-11-23 14:26:47] [INFO]   Write Timeout: 2.0s
+[2025-11-23 14:26:47] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-11-23 14:26:47] [INFO] ✓ Port COM3 opened successfully
+[2025-11-23 14:26:47] [INFO]   Stabilizing connection (100ms delay)...
+[2025-11-23 14:26:48] [INFO]   Resetting input and output buffers...
+[2025-11-23 14:26:48] [INFO] ✓ Connection ready and buffers cleared
+[2025-11-23 14:26:48] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:48] [INFO] [SERIAL TX] TRANSMITTING
+[2025-11-23 14:26:48] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:48] [INFO]   Command:  &#x27;SET_CH 2 OFF&#x27;
+[2025-11-23 14:26:48] [INFO]   Length:   14 bytes (including CR+LF)
+[2025-11-23 14:26:48] [INFO] 
+[2025-11-23 14:26:48] [INFO]   Hex Dump:
+[2025-11-23 14:26:48] [INFO]       0000  53 45 54 5F 43 48 20 32 20 4F 46 46 0D 0A         |SET_CH 2 OFF..|
+[2025-11-23 14:26:48] [INFO] 
+[2025-11-23 14:26:48] [INFO] ✓ Transmitted 14 bytes
+[2025-11-23 14:26:48] [INFO]   Waiting 50ms for device processing...
+[2025-11-23 14:26:48] [INFO] 
+[2025-11-23 14:26:48] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-11-23 14:26:48] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:48] [INFO]   Timeout: 2.0s
+[2025-11-23 14:26:48] [INFO] 
+[2025-11-23 14:26:48] [INFO]   Chunk #1: 23 bytes | Elapsed: 0.000s | Total: 23 bytes
+[2025-11-23 14:26:48] [INFO] 
+[2025-11-23 14:26:48] [INFO]   No data for 500ms, response complete
+[2025-11-23 14:26:48] [INFO] 
+[2025-11-23 14:26:48] [INFO] ✓ Response Complete:
+[2025-11-23 14:26:48] [INFO]     Total Bytes:    23
+[2025-11-23 14:26:48] [INFO]     Chunks:         1
+[2025-11-23 14:26:48] [INFO]     Total Time:     0.505s
+[2025-11-23 14:26:48] [INFO] 
+[2025-11-23 14:26:48] [INFO]   Decoded Text:
+[2025-11-23 14:26:48] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:48] [INFO]   	[ECHO] CH2 = OFF\r\n
+  \r\n
+  \r\n
+  
+[2025-11-23 14:26:48] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:48] [INFO] 
+[2025-11-23 14:26:48] [INFO]   Hex Dump:
+[2025-11-23 14:26:48] [INFO]       0000  09 5B 45 43 48 4F 5D 20 43 48 32 20 3D 20 4F 46   |.[ECHO] CH2 = OF|
+[2025-11-23 14:26:48] [INFO]       0010  46 0D 0A 0D 0A 0D 0A                              |F......|
+[2025-11-23 14:26:48] [INFO] 
+[2025-11-23 14:26:48] [INFO] [SERIAL] Closing connection...
+[2025-11-23 14:26:48] [INFO] ✓ Port COM3 closed
+[2025-11-23 14:26:48] [INFO] ================================================================================
+[2025-11-23 14:26:48] [INFO] 
+[2025-11-23 14:26:48] [PASS] STEP 1.8 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.9 Turn ON Channel 3</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:26:48</td><td>2025-11-23 14:26:49</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:26:48] [STEP 1.9] Turn ON Channel 3
+[2025-11-23 14:26:48] [INFO] 
+[2025-11-23 14:26:48] [INFO] ================================================================================
+[2025-11-23 14:26:48] [INFO] [SERIAL] SEND COMMAND
+[2025-11-23 14:26:48] [INFO] ================================================================================
+[2025-11-23 14:26:48] [INFO]   Command: &#x27;SET_CH 3 ON&#x27;
+[2025-11-23 14:26:48] [INFO]   Port:    COM3
+[2025-11-23 14:26:48] [INFO] 
+[2025-11-23 14:26:48] [INFO] ================================================================================
+[2025-11-23 14:26:48] [INFO] [SERIAL] OPENING CONNECTION
+[2025-11-23 14:26:48] [INFO] ================================================================================
+[2025-11-23 14:26:48] [INFO]   Port:          COM3
+[2025-11-23 14:26:48] [INFO]   Baudrate:      115200
+[2025-11-23 14:26:48] [INFO]   Timeout:       2.0s
+[2025-11-23 14:26:48] [INFO]   Write Timeout: 2.0s
+[2025-11-23 14:26:48] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-11-23 14:26:48] [INFO] ✓ Port COM3 opened successfully
+[2025-11-23 14:26:48] [INFO]   Stabilizing connection (100ms delay)...
+[2025-11-23 14:26:48] [INFO]   Resetting input and output buffers...
+[2025-11-23 14:26:48] [INFO] ✓ Connection ready and buffers cleared
+[2025-11-23 14:26:48] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:48] [INFO] [SERIAL TX] TRANSMITTING
+[2025-11-23 14:26:48] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:48] [INFO]   Command:  &#x27;SET_CH 3 ON&#x27;
+[2025-11-23 14:26:48] [INFO]   Length:   13 bytes (including CR+LF)
+[2025-11-23 14:26:48] [INFO] 
+[2025-11-23 14:26:48] [INFO]   Hex Dump:
+[2025-11-23 14:26:48] [INFO]       0000  53 45 54 5F 43 48 20 33 20 4F 4E 0D 0A            |SET_CH 3 ON..|
+[2025-11-23 14:26:48] [INFO] 
+[2025-11-23 14:26:48] [INFO] ✓ Transmitted 13 bytes
+[2025-11-23 14:26:48] [INFO]   Waiting 50ms for device processing...
+[2025-11-23 14:26:48] [INFO] 
+[2025-11-23 14:26:48] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-11-23 14:26:48] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:48] [INFO]   Timeout: 2.0s
+[2025-11-23 14:26:48] [INFO] 
+[2025-11-23 14:26:48] [INFO]   Chunk #1: 22 bytes | Elapsed: 0.000s | Total: 22 bytes
+[2025-11-23 14:26:49] [INFO] 
+[2025-11-23 14:26:49] [INFO]   No data for 500ms, response complete
+[2025-11-23 14:26:49] [INFO] 
+[2025-11-23 14:26:49] [INFO] ✓ Response Complete:
+[2025-11-23 14:26:49] [INFO]     Total Bytes:    22
+[2025-11-23 14:26:49] [INFO]     Chunks:         1
+[2025-11-23 14:26:49] [INFO]     Total Time:     0.505s
+[2025-11-23 14:26:49] [INFO] 
+[2025-11-23 14:26:49] [INFO]   Decoded Text:
+[2025-11-23 14:26:49] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:49] [INFO]   	[ECHO] CH3 = ON\r\n
+  \r\n
+  \r\n
+  
+[2025-11-23 14:26:49] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:49] [INFO] 
+[2025-11-23 14:26:49] [INFO]   Hex Dump:
+[2025-11-23 14:26:49] [INFO]       0000  09 5B 45 43 48 4F 5D 20 43 48 33 20 3D 20 4F 4E   |.[ECHO] CH3 = ON|
+[2025-11-23 14:26:49] [INFO]       0010  0D 0A 0D 0A 0D 0A                                 |......|
+[2025-11-23 14:26:49] [INFO] 
+[2025-11-23 14:26:49] [INFO] [SERIAL] Closing connection...
+[2025-11-23 14:26:49] [INFO] ✓ Port COM3 closed
+[2025-11-23 14:26:49] [INFO] ================================================================================
+[2025-11-23 14:26:49] [INFO] 
+[2025-11-23 14:26:49] [PASS] STEP 1.9 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.10 Read power data for Channel 3</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:26:49</td><td>2025-11-23 14:26:49</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:26:49] [STEP 1.10] Read power data for Channel 3
+[2025-11-23 14:26:49] [INFO] 
+[2025-11-23 14:26:49] [INFO] ================================================================================
+[2025-11-23 14:26:49] [INFO] [SERIAL] SEND COMMAND
+[2025-11-23 14:26:49] [INFO] ================================================================================
+[2025-11-23 14:26:49] [INFO]   Command: &#x27;READ_HLW8032 3&#x27;
+[2025-11-23 14:26:49] [INFO]   Port:    COM3
+[2025-11-23 14:26:49] [INFO] 
+[2025-11-23 14:26:49] [INFO] ================================================================================
+[2025-11-23 14:26:49] [INFO] [SERIAL] OPENING CONNECTION
+[2025-11-23 14:26:49] [INFO] ================================================================================
+[2025-11-23 14:26:49] [INFO]   Port:          COM3
+[2025-11-23 14:26:49] [INFO]   Baudrate:      115200
+[2025-11-23 14:26:49] [INFO]   Timeout:       2.0s
+[2025-11-23 14:26:49] [INFO]   Write Timeout: 2.0s
+[2025-11-23 14:26:49] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-11-23 14:26:49] [INFO] ✓ Port COM3 opened successfully
+[2025-11-23 14:26:49] [INFO]   Stabilizing connection (100ms delay)...
+[2025-11-23 14:26:49] [INFO]   Resetting input and output buffers...
+[2025-11-23 14:26:49] [INFO] ✓ Connection ready and buffers cleared
+[2025-11-23 14:26:49] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:49] [INFO] [SERIAL TX] TRANSMITTING
+[2025-11-23 14:26:49] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:49] [INFO]   Command:  &#x27;READ_HLW8032 3&#x27;
+[2025-11-23 14:26:49] [INFO]   Length:   16 bytes (including CR+LF)
+[2025-11-23 14:26:49] [INFO] 
+[2025-11-23 14:26:49] [INFO]   Hex Dump:
+[2025-11-23 14:26:49] [INFO]       0000  52 45 41 44 5F 48 4C 57 38 30 33 32 20 33 0D 0A   |READ_HLW8032 3..|
+[2025-11-23 14:26:49] [INFO] 
+[2025-11-23 14:26:49] [INFO] ✓ Transmitted 16 bytes
+[2025-11-23 14:26:49] [INFO]   Waiting 50ms for device processing...
+[2025-11-23 14:26:49] [INFO] 
+[2025-11-23 14:26:49] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-11-23 14:26:49] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:49] [INFO]   Timeout: 2.0s
+[2025-11-23 14:26:49] [INFO] 
+[2025-11-23 14:26:49] [INFO]   Chunk #1: 50 bytes | Elapsed: 0.001s | Total: 50 bytes
+[2025-11-23 14:26:49] [INFO] 
+[2025-11-23 14:26:49] [INFO]   No data for 500ms, response complete
+[2025-11-23 14:26:49] [INFO] 
+[2025-11-23 14:26:49] [INFO] ✓ Response Complete:
+[2025-11-23 14:26:49] [INFO]     Total Bytes:    50
+[2025-11-23 14:26:49] [INFO]     Chunks:         1
+[2025-11-23 14:26:49] [INFO]     Total Time:     0.505s
+[2025-11-23 14:26:49] [INFO] 
+[2025-11-23 14:26:49] [INFO]   Decoded Text:
+[2025-11-23 14:26:49] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:49] [INFO]   	[ECHO] CH3: V=0.00 V, I=0.000 A, P=0.00 W\r\n
+  \r\n
+  \r\n
+  \r\n
+  
+[2025-11-23 14:26:49] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:49] [INFO] 
+[2025-11-23 14:26:49] [INFO]   Hex Dump:
+[2025-11-23 14:26:49] [INFO]       0000  09 5B 45 43 48 4F 5D 20 43 48 33 3A 20 56 3D 30   |.[ECHO] CH3: V=0|
+[2025-11-23 14:26:49] [INFO]       0010  2E 30 30 20 56 2C 20 49 3D 30 2E 30 30 30 20 41   |.00 V, I=0.000 A|
+[2025-11-23 14:26:49] [INFO]       0020  2C 20 50 3D 30 2E 30 30 20 57 0D 0A 0D 0A 0D 0A   |, P=0.00 W......|
+[2025-11-23 14:26:49] [INFO]       0030  0D 0A                                             |..|
+[2025-11-23 14:26:49] [INFO] 
+[2025-11-23 14:26:49] [INFO] [SERIAL] Closing connection...
+[2025-11-23 14:26:49] [INFO] ✓ Port COM3 closed
+[2025-11-23 14:26:49] [INFO] ================================================================================
+[2025-11-23 14:26:49] [INFO] 
+[2025-11-23 14:26:49] [PASS] STEP 1.10 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.11 Validate power response for CH3</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:26:49</td><td>2025-11-23 14:26:49</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:26:49] [STEP 1.11] Validate power response for CH3
+[2025-11-23 14:26:49] [PASS] STEP 1.11 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.12 Turn OFF Channel 3</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:26:49</td><td>2025-11-23 14:26:50</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:26:49] [STEP 1.12] Turn OFF Channel 3
+[2025-11-23 14:26:49] [INFO] 
+[2025-11-23 14:26:49] [INFO] ================================================================================
+[2025-11-23 14:26:49] [INFO] [SERIAL] SEND COMMAND
+[2025-11-23 14:26:49] [INFO] ================================================================================
+[2025-11-23 14:26:49] [INFO]   Command: &#x27;SET_CH 3 OFF&#x27;
+[2025-11-23 14:26:49] [INFO]   Port:    COM3
+[2025-11-23 14:26:49] [INFO] 
+[2025-11-23 14:26:49] [INFO] ================================================================================
+[2025-11-23 14:26:49] [INFO] [SERIAL] OPENING CONNECTION
+[2025-11-23 14:26:49] [INFO] ================================================================================
+[2025-11-23 14:26:49] [INFO]   Port:          COM3
+[2025-11-23 14:26:49] [INFO]   Baudrate:      115200
+[2025-11-23 14:26:49] [INFO]   Timeout:       2.0s
+[2025-11-23 14:26:49] [INFO]   Write Timeout: 2.0s
+[2025-11-23 14:26:49] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-11-23 14:26:49] [INFO] ✓ Port COM3 opened successfully
+[2025-11-23 14:26:49] [INFO]   Stabilizing connection (100ms delay)...
+[2025-11-23 14:26:50] [INFO]   Resetting input and output buffers...
+[2025-11-23 14:26:50] [INFO] ✓ Connection ready and buffers cleared
+[2025-11-23 14:26:50] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:50] [INFO] [SERIAL TX] TRANSMITTING
+[2025-11-23 14:26:50] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:50] [INFO]   Command:  &#x27;SET_CH 3 OFF&#x27;
+[2025-11-23 14:26:50] [INFO]   Length:   14 bytes (including CR+LF)
+[2025-11-23 14:26:50] [INFO] 
+[2025-11-23 14:26:50] [INFO]   Hex Dump:
+[2025-11-23 14:26:50] [INFO]       0000  53 45 54 5F 43 48 20 33 20 4F 46 46 0D 0A         |SET_CH 3 OFF..|
+[2025-11-23 14:26:50] [INFO] 
+[2025-11-23 14:26:50] [INFO] ✓ Transmitted 14 bytes
+[2025-11-23 14:26:50] [INFO]   Waiting 50ms for device processing...
+[2025-11-23 14:26:50] [INFO] 
+[2025-11-23 14:26:50] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-11-23 14:26:50] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:50] [INFO]   Timeout: 2.0s
+[2025-11-23 14:26:50] [INFO] 
+[2025-11-23 14:26:50] [INFO]   Chunk #1: 23 bytes | Elapsed: 0.001s | Total: 23 bytes
+[2025-11-23 14:26:50] [INFO] 
+[2025-11-23 14:26:50] [INFO]   No data for 500ms, response complete
+[2025-11-23 14:26:50] [INFO] 
+[2025-11-23 14:26:50] [INFO] ✓ Response Complete:
+[2025-11-23 14:26:50] [INFO]     Total Bytes:    23
+[2025-11-23 14:26:50] [INFO]     Chunks:         1
+[2025-11-23 14:26:50] [INFO]     Total Time:     0.505s
+[2025-11-23 14:26:50] [INFO] 
+[2025-11-23 14:26:50] [INFO]   Decoded Text:
+[2025-11-23 14:26:50] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:50] [INFO]   	[ECHO] CH3 = OFF\r\n
+  \r\n
+  \r\n
+  
+[2025-11-23 14:26:50] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:50] [INFO] 
+[2025-11-23 14:26:50] [INFO]   Hex Dump:
+[2025-11-23 14:26:50] [INFO]       0000  09 5B 45 43 48 4F 5D 20 43 48 33 20 3D 20 4F 46   |.[ECHO] CH3 = OF|
+[2025-11-23 14:26:50] [INFO]       0010  46 0D 0A 0D 0A 0D 0A                              |F......|
+[2025-11-23 14:26:50] [INFO] 
+[2025-11-23 14:26:50] [INFO] [SERIAL] Closing connection...
+[2025-11-23 14:26:50] [INFO] ✓ Port COM3 closed
+[2025-11-23 14:26:50] [INFO] ================================================================================
+[2025-11-23 14:26:50] [INFO] 
+[2025-11-23 14:26:50] [PASS] STEP 1.12 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.13 Turn ON Channel 4</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:26:50</td><td>2025-11-23 14:26:51</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:26:50] [STEP 1.13] Turn ON Channel 4
+[2025-11-23 14:26:50] [INFO] 
+[2025-11-23 14:26:50] [INFO] ================================================================================
+[2025-11-23 14:26:50] [INFO] [SERIAL] SEND COMMAND
+[2025-11-23 14:26:50] [INFO] ================================================================================
+[2025-11-23 14:26:50] [INFO]   Command: &#x27;SET_CH 4 ON&#x27;
+[2025-11-23 14:26:50] [INFO]   Port:    COM3
+[2025-11-23 14:26:50] [INFO] 
+[2025-11-23 14:26:50] [INFO] ================================================================================
+[2025-11-23 14:26:50] [INFO] [SERIAL] OPENING CONNECTION
+[2025-11-23 14:26:50] [INFO] ================================================================================
+[2025-11-23 14:26:50] [INFO]   Port:          COM3
+[2025-11-23 14:26:50] [INFO]   Baudrate:      115200
+[2025-11-23 14:26:50] [INFO]   Timeout:       2.0s
+[2025-11-23 14:26:50] [INFO]   Write Timeout: 2.0s
+[2025-11-23 14:26:50] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-11-23 14:26:50] [INFO] ✓ Port COM3 opened successfully
+[2025-11-23 14:26:50] [INFO]   Stabilizing connection (100ms delay)...
+[2025-11-23 14:26:50] [INFO]   Resetting input and output buffers...
+[2025-11-23 14:26:50] [INFO] ✓ Connection ready and buffers cleared
+[2025-11-23 14:26:50] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:50] [INFO] [SERIAL TX] TRANSMITTING
+[2025-11-23 14:26:50] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:50] [INFO]   Command:  &#x27;SET_CH 4 ON&#x27;
+[2025-11-23 14:26:50] [INFO]   Length:   13 bytes (including CR+LF)
+[2025-11-23 14:26:50] [INFO] 
+[2025-11-23 14:26:50] [INFO]   Hex Dump:
+[2025-11-23 14:26:50] [INFO]       0000  53 45 54 5F 43 48 20 34 20 4F 4E 0D 0A            |SET_CH 4 ON..|
+[2025-11-23 14:26:50] [INFO] 
+[2025-11-23 14:26:50] [INFO] ✓ Transmitted 13 bytes
+[2025-11-23 14:26:50] [INFO]   Waiting 50ms for device processing...
+[2025-11-23 14:26:50] [INFO] 
+[2025-11-23 14:26:50] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-11-23 14:26:50] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:50] [INFO]   Timeout: 2.0s
+[2025-11-23 14:26:50] [INFO] 
+[2025-11-23 14:26:50] [INFO]   Chunk #1: 22 bytes | Elapsed: 0.000s | Total: 22 bytes
+[2025-11-23 14:26:51] [INFO] 
+[2025-11-23 14:26:51] [INFO]   No data for 500ms, response complete
+[2025-11-23 14:26:51] [INFO] 
+[2025-11-23 14:26:51] [INFO] ✓ Response Complete:
+[2025-11-23 14:26:51] [INFO]     Total Bytes:    22
+[2025-11-23 14:26:51] [INFO]     Chunks:         1
+[2025-11-23 14:26:51] [INFO]     Total Time:     0.505s
+[2025-11-23 14:26:51] [INFO] 
+[2025-11-23 14:26:51] [INFO]   Decoded Text:
+[2025-11-23 14:26:51] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:51] [INFO]   	[ECHO] CH4 = ON\r\n
+  \r\n
+  \r\n
+  
+[2025-11-23 14:26:51] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:51] [INFO] 
+[2025-11-23 14:26:51] [INFO]   Hex Dump:
+[2025-11-23 14:26:51] [INFO]       0000  09 5B 45 43 48 4F 5D 20 43 48 34 20 3D 20 4F 4E   |.[ECHO] CH4 = ON|
+[2025-11-23 14:26:51] [INFO]       0010  0D 0A 0D 0A 0D 0A                                 |......|
+[2025-11-23 14:26:51] [INFO] 
+[2025-11-23 14:26:51] [INFO] [SERIAL] Closing connection...
+[2025-11-23 14:26:51] [INFO] ✓ Port COM3 closed
+[2025-11-23 14:26:51] [INFO] ================================================================================
+[2025-11-23 14:26:51] [INFO] 
+[2025-11-23 14:26:51] [PASS] STEP 1.13 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.14 Read power data for Channel 4</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:26:51</td><td>2025-11-23 14:26:51</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:26:51] [STEP 1.14] Read power data for Channel 4
+[2025-11-23 14:26:51] [INFO] 
+[2025-11-23 14:26:51] [INFO] ================================================================================
+[2025-11-23 14:26:51] [INFO] [SERIAL] SEND COMMAND
+[2025-11-23 14:26:51] [INFO] ================================================================================
+[2025-11-23 14:26:51] [INFO]   Command: &#x27;READ_HLW8032 4&#x27;
+[2025-11-23 14:26:51] [INFO]   Port:    COM3
+[2025-11-23 14:26:51] [INFO] 
+[2025-11-23 14:26:51] [INFO] ================================================================================
+[2025-11-23 14:26:51] [INFO] [SERIAL] OPENING CONNECTION
+[2025-11-23 14:26:51] [INFO] ================================================================================
+[2025-11-23 14:26:51] [INFO]   Port:          COM3
+[2025-11-23 14:26:51] [INFO]   Baudrate:      115200
+[2025-11-23 14:26:51] [INFO]   Timeout:       2.0s
+[2025-11-23 14:26:51] [INFO]   Write Timeout: 2.0s
+[2025-11-23 14:26:51] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-11-23 14:26:51] [INFO] ✓ Port COM3 opened successfully
+[2025-11-23 14:26:51] [INFO]   Stabilizing connection (100ms delay)...
+[2025-11-23 14:26:51] [INFO]   Resetting input and output buffers...
+[2025-11-23 14:26:51] [INFO] ✓ Connection ready and buffers cleared
+[2025-11-23 14:26:51] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:51] [INFO] [SERIAL TX] TRANSMITTING
+[2025-11-23 14:26:51] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:51] [INFO]   Command:  &#x27;READ_HLW8032 4&#x27;
+[2025-11-23 14:26:51] [INFO]   Length:   16 bytes (including CR+LF)
+[2025-11-23 14:26:51] [INFO] 
+[2025-11-23 14:26:51] [INFO]   Hex Dump:
+[2025-11-23 14:26:51] [INFO]       0000  52 45 41 44 5F 48 4C 57 38 30 33 32 20 34 0D 0A   |READ_HLW8032 4..|
+[2025-11-23 14:26:51] [INFO] 
+[2025-11-23 14:26:51] [INFO] ✓ Transmitted 16 bytes
+[2025-11-23 14:26:51] [INFO]   Waiting 50ms for device processing...
+[2025-11-23 14:26:51] [INFO] 
+[2025-11-23 14:26:51] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-11-23 14:26:51] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:51] [INFO]   Timeout: 2.0s
+[2025-11-23 14:26:51] [INFO] 
+[2025-11-23 14:26:51] [INFO]   Chunk #1: 50 bytes | Elapsed: 0.000s | Total: 50 bytes
+[2025-11-23 14:26:51] [INFO] 
+[2025-11-23 14:26:51] [INFO]   No data for 500ms, response complete
+[2025-11-23 14:26:51] [INFO] 
+[2025-11-23 14:26:51] [INFO] ✓ Response Complete:
+[2025-11-23 14:26:51] [INFO]     Total Bytes:    50
+[2025-11-23 14:26:51] [INFO]     Chunks:         1
+[2025-11-23 14:26:51] [INFO]     Total Time:     0.510s
+[2025-11-23 14:26:51] [INFO] 
+[2025-11-23 14:26:51] [INFO]   Decoded Text:
+[2025-11-23 14:26:51] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:51] [INFO]   	[ECHO] CH4: V=0.00 V, I=0.000 A, P=0.00 W\r\n
+  \r\n
+  \r\n
+  \r\n
+  
+[2025-11-23 14:26:51] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:51] [INFO] 
+[2025-11-23 14:26:51] [INFO]   Hex Dump:
+[2025-11-23 14:26:51] [INFO]       0000  09 5B 45 43 48 4F 5D 20 43 48 34 3A 20 56 3D 30   |.[ECHO] CH4: V=0|
+[2025-11-23 14:26:51] [INFO]       0010  2E 30 30 20 56 2C 20 49 3D 30 2E 30 30 30 20 41   |.00 V, I=0.000 A|
+[2025-11-23 14:26:51] [INFO]       0020  2C 20 50 3D 30 2E 30 30 20 57 0D 0A 0D 0A 0D 0A   |, P=0.00 W......|
+[2025-11-23 14:26:51] [INFO]       0030  0D 0A                                             |..|
+[2025-11-23 14:26:51] [INFO] 
+[2025-11-23 14:26:51] [INFO] [SERIAL] Closing connection...
+[2025-11-23 14:26:51] [INFO] ✓ Port COM3 closed
+[2025-11-23 14:26:51] [INFO] ================================================================================
+[2025-11-23 14:26:51] [INFO] 
+[2025-11-23 14:26:51] [PASS] STEP 1.14 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.15 Validate power response for CH4</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:26:51</td><td>2025-11-23 14:26:51</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:26:51] [STEP 1.15] Validate power response for CH4
+[2025-11-23 14:26:51] [PASS] STEP 1.15 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.16 Turn OFF Channel 4</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:26:51</td><td>2025-11-23 14:26:52</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:26:51] [STEP 1.16] Turn OFF Channel 4
+[2025-11-23 14:26:51] [INFO] 
+[2025-11-23 14:26:51] [INFO] ================================================================================
+[2025-11-23 14:26:51] [INFO] [SERIAL] SEND COMMAND
+[2025-11-23 14:26:51] [INFO] ================================================================================
+[2025-11-23 14:26:51] [INFO]   Command: &#x27;SET_CH 4 OFF&#x27;
+[2025-11-23 14:26:51] [INFO]   Port:    COM3
+[2025-11-23 14:26:51] [INFO] 
+[2025-11-23 14:26:51] [INFO] ================================================================================
+[2025-11-23 14:26:51] [INFO] [SERIAL] OPENING CONNECTION
+[2025-11-23 14:26:51] [INFO] ================================================================================
+[2025-11-23 14:26:51] [INFO]   Port:          COM3
+[2025-11-23 14:26:51] [INFO]   Baudrate:      115200
+[2025-11-23 14:26:51] [INFO]   Timeout:       2.0s
+[2025-11-23 14:26:51] [INFO]   Write Timeout: 2.0s
+[2025-11-23 14:26:51] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-11-23 14:26:51] [INFO] ✓ Port COM3 opened successfully
+[2025-11-23 14:26:51] [INFO]   Stabilizing connection (100ms delay)...
+[2025-11-23 14:26:52] [INFO]   Resetting input and output buffers...
+[2025-11-23 14:26:52] [INFO] ✓ Connection ready and buffers cleared
+[2025-11-23 14:26:52] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:52] [INFO] [SERIAL TX] TRANSMITTING
+[2025-11-23 14:26:52] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:52] [INFO]   Command:  &#x27;SET_CH 4 OFF&#x27;
+[2025-11-23 14:26:52] [INFO]   Length:   14 bytes (including CR+LF)
+[2025-11-23 14:26:52] [INFO] 
+[2025-11-23 14:26:52] [INFO]   Hex Dump:
+[2025-11-23 14:26:52] [INFO]       0000  53 45 54 5F 43 48 20 34 20 4F 46 46 0D 0A         |SET_CH 4 OFF..|
+[2025-11-23 14:26:52] [INFO] 
+[2025-11-23 14:26:52] [INFO] ✓ Transmitted 14 bytes
+[2025-11-23 14:26:52] [INFO]   Waiting 50ms for device processing...
+[2025-11-23 14:26:52] [INFO] 
+[2025-11-23 14:26:52] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-11-23 14:26:52] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:52] [INFO]   Timeout: 2.0s
+[2025-11-23 14:26:52] [INFO] 
+[2025-11-23 14:26:52] [INFO]   Chunk #1: 23 bytes | Elapsed: 0.000s | Total: 23 bytes
+[2025-11-23 14:26:52] [INFO] 
+[2025-11-23 14:26:52] [INFO]   No data for 500ms, response complete
+[2025-11-23 14:26:52] [INFO] 
+[2025-11-23 14:26:52] [INFO] ✓ Response Complete:
+[2025-11-23 14:26:52] [INFO]     Total Bytes:    23
+[2025-11-23 14:26:52] [INFO]     Chunks:         1
+[2025-11-23 14:26:52] [INFO]     Total Time:     0.505s
+[2025-11-23 14:26:52] [INFO] 
+[2025-11-23 14:26:52] [INFO]   Decoded Text:
+[2025-11-23 14:26:52] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:52] [INFO]   	[ECHO] CH4 = OFF\r\n
+  \r\n
+  \r\n
+  
+[2025-11-23 14:26:52] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:52] [INFO] 
+[2025-11-23 14:26:52] [INFO]   Hex Dump:
+[2025-11-23 14:26:52] [INFO]       0000  09 5B 45 43 48 4F 5D 20 43 48 34 20 3D 20 4F 46   |.[ECHO] CH4 = OF|
+[2025-11-23 14:26:52] [INFO]       0010  46 0D 0A 0D 0A 0D 0A                              |F......|
+[2025-11-23 14:26:52] [INFO] 
+[2025-11-23 14:26:52] [INFO] [SERIAL] Closing connection...
+[2025-11-23 14:26:52] [INFO] ✓ Port COM3 closed
+[2025-11-23 14:26:52] [INFO] ================================================================================
+[2025-11-23 14:26:52] [INFO] 
+[2025-11-23 14:26:52] [PASS] STEP 1.16 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.17 Turn ON Channel 5</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:26:52</td><td>2025-11-23 14:26:53</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:26:52] [STEP 1.17] Turn ON Channel 5
+[2025-11-23 14:26:52] [INFO] 
+[2025-11-23 14:26:52] [INFO] ================================================================================
+[2025-11-23 14:26:52] [INFO] [SERIAL] SEND COMMAND
+[2025-11-23 14:26:52] [INFO] ================================================================================
+[2025-11-23 14:26:52] [INFO]   Command: &#x27;SET_CH 5 ON&#x27;
+[2025-11-23 14:26:52] [INFO]   Port:    COM3
+[2025-11-23 14:26:52] [INFO] 
+[2025-11-23 14:26:52] [INFO] ================================================================================
+[2025-11-23 14:26:52] [INFO] [SERIAL] OPENING CONNECTION
+[2025-11-23 14:26:52] [INFO] ================================================================================
+[2025-11-23 14:26:52] [INFO]   Port:          COM3
+[2025-11-23 14:26:52] [INFO]   Baudrate:      115200
+[2025-11-23 14:26:52] [INFO]   Timeout:       2.0s
+[2025-11-23 14:26:52] [INFO]   Write Timeout: 2.0s
+[2025-11-23 14:26:52] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-11-23 14:26:52] [INFO] ✓ Port COM3 opened successfully
+[2025-11-23 14:26:52] [INFO]   Stabilizing connection (100ms delay)...
+[2025-11-23 14:26:52] [INFO]   Resetting input and output buffers...
+[2025-11-23 14:26:52] [INFO] ✓ Connection ready and buffers cleared
+[2025-11-23 14:26:52] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:52] [INFO] [SERIAL TX] TRANSMITTING
+[2025-11-23 14:26:52] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:52] [INFO]   Command:  &#x27;SET_CH 5 ON&#x27;
+[2025-11-23 14:26:52] [INFO]   Length:   13 bytes (including CR+LF)
+[2025-11-23 14:26:52] [INFO] 
+[2025-11-23 14:26:52] [INFO]   Hex Dump:
+[2025-11-23 14:26:52] [INFO]       0000  53 45 54 5F 43 48 20 35 20 4F 4E 0D 0A            |SET_CH 5 ON..|
+[2025-11-23 14:26:52] [INFO] 
+[2025-11-23 14:26:52] [INFO] ✓ Transmitted 13 bytes
+[2025-11-23 14:26:52] [INFO]   Waiting 50ms for device processing...
+[2025-11-23 14:26:52] [INFO] 
+[2025-11-23 14:26:52] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-11-23 14:26:52] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:52] [INFO]   Timeout: 2.0s
+[2025-11-23 14:26:52] [INFO] 
+[2025-11-23 14:26:52] [INFO]   Chunk #1: 22 bytes | Elapsed: 0.000s | Total: 22 bytes
+[2025-11-23 14:26:53] [INFO] 
+[2025-11-23 14:26:53] [INFO]   No data for 500ms, response complete
+[2025-11-23 14:26:53] [INFO] 
+[2025-11-23 14:26:53] [INFO] ✓ Response Complete:
+[2025-11-23 14:26:53] [INFO]     Total Bytes:    22
+[2025-11-23 14:26:53] [INFO]     Chunks:         1
+[2025-11-23 14:26:53] [INFO]     Total Time:     0.510s
+[2025-11-23 14:26:53] [INFO] 
+[2025-11-23 14:26:53] [INFO]   Decoded Text:
+[2025-11-23 14:26:53] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:53] [INFO]   	[ECHO] CH5 = ON\r\n
+  \r\n
+  \r\n
+  
+[2025-11-23 14:26:53] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:53] [INFO] 
+[2025-11-23 14:26:53] [INFO]   Hex Dump:
+[2025-11-23 14:26:53] [INFO]       0000  09 5B 45 43 48 4F 5D 20 43 48 35 20 3D 20 4F 4E   |.[ECHO] CH5 = ON|
+[2025-11-23 14:26:53] [INFO]       0010  0D 0A 0D 0A 0D 0A                                 |......|
+[2025-11-23 14:26:53] [INFO] 
+[2025-11-23 14:26:53] [INFO] [SERIAL] Closing connection...
+[2025-11-23 14:26:53] [INFO] ✓ Port COM3 closed
+[2025-11-23 14:26:53] [INFO] ================================================================================
+[2025-11-23 14:26:53] [INFO] 
+[2025-11-23 14:26:53] [PASS] STEP 1.17 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.18 Read power data for Channel 5</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:26:53</td><td>2025-11-23 14:26:53</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:26:53] [STEP 1.18] Read power data for Channel 5
+[2025-11-23 14:26:53] [INFO] 
+[2025-11-23 14:26:53] [INFO] ================================================================================
+[2025-11-23 14:26:53] [INFO] [SERIAL] SEND COMMAND
+[2025-11-23 14:26:53] [INFO] ================================================================================
+[2025-11-23 14:26:53] [INFO]   Command: &#x27;READ_HLW8032 5&#x27;
+[2025-11-23 14:26:53] [INFO]   Port:    COM3
+[2025-11-23 14:26:53] [INFO] 
+[2025-11-23 14:26:53] [INFO] ================================================================================
+[2025-11-23 14:26:53] [INFO] [SERIAL] OPENING CONNECTION
+[2025-11-23 14:26:53] [INFO] ================================================================================
+[2025-11-23 14:26:53] [INFO]   Port:          COM3
+[2025-11-23 14:26:53] [INFO]   Baudrate:      115200
+[2025-11-23 14:26:53] [INFO]   Timeout:       2.0s
+[2025-11-23 14:26:53] [INFO]   Write Timeout: 2.0s
+[2025-11-23 14:26:53] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-11-23 14:26:53] [INFO] ✓ Port COM3 opened successfully
+[2025-11-23 14:26:53] [INFO]   Stabilizing connection (100ms delay)...
+[2025-11-23 14:26:53] [INFO]   Resetting input and output buffers...
+[2025-11-23 14:26:53] [INFO] ✓ Connection ready and buffers cleared
+[2025-11-23 14:26:53] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:53] [INFO] [SERIAL TX] TRANSMITTING
+[2025-11-23 14:26:53] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:53] [INFO]   Command:  &#x27;READ_HLW8032 5&#x27;
+[2025-11-23 14:26:53] [INFO]   Length:   16 bytes (including CR+LF)
+[2025-11-23 14:26:53] [INFO] 
+[2025-11-23 14:26:53] [INFO]   Hex Dump:
+[2025-11-23 14:26:53] [INFO]       0000  52 45 41 44 5F 48 4C 57 38 30 33 32 20 35 0D 0A   |READ_HLW8032 5..|
+[2025-11-23 14:26:53] [INFO] 
+[2025-11-23 14:26:53] [INFO] ✓ Transmitted 16 bytes
+[2025-11-23 14:26:53] [INFO]   Waiting 50ms for device processing...
+[2025-11-23 14:26:53] [INFO] 
+[2025-11-23 14:26:53] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-11-23 14:26:53] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:53] [INFO]   Timeout: 2.0s
+[2025-11-23 14:26:53] [INFO] 
+[2025-11-23 14:26:53] [INFO]   Chunk #1: 50 bytes | Elapsed: 0.000s | Total: 50 bytes
+[2025-11-23 14:26:53] [INFO] 
+[2025-11-23 14:26:53] [INFO]   No data for 500ms, response complete
+[2025-11-23 14:26:53] [INFO] 
+[2025-11-23 14:26:53] [INFO] ✓ Response Complete:
+[2025-11-23 14:26:53] [INFO]     Total Bytes:    50
+[2025-11-23 14:26:53] [INFO]     Chunks:         1
+[2025-11-23 14:26:53] [INFO]     Total Time:     0.505s
+[2025-11-23 14:26:53] [INFO] 
+[2025-11-23 14:26:53] [INFO]   Decoded Text:
+[2025-11-23 14:26:53] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:53] [INFO]   	[ECHO] CH5: V=0.00 V, I=0.000 A, P=0.00 W\r\n
+  \r\n
+  \r\n
+  \r\n
+  
+[2025-11-23 14:26:53] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:53] [INFO] 
+[2025-11-23 14:26:53] [INFO]   Hex Dump:
+[2025-11-23 14:26:53] [INFO]       0000  09 5B 45 43 48 4F 5D 20 43 48 35 3A 20 56 3D 30   |.[ECHO] CH5: V=0|
+[2025-11-23 14:26:53] [INFO]       0010  2E 30 30 20 56 2C 20 49 3D 30 2E 30 30 30 20 41   |.00 V, I=0.000 A|
+[2025-11-23 14:26:53] [INFO]       0020  2C 20 50 3D 30 2E 30 30 20 57 0D 0A 0D 0A 0D 0A   |, P=0.00 W......|
+[2025-11-23 14:26:53] [INFO]       0030  0D 0A                                             |..|
+[2025-11-23 14:26:53] [INFO] 
+[2025-11-23 14:26:53] [INFO] [SERIAL] Closing connection...
+[2025-11-23 14:26:53] [INFO] ✓ Port COM3 closed
+[2025-11-23 14:26:53] [INFO] ================================================================================
+[2025-11-23 14:26:53] [INFO] 
+[2025-11-23 14:26:53] [PASS] STEP 1.18 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.19 Validate power response for CH5</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:26:53</td><td>2025-11-23 14:26:53</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:26:53] [STEP 1.19] Validate power response for CH5
+[2025-11-23 14:26:53] [PASS] STEP 1.19 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.20 Turn OFF Channel 5</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:26:53</td><td>2025-11-23 14:26:54</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:26:53] [STEP 1.20] Turn OFF Channel 5
+[2025-11-23 14:26:53] [INFO] 
+[2025-11-23 14:26:53] [INFO] ================================================================================
+[2025-11-23 14:26:53] [INFO] [SERIAL] SEND COMMAND
+[2025-11-23 14:26:53] [INFO] ================================================================================
+[2025-11-23 14:26:53] [INFO]   Command: &#x27;SET_CH 5 OFF&#x27;
+[2025-11-23 14:26:53] [INFO]   Port:    COM3
+[2025-11-23 14:26:53] [INFO] 
+[2025-11-23 14:26:53] [INFO] ================================================================================
+[2025-11-23 14:26:53] [INFO] [SERIAL] OPENING CONNECTION
+[2025-11-23 14:26:53] [INFO] ================================================================================
+[2025-11-23 14:26:53] [INFO]   Port:          COM3
+[2025-11-23 14:26:53] [INFO]   Baudrate:      115200
+[2025-11-23 14:26:53] [INFO]   Timeout:       2.0s
+[2025-11-23 14:26:53] [INFO]   Write Timeout: 2.0s
+[2025-11-23 14:26:53] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-11-23 14:26:53] [INFO] ✓ Port COM3 opened successfully
+[2025-11-23 14:26:53] [INFO]   Stabilizing connection (100ms delay)...
+[2025-11-23 14:26:54] [INFO]   Resetting input and output buffers...
+[2025-11-23 14:26:54] [INFO] ✓ Connection ready and buffers cleared
+[2025-11-23 14:26:54] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:54] [INFO] [SERIAL TX] TRANSMITTING
+[2025-11-23 14:26:54] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:54] [INFO]   Command:  &#x27;SET_CH 5 OFF&#x27;
+[2025-11-23 14:26:54] [INFO]   Length:   14 bytes (including CR+LF)
+[2025-11-23 14:26:54] [INFO] 
+[2025-11-23 14:26:54] [INFO]   Hex Dump:
+[2025-11-23 14:26:54] [INFO]       0000  53 45 54 5F 43 48 20 35 20 4F 46 46 0D 0A         |SET_CH 5 OFF..|
+[2025-11-23 14:26:54] [INFO] 
+[2025-11-23 14:26:54] [INFO] ✓ Transmitted 14 bytes
+[2025-11-23 14:26:54] [INFO]   Waiting 50ms for device processing...
+[2025-11-23 14:26:54] [INFO] 
+[2025-11-23 14:26:54] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-11-23 14:26:54] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:54] [INFO]   Timeout: 2.0s
+[2025-11-23 14:26:54] [INFO] 
+[2025-11-23 14:26:54] [INFO]   Chunk #1: 23 bytes | Elapsed: 0.000s | Total: 23 bytes
+[2025-11-23 14:26:54] [INFO] 
+[2025-11-23 14:26:54] [INFO]   No data for 500ms, response complete
+[2025-11-23 14:26:54] [INFO] 
+[2025-11-23 14:26:54] [INFO] ✓ Response Complete:
+[2025-11-23 14:26:54] [INFO]     Total Bytes:    23
+[2025-11-23 14:26:54] [INFO]     Chunks:         1
+[2025-11-23 14:26:54] [INFO]     Total Time:     0.505s
+[2025-11-23 14:26:54] [INFO] 
+[2025-11-23 14:26:54] [INFO]   Decoded Text:
+[2025-11-23 14:26:54] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:54] [INFO]   	[ECHO] CH5 = OFF\r\n
+  \r\n
+  \r\n
+  
+[2025-11-23 14:26:54] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:54] [INFO] 
+[2025-11-23 14:26:54] [INFO]   Hex Dump:
+[2025-11-23 14:26:54] [INFO]       0000  09 5B 45 43 48 4F 5D 20 43 48 35 20 3D 20 4F 46   |.[ECHO] CH5 = OF|
+[2025-11-23 14:26:54] [INFO]       0010  46 0D 0A 0D 0A 0D 0A                              |F......|
+[2025-11-23 14:26:54] [INFO] 
+[2025-11-23 14:26:54] [INFO] [SERIAL] Closing connection...
+[2025-11-23 14:26:54] [INFO] ✓ Port COM3 closed
+[2025-11-23 14:26:54] [INFO] ================================================================================
+[2025-11-23 14:26:54] [INFO] 
+[2025-11-23 14:26:54] [PASS] STEP 1.20 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.21 Turn ON Channel 6</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:26:54</td><td>2025-11-23 14:26:55</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:26:54] [STEP 1.21] Turn ON Channel 6
+[2025-11-23 14:26:54] [INFO] 
+[2025-11-23 14:26:54] [INFO] ================================================================================
+[2025-11-23 14:26:54] [INFO] [SERIAL] SEND COMMAND
+[2025-11-23 14:26:54] [INFO] ================================================================================
+[2025-11-23 14:26:54] [INFO]   Command: &#x27;SET_CH 6 ON&#x27;
+[2025-11-23 14:26:54] [INFO]   Port:    COM3
+[2025-11-23 14:26:54] [INFO] 
+[2025-11-23 14:26:54] [INFO] ================================================================================
+[2025-11-23 14:26:54] [INFO] [SERIAL] OPENING CONNECTION
+[2025-11-23 14:26:54] [INFO] ================================================================================
+[2025-11-23 14:26:54] [INFO]   Port:          COM3
+[2025-11-23 14:26:54] [INFO]   Baudrate:      115200
+[2025-11-23 14:26:54] [INFO]   Timeout:       2.0s
+[2025-11-23 14:26:54] [INFO]   Write Timeout: 2.0s
+[2025-11-23 14:26:54] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-11-23 14:26:54] [INFO] ✓ Port COM3 opened successfully
+[2025-11-23 14:26:54] [INFO]   Stabilizing connection (100ms delay)...
+[2025-11-23 14:26:54] [INFO]   Resetting input and output buffers...
+[2025-11-23 14:26:54] [INFO] ✓ Connection ready and buffers cleared
+[2025-11-23 14:26:54] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:54] [INFO] [SERIAL TX] TRANSMITTING
+[2025-11-23 14:26:54] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:54] [INFO]   Command:  &#x27;SET_CH 6 ON&#x27;
+[2025-11-23 14:26:54] [INFO]   Length:   13 bytes (including CR+LF)
+[2025-11-23 14:26:54] [INFO] 
+[2025-11-23 14:26:54] [INFO]   Hex Dump:
+[2025-11-23 14:26:54] [INFO]       0000  53 45 54 5F 43 48 20 36 20 4F 4E 0D 0A            |SET_CH 6 ON..|
+[2025-11-23 14:26:54] [INFO] 
+[2025-11-23 14:26:54] [INFO] ✓ Transmitted 13 bytes
+[2025-11-23 14:26:54] [INFO]   Waiting 50ms for device processing...
+[2025-11-23 14:26:54] [INFO] 
+[2025-11-23 14:26:54] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-11-23 14:26:54] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:54] [INFO]   Timeout: 2.0s
+[2025-11-23 14:26:54] [INFO] 
+[2025-11-23 14:26:54] [INFO]   Chunk #1: 22 bytes | Elapsed: 0.001s | Total: 22 bytes
+[2025-11-23 14:26:55] [INFO] 
+[2025-11-23 14:26:55] [INFO]   No data for 500ms, response complete
+[2025-11-23 14:26:55] [INFO] 
+[2025-11-23 14:26:55] [INFO] ✓ Response Complete:
+[2025-11-23 14:26:55] [INFO]     Total Bytes:    22
+[2025-11-23 14:26:55] [INFO]     Chunks:         1
+[2025-11-23 14:26:55] [INFO]     Total Time:     0.502s
+[2025-11-23 14:26:55] [INFO] 
+[2025-11-23 14:26:55] [INFO]   Decoded Text:
+[2025-11-23 14:26:55] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:55] [INFO]   	[ECHO] CH6 = ON\r\n
+  \r\n
+  \r\n
+  
+[2025-11-23 14:26:55] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:55] [INFO] 
+[2025-11-23 14:26:55] [INFO]   Hex Dump:
+[2025-11-23 14:26:55] [INFO]       0000  09 5B 45 43 48 4F 5D 20 43 48 36 20 3D 20 4F 4E   |.[ECHO] CH6 = ON|
+[2025-11-23 14:26:55] [INFO]       0010  0D 0A 0D 0A 0D 0A                                 |......|
+[2025-11-23 14:26:55] [INFO] 
+[2025-11-23 14:26:55] [INFO] [SERIAL] Closing connection...
+[2025-11-23 14:26:55] [INFO] ✓ Port COM3 closed
+[2025-11-23 14:26:55] [INFO] ================================================================================
+[2025-11-23 14:26:55] [INFO] 
+[2025-11-23 14:26:55] [PASS] STEP 1.21 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.22 Read power data for Channel 6</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:26:55</td><td>2025-11-23 14:26:55</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:26:55] [STEP 1.22] Read power data for Channel 6
+[2025-11-23 14:26:55] [INFO] 
+[2025-11-23 14:26:55] [INFO] ================================================================================
+[2025-11-23 14:26:55] [INFO] [SERIAL] SEND COMMAND
+[2025-11-23 14:26:55] [INFO] ================================================================================
+[2025-11-23 14:26:55] [INFO]   Command: &#x27;READ_HLW8032 6&#x27;
+[2025-11-23 14:26:55] [INFO]   Port:    COM3
+[2025-11-23 14:26:55] [INFO] 
+[2025-11-23 14:26:55] [INFO] ================================================================================
+[2025-11-23 14:26:55] [INFO] [SERIAL] OPENING CONNECTION
+[2025-11-23 14:26:55] [INFO] ================================================================================
+[2025-11-23 14:26:55] [INFO]   Port:          COM3
+[2025-11-23 14:26:55] [INFO]   Baudrate:      115200
+[2025-11-23 14:26:55] [INFO]   Timeout:       2.0s
+[2025-11-23 14:26:55] [INFO]   Write Timeout: 2.0s
+[2025-11-23 14:26:55] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-11-23 14:26:55] [INFO] ✓ Port COM3 opened successfully
+[2025-11-23 14:26:55] [INFO]   Stabilizing connection (100ms delay)...
+[2025-11-23 14:26:55] [INFO]   Resetting input and output buffers...
+[2025-11-23 14:26:55] [INFO] ✓ Connection ready and buffers cleared
+[2025-11-23 14:26:55] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:55] [INFO] [SERIAL TX] TRANSMITTING
+[2025-11-23 14:26:55] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:55] [INFO]   Command:  &#x27;READ_HLW8032 6&#x27;
+[2025-11-23 14:26:55] [INFO]   Length:   16 bytes (including CR+LF)
+[2025-11-23 14:26:55] [INFO] 
+[2025-11-23 14:26:55] [INFO]   Hex Dump:
+[2025-11-23 14:26:55] [INFO]       0000  52 45 41 44 5F 48 4C 57 38 30 33 32 20 36 0D 0A   |READ_HLW8032 6..|
+[2025-11-23 14:26:55] [INFO] 
+[2025-11-23 14:26:55] [INFO] ✓ Transmitted 16 bytes
+[2025-11-23 14:26:55] [INFO]   Waiting 50ms for device processing...
+[2025-11-23 14:26:55] [INFO] 
+[2025-11-23 14:26:55] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-11-23 14:26:55] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:55] [INFO]   Timeout: 2.0s
+[2025-11-23 14:26:55] [INFO] 
+[2025-11-23 14:26:55] [INFO]   Chunk #1: 50 bytes | Elapsed: 0.000s | Total: 50 bytes
+[2025-11-23 14:26:55] [INFO] 
+[2025-11-23 14:26:55] [INFO]   No data for 500ms, response complete
+[2025-11-23 14:26:55] [INFO] 
+[2025-11-23 14:26:55] [INFO] ✓ Response Complete:
+[2025-11-23 14:26:55] [INFO]     Total Bytes:    50
+[2025-11-23 14:26:55] [INFO]     Chunks:         1
+[2025-11-23 14:26:55] [INFO]     Total Time:     0.505s
+[2025-11-23 14:26:55] [INFO] 
+[2025-11-23 14:26:55] [INFO]   Decoded Text:
+[2025-11-23 14:26:55] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:55] [INFO]   	[ECHO] CH6: V=0.00 V, I=0.000 A, P=0.00 W\r\n
+  \r\n
+  \r\n
+  \r\n
+  
+[2025-11-23 14:26:55] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:55] [INFO] 
+[2025-11-23 14:26:55] [INFO]   Hex Dump:
+[2025-11-23 14:26:55] [INFO]       0000  09 5B 45 43 48 4F 5D 20 43 48 36 3A 20 56 3D 30   |.[ECHO] CH6: V=0|
+[2025-11-23 14:26:55] [INFO]       0010  2E 30 30 20 56 2C 20 49 3D 30 2E 30 30 30 20 41   |.00 V, I=0.000 A|
+[2025-11-23 14:26:55] [INFO]       0020  2C 20 50 3D 30 2E 30 30 20 57 0D 0A 0D 0A 0D 0A   |, P=0.00 W......|
+[2025-11-23 14:26:55] [INFO]       0030  0D 0A                                             |..|
+[2025-11-23 14:26:55] [INFO] 
+[2025-11-23 14:26:55] [INFO] [SERIAL] Closing connection...
+[2025-11-23 14:26:55] [INFO] ✓ Port COM3 closed
+[2025-11-23 14:26:55] [INFO] ================================================================================
+[2025-11-23 14:26:55] [INFO] 
+[2025-11-23 14:26:55] [PASS] STEP 1.22 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.23 Validate power response for CH6</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:26:55</td><td>2025-11-23 14:26:55</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:26:55] [STEP 1.23] Validate power response for CH6
+[2025-11-23 14:26:55] [PASS] STEP 1.23 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.24 Turn OFF Channel 6</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:26:55</td><td>2025-11-23 14:26:56</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:26:55] [STEP 1.24] Turn OFF Channel 6
+[2025-11-23 14:26:55] [INFO] 
+[2025-11-23 14:26:55] [INFO] ================================================================================
+[2025-11-23 14:26:55] [INFO] [SERIAL] SEND COMMAND
+[2025-11-23 14:26:55] [INFO] ================================================================================
+[2025-11-23 14:26:55] [INFO]   Command: &#x27;SET_CH 6 OFF&#x27;
+[2025-11-23 14:26:55] [INFO]   Port:    COM3
+[2025-11-23 14:26:55] [INFO] 
+[2025-11-23 14:26:55] [INFO] ================================================================================
+[2025-11-23 14:26:55] [INFO] [SERIAL] OPENING CONNECTION
+[2025-11-23 14:26:55] [INFO] ================================================================================
+[2025-11-23 14:26:55] [INFO]   Port:          COM3
+[2025-11-23 14:26:55] [INFO]   Baudrate:      115200
+[2025-11-23 14:26:55] [INFO]   Timeout:       2.0s
+[2025-11-23 14:26:55] [INFO]   Write Timeout: 2.0s
+[2025-11-23 14:26:55] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-11-23 14:26:55] [INFO] ✓ Port COM3 opened successfully
+[2025-11-23 14:26:55] [INFO]   Stabilizing connection (100ms delay)...
+[2025-11-23 14:26:56] [INFO]   Resetting input and output buffers...
+[2025-11-23 14:26:56] [INFO] ✓ Connection ready and buffers cleared
+[2025-11-23 14:26:56] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:56] [INFO] [SERIAL TX] TRANSMITTING
+[2025-11-23 14:26:56] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:56] [INFO]   Command:  &#x27;SET_CH 6 OFF&#x27;
+[2025-11-23 14:26:56] [INFO]   Length:   14 bytes (including CR+LF)
+[2025-11-23 14:26:56] [INFO] 
+[2025-11-23 14:26:56] [INFO]   Hex Dump:
+[2025-11-23 14:26:56] [INFO]       0000  53 45 54 5F 43 48 20 36 20 4F 46 46 0D 0A         |SET_CH 6 OFF..|
+[2025-11-23 14:26:56] [INFO] 
+[2025-11-23 14:26:56] [INFO] ✓ Transmitted 14 bytes
+[2025-11-23 14:26:56] [INFO]   Waiting 50ms for device processing...
+[2025-11-23 14:26:56] [INFO] 
+[2025-11-23 14:26:56] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-11-23 14:26:56] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:56] [INFO]   Timeout: 2.0s
+[2025-11-23 14:26:56] [INFO] 
+[2025-11-23 14:26:56] [INFO]   Chunk #1: 23 bytes | Elapsed: 0.001s | Total: 23 bytes
+[2025-11-23 14:26:56] [INFO] 
+[2025-11-23 14:26:56] [INFO]   No data for 500ms, response complete
+[2025-11-23 14:26:56] [INFO] 
+[2025-11-23 14:26:56] [INFO] ✓ Response Complete:
+[2025-11-23 14:26:56] [INFO]     Total Bytes:    23
+[2025-11-23 14:26:56] [INFO]     Chunks:         1
+[2025-11-23 14:26:56] [INFO]     Total Time:     0.505s
+[2025-11-23 14:26:56] [INFO] 
+[2025-11-23 14:26:56] [INFO]   Decoded Text:
+[2025-11-23 14:26:56] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:56] [INFO]   	[ECHO] CH6 = OFF\r\n
+  \r\n
+  \r\n
+  
+[2025-11-23 14:26:56] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:56] [INFO] 
+[2025-11-23 14:26:56] [INFO]   Hex Dump:
+[2025-11-23 14:26:56] [INFO]       0000  09 5B 45 43 48 4F 5D 20 43 48 36 20 3D 20 4F 46   |.[ECHO] CH6 = OF|
+[2025-11-23 14:26:56] [INFO]       0010  46 0D 0A 0D 0A 0D 0A                              |F......|
+[2025-11-23 14:26:56] [INFO] 
+[2025-11-23 14:26:56] [INFO] [SERIAL] Closing connection...
+[2025-11-23 14:26:56] [INFO] ✓ Port COM3 closed
+[2025-11-23 14:26:56] [INFO] ================================================================================
+[2025-11-23 14:26:56] [INFO] 
+[2025-11-23 14:26:56] [PASS] STEP 1.24 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.25 Turn ON Channel 7</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:26:56</td><td>2025-11-23 14:26:57</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:26:56] [STEP 1.25] Turn ON Channel 7
+[2025-11-23 14:26:56] [INFO] 
+[2025-11-23 14:26:56] [INFO] ================================================================================
+[2025-11-23 14:26:56] [INFO] [SERIAL] SEND COMMAND
+[2025-11-23 14:26:56] [INFO] ================================================================================
+[2025-11-23 14:26:56] [INFO]   Command: &#x27;SET_CH 7 ON&#x27;
+[2025-11-23 14:26:56] [INFO]   Port:    COM3
+[2025-11-23 14:26:56] [INFO] 
+[2025-11-23 14:26:56] [INFO] ================================================================================
+[2025-11-23 14:26:56] [INFO] [SERIAL] OPENING CONNECTION
+[2025-11-23 14:26:56] [INFO] ================================================================================
+[2025-11-23 14:26:56] [INFO]   Port:          COM3
+[2025-11-23 14:26:56] [INFO]   Baudrate:      115200
+[2025-11-23 14:26:56] [INFO]   Timeout:       2.0s
+[2025-11-23 14:26:56] [INFO]   Write Timeout: 2.0s
+[2025-11-23 14:26:56] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-11-23 14:26:56] [INFO] ✓ Port COM3 opened successfully
+[2025-11-23 14:26:56] [INFO]   Stabilizing connection (100ms delay)...
+[2025-11-23 14:26:56] [INFO]   Resetting input and output buffers...
+[2025-11-23 14:26:56] [INFO] ✓ Connection ready and buffers cleared
+[2025-11-23 14:26:56] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:56] [INFO] [SERIAL TX] TRANSMITTING
+[2025-11-23 14:26:56] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:56] [INFO]   Command:  &#x27;SET_CH 7 ON&#x27;
+[2025-11-23 14:26:56] [INFO]   Length:   13 bytes (including CR+LF)
+[2025-11-23 14:26:56] [INFO] 
+[2025-11-23 14:26:56] [INFO]   Hex Dump:
+[2025-11-23 14:26:56] [INFO]       0000  53 45 54 5F 43 48 20 37 20 4F 4E 0D 0A            |SET_CH 7 ON..|
+[2025-11-23 14:26:56] [INFO] 
+[2025-11-23 14:26:56] [INFO] ✓ Transmitted 13 bytes
+[2025-11-23 14:26:56] [INFO]   Waiting 50ms for device processing...
+[2025-11-23 14:26:56] [INFO] 
+[2025-11-23 14:26:56] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-11-23 14:26:56] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:56] [INFO]   Timeout: 2.0s
+[2025-11-23 14:26:56] [INFO] 
+[2025-11-23 14:26:56] [INFO]   Chunk #1: 22 bytes | Elapsed: 0.001s | Total: 22 bytes
+[2025-11-23 14:26:57] [INFO] 
+[2025-11-23 14:26:57] [INFO]   No data for 500ms, response complete
+[2025-11-23 14:26:57] [INFO] 
+[2025-11-23 14:26:57] [INFO] ✓ Response Complete:
+[2025-11-23 14:26:57] [INFO]     Total Bytes:    22
+[2025-11-23 14:26:57] [INFO]     Chunks:         1
+[2025-11-23 14:26:57] [INFO]     Total Time:     0.503s
+[2025-11-23 14:26:57] [INFO] 
+[2025-11-23 14:26:57] [INFO]   Decoded Text:
+[2025-11-23 14:26:57] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:57] [INFO]   	[ECHO] CH7 = ON\r\n
+  \r\n
+  \r\n
+  
+[2025-11-23 14:26:57] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:57] [INFO] 
+[2025-11-23 14:26:57] [INFO]   Hex Dump:
+[2025-11-23 14:26:57] [INFO]       0000  09 5B 45 43 48 4F 5D 20 43 48 37 20 3D 20 4F 4E   |.[ECHO] CH7 = ON|
+[2025-11-23 14:26:57] [INFO]       0010  0D 0A 0D 0A 0D 0A                                 |......|
+[2025-11-23 14:26:57] [INFO] 
+[2025-11-23 14:26:57] [INFO] [SERIAL] Closing connection...
+[2025-11-23 14:26:57] [INFO] ✓ Port COM3 closed
+[2025-11-23 14:26:57] [INFO] ================================================================================
+[2025-11-23 14:26:57] [INFO] 
+[2025-11-23 14:26:57] [PASS] STEP 1.25 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.26 Read power data for Channel 7</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:26:57</td><td>2025-11-23 14:26:57</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:26:57] [STEP 1.26] Read power data for Channel 7
+[2025-11-23 14:26:57] [INFO] 
+[2025-11-23 14:26:57] [INFO] ================================================================================
+[2025-11-23 14:26:57] [INFO] [SERIAL] SEND COMMAND
+[2025-11-23 14:26:57] [INFO] ================================================================================
+[2025-11-23 14:26:57] [INFO]   Command: &#x27;READ_HLW8032 7&#x27;
+[2025-11-23 14:26:57] [INFO]   Port:    COM3
+[2025-11-23 14:26:57] [INFO] 
+[2025-11-23 14:26:57] [INFO] ================================================================================
+[2025-11-23 14:26:57] [INFO] [SERIAL] OPENING CONNECTION
+[2025-11-23 14:26:57] [INFO] ================================================================================
+[2025-11-23 14:26:57] [INFO]   Port:          COM3
+[2025-11-23 14:26:57] [INFO]   Baudrate:      115200
+[2025-11-23 14:26:57] [INFO]   Timeout:       2.0s
+[2025-11-23 14:26:57] [INFO]   Write Timeout: 2.0s
+[2025-11-23 14:26:57] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-11-23 14:26:57] [INFO] ✓ Port COM3 opened successfully
+[2025-11-23 14:26:57] [INFO]   Stabilizing connection (100ms delay)...
+[2025-11-23 14:26:57] [INFO]   Resetting input and output buffers...
+[2025-11-23 14:26:57] [INFO] ✓ Connection ready and buffers cleared
+[2025-11-23 14:26:57] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:57] [INFO] [SERIAL TX] TRANSMITTING
+[2025-11-23 14:26:57] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:57] [INFO]   Command:  &#x27;READ_HLW8032 7&#x27;
+[2025-11-23 14:26:57] [INFO]   Length:   16 bytes (including CR+LF)
+[2025-11-23 14:26:57] [INFO] 
+[2025-11-23 14:26:57] [INFO]   Hex Dump:
+[2025-11-23 14:26:57] [INFO]       0000  52 45 41 44 5F 48 4C 57 38 30 33 32 20 37 0D 0A   |READ_HLW8032 7..|
+[2025-11-23 14:26:57] [INFO] 
+[2025-11-23 14:26:57] [INFO] ✓ Transmitted 16 bytes
+[2025-11-23 14:26:57] [INFO]   Waiting 50ms for device processing...
+[2025-11-23 14:26:57] [INFO] 
+[2025-11-23 14:26:57] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-11-23 14:26:57] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:57] [INFO]   Timeout: 2.0s
+[2025-11-23 14:26:57] [INFO] 
+[2025-11-23 14:26:57] [INFO]   Chunk #1: 50 bytes | Elapsed: 0.001s | Total: 50 bytes
+[2025-11-23 14:26:57] [INFO] 
+[2025-11-23 14:26:57] [INFO]   No data for 500ms, response complete
+[2025-11-23 14:26:57] [INFO] 
+[2025-11-23 14:26:57] [INFO] ✓ Response Complete:
+[2025-11-23 14:26:57] [INFO]     Total Bytes:    50
+[2025-11-23 14:26:57] [INFO]     Chunks:         1
+[2025-11-23 14:26:57] [INFO]     Total Time:     0.505s
+[2025-11-23 14:26:57] [INFO] 
+[2025-11-23 14:26:57] [INFO]   Decoded Text:
+[2025-11-23 14:26:57] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:57] [INFO]   	[ECHO] CH7: V=0.00 V, I=0.000 A, P=0.00 W\r\n
+  \r\n
+  \r\n
+  \r\n
+  
+[2025-11-23 14:26:57] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:57] [INFO] 
+[2025-11-23 14:26:57] [INFO]   Hex Dump:
+[2025-11-23 14:26:57] [INFO]       0000  09 5B 45 43 48 4F 5D 20 43 48 37 3A 20 56 3D 30   |.[ECHO] CH7: V=0|
+[2025-11-23 14:26:57] [INFO]       0010  2E 30 30 20 56 2C 20 49 3D 30 2E 30 30 30 20 41   |.00 V, I=0.000 A|
+[2025-11-23 14:26:57] [INFO]       0020  2C 20 50 3D 30 2E 30 30 20 57 0D 0A 0D 0A 0D 0A   |, P=0.00 W......|
+[2025-11-23 14:26:57] [INFO]       0030  0D 0A                                             |..|
+[2025-11-23 14:26:57] [INFO] 
+[2025-11-23 14:26:57] [INFO] [SERIAL] Closing connection...
+[2025-11-23 14:26:57] [INFO] ✓ Port COM3 closed
+[2025-11-23 14:26:57] [INFO] ================================================================================
+[2025-11-23 14:26:57] [INFO] 
+[2025-11-23 14:26:57] [PASS] STEP 1.26 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.27 Validate power response for CH7</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:26:57</td><td>2025-11-23 14:26:57</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:26:57] [STEP 1.27] Validate power response for CH7
+[2025-11-23 14:26:57] [PASS] STEP 1.27 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.28 Turn OFF Channel 7</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:26:57</td><td>2025-11-23 14:26:58</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:26:57] [STEP 1.28] Turn OFF Channel 7
+[2025-11-23 14:26:57] [INFO] 
+[2025-11-23 14:26:57] [INFO] ================================================================================
+[2025-11-23 14:26:57] [INFO] [SERIAL] SEND COMMAND
+[2025-11-23 14:26:57] [INFO] ================================================================================
+[2025-11-23 14:26:57] [INFO]   Command: &#x27;SET_CH 7 OFF&#x27;
+[2025-11-23 14:26:57] [INFO]   Port:    COM3
+[2025-11-23 14:26:57] [INFO] 
+[2025-11-23 14:26:57] [INFO] ================================================================================
+[2025-11-23 14:26:57] [INFO] [SERIAL] OPENING CONNECTION
+[2025-11-23 14:26:57] [INFO] ================================================================================
+[2025-11-23 14:26:57] [INFO]   Port:          COM3
+[2025-11-23 14:26:57] [INFO]   Baudrate:      115200
+[2025-11-23 14:26:57] [INFO]   Timeout:       2.0s
+[2025-11-23 14:26:57] [INFO]   Write Timeout: 2.0s
+[2025-11-23 14:26:57] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-11-23 14:26:57] [INFO] ✓ Port COM3 opened successfully
+[2025-11-23 14:26:57] [INFO]   Stabilizing connection (100ms delay)...
+[2025-11-23 14:26:57] [INFO]   Resetting input and output buffers...
+[2025-11-23 14:26:57] [INFO] ✓ Connection ready and buffers cleared
+[2025-11-23 14:26:57] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:57] [INFO] [SERIAL TX] TRANSMITTING
+[2025-11-23 14:26:57] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:57] [INFO]   Command:  &#x27;SET_CH 7 OFF&#x27;
+[2025-11-23 14:26:57] [INFO]   Length:   14 bytes (including CR+LF)
+[2025-11-23 14:26:57] [INFO] 
+[2025-11-23 14:26:57] [INFO]   Hex Dump:
+[2025-11-23 14:26:58] [INFO]       0000  53 45 54 5F 43 48 20 37 20 4F 46 46 0D 0A         |SET_CH 7 OFF..|
+[2025-11-23 14:26:58] [INFO] 
+[2025-11-23 14:26:58] [INFO] ✓ Transmitted 14 bytes
+[2025-11-23 14:26:58] [INFO]   Waiting 50ms for device processing...
+[2025-11-23 14:26:58] [INFO] 
+[2025-11-23 14:26:58] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-11-23 14:26:58] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:58] [INFO]   Timeout: 2.0s
+[2025-11-23 14:26:58] [INFO] 
+[2025-11-23 14:26:58] [INFO]   Chunk #1: 23 bytes | Elapsed: 0.000s | Total: 23 bytes
+[2025-11-23 14:26:58] [INFO] 
+[2025-11-23 14:26:58] [INFO]   No data for 500ms, response complete
+[2025-11-23 14:26:58] [INFO] 
+[2025-11-23 14:26:58] [INFO] ✓ Response Complete:
+[2025-11-23 14:26:58] [INFO]     Total Bytes:    23
+[2025-11-23 14:26:58] [INFO]     Chunks:         1
+[2025-11-23 14:26:58] [INFO]     Total Time:     0.505s
+[2025-11-23 14:26:58] [INFO] 
+[2025-11-23 14:26:58] [INFO]   Decoded Text:
+[2025-11-23 14:26:58] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:58] [INFO]   	[ECHO] CH7 = OFF\r\n
+  \r\n
+  \r\n
+  
+[2025-11-23 14:26:58] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:58] [INFO] 
+[2025-11-23 14:26:58] [INFO]   Hex Dump:
+[2025-11-23 14:26:58] [INFO]       0000  09 5B 45 43 48 4F 5D 20 43 48 37 20 3D 20 4F 46   |.[ECHO] CH7 = OF|
+[2025-11-23 14:26:58] [INFO]       0010  46 0D 0A 0D 0A 0D 0A                              |F......|
+[2025-11-23 14:26:58] [INFO] 
+[2025-11-23 14:26:58] [INFO] [SERIAL] Closing connection...
+[2025-11-23 14:26:58] [INFO] ✓ Port COM3 closed
+[2025-11-23 14:26:58] [INFO] ================================================================================
+[2025-11-23 14:26:58] [INFO] 
+[2025-11-23 14:26:58] [PASS] STEP 1.28 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.29 Turn ON Channel 8</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:26:58</td><td>2025-11-23 14:26:59</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:26:58] [STEP 1.29] Turn ON Channel 8
+[2025-11-23 14:26:58] [INFO] 
+[2025-11-23 14:26:58] [INFO] ================================================================================
+[2025-11-23 14:26:58] [INFO] [SERIAL] SEND COMMAND
+[2025-11-23 14:26:58] [INFO] ================================================================================
+[2025-11-23 14:26:58] [INFO]   Command: &#x27;SET_CH 8 ON&#x27;
+[2025-11-23 14:26:58] [INFO]   Port:    COM3
+[2025-11-23 14:26:58] [INFO] 
+[2025-11-23 14:26:58] [INFO] ================================================================================
+[2025-11-23 14:26:58] [INFO] [SERIAL] OPENING CONNECTION
+[2025-11-23 14:26:58] [INFO] ================================================================================
+[2025-11-23 14:26:58] [INFO]   Port:          COM3
+[2025-11-23 14:26:58] [INFO]   Baudrate:      115200
+[2025-11-23 14:26:58] [INFO]   Timeout:       2.0s
+[2025-11-23 14:26:58] [INFO]   Write Timeout: 2.0s
+[2025-11-23 14:26:58] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-11-23 14:26:58] [INFO] ✓ Port COM3 opened successfully
+[2025-11-23 14:26:58] [INFO]   Stabilizing connection (100ms delay)...
+[2025-11-23 14:26:58] [INFO]   Resetting input and output buffers...
+[2025-11-23 14:26:58] [INFO] ✓ Connection ready and buffers cleared
+[2025-11-23 14:26:58] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:58] [INFO] [SERIAL TX] TRANSMITTING
+[2025-11-23 14:26:58] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:58] [INFO]   Command:  &#x27;SET_CH 8 ON&#x27;
+[2025-11-23 14:26:58] [INFO]   Length:   13 bytes (including CR+LF)
+[2025-11-23 14:26:58] [INFO] 
+[2025-11-23 14:26:58] [INFO]   Hex Dump:
+[2025-11-23 14:26:58] [INFO]       0000  53 45 54 5F 43 48 20 38 20 4F 4E 0D 0A            |SET_CH 8 ON..|
+[2025-11-23 14:26:58] [INFO] 
+[2025-11-23 14:26:58] [INFO] ✓ Transmitted 13 bytes
+[2025-11-23 14:26:58] [INFO]   Waiting 50ms for device processing...
+[2025-11-23 14:26:58] [INFO] 
+[2025-11-23 14:26:58] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-11-23 14:26:58] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:58] [INFO]   Timeout: 2.0s
+[2025-11-23 14:26:58] [INFO] 
+[2025-11-23 14:26:58] [INFO]   Chunk #1: 22 bytes | Elapsed: 0.001s | Total: 22 bytes
+[2025-11-23 14:26:59] [INFO] 
+[2025-11-23 14:26:59] [INFO]   No data for 500ms, response complete
+[2025-11-23 14:26:59] [INFO] 
+[2025-11-23 14:26:59] [INFO] ✓ Response Complete:
+[2025-11-23 14:26:59] [INFO]     Total Bytes:    22
+[2025-11-23 14:26:59] [INFO]     Chunks:         1
+[2025-11-23 14:26:59] [INFO]     Total Time:     0.505s
+[2025-11-23 14:26:59] [INFO] 
+[2025-11-23 14:26:59] [INFO]   Decoded Text:
+[2025-11-23 14:26:59] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:59] [INFO]   	[ECHO] CH8 = ON\r\n
+  \r\n
+  \r\n
+  
+[2025-11-23 14:26:59] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:59] [INFO] 
+[2025-11-23 14:26:59] [INFO]   Hex Dump:
+[2025-11-23 14:26:59] [INFO]       0000  09 5B 45 43 48 4F 5D 20 43 48 38 20 3D 20 4F 4E   |.[ECHO] CH8 = ON|
+[2025-11-23 14:26:59] [INFO]       0010  0D 0A 0D 0A 0D 0A                                 |......|
+[2025-11-23 14:26:59] [INFO] 
+[2025-11-23 14:26:59] [INFO] [SERIAL] Closing connection...
+[2025-11-23 14:26:59] [INFO] ✓ Port COM3 closed
+[2025-11-23 14:26:59] [INFO] ================================================================================
+[2025-11-23 14:26:59] [INFO] 
+[2025-11-23 14:26:59] [PASS] STEP 1.29 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.30 Read power data for Channel 8</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:26:59</td><td>2025-11-23 14:26:59</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:26:59] [STEP 1.30] Read power data for Channel 8
+[2025-11-23 14:26:59] [INFO] 
+[2025-11-23 14:26:59] [INFO] ================================================================================
+[2025-11-23 14:26:59] [INFO] [SERIAL] SEND COMMAND
+[2025-11-23 14:26:59] [INFO] ================================================================================
+[2025-11-23 14:26:59] [INFO]   Command: &#x27;READ_HLW8032 8&#x27;
+[2025-11-23 14:26:59] [INFO]   Port:    COM3
+[2025-11-23 14:26:59] [INFO] 
+[2025-11-23 14:26:59] [INFO] ================================================================================
+[2025-11-23 14:26:59] [INFO] [SERIAL] OPENING CONNECTION
+[2025-11-23 14:26:59] [INFO] ================================================================================
+[2025-11-23 14:26:59] [INFO]   Port:          COM3
+[2025-11-23 14:26:59] [INFO]   Baudrate:      115200
+[2025-11-23 14:26:59] [INFO]   Timeout:       2.0s
+[2025-11-23 14:26:59] [INFO]   Write Timeout: 2.0s
+[2025-11-23 14:26:59] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-11-23 14:26:59] [INFO] ✓ Port COM3 opened successfully
+[2025-11-23 14:26:59] [INFO]   Stabilizing connection (100ms delay)...
+[2025-11-23 14:26:59] [INFO]   Resetting input and output buffers...
+[2025-11-23 14:26:59] [INFO] ✓ Connection ready and buffers cleared
+[2025-11-23 14:26:59] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:59] [INFO] [SERIAL TX] TRANSMITTING
+[2025-11-23 14:26:59] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:59] [INFO]   Command:  &#x27;READ_HLW8032 8&#x27;
+[2025-11-23 14:26:59] [INFO]   Length:   16 bytes (including CR+LF)
+[2025-11-23 14:26:59] [INFO] 
+[2025-11-23 14:26:59] [INFO]   Hex Dump:
+[2025-11-23 14:26:59] [INFO]       0000  52 45 41 44 5F 48 4C 57 38 30 33 32 20 38 0D 0A   |READ_HLW8032 8..|
+[2025-11-23 14:26:59] [INFO] 
+[2025-11-23 14:26:59] [INFO] ✓ Transmitted 16 bytes
+[2025-11-23 14:26:59] [INFO]   Waiting 50ms for device processing...
+[2025-11-23 14:26:59] [INFO] 
+[2025-11-23 14:26:59] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-11-23 14:26:59] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:59] [INFO]   Timeout: 2.0s
+[2025-11-23 14:26:59] [INFO] 
+[2025-11-23 14:26:59] [INFO]   Chunk #1: 50 bytes | Elapsed: 0.000s | Total: 50 bytes
+[2025-11-23 14:26:59] [INFO] 
+[2025-11-23 14:26:59] [INFO]   No data for 500ms, response complete
+[2025-11-23 14:26:59] [INFO] 
+[2025-11-23 14:26:59] [INFO] ✓ Response Complete:
+[2025-11-23 14:26:59] [INFO]     Total Bytes:    50
+[2025-11-23 14:26:59] [INFO]     Chunks:         1
+[2025-11-23 14:26:59] [INFO]     Total Time:     0.505s
+[2025-11-23 14:26:59] [INFO] 
+[2025-11-23 14:26:59] [INFO]   Decoded Text:
+[2025-11-23 14:26:59] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:59] [INFO]   	[ECHO] CH8: V=0.00 V, I=0.000 A, P=0.00 W\r\n
+  \r\n
+  \r\n
+  \r\n
+  
+[2025-11-23 14:26:59] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:26:59] [INFO] 
+[2025-11-23 14:26:59] [INFO]   Hex Dump:
+[2025-11-23 14:26:59] [INFO]       0000  09 5B 45 43 48 4F 5D 20 43 48 38 3A 20 56 3D 30   |.[ECHO] CH8: V=0|
+[2025-11-23 14:26:59] [INFO]       0010  2E 30 30 20 56 2C 20 49 3D 30 2E 30 30 30 20 41   |.00 V, I=0.000 A|
+[2025-11-23 14:26:59] [INFO]       0020  2C 20 50 3D 30 2E 30 30 20 57 0D 0A 0D 0A 0D 0A   |, P=0.00 W......|
+[2025-11-23 14:26:59] [INFO]       0030  0D 0A                                             |..|
+[2025-11-23 14:26:59] [INFO] 
+[2025-11-23 14:26:59] [INFO] [SERIAL] Closing connection...
+[2025-11-23 14:26:59] [INFO] ✓ Port COM3 closed
+[2025-11-23 14:26:59] [INFO] ================================================================================
+[2025-11-23 14:26:59] [INFO] 
+[2025-11-23 14:26:59] [PASS] STEP 1.30 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.31 Validate power response for CH8</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:26:59</td><td>2025-11-23 14:26:59</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:26:59] [STEP 1.31] Validate power response for CH8
+[2025-11-23 14:26:59] [PASS] STEP 1.31 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.32 Turn OFF Channel 8</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:26:59</td><td>2025-11-23 14:27:00</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:26:59] [STEP 1.32] Turn OFF Channel 8
+[2025-11-23 14:26:59] [INFO] 
+[2025-11-23 14:26:59] [INFO] ================================================================================
+[2025-11-23 14:26:59] [INFO] [SERIAL] SEND COMMAND
+[2025-11-23 14:26:59] [INFO] ================================================================================
+[2025-11-23 14:26:59] [INFO]   Command: &#x27;SET_CH 8 OFF&#x27;
+[2025-11-23 14:26:59] [INFO]   Port:    COM3
+[2025-11-23 14:26:59] [INFO] 
+[2025-11-23 14:26:59] [INFO] ================================================================================
+[2025-11-23 14:26:59] [INFO] [SERIAL] OPENING CONNECTION
+[2025-11-23 14:26:59] [INFO] ================================================================================
+[2025-11-23 14:26:59] [INFO]   Port:          COM3
+[2025-11-23 14:26:59] [INFO]   Baudrate:      115200
+[2025-11-23 14:26:59] [INFO]   Timeout:       2.0s
+[2025-11-23 14:26:59] [INFO]   Write Timeout: 2.0s
+[2025-11-23 14:26:59] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-11-23 14:26:59] [INFO] ✓ Port COM3 opened successfully
+[2025-11-23 14:26:59] [INFO]   Stabilizing connection (100ms delay)...
+[2025-11-23 14:26:59] [INFO]   Resetting input and output buffers...
+[2025-11-23 14:26:59] [INFO] ✓ Connection ready and buffers cleared
+[2025-11-23 14:26:59] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:59] [INFO] [SERIAL TX] TRANSMITTING
+[2025-11-23 14:26:59] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:26:59] [INFO]   Command:  &#x27;SET_CH 8 OFF&#x27;
+[2025-11-23 14:26:59] [INFO]   Length:   14 bytes (including CR+LF)
+[2025-11-23 14:26:59] [INFO] 
+[2025-11-23 14:26:59] [INFO]   Hex Dump:
+[2025-11-23 14:26:59] [INFO]       0000  53 45 54 5F 43 48 20 38 20 4F 46 46 0D 0A         |SET_CH 8 OFF..|
+[2025-11-23 14:26:59] [INFO] 
+[2025-11-23 14:26:59] [INFO] ✓ Transmitted 14 bytes
+[2025-11-23 14:26:59] [INFO]   Waiting 50ms for device processing...
+[2025-11-23 14:26:59] [INFO] 
+[2025-11-23 14:27:00] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-11-23 14:27:00] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:27:00] [INFO]   Timeout: 2.0s
+[2025-11-23 14:27:00] [INFO] 
+[2025-11-23 14:27:00] [INFO]   Chunk #1: 23 bytes | Elapsed: 0.000s | Total: 23 bytes
+[2025-11-23 14:27:00] [INFO] 
+[2025-11-23 14:27:00] [INFO]   No data for 500ms, response complete
+[2025-11-23 14:27:00] [INFO] 
+[2025-11-23 14:27:00] [INFO] ✓ Response Complete:
+[2025-11-23 14:27:00] [INFO]     Total Bytes:    23
+[2025-11-23 14:27:00] [INFO]     Chunks:         1
+[2025-11-23 14:27:00] [INFO]     Total Time:     0.505s
+[2025-11-23 14:27:00] [INFO] 
+[2025-11-23 14:27:00] [INFO]   Decoded Text:
+[2025-11-23 14:27:00] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:27:00] [INFO]   	[ECHO] CH8 = OFF\r\n
+  \r\n
+  \r\n
+  
+[2025-11-23 14:27:00] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:27:00] [INFO] 
+[2025-11-23 14:27:00] [INFO]   Hex Dump:
+[2025-11-23 14:27:00] [INFO]       0000  09 5B 45 43 48 4F 5D 20 43 48 38 20 3D 20 4F 46   |.[ECHO] CH8 = OF|
+[2025-11-23 14:27:00] [INFO]       0010  46 0D 0A 0D 0A 0D 0A                              |F......|
+[2025-11-23 14:27:00] [INFO] 
+[2025-11-23 14:27:00] [INFO] [SERIAL] Closing connection...
+[2025-11-23 14:27:00] [INFO] ✓ Port COM3 closed
+[2025-11-23 14:27:00] [INFO] ================================================================================
+[2025-11-23 14:27:00] [INFO] 
+[2025-11-23 14:27:00] [PASS] STEP 1.32 completed successfully
+</pre>
+</div>
+</details>
+</div>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 2 Read power data from all channels</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:27:00</td><td>2025-11-23 14:27:05</td></tr>
+</table>
+<div class='substeps'>
+<h4>Substeps</h4>
+<details>
+<summary>
+<div class='step-title'><div>STEP 2.1 Read power data for Channel 1</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:27:00</td><td>2025-11-23 14:27:01</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:27:00] [STEP 2.1] Read power data for Channel 1
+[2025-11-23 14:27:00] [INFO] 
+[2025-11-23 14:27:00] [INFO] ================================================================================
+[2025-11-23 14:27:00] [INFO] [SERIAL] SEND COMMAND
+[2025-11-23 14:27:00] [INFO] ================================================================================
+[2025-11-23 14:27:00] [INFO]   Command: &#x27;READ_HLW8032 1&#x27;
+[2025-11-23 14:27:00] [INFO]   Port:    COM3
+[2025-11-23 14:27:00] [INFO] 
+[2025-11-23 14:27:00] [INFO] ================================================================================
+[2025-11-23 14:27:00] [INFO] [SERIAL] OPENING CONNECTION
+[2025-11-23 14:27:00] [INFO] ================================================================================
+[2025-11-23 14:27:00] [INFO]   Port:          COM3
+[2025-11-23 14:27:00] [INFO]   Baudrate:      115200
+[2025-11-23 14:27:00] [INFO]   Timeout:       2.0s
+[2025-11-23 14:27:00] [INFO]   Write Timeout: 2.0s
+[2025-11-23 14:27:00] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-11-23 14:27:00] [INFO] ✓ Port COM3 opened successfully
+[2025-11-23 14:27:00] [INFO]   Stabilizing connection (100ms delay)...
+[2025-11-23 14:27:00] [INFO]   Resetting input and output buffers...
+[2025-11-23 14:27:00] [INFO] ✓ Connection ready and buffers cleared
+[2025-11-23 14:27:00] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:27:00] [INFO] [SERIAL TX] TRANSMITTING
+[2025-11-23 14:27:00] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:27:00] [INFO]   Command:  &#x27;READ_HLW8032 1&#x27;
+[2025-11-23 14:27:00] [INFO]   Length:   16 bytes (including CR+LF)
+[2025-11-23 14:27:00] [INFO] 
+[2025-11-23 14:27:00] [INFO]   Hex Dump:
+[2025-11-23 14:27:00] [INFO]       0000  52 45 41 44 5F 48 4C 57 38 30 33 32 20 31 0D 0A   |READ_HLW8032 1..|
+[2025-11-23 14:27:00] [INFO] 
+[2025-11-23 14:27:00] [INFO] ✓ Transmitted 16 bytes
+[2025-11-23 14:27:00] [INFO]   Waiting 50ms for device processing...
+[2025-11-23 14:27:00] [INFO] 
+[2025-11-23 14:27:00] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-11-23 14:27:00] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:27:00] [INFO]   Timeout: 2.0s
+[2025-11-23 14:27:00] [INFO] 
+[2025-11-23 14:27:00] [INFO]   Chunk #1: 50 bytes | Elapsed: 0.001s | Total: 50 bytes
+[2025-11-23 14:27:01] [INFO] 
+[2025-11-23 14:27:01] [INFO]   No data for 500ms, response complete
+[2025-11-23 14:27:01] [INFO] 
+[2025-11-23 14:27:01] [INFO] ✓ Response Complete:
+[2025-11-23 14:27:01] [INFO]     Total Bytes:    50
+[2025-11-23 14:27:01] [INFO]     Chunks:         1
+[2025-11-23 14:27:01] [INFO]     Total Time:     0.505s
+[2025-11-23 14:27:01] [INFO] 
+[2025-11-23 14:27:01] [INFO]   Decoded Text:
+[2025-11-23 14:27:01] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:27:01] [INFO]   	[ECHO] CH1: V=0.00 V, I=0.000 A, P=0.00 W\r\n
+  \r\n
+  \r\n
+  \r\n
+  
+[2025-11-23 14:27:01] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:27:01] [INFO] 
+[2025-11-23 14:27:01] [INFO]   Hex Dump:
+[2025-11-23 14:27:01] [INFO]       0000  09 5B 45 43 48 4F 5D 20 43 48 31 3A 20 56 3D 30   |.[ECHO] CH1: V=0|
+[2025-11-23 14:27:01] [INFO]       0010  2E 30 30 20 56 2C 20 49 3D 30 2E 30 30 30 20 41   |.00 V, I=0.000 A|
+[2025-11-23 14:27:01] [INFO]       0020  2C 20 50 3D 30 2E 30 30 20 57 0D 0A 0D 0A 0D 0A   |, P=0.00 W......|
+[2025-11-23 14:27:01] [INFO]       0030  0D 0A                                             |..|
+[2025-11-23 14:27:01] [INFO] 
+[2025-11-23 14:27:01] [INFO] [SERIAL] Closing connection...
+[2025-11-23 14:27:01] [INFO] ✓ Port COM3 closed
+[2025-11-23 14:27:01] [INFO] ================================================================================
+[2025-11-23 14:27:01] [INFO] 
+[2025-11-23 14:27:01] [PASS] STEP 2.1 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 2.2 Read power data for Channel 2</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:27:01</td><td>2025-11-23 14:27:01</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:27:01] [STEP 2.2] Read power data for Channel 2
+[2025-11-23 14:27:01] [INFO] 
+[2025-11-23 14:27:01] [INFO] ================================================================================
+[2025-11-23 14:27:01] [INFO] [SERIAL] SEND COMMAND
+[2025-11-23 14:27:01] [INFO] ================================================================================
+[2025-11-23 14:27:01] [INFO]   Command: &#x27;READ_HLW8032 2&#x27;
+[2025-11-23 14:27:01] [INFO]   Port:    COM3
+[2025-11-23 14:27:01] [INFO] 
+[2025-11-23 14:27:01] [INFO] ================================================================================
+[2025-11-23 14:27:01] [INFO] [SERIAL] OPENING CONNECTION
+[2025-11-23 14:27:01] [INFO] ================================================================================
+[2025-11-23 14:27:01] [INFO]   Port:          COM3
+[2025-11-23 14:27:01] [INFO]   Baudrate:      115200
+[2025-11-23 14:27:01] [INFO]   Timeout:       2.0s
+[2025-11-23 14:27:01] [INFO]   Write Timeout: 2.0s
+[2025-11-23 14:27:01] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-11-23 14:27:01] [INFO] ✓ Port COM3 opened successfully
+[2025-11-23 14:27:01] [INFO]   Stabilizing connection (100ms delay)...
+[2025-11-23 14:27:01] [INFO]   Resetting input and output buffers...
+[2025-11-23 14:27:01] [INFO] ✓ Connection ready and buffers cleared
+[2025-11-23 14:27:01] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:27:01] [INFO] [SERIAL TX] TRANSMITTING
+[2025-11-23 14:27:01] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:27:01] [INFO]   Command:  &#x27;READ_HLW8032 2&#x27;
+[2025-11-23 14:27:01] [INFO]   Length:   16 bytes (including CR+LF)
+[2025-11-23 14:27:01] [INFO] 
+[2025-11-23 14:27:01] [INFO]   Hex Dump:
+[2025-11-23 14:27:01] [INFO]       0000  52 45 41 44 5F 48 4C 57 38 30 33 32 20 32 0D 0A   |READ_HLW8032 2..|
+[2025-11-23 14:27:01] [INFO] 
+[2025-11-23 14:27:01] [INFO] ✓ Transmitted 16 bytes
+[2025-11-23 14:27:01] [INFO]   Waiting 50ms for device processing...
+[2025-11-23 14:27:01] [INFO] 
+[2025-11-23 14:27:01] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-11-23 14:27:01] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:27:01] [INFO]   Timeout: 2.0s
+[2025-11-23 14:27:01] [INFO] 
+[2025-11-23 14:27:01] [INFO]   Chunk #1: 50 bytes | Elapsed: 0.000s | Total: 50 bytes
+[2025-11-23 14:27:01] [INFO] 
+[2025-11-23 14:27:01] [INFO]   No data for 500ms, response complete
+[2025-11-23 14:27:01] [INFO] 
+[2025-11-23 14:27:01] [INFO] ✓ Response Complete:
+[2025-11-23 14:27:01] [INFO]     Total Bytes:    50
+[2025-11-23 14:27:01] [INFO]     Chunks:         1
+[2025-11-23 14:27:01] [INFO]     Total Time:     0.505s
+[2025-11-23 14:27:01] [INFO] 
+[2025-11-23 14:27:01] [INFO]   Decoded Text:
+[2025-11-23 14:27:01] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:27:01] [INFO]   	[ECHO] CH2: V=0.00 V, I=0.000 A, P=0.00 W\r\n
+  \r\n
+  \r\n
+  \r\n
+  
+[2025-11-23 14:27:01] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:27:01] [INFO] 
+[2025-11-23 14:27:01] [INFO]   Hex Dump:
+[2025-11-23 14:27:01] [INFO]       0000  09 5B 45 43 48 4F 5D 20 43 48 32 3A 20 56 3D 30   |.[ECHO] CH2: V=0|
+[2025-11-23 14:27:01] [INFO]       0010  2E 30 30 20 56 2C 20 49 3D 30 2E 30 30 30 20 41   |.00 V, I=0.000 A|
+[2025-11-23 14:27:01] [INFO]       0020  2C 20 50 3D 30 2E 30 30 20 57 0D 0A 0D 0A 0D 0A   |, P=0.00 W......|
+[2025-11-23 14:27:01] [INFO]       0030  0D 0A                                             |..|
+[2025-11-23 14:27:01] [INFO] 
+[2025-11-23 14:27:01] [INFO] [SERIAL] Closing connection...
+[2025-11-23 14:27:01] [INFO] ✓ Port COM3 closed
+[2025-11-23 14:27:01] [INFO] ================================================================================
+[2025-11-23 14:27:01] [INFO] 
+[2025-11-23 14:27:01] [PASS] STEP 2.2 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 2.3 Read power data for Channel 3</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:27:01</td><td>2025-11-23 14:27:02</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:27:01] [STEP 2.3] Read power data for Channel 3
+[2025-11-23 14:27:01] [INFO] 
+[2025-11-23 14:27:01] [INFO] ================================================================================
+[2025-11-23 14:27:01] [INFO] [SERIAL] SEND COMMAND
+[2025-11-23 14:27:01] [INFO] ================================================================================
+[2025-11-23 14:27:01] [INFO]   Command: &#x27;READ_HLW8032 3&#x27;
+[2025-11-23 14:27:01] [INFO]   Port:    COM3
+[2025-11-23 14:27:01] [INFO] 
+[2025-11-23 14:27:01] [INFO] ================================================================================
+[2025-11-23 14:27:01] [INFO] [SERIAL] OPENING CONNECTION
+[2025-11-23 14:27:01] [INFO] ================================================================================
+[2025-11-23 14:27:01] [INFO]   Port:          COM3
+[2025-11-23 14:27:01] [INFO]   Baudrate:      115200
+[2025-11-23 14:27:01] [INFO]   Timeout:       2.0s
+[2025-11-23 14:27:01] [INFO]   Write Timeout: 2.0s
+[2025-11-23 14:27:01] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-11-23 14:27:01] [INFO] ✓ Port COM3 opened successfully
+[2025-11-23 14:27:01] [INFO]   Stabilizing connection (100ms delay)...
+[2025-11-23 14:27:01] [INFO]   Resetting input and output buffers...
+[2025-11-23 14:27:01] [INFO] ✓ Connection ready and buffers cleared
+[2025-11-23 14:27:01] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:27:01] [INFO] [SERIAL TX] TRANSMITTING
+[2025-11-23 14:27:01] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:27:01] [INFO]   Command:  &#x27;READ_HLW8032 3&#x27;
+[2025-11-23 14:27:01] [INFO]   Length:   16 bytes (including CR+LF)
+[2025-11-23 14:27:01] [INFO] 
+[2025-11-23 14:27:01] [INFO]   Hex Dump:
+[2025-11-23 14:27:01] [INFO]       0000  52 45 41 44 5F 48 4C 57 38 30 33 32 20 33 0D 0A   |READ_HLW8032 3..|
+[2025-11-23 14:27:01] [INFO] 
+[2025-11-23 14:27:01] [INFO] ✓ Transmitted 16 bytes
+[2025-11-23 14:27:01] [INFO]   Waiting 50ms for device processing...
+[2025-11-23 14:27:01] [INFO] 
+[2025-11-23 14:27:02] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-11-23 14:27:02] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:27:02] [INFO]   Timeout: 2.0s
+[2025-11-23 14:27:02] [INFO] 
+[2025-11-23 14:27:02] [INFO]   Chunk #1: 50 bytes | Elapsed: 0.001s | Total: 50 bytes
+[2025-11-23 14:27:02] [INFO] 
+[2025-11-23 14:27:02] [INFO]   No data for 500ms, response complete
+[2025-11-23 14:27:02] [INFO] 
+[2025-11-23 14:27:02] [INFO] ✓ Response Complete:
+[2025-11-23 14:27:02] [INFO]     Total Bytes:    50
+[2025-11-23 14:27:02] [INFO]     Chunks:         1
+[2025-11-23 14:27:02] [INFO]     Total Time:     0.505s
+[2025-11-23 14:27:02] [INFO] 
+[2025-11-23 14:27:02] [INFO]   Decoded Text:
+[2025-11-23 14:27:02] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:27:02] [INFO]   	[ECHO] CH3: V=0.00 V, I=0.000 A, P=0.00 W\r\n
+  \r\n
+  \r\n
+  \r\n
+  
+[2025-11-23 14:27:02] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:27:02] [INFO] 
+[2025-11-23 14:27:02] [INFO]   Hex Dump:
+[2025-11-23 14:27:02] [INFO]       0000  09 5B 45 43 48 4F 5D 20 43 48 33 3A 20 56 3D 30   |.[ECHO] CH3: V=0|
+[2025-11-23 14:27:02] [INFO]       0010  2E 30 30 20 56 2C 20 49 3D 30 2E 30 30 30 20 41   |.00 V, I=0.000 A|
+[2025-11-23 14:27:02] [INFO]       0020  2C 20 50 3D 30 2E 30 30 20 57 0D 0A 0D 0A 0D 0A   |, P=0.00 W......|
+[2025-11-23 14:27:02] [INFO]       0030  0D 0A                                             |..|
+[2025-11-23 14:27:02] [INFO] 
+[2025-11-23 14:27:02] [INFO] [SERIAL] Closing connection...
+[2025-11-23 14:27:02] [INFO] ✓ Port COM3 closed
+[2025-11-23 14:27:02] [INFO] ================================================================================
+[2025-11-23 14:27:02] [INFO] 
+[2025-11-23 14:27:02] [PASS] STEP 2.3 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 2.4 Read power data for Channel 4</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:27:02</td><td>2025-11-23 14:27:03</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:27:02] [STEP 2.4] Read power data for Channel 4
+[2025-11-23 14:27:02] [INFO] 
+[2025-11-23 14:27:02] [INFO] ================================================================================
+[2025-11-23 14:27:02] [INFO] [SERIAL] SEND COMMAND
+[2025-11-23 14:27:02] [INFO] ================================================================================
+[2025-11-23 14:27:02] [INFO]   Command: &#x27;READ_HLW8032 4&#x27;
+[2025-11-23 14:27:02] [INFO]   Port:    COM3
+[2025-11-23 14:27:02] [INFO] 
+[2025-11-23 14:27:02] [INFO] ================================================================================
+[2025-11-23 14:27:02] [INFO] [SERIAL] OPENING CONNECTION
+[2025-11-23 14:27:02] [INFO] ================================================================================
+[2025-11-23 14:27:02] [INFO]   Port:          COM3
+[2025-11-23 14:27:02] [INFO]   Baudrate:      115200
+[2025-11-23 14:27:02] [INFO]   Timeout:       2.0s
+[2025-11-23 14:27:02] [INFO]   Write Timeout: 2.0s
+[2025-11-23 14:27:02] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-11-23 14:27:02] [INFO] ✓ Port COM3 opened successfully
+[2025-11-23 14:27:02] [INFO]   Stabilizing connection (100ms delay)...
+[2025-11-23 14:27:02] [INFO]   Resetting input and output buffers...
+[2025-11-23 14:27:02] [INFO] ✓ Connection ready and buffers cleared
+[2025-11-23 14:27:02] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:27:02] [INFO] [SERIAL TX] TRANSMITTING
+[2025-11-23 14:27:02] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:27:02] [INFO]   Command:  &#x27;READ_HLW8032 4&#x27;
+[2025-11-23 14:27:02] [INFO]   Length:   16 bytes (including CR+LF)
+[2025-11-23 14:27:02] [INFO] 
+[2025-11-23 14:27:02] [INFO]   Hex Dump:
+[2025-11-23 14:27:02] [INFO]       0000  52 45 41 44 5F 48 4C 57 38 30 33 32 20 34 0D 0A   |READ_HLW8032 4..|
+[2025-11-23 14:27:02] [INFO] 
+[2025-11-23 14:27:02] [INFO] ✓ Transmitted 16 bytes
+[2025-11-23 14:27:02] [INFO]   Waiting 50ms for device processing...
+[2025-11-23 14:27:02] [INFO] 
+[2025-11-23 14:27:02] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-11-23 14:27:02] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:27:02] [INFO]   Timeout: 2.0s
+[2025-11-23 14:27:02] [INFO] 
+[2025-11-23 14:27:02] [INFO]   Chunk #1: 50 bytes | Elapsed: 0.000s | Total: 50 bytes
+[2025-11-23 14:27:03] [INFO] 
+[2025-11-23 14:27:03] [INFO]   No data for 500ms, response complete
+[2025-11-23 14:27:03] [INFO] 
+[2025-11-23 14:27:03] [INFO] ✓ Response Complete:
+[2025-11-23 14:27:03] [INFO]     Total Bytes:    50
+[2025-11-23 14:27:03] [INFO]     Chunks:         1
+[2025-11-23 14:27:03] [INFO]     Total Time:     0.505s
+[2025-11-23 14:27:03] [INFO] 
+[2025-11-23 14:27:03] [INFO]   Decoded Text:
+[2025-11-23 14:27:03] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:27:03] [INFO]   	[ECHO] CH4: V=0.00 V, I=0.000 A, P=0.00 W\r\n
+  \r\n
+  \r\n
+  \r\n
+  
+[2025-11-23 14:27:03] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:27:03] [INFO] 
+[2025-11-23 14:27:03] [INFO]   Hex Dump:
+[2025-11-23 14:27:03] [INFO]       0000  09 5B 45 43 48 4F 5D 20 43 48 34 3A 20 56 3D 30   |.[ECHO] CH4: V=0|
+[2025-11-23 14:27:03] [INFO]       0010  2E 30 30 20 56 2C 20 49 3D 30 2E 30 30 30 20 41   |.00 V, I=0.000 A|
+[2025-11-23 14:27:03] [INFO]       0020  2C 20 50 3D 30 2E 30 30 20 57 0D 0A 0D 0A 0D 0A   |, P=0.00 W......|
+[2025-11-23 14:27:03] [INFO]       0030  0D 0A                                             |..|
+[2025-11-23 14:27:03] [INFO] 
+[2025-11-23 14:27:03] [INFO] [SERIAL] Closing connection...
+[2025-11-23 14:27:03] [INFO] ✓ Port COM3 closed
+[2025-11-23 14:27:03] [INFO] ================================================================================
+[2025-11-23 14:27:03] [INFO] 
+[2025-11-23 14:27:03] [PASS] STEP 2.4 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 2.5 Read power data for Channel 5</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:27:03</td><td>2025-11-23 14:27:03</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:27:03] [STEP 2.5] Read power data for Channel 5
+[2025-11-23 14:27:03] [INFO] 
+[2025-11-23 14:27:03] [INFO] ================================================================================
+[2025-11-23 14:27:03] [INFO] [SERIAL] SEND COMMAND
+[2025-11-23 14:27:03] [INFO] ================================================================================
+[2025-11-23 14:27:03] [INFO]   Command: &#x27;READ_HLW8032 5&#x27;
+[2025-11-23 14:27:03] [INFO]   Port:    COM3
+[2025-11-23 14:27:03] [INFO] 
+[2025-11-23 14:27:03] [INFO] ================================================================================
+[2025-11-23 14:27:03] [INFO] [SERIAL] OPENING CONNECTION
+[2025-11-23 14:27:03] [INFO] ================================================================================
+[2025-11-23 14:27:03] [INFO]   Port:          COM3
+[2025-11-23 14:27:03] [INFO]   Baudrate:      115200
+[2025-11-23 14:27:03] [INFO]   Timeout:       2.0s
+[2025-11-23 14:27:03] [INFO]   Write Timeout: 2.0s
+[2025-11-23 14:27:03] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-11-23 14:27:03] [INFO] ✓ Port COM3 opened successfully
+[2025-11-23 14:27:03] [INFO]   Stabilizing connection (100ms delay)...
+[2025-11-23 14:27:03] [INFO]   Resetting input and output buffers...
+[2025-11-23 14:27:03] [INFO] ✓ Connection ready and buffers cleared
+[2025-11-23 14:27:03] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:27:03] [INFO] [SERIAL TX] TRANSMITTING
+[2025-11-23 14:27:03] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:27:03] [INFO]   Command:  &#x27;READ_HLW8032 5&#x27;
+[2025-11-23 14:27:03] [INFO]   Length:   16 bytes (including CR+LF)
+[2025-11-23 14:27:03] [INFO] 
+[2025-11-23 14:27:03] [INFO]   Hex Dump:
+[2025-11-23 14:27:03] [INFO]       0000  52 45 41 44 5F 48 4C 57 38 30 33 32 20 35 0D 0A   |READ_HLW8032 5..|
+[2025-11-23 14:27:03] [INFO] 
+[2025-11-23 14:27:03] [INFO] ✓ Transmitted 16 bytes
+[2025-11-23 14:27:03] [INFO]   Waiting 50ms for device processing...
+[2025-11-23 14:27:03] [INFO] 
+[2025-11-23 14:27:03] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-11-23 14:27:03] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:27:03] [INFO]   Timeout: 2.0s
+[2025-11-23 14:27:03] [INFO] 
+[2025-11-23 14:27:03] [INFO]   Chunk #1: 50 bytes | Elapsed: 0.000s | Total: 50 bytes
+[2025-11-23 14:27:03] [INFO] 
+[2025-11-23 14:27:03] [INFO]   No data for 500ms, response complete
+[2025-11-23 14:27:03] [INFO] 
+[2025-11-23 14:27:03] [INFO] ✓ Response Complete:
+[2025-11-23 14:27:03] [INFO]     Total Bytes:    50
+[2025-11-23 14:27:03] [INFO]     Chunks:         1
+[2025-11-23 14:27:03] [INFO]     Total Time:     0.504s
+[2025-11-23 14:27:03] [INFO] 
+[2025-11-23 14:27:03] [INFO]   Decoded Text:
+[2025-11-23 14:27:03] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:27:03] [INFO]   	[ECHO] CH5: V=0.00 V, I=0.000 A, P=0.00 W\r\n
+  \r\n
+  \r\n
+  \r\n
+  
+[2025-11-23 14:27:03] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:27:03] [INFO] 
+[2025-11-23 14:27:03] [INFO]   Hex Dump:
+[2025-11-23 14:27:03] [INFO]       0000  09 5B 45 43 48 4F 5D 20 43 48 35 3A 20 56 3D 30   |.[ECHO] CH5: V=0|
+[2025-11-23 14:27:03] [INFO]       0010  2E 30 30 20 56 2C 20 49 3D 30 2E 30 30 30 20 41   |.00 V, I=0.000 A|
+[2025-11-23 14:27:03] [INFO]       0020  2C 20 50 3D 30 2E 30 30 20 57 0D 0A 0D 0A 0D 0A   |, P=0.00 W......|
+[2025-11-23 14:27:03] [INFO]       0030  0D 0A                                             |..|
+[2025-11-23 14:27:03] [INFO] 
+[2025-11-23 14:27:03] [INFO] [SERIAL] Closing connection...
+[2025-11-23 14:27:03] [INFO] ✓ Port COM3 closed
+[2025-11-23 14:27:03] [INFO] ================================================================================
+[2025-11-23 14:27:03] [INFO] 
+[2025-11-23 14:27:03] [PASS] STEP 2.5 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 2.6 Read power data for Channel 6</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:27:03</td><td>2025-11-23 14:27:04</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:27:03] [STEP 2.6] Read power data for Channel 6
+[2025-11-23 14:27:03] [INFO] 
+[2025-11-23 14:27:03] [INFO] ================================================================================
+[2025-11-23 14:27:03] [INFO] [SERIAL] SEND COMMAND
+[2025-11-23 14:27:03] [INFO] ================================================================================
+[2025-11-23 14:27:03] [INFO]   Command: &#x27;READ_HLW8032 6&#x27;
+[2025-11-23 14:27:03] [INFO]   Port:    COM3
+[2025-11-23 14:27:03] [INFO] 
+[2025-11-23 14:27:03] [INFO] ================================================================================
+[2025-11-23 14:27:03] [INFO] [SERIAL] OPENING CONNECTION
+[2025-11-23 14:27:03] [INFO] ================================================================================
+[2025-11-23 14:27:03] [INFO]   Port:          COM3
+[2025-11-23 14:27:03] [INFO]   Baudrate:      115200
+[2025-11-23 14:27:03] [INFO]   Timeout:       2.0s
+[2025-11-23 14:27:03] [INFO]   Write Timeout: 2.0s
+[2025-11-23 14:27:03] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-11-23 14:27:03] [INFO] ✓ Port COM3 opened successfully
+[2025-11-23 14:27:03] [INFO]   Stabilizing connection (100ms delay)...
+[2025-11-23 14:27:03] [INFO]   Resetting input and output buffers...
+[2025-11-23 14:27:03] [INFO] ✓ Connection ready and buffers cleared
+[2025-11-23 14:27:03] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:27:03] [INFO] [SERIAL TX] TRANSMITTING
+[2025-11-23 14:27:03] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:27:03] [INFO]   Command:  &#x27;READ_HLW8032 6&#x27;
+[2025-11-23 14:27:03] [INFO]   Length:   16 bytes (including CR+LF)
+[2025-11-23 14:27:03] [INFO] 
+[2025-11-23 14:27:03] [INFO]   Hex Dump:
+[2025-11-23 14:27:03] [INFO]       0000  52 45 41 44 5F 48 4C 57 38 30 33 32 20 36 0D 0A   |READ_HLW8032 6..|
+[2025-11-23 14:27:03] [INFO] 
+[2025-11-23 14:27:03] [INFO] ✓ Transmitted 16 bytes
+[2025-11-23 14:27:03] [INFO]   Waiting 50ms for device processing...
+[2025-11-23 14:27:03] [INFO] 
+[2025-11-23 14:27:03] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-11-23 14:27:03] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:27:03] [INFO]   Timeout: 2.0s
+[2025-11-23 14:27:03] [INFO] 
+[2025-11-23 14:27:03] [INFO]   Chunk #1: 50 bytes | Elapsed: 0.001s | Total: 50 bytes
+[2025-11-23 14:27:04] [INFO] 
+[2025-11-23 14:27:04] [INFO]   No data for 500ms, response complete
+[2025-11-23 14:27:04] [INFO] 
+[2025-11-23 14:27:04] [INFO] ✓ Response Complete:
+[2025-11-23 14:27:04] [INFO]     Total Bytes:    50
+[2025-11-23 14:27:04] [INFO]     Chunks:         1
+[2025-11-23 14:27:04] [INFO]     Total Time:     0.504s
+[2025-11-23 14:27:04] [INFO] 
+[2025-11-23 14:27:04] [INFO]   Decoded Text:
+[2025-11-23 14:27:04] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:27:04] [INFO]   	[ECHO] CH6: V=0.00 V, I=0.000 A, P=0.00 W\r\n
+  \r\n
+  \r\n
+  \r\n
+  
+[2025-11-23 14:27:04] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:27:04] [INFO] 
+[2025-11-23 14:27:04] [INFO]   Hex Dump:
+[2025-11-23 14:27:04] [INFO]       0000  09 5B 45 43 48 4F 5D 20 43 48 36 3A 20 56 3D 30   |.[ECHO] CH6: V=0|
+[2025-11-23 14:27:04] [INFO]       0010  2E 30 30 20 56 2C 20 49 3D 30 2E 30 30 30 20 41   |.00 V, I=0.000 A|
+[2025-11-23 14:27:04] [INFO]       0020  2C 20 50 3D 30 2E 30 30 20 57 0D 0A 0D 0A 0D 0A   |, P=0.00 W......|
+[2025-11-23 14:27:04] [INFO]       0030  0D 0A                                             |..|
+[2025-11-23 14:27:04] [INFO] 
+[2025-11-23 14:27:04] [INFO] [SERIAL] Closing connection...
+[2025-11-23 14:27:04] [INFO] ✓ Port COM3 closed
+[2025-11-23 14:27:04] [INFO] ================================================================================
+[2025-11-23 14:27:04] [INFO] 
+[2025-11-23 14:27:04] [PASS] STEP 2.6 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 2.7 Read power data for Channel 7</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:27:04</td><td>2025-11-23 14:27:05</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:27:04] [STEP 2.7] Read power data for Channel 7
+[2025-11-23 14:27:04] [INFO] 
+[2025-11-23 14:27:04] [INFO] ================================================================================
+[2025-11-23 14:27:04] [INFO] [SERIAL] SEND COMMAND
+[2025-11-23 14:27:04] [INFO] ================================================================================
+[2025-11-23 14:27:04] [INFO]   Command: &#x27;READ_HLW8032 7&#x27;
+[2025-11-23 14:27:04] [INFO]   Port:    COM3
+[2025-11-23 14:27:04] [INFO] 
+[2025-11-23 14:27:04] [INFO] ================================================================================
+[2025-11-23 14:27:04] [INFO] [SERIAL] OPENING CONNECTION
+[2025-11-23 14:27:04] [INFO] ================================================================================
+[2025-11-23 14:27:04] [INFO]   Port:          COM3
+[2025-11-23 14:27:04] [INFO]   Baudrate:      115200
+[2025-11-23 14:27:04] [INFO]   Timeout:       2.0s
+[2025-11-23 14:27:04] [INFO]   Write Timeout: 2.0s
+[2025-11-23 14:27:04] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-11-23 14:27:04] [INFO] ✓ Port COM3 opened successfully
+[2025-11-23 14:27:04] [INFO]   Stabilizing connection (100ms delay)...
+[2025-11-23 14:27:04] [INFO]   Resetting input and output buffers...
+[2025-11-23 14:27:04] [INFO] ✓ Connection ready and buffers cleared
+[2025-11-23 14:27:04] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:27:04] [INFO] [SERIAL TX] TRANSMITTING
+[2025-11-23 14:27:04] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:27:04] [INFO]   Command:  &#x27;READ_HLW8032 7&#x27;
+[2025-11-23 14:27:04] [INFO]   Length:   16 bytes (including CR+LF)
+[2025-11-23 14:27:04] [INFO] 
+[2025-11-23 14:27:04] [INFO]   Hex Dump:
+[2025-11-23 14:27:04] [INFO]       0000  52 45 41 44 5F 48 4C 57 38 30 33 32 20 37 0D 0A   |READ_HLW8032 7..|
+[2025-11-23 14:27:04] [INFO] 
+[2025-11-23 14:27:04] [INFO] ✓ Transmitted 16 bytes
+[2025-11-23 14:27:04] [INFO]   Waiting 50ms for device processing...
+[2025-11-23 14:27:04] [INFO] 
+[2025-11-23 14:27:04] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-11-23 14:27:04] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:27:04] [INFO]   Timeout: 2.0s
+[2025-11-23 14:27:04] [INFO] 
+[2025-11-23 14:27:04] [INFO]   Chunk #1: 50 bytes | Elapsed: 0.000s | Total: 50 bytes
+[2025-11-23 14:27:05] [INFO] 
+[2025-11-23 14:27:05] [INFO]   No data for 500ms, response complete
+[2025-11-23 14:27:05] [INFO] 
+[2025-11-23 14:27:05] [INFO] ✓ Response Complete:
+[2025-11-23 14:27:05] [INFO]     Total Bytes:    50
+[2025-11-23 14:27:05] [INFO]     Chunks:         1
+[2025-11-23 14:27:05] [INFO]     Total Time:     0.505s
+[2025-11-23 14:27:05] [INFO] 
+[2025-11-23 14:27:05] [INFO]   Decoded Text:
+[2025-11-23 14:27:05] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:27:05] [INFO]   	[ECHO] CH7: V=0.00 V, I=0.000 A, P=0.00 W\r\n
+  \r\n
+  \r\n
+  \r\n
+  
+[2025-11-23 14:27:05] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:27:05] [INFO] 
+[2025-11-23 14:27:05] [INFO]   Hex Dump:
+[2025-11-23 14:27:05] [INFO]       0000  09 5B 45 43 48 4F 5D 20 43 48 37 3A 20 56 3D 30   |.[ECHO] CH7: V=0|
+[2025-11-23 14:27:05] [INFO]       0010  2E 30 30 20 56 2C 20 49 3D 30 2E 30 30 30 20 41   |.00 V, I=0.000 A|
+[2025-11-23 14:27:05] [INFO]       0020  2C 20 50 3D 30 2E 30 30 20 57 0D 0A 0D 0A 0D 0A   |, P=0.00 W......|
+[2025-11-23 14:27:05] [INFO]       0030  0D 0A                                             |..|
+[2025-11-23 14:27:05] [INFO] 
+[2025-11-23 14:27:05] [INFO] [SERIAL] Closing connection...
+[2025-11-23 14:27:05] [INFO] ✓ Port COM3 closed
+[2025-11-23 14:27:05] [INFO] ================================================================================
+[2025-11-23 14:27:05] [INFO] 
+[2025-11-23 14:27:05] [PASS] STEP 2.7 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 2.8 Read power data for Channel 8</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:27:05</td><td>2025-11-23 14:27:05</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:27:05] [STEP 2.8] Read power data for Channel 8
+[2025-11-23 14:27:05] [INFO] 
+[2025-11-23 14:27:05] [INFO] ================================================================================
+[2025-11-23 14:27:05] [INFO] [SERIAL] SEND COMMAND
+[2025-11-23 14:27:05] [INFO] ================================================================================
+[2025-11-23 14:27:05] [INFO]   Command: &#x27;READ_HLW8032 8&#x27;
+[2025-11-23 14:27:05] [INFO]   Port:    COM3
+[2025-11-23 14:27:05] [INFO] 
+[2025-11-23 14:27:05] [INFO] ================================================================================
+[2025-11-23 14:27:05] [INFO] [SERIAL] OPENING CONNECTION
+[2025-11-23 14:27:05] [INFO] ================================================================================
+[2025-11-23 14:27:05] [INFO]   Port:          COM3
+[2025-11-23 14:27:05] [INFO]   Baudrate:      115200
+[2025-11-23 14:27:05] [INFO]   Timeout:       2.0s
+[2025-11-23 14:27:05] [INFO]   Write Timeout: 2.0s
+[2025-11-23 14:27:05] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-11-23 14:27:05] [INFO] ✓ Port COM3 opened successfully
+[2025-11-23 14:27:05] [INFO]   Stabilizing connection (100ms delay)...
+[2025-11-23 14:27:05] [INFO]   Resetting input and output buffers...
+[2025-11-23 14:27:05] [INFO] ✓ Connection ready and buffers cleared
+[2025-11-23 14:27:05] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:27:05] [INFO] [SERIAL TX] TRANSMITTING
+[2025-11-23 14:27:05] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:27:05] [INFO]   Command:  &#x27;READ_HLW8032 8&#x27;
+[2025-11-23 14:27:05] [INFO]   Length:   16 bytes (including CR+LF)
+[2025-11-23 14:27:05] [INFO] 
+[2025-11-23 14:27:05] [INFO]   Hex Dump:
+[2025-11-23 14:27:05] [INFO]       0000  52 45 41 44 5F 48 4C 57 38 30 33 32 20 38 0D 0A   |READ_HLW8032 8..|
+[2025-11-23 14:27:05] [INFO] 
+[2025-11-23 14:27:05] [INFO] ✓ Transmitted 16 bytes
+[2025-11-23 14:27:05] [INFO]   Waiting 50ms for device processing...
+[2025-11-23 14:27:05] [INFO] 
+[2025-11-23 14:27:05] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-11-23 14:27:05] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:27:05] [INFO]   Timeout: 2.0s
+[2025-11-23 14:27:05] [INFO] 
+[2025-11-23 14:27:05] [INFO]   Chunk #1: 50 bytes | Elapsed: 0.001s | Total: 50 bytes
+[2025-11-23 14:27:05] [INFO] 
+[2025-11-23 14:27:05] [INFO]   No data for 500ms, response complete
+[2025-11-23 14:27:05] [INFO] 
+[2025-11-23 14:27:05] [INFO] ✓ Response Complete:
+[2025-11-23 14:27:05] [INFO]     Total Bytes:    50
+[2025-11-23 14:27:05] [INFO]     Chunks:         1
+[2025-11-23 14:27:05] [INFO]     Total Time:     0.506s
+[2025-11-23 14:27:05] [INFO] 
+[2025-11-23 14:27:05] [INFO]   Decoded Text:
+[2025-11-23 14:27:05] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:27:05] [INFO]   	[ECHO] CH8: V=0.00 V, I=0.000 A, P=0.00 W\r\n
+  \r\n
+  \r\n
+  \r\n
+  
+[2025-11-23 14:27:05] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:27:05] [INFO] 
+[2025-11-23 14:27:05] [INFO]   Hex Dump:
+[2025-11-23 14:27:05] [INFO]       0000  09 5B 45 43 48 4F 5D 20 43 48 38 3A 20 56 3D 30   |.[ECHO] CH8: V=0|
+[2025-11-23 14:27:05] [INFO]       0010  2E 30 30 20 56 2C 20 49 3D 30 2E 30 30 30 20 41   |.00 V, I=0.000 A|
+[2025-11-23 14:27:05] [INFO]       0020  2C 20 50 3D 30 2E 30 30 20 57 0D 0A 0D 0A 0D 0A   |, P=0.00 W......|
+[2025-11-23 14:27:05] [INFO]       0030  0D 0A                                             |..|
+[2025-11-23 14:27:05] [INFO] 
+[2025-11-23 14:27:05] [INFO] [SERIAL] Closing connection...
+[2025-11-23 14:27:05] [INFO] ✓ Port COM3 closed
+[2025-11-23 14:27:05] [INFO] ================================================================================
+[2025-11-23 14:27:05] [INFO] 
+[2025-11-23 14:27:05] [PASS] STEP 2.8 completed successfully
+</pre>
+</div>
+</details>
+</div>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 3 Test bulk power monitoring command</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:27:05</td><td>2025-11-23 14:27:06</td></tr>
+</table>
+<div class='substeps'>
+<h4>Substeps</h4>
+<details>
+<summary>
+<div class='step-title'><div>STEP 3.1 Read all power data at once</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:27:05</td><td>2025-11-23 14:27:06</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:27:05] [STEP 3.1] Read all power data at once
+[2025-11-23 14:27:05] [INFO] 
+[2025-11-23 14:27:05] [INFO] ================================================================================
+[2025-11-23 14:27:05] [INFO] [SERIAL] SEND COMMAND
+[2025-11-23 14:27:05] [INFO] ================================================================================
+[2025-11-23 14:27:05] [INFO]   Command: &#x27;READ_HLW8032&#x27;
+[2025-11-23 14:27:05] [INFO]   Port:    COM3
+[2025-11-23 14:27:05] [INFO] 
+[2025-11-23 14:27:05] [INFO] ================================================================================
+[2025-11-23 14:27:05] [INFO] [SERIAL] OPENING CONNECTION
+[2025-11-23 14:27:05] [INFO] ================================================================================
+[2025-11-23 14:27:05] [INFO]   Port:          COM3
+[2025-11-23 14:27:05] [INFO]   Baudrate:      115200
+[2025-11-23 14:27:05] [INFO]   Timeout:       2.0s
+[2025-11-23 14:27:05] [INFO]   Write Timeout: 2.0s
+[2025-11-23 14:27:05] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-11-23 14:27:05] [INFO] ✓ Port COM3 opened successfully
+[2025-11-23 14:27:05] [INFO]   Stabilizing connection (100ms delay)...
+[2025-11-23 14:27:05] [INFO]   Resetting input and output buffers...
+[2025-11-23 14:27:05] [INFO] ✓ Connection ready and buffers cleared
+[2025-11-23 14:27:05] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:27:05] [INFO] [SERIAL TX] TRANSMITTING
+[2025-11-23 14:27:05] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:27:05] [INFO]   Command:  &#x27;READ_HLW8032&#x27;
+[2025-11-23 14:27:05] [INFO]   Length:   14 bytes (including CR+LF)
+[2025-11-23 14:27:05] [INFO] 
+[2025-11-23 14:27:05] [INFO]   Hex Dump:
+[2025-11-23 14:27:05] [INFO]       0000  52 45 41 44 5F 48 4C 57 38 30 33 32 0D 0A         |READ_HLW8032..|
+[2025-11-23 14:27:05] [INFO] 
+[2025-11-23 14:27:05] [INFO] ✓ Transmitted 14 bytes
+[2025-11-23 14:27:05] [INFO]   Waiting 50ms for device processing...
+[2025-11-23 14:27:05] [INFO] 
+[2025-11-23 14:27:05] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-11-23 14:27:05] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:27:05] [INFO]   Timeout: 2.0s
+[2025-11-23 14:27:05] [INFO] 
+[2025-11-23 14:27:05] [INFO]   Chunk #1: 366 bytes | Elapsed: 0.001s | Total: 366 bytes
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO]   No data for 500ms, response complete
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO] ✓ Response Complete:
+[2025-11-23 14:27:06] [INFO]     Total Bytes:    366
+[2025-11-23 14:27:06] [INFO]     Chunks:         1
+[2025-11-23 14:27:06] [INFO]     Total Time:     0.505s
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO]   Decoded Text:
+[2025-11-23 14:27:06] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:27:06] [INFO]   	[ECHO] CH1: V=0.00 V, I=0.000 A, P=0.00 W\r\n
+  	[ECHO] CH2: V=0.00 V, I=0.000 A, P=0.00 W\r\n
+  	[ECHO] CH3: V=0.00 V, I=0.000 A, P=0.00 W\r\n
+  	[ECHO] CH4: V=0.00 V, I=0.000 A, P=0.00 W\r\n
+  	[ECHO] CH5: V=0.00 V, I=0.000 A, P=0.00 W\r\n
+  	[ECHO] CH6: V=0.00 V, I=0.000 A, P=0.00 W\r\n
+  	[ECHO] CH7: V=0.00 V, I=0.000 A, P=0.00 W\r\n
+  	[ECHO] CH8: V=0.00 V, I=0.000 A, P=0.00 W\r\n
+  	[ECHO] \r\n
+  \r\n
+  \r\n
+  
+[2025-11-23 14:27:06] [INFO]   ------------------------------------------------------------------------------
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO]   Hex Dump:
+[2025-11-23 14:27:06] [INFO]       0000  09 5B 45 43 48 4F 5D 20 43 48 31 3A 20 56 3D 30   |.[ECHO] CH1: V=0|
+[2025-11-23 14:27:06] [INFO]       0010  2E 30 30 20 56 2C 20 49 3D 30 2E 30 30 30 20 41   |.00 V, I=0.000 A|
+[2025-11-23 14:27:06] [INFO]       0020  2C 20 50 3D 30 2E 30 30 20 57 0D 0A 09 5B 45 43   |, P=0.00 W...[EC|
+[2025-11-23 14:27:06] [INFO]       0030  48 4F 5D 20 43 48 32 3A 20 56 3D 30 2E 30 30 20   |HO] CH2: V=0.00 |
+[2025-11-23 14:27:06] [INFO]       0040  56 2C 20 49 3D 30 2E 30 30 30 20 41 2C 20 50 3D   |V, I=0.000 A, P=|
+[2025-11-23 14:27:06] [INFO]       0050  30 2E 30 30 20 57 0D 0A 09 5B 45 43 48 4F 5D 20   |0.00 W...[ECHO] |
+[2025-11-23 14:27:06] [INFO]       0060  43 48 33 3A 20 56 3D 30 2E 30 30 20 56 2C 20 49   |CH3: V=0.00 V, I|
+[2025-11-23 14:27:06] [INFO]       0070  3D 30 2E 30 30 30 20 41 2C 20 50 3D 30 2E 30 30   |=0.000 A, P=0.00|
+[2025-11-23 14:27:06] [INFO]       0080  20 57 0D 0A 09 5B 45 43 48 4F 5D 20 43 48 34 3A   | W...[ECHO] CH4:|
+[2025-11-23 14:27:06] [INFO]       0090  20 56 3D 30 2E 30 30 20 56 2C 20 49 3D 30 2E 30   | V=0.00 V, I=0.0|
+[2025-11-23 14:27:06] [INFO]       00A0  30 30 20 41 2C 20 50 3D 30 2E 30 30 20 57 0D 0A   |00 A, P=0.00 W..|
+[2025-11-23 14:27:06] [INFO]       00B0  09 5B 45 43 48 4F 5D 20 43 48 35 3A 20 56 3D 30   |.[ECHO] CH5: V=0|
+[2025-11-23 14:27:06] [INFO]       00C0  2E 30 30 20 56 2C 20 49 3D 30 2E 30 30 30 20 41   |.00 V, I=0.000 A|
+[2025-11-23 14:27:06] [INFO]       00D0  2C 20 50 3D 30 2E 30 30 20 57 0D 0A 09 5B 45 43   |, P=0.00 W...[EC|
+[2025-11-23 14:27:06] [INFO]       00E0  48 4F 5D 20 43 48 36 3A 20 56 3D 30 2E 30 30 20   |HO] CH6: V=0.00 |
+[2025-11-23 14:27:06] [INFO]       00F0  56 2C 20 49 3D 30 2E 30 30 30 20 41 2C 20 50 3D   |V, I=0.000 A, P=|
+[2025-11-23 14:27:06] [INFO]       0100  30 2E 30 30 20 57 0D 0A 09 5B 45 43 48 4F 5D 20   |0.00 W...[ECHO] |
+[2025-11-23 14:27:06] [INFO]       0110  43 48 37 3A 20 56 3D 30 2E 30 30 20 56 2C 20 49   |CH7: V=0.00 V, I|
+[2025-11-23 14:27:06] [INFO]       0120  3D 30 2E 30 30 30 20 41 2C 20 50 3D 30 2E 30 30   |=0.000 A, P=0.00|
+[2025-11-23 14:27:06] [INFO]       0130  20 57 0D 0A 09 5B 45 43 48 4F 5D 20 43 48 38 3A   | W...[ECHO] CH8:|
+[2025-11-23 14:27:06] [INFO]       0140  20 56 3D 30 2E 30 30 20 56 2C 20 49 3D 30 2E 30   | V=0.00 V, I=0.0|
+[2025-11-23 14:27:06] [INFO]       0150  30 30 20 41 2C 20 50 3D 30 2E 30 30 20 57 0D 0A   |00 A, P=0.00 W..|
+[2025-11-23 14:27:06] [INFO]       0160  09 5B 45 43 48 4F 5D 20 0D 0A 0D 0A 0D 0A         |.[ECHO] ......|
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO] [SERIAL] Closing connection...
+[2025-11-23 14:27:06] [INFO] ✓ Port COM3 closed
+[2025-11-23 14:27:06] [INFO] ================================================================================
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [PASS] STEP 3.1 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 3.2 Validate bulk power response</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:27:06</td><td>2025-11-23 14:27:06</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:27:06] [STEP 3.2] Validate bulk power response
+[2025-11-23 14:27:06] [PASS] STEP 3.2 completed successfully
+</pre>
+</div>
+</details>
+</div>
+</div>
+</details>
+<details class='teardown'>
+<summary>
+<div class='step-title'><div>TEARDOWN 1 Ensure all outputs OFF</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:27:06</td><td>2025-11-23 14:27:06</td></tr>
+</table>
+<details>
+<summary><div class='step-title'><div>Step Log</div><div class='status unknown'>DETAIL</div></div></summary>
+<div class='content'>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:27:06] [TEARDOWN 1] Ensure all outputs OFF
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO] ================================================================================
+[2025-11-23 14:27:06] [INFO] [OUTLET] SET ALL OUTLETS
+[2025-11-23 14:27:06] [INFO] ================================================================================
+[2025-11-23 14:27:06] [INFO]   State:     OFF
+[2025-11-23 14:27:06] [INFO]   Target:    192.168.0.22
+[2025-11-23 14:27:06] [INFO]   OID:       1.3.6.1.4.1.19865.2.9.0
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO] ================================================================================
+[2025-11-23 14:27:06] [INFO] [SNMP] SET INTEGER
+[2025-11-23 14:27:06] [INFO] ================================================================================
+[2025-11-23 14:27:06] [INFO]   Target:    192.168.0.22
+[2025-11-23 14:27:06] [INFO]   OID:       1.3.6.1.4.1.19865.2.9.0
+[2025-11-23 14:27:06] [INFO]   Value:     1
+[2025-11-23 14:27:06] [INFO]   Community: public
+[2025-11-23 14:27:06] [INFO]   Timeout:   3.0s
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO] [SNMP CMD] Executing command
+[2025-11-23 14:27:06] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:27:06] [INFO]   Command: snmpset -v1 -c public 192.168.0.22 1.3.6.1.4.1.19865.2.9.0 i 1
+[2025-11-23 14:27:06] [INFO]   Return:  0
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO]   Output:
+[2025-11-23 14:27:06] [INFO]     SNMPv2-SMI::enterprises.19865.2.9.0 = INTEGER: 1
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO] ✓ Value set successfully
+[2025-11-23 14:27:06] [INFO] ================================================================================
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO] ✓ All outlets set to OFF
+[2025-11-23 14:27:06] [INFO] ================================================================================
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [PASS] TEARDOWN 1 completed successfully
+</pre>
+</div>
+</details>
+</div>
+</details>
+<details class='teardown'>
+<summary>
+<div class='step-title'><div>TEARDOWN 2 Final verify all outputs OFF</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-11-23 14:27:06</td><td>2025-11-23 14:27:06</td></tr>
+</table>
+<details>
+<summary><div class='step-title'><div>Step Log</div><div class='status unknown'>DETAIL</div></div></summary>
+<div class='content'>
+<h4>Log</h4>
+<pre>
+[2025-11-23 14:27:06] [TEARDOWN 2] Final verify all outputs OFF
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO] ================================================================================
+[2025-11-23 14:27:06] [INFO] [OUTLET] VERIFY ALL OUTLETS
+[2025-11-23 14:27:06] [INFO] ================================================================================
+[2025-11-23 14:27:06] [INFO]   Expected:  OFF
+[2025-11-23 14:27:06] [INFO]   Target:    192.168.0.22
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO] [CH1] Checking...
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO] ================================================================================
+[2025-11-23 14:27:06] [INFO] [SNMP] GET VALUE
+[2025-11-23 14:27:06] [INFO] ================================================================================
+[2025-11-23 14:27:06] [INFO]   Target:    192.168.0.22
+[2025-11-23 14:27:06] [INFO]   OID:       1.3.6.1.4.1.19865.2.1.0
+[2025-11-23 14:27:06] [INFO]   Community: public
+[2025-11-23 14:27:06] [INFO]   Timeout:   3.0s
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO] [SNMP CMD] Executing command
+[2025-11-23 14:27:06] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:27:06] [INFO]   Command: snmpget -v1 -c public 192.168.0.22 1.3.6.1.4.1.19865.2.1.0
+[2025-11-23 14:27:06] [INFO]   Return:  0
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO]   Output:
+[2025-11-23 14:27:06] [INFO]     SNMPv2-SMI::enterprises.19865.2.1.0 = INTEGER: 0
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO] [SNMP PARSE] Parsing SNMP response
+[2025-11-23 14:27:06] [INFO]   Length: 49 chars
+[2025-11-23 14:27:06] [INFO]   Result: &#x27;0&#x27;
+[2025-11-23 14:27:06] [INFO] ✓ Retrieved: &#x27;0&#x27;
+[2025-11-23 14:27:06] [INFO] ================================================================================
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO]   ✓ CH1: OFF
+[2025-11-23 14:27:06] [INFO] [CH2] Checking...
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO] ================================================================================
+[2025-11-23 14:27:06] [INFO] [SNMP] GET VALUE
+[2025-11-23 14:27:06] [INFO] ================================================================================
+[2025-11-23 14:27:06] [INFO]   Target:    192.168.0.22
+[2025-11-23 14:27:06] [INFO]   OID:       1.3.6.1.4.1.19865.2.2.0
+[2025-11-23 14:27:06] [INFO]   Community: public
+[2025-11-23 14:27:06] [INFO]   Timeout:   3.0s
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO] [SNMP CMD] Executing command
+[2025-11-23 14:27:06] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:27:06] [INFO]   Command: snmpget -v1 -c public 192.168.0.22 1.3.6.1.4.1.19865.2.2.0
+[2025-11-23 14:27:06] [INFO]   Return:  0
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO]   Output:
+[2025-11-23 14:27:06] [INFO]     SNMPv2-SMI::enterprises.19865.2.2.0 = INTEGER: 0
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO] [SNMP PARSE] Parsing SNMP response
+[2025-11-23 14:27:06] [INFO]   Length: 49 chars
+[2025-11-23 14:27:06] [INFO]   Result: &#x27;0&#x27;
+[2025-11-23 14:27:06] [INFO] ✓ Retrieved: &#x27;0&#x27;
+[2025-11-23 14:27:06] [INFO] ================================================================================
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO]   ✓ CH2: OFF
+[2025-11-23 14:27:06] [INFO] [CH3] Checking...
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO] ================================================================================
+[2025-11-23 14:27:06] [INFO] [SNMP] GET VALUE
+[2025-11-23 14:27:06] [INFO] ================================================================================
+[2025-11-23 14:27:06] [INFO]   Target:    192.168.0.22
+[2025-11-23 14:27:06] [INFO]   OID:       1.3.6.1.4.1.19865.2.3.0
+[2025-11-23 14:27:06] [INFO]   Community: public
+[2025-11-23 14:27:06] [INFO]   Timeout:   3.0s
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO] [SNMP CMD] Executing command
+[2025-11-23 14:27:06] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:27:06] [INFO]   Command: snmpget -v1 -c public 192.168.0.22 1.3.6.1.4.1.19865.2.3.0
+[2025-11-23 14:27:06] [INFO]   Return:  0
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO]   Output:
+[2025-11-23 14:27:06] [INFO]     SNMPv2-SMI::enterprises.19865.2.3.0 = INTEGER: 0
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO] [SNMP PARSE] Parsing SNMP response
+[2025-11-23 14:27:06] [INFO]   Length: 49 chars
+[2025-11-23 14:27:06] [INFO]   Result: &#x27;0&#x27;
+[2025-11-23 14:27:06] [INFO] ✓ Retrieved: &#x27;0&#x27;
+[2025-11-23 14:27:06] [INFO] ================================================================================
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO]   ✓ CH3: OFF
+[2025-11-23 14:27:06] [INFO] [CH4] Checking...
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO] ================================================================================
+[2025-11-23 14:27:06] [INFO] [SNMP] GET VALUE
+[2025-11-23 14:27:06] [INFO] ================================================================================
+[2025-11-23 14:27:06] [INFO]   Target:    192.168.0.22
+[2025-11-23 14:27:06] [INFO]   OID:       1.3.6.1.4.1.19865.2.4.0
+[2025-11-23 14:27:06] [INFO]   Community: public
+[2025-11-23 14:27:06] [INFO]   Timeout:   3.0s
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO] [SNMP CMD] Executing command
+[2025-11-23 14:27:06] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:27:06] [INFO]   Command: snmpget -v1 -c public 192.168.0.22 1.3.6.1.4.1.19865.2.4.0
+[2025-11-23 14:27:06] [INFO]   Return:  0
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO]   Output:
+[2025-11-23 14:27:06] [INFO]     SNMPv2-SMI::enterprises.19865.2.4.0 = INTEGER: 0
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO] [SNMP PARSE] Parsing SNMP response
+[2025-11-23 14:27:06] [INFO]   Length: 49 chars
+[2025-11-23 14:27:06] [INFO]   Result: &#x27;0&#x27;
+[2025-11-23 14:27:06] [INFO] ✓ Retrieved: &#x27;0&#x27;
+[2025-11-23 14:27:06] [INFO] ================================================================================
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO]   ✓ CH4: OFF
+[2025-11-23 14:27:06] [INFO] [CH5] Checking...
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO] ================================================================================
+[2025-11-23 14:27:06] [INFO] [SNMP] GET VALUE
+[2025-11-23 14:27:06] [INFO] ================================================================================
+[2025-11-23 14:27:06] [INFO]   Target:    192.168.0.22
+[2025-11-23 14:27:06] [INFO]   OID:       1.3.6.1.4.1.19865.2.5.0
+[2025-11-23 14:27:06] [INFO]   Community: public
+[2025-11-23 14:27:06] [INFO]   Timeout:   3.0s
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO] [SNMP CMD] Executing command
+[2025-11-23 14:27:06] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:27:06] [INFO]   Command: snmpget -v1 -c public 192.168.0.22 1.3.6.1.4.1.19865.2.5.0
+[2025-11-23 14:27:06] [INFO]   Return:  0
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO]   Output:
+[2025-11-23 14:27:06] [INFO]     SNMPv2-SMI::enterprises.19865.2.5.0 = INTEGER: 0
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO] [SNMP PARSE] Parsing SNMP response
+[2025-11-23 14:27:06] [INFO]   Length: 49 chars
+[2025-11-23 14:27:06] [INFO]   Result: &#x27;0&#x27;
+[2025-11-23 14:27:06] [INFO] ✓ Retrieved: &#x27;0&#x27;
+[2025-11-23 14:27:06] [INFO] ================================================================================
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO]   ✓ CH5: OFF
+[2025-11-23 14:27:06] [INFO] [CH6] Checking...
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO] ================================================================================
+[2025-11-23 14:27:06] [INFO] [SNMP] GET VALUE
+[2025-11-23 14:27:06] [INFO] ================================================================================
+[2025-11-23 14:27:06] [INFO]   Target:    192.168.0.22
+[2025-11-23 14:27:06] [INFO]   OID:       1.3.6.1.4.1.19865.2.6.0
+[2025-11-23 14:27:06] [INFO]   Community: public
+[2025-11-23 14:27:06] [INFO]   Timeout:   3.0s
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO] [SNMP CMD] Executing command
+[2025-11-23 14:27:06] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:27:06] [INFO]   Command: snmpget -v1 -c public 192.168.0.22 1.3.6.1.4.1.19865.2.6.0
+[2025-11-23 14:27:06] [INFO]   Return:  0
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO]   Output:
+[2025-11-23 14:27:06] [INFO]     SNMPv2-SMI::enterprises.19865.2.6.0 = INTEGER: 0
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO] [SNMP PARSE] Parsing SNMP response
+[2025-11-23 14:27:06] [INFO]   Length: 49 chars
+[2025-11-23 14:27:06] [INFO]   Result: &#x27;0&#x27;
+[2025-11-23 14:27:06] [INFO] ✓ Retrieved: &#x27;0&#x27;
+[2025-11-23 14:27:06] [INFO] ================================================================================
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO]   ✓ CH6: OFF
+[2025-11-23 14:27:06] [INFO] [CH7] Checking...
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO] ================================================================================
+[2025-11-23 14:27:06] [INFO] [SNMP] GET VALUE
+[2025-11-23 14:27:06] [INFO] ================================================================================
+[2025-11-23 14:27:06] [INFO]   Target:    192.168.0.22
+[2025-11-23 14:27:06] [INFO]   OID:       1.3.6.1.4.1.19865.2.7.0
+[2025-11-23 14:27:06] [INFO]   Community: public
+[2025-11-23 14:27:06] [INFO]   Timeout:   3.0s
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO] [SNMP CMD] Executing command
+[2025-11-23 14:27:06] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:27:06] [INFO]   Command: snmpget -v1 -c public 192.168.0.22 1.3.6.1.4.1.19865.2.7.0
+[2025-11-23 14:27:06] [INFO]   Return:  0
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO]   Output:
+[2025-11-23 14:27:06] [INFO]     SNMPv2-SMI::enterprises.19865.2.7.0 = INTEGER: 0
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO] [SNMP PARSE] Parsing SNMP response
+[2025-11-23 14:27:06] [INFO]   Length: 49 chars
+[2025-11-23 14:27:06] [INFO]   Result: &#x27;0&#x27;
+[2025-11-23 14:27:06] [INFO] ✓ Retrieved: &#x27;0&#x27;
+[2025-11-23 14:27:06] [INFO] ================================================================================
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO]   ✓ CH7: OFF
+[2025-11-23 14:27:06] [INFO] [CH8] Checking...
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO] ================================================================================
+[2025-11-23 14:27:06] [INFO] [SNMP] GET VALUE
+[2025-11-23 14:27:06] [INFO] ================================================================================
+[2025-11-23 14:27:06] [INFO]   Target:    192.168.0.22
+[2025-11-23 14:27:06] [INFO]   OID:       1.3.6.1.4.1.19865.2.8.0
+[2025-11-23 14:27:06] [INFO]   Community: public
+[2025-11-23 14:27:06] [INFO]   Timeout:   3.0s
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO] [SNMP CMD] Executing command
+[2025-11-23 14:27:06] [INFO] --------------------------------------------------------------------------------
+[2025-11-23 14:27:06] [INFO]   Command: snmpget -v1 -c public 192.168.0.22 1.3.6.1.4.1.19865.2.8.0
+[2025-11-23 14:27:06] [INFO]   Return:  0
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO]   Output:
+[2025-11-23 14:27:06] [INFO]     SNMPv2-SMI::enterprises.19865.2.8.0 = INTEGER: 0
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO] [SNMP PARSE] Parsing SNMP response
+[2025-11-23 14:27:06] [INFO]   Length: 49 chars
+[2025-11-23 14:27:06] [INFO]   Result: &#x27;0&#x27;
+[2025-11-23 14:27:06] [INFO] ✓ Retrieved: &#x27;0&#x27;
+[2025-11-23 14:27:06] [INFO] ================================================================================
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO]   ✓ CH8: OFF
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [INFO] ✓ All 8 channels verified: OFF
+[2025-11-23 14:27:06] [INFO] ================================================================================
+[2025-11-23 14:27:06] [INFO] 
+[2025-11-23 14:27:06] [PASS] TEARDOWN 2 completed successfully
+[2025-11-23 14:27:06] ===== tc_power_hlw8032: RESULT: PASS =====
+[2025-11-23 14:27:06] +----------------------------------+
+[2025-11-23 14:27:06] | ██████   █████  ███████ ███████  |
+[2025-11-23 14:27:06] | ██   ██ ██   ██ ██      ██       |
+[2025-11-23 14:27:06] | ██████  ███████ ███████ ███████  |
+[2025-11-23 14:27:06] | ██      ██   ██      ██      ██  |
+[2025-11-23 14:27:06] | ██      ██   ██ ███████ ███████  |
+[2025-11-23 14:27:06] +----------------------------------+
+</pre>
+</div>
+</details>
+</div>
+</details>
+</section>
+</main>
+</body></html>

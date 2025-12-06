@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ENERGIS Functional Test" tests="43" failures="0" skipped="0" time="0.0" session_id="78df8fca">
+<testsuite name="ENERGIS Functional Test" tests="45" failures="0" skipped="0" time="0.0" session_id="67b0b589">
   <testcase classname="UTFW" name="PRE-STEP 1 Reboot device via UART" time="0.0">
   </testcase>
   <testcase classname="UTFW" name="PRE-STEP 2 Pre-clear ERROR log" time="0.0">
@@ -64,7 +64,7 @@
   </testcase>
   <testcase classname="UTFW" name="STEP 7.4 Verify new warning was logged" time="0.0">
   </testcase>
-  <testcase classname="UTFW" name="STEP 7.5 Verify multiple error codes present" time="0.0">
+  <testcase classname="UTFW" name="STEP 7.5 Verify multiple warning codes present" time="0.0">
   </testcase>
   <testcase classname="UTFW" name="STEP 8 Final cleanup" time="0.0">
   </testcase>
@@ -85,5 +85,9 @@
   <testcase classname="UTFW" name="TEARDOWN 1 Ensure all outputs OFF" time="0.0">
   </testcase>
   <testcase classname="UTFW" name="TEARDOWN 2 Final verify all outputs OFF" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="TEARDOWN 3 Post-clear ERROR log" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="TEARDOWN 4 Post-clear WARNING log" time="0.0">
   </testcase>
 </testsuite>
