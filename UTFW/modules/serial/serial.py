@@ -405,7 +405,7 @@ def wait_for_reboot_and_ready(port: str, ready_token: str = "SYSTEM READY",
             return any(info.device == p for info in list_ports.comports())
         except Exception as e:
             if logger:
-                logger.warning(f"[SERIAL] Failed to enumerate ports while checking '{p}': "
+                logger.warn(f"[SERIAL] Failed to enumerate ports while checking '{p}': "
                                f"{type(e).__name__}: {e}")
             # Be conservative; if we cannot check properly, assume it still exists
             return True
@@ -422,7 +422,7 @@ def wait_for_reboot_and_ready(port: str, ready_token: str = "SYSTEM READY",
             time.sleep(0.1)
         if _port_exists(port):
             if logger:
-                logger.warning(f"  ⚠ Port {port} did not disappear")
+                logger.warn(f"  ⚠ Port {port} did not disappear")
         else:
             if logger:
                 logger.info(f"  ✓ Port {port} disappeared (reboot in progress)")

@@ -247,9 +247,13 @@ class tc_eeprom_persistence_test:
                 UART.send_command_uart(
                     name="Reboot cycle 1",
                     port=hw.SERIAL_PORT,
-                    command=hw.REBOOT_CMD,
+                    command="REBOOT",
                     baudrate=hw.BAUDRATE,
-                    reboot=True,
+                    reboot=True  
+                ),
+                NOP.NOP(
+                    name="Wait for device to fully boot", 
+                    duration_ms=1000
                 ),
                 UART.send_command_uart(
                     name="Verify ready after reboot 1",
@@ -257,12 +261,20 @@ class tc_eeprom_persistence_test:
                     command=hw.NETINFO_CMD,
                     baudrate=hw.BAUDRATE,
                 ),
+                NOP.NOP(
+                    name="Small delay before next reboot", 
+                    duration_ms=1000
+                ),
                 UART.send_command_uart(
                     name="Reboot cycle 2",
                     port=hw.SERIAL_PORT,
-                    command=hw.REBOOT_CMD,
+                    command="REBOOT",
                     baudrate=hw.BAUDRATE,
-                    reboot=True,
+                    reboot=True  
+                ),
+                NOP.NOP(
+                    name="Wait for device to fully boot", 
+                    duration_ms=1000
                 ),
                 UART.send_command_uart(
                     name="Verify ready after reboot 2",
@@ -270,14 +282,21 @@ class tc_eeprom_persistence_test:
                     command=hw.NETINFO_CMD,
                     baudrate=hw.BAUDRATE,
                 ),
+                NOP.NOP(
+                    name="Small delay before next reboot", 
+                    duration_ms=1000
+                ),
                 UART.send_command_uart(
                     name="Reboot cycle 3",
                     port=hw.SERIAL_PORT,
-                    command=hw.REBOOT_CMD,
+                    command="REBOOT",
                     baudrate=hw.BAUDRATE,
-                    reboot=True,
+                    reboot=True 
                 ),
-                NOP.NOP(name="Wait for device to stabilize", duration_ms=1500),
+                NOP.NOP(
+                    name="Wait for device to fully boot", 
+                    duration_ms=1500
+                ),
                 UART.send_command_uart(
                     name="Verify ready after reboot 3",
                     port=hw.SERIAL_PORT,

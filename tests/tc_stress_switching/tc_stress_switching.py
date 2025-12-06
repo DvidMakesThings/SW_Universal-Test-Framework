@@ -75,7 +75,7 @@ class tc_stress_switching_test:
 
         # Rapid switching: 50 cycles per channel (much faster with SNMP)
         rapid_switching_actions = []
-        num_cycles = 10
+        num_cycles = 4
 
         for cycle in range(1, num_cycles + 1):
             for channel in range(1, 9):

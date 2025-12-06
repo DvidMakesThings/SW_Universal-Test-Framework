@@ -564,13 +564,13 @@ def load_hardware_config(hwcfg: Optional[str] = None):
                 return tc
         return cwd / "hardware_config.py"  # last-resort guess
 
+    mod_name = "hardware_config"
     path = Path(hwcfg) if hwcfg else _find_default()
     if path.is_dir():
         path = path / "hardware_config.py"
     if not path.exists():
         raise FileNotFoundError(f"hardware_config.py not found at: {path}")
 
-    mod_name = "hardware_config"
     spec = importlib.util.spec_from_file_location(mod_name, str(path))
     if not spec or not spec.loader:
         raise ImportError(f"Failed to create import spec for: {path}")

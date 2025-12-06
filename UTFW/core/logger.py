@@ -23,7 +23,7 @@ import sys
 import os
 import threading
 from pathlib import Path
-from typing import Dict, Any, Optional, List, Union, TextIO
+from typing import Dict, Any, Optional, List, Union, TextIO, Callable
 from dataclasses import dataclass
 from enum import Enum
 
@@ -87,14 +87,17 @@ class UniversalLogger:
         >>> logger.pass_("Test completed successfully")
     """
     
-    def __init__(self, name: str, log_file: Optional[Path] = None, 
+    def __init__(self, name: str, log_file: Optional[Path] = None,
                  config: Optional[LogConfig] = None):
         self.name = name
         self.config = config or LogConfig()
         self.log_file = log_file
         self._file_handle: Optional[TextIO] = None
         self._lock = threading.Lock()
-        
+
+        # Log line subscribers for GUI integration (optional)
+        self._subscribers: List[Callable[[str], None]] = []
+
         # Open file handle if file logging is enabled
         if self.config.file_output and self.log_file:
             self._open_file()
@@ -128,20 +131,20 @@ class UniversalLogger:
     
     def _write_line(self, message: str) -> None:
         """Write a timestamped line to both console and file.
-        
+
         This method is thread-safe and handles both console and file output
         based on the logger configuration.
-        
+
         Args:
             message (str): The message to log (without timestamp).
         """
         timestamped_line = f"[{self._get_timestamp()}] {message}"
-        
+
         with self._lock:
             # Console output
             if self.config.console_output:
                 print(timestamped_line)
-            
+
             # File output
             if self.config.file_output and self._file_handle:
                 try:
@@ -149,6 +152,14 @@ class UniversalLogger:
                     self._file_handle.flush()
                 except Exception as e:
                     print(f"Warning: Could not write to log file: {e}", file=sys.stderr)
+
+            # Notify subscribers (GUI integration)
+            for subscriber in self._subscribers:
+                try:
+                    subscriber(timestamped_line)
+                except Exception:
+                    # Silently ignore subscriber errors to protect logging
+                    pass
     
     def _log(self, level: LogLevel, message: str) -> None:
         """Internal logging method with level formatting.
@@ -380,8 +391,31 @@ class UniversalLogger:
                     return "'" + s + "'"
                 return "'" + s.replace("'", "'\"'\"'") + "'"
 
+    # ======================== Log Subscriber System ========================
+
+    def add_subscriber(self, callback: Callable[[str], None]) -> None:
+        """Add a log line subscriber for GUI or other external integrations.
+
+        Subscribers receive each formatted log line as it's written.
+        Subscribers must not raise exceptions that break logging.
+
+        Args:
+            callback: Callable that accepts a log line string
+        """
+        if callback not in self._subscribers:
+            self._subscribers.append(callback)
+
+    def remove_subscriber(self, callback: Callable[[str], None]) -> None:
+        """Remove a log line subscriber.
+
+        Args:
+            callback: Previously registered subscriber to remove
+        """
+        if callback in self._subscribers:
+            self._subscribers.remove(callback)
+
     # ======================== Resource Management ========================
-    
+
     def close(self) -> None:
         """Close the logger and release resources.
         

@@ -128,6 +128,9 @@ class TestReporter:
         self.test_start_time: Optional[str] = None
         self.test_end_time: Optional[str] = None
 
+        # Event listener system for GUI integration (optional)
+        self._listeners: List[Callable[[Dict[str, Any]], None]] = []
+
     # ------------------------ core IO ------------------------
 
     def _write_line(self, message: str) -> None:
@@ -140,6 +143,45 @@ class TestReporter:
             self._ulog.close()
         except Exception:
             pass
+
+    # ------------------------ event listener system ------------------------
+
+    def add_listener(self, listener: Callable[[Dict[str, Any]], None]) -> None:
+        """Add an event listener for GUI or other external integrations.
+
+        Listeners receive structured event dictionaries with type and data fields.
+        Listeners must never raise exceptions that break test execution.
+
+        Args:
+            listener: Callable that accepts event dictionary
+        """
+        if listener not in self._listeners:
+            self._listeners.append(listener)
+
+    def remove_listener(self, listener: Callable[[Dict[str, Any]], None]) -> None:
+        """Remove an event listener.
+
+        Args:
+            listener: Previously registered listener to remove
+        """
+        if listener in self._listeners:
+            self._listeners.remove(listener)
+
+    def _notify_listeners(self, event: Dict[str, Any]) -> None:
+        """Notify all registered listeners of an event.
+
+        Exceptions from listeners are caught and ignored to prevent
+        them from breaking test execution.
+
+        Args:
+            event: Event dictionary with type and data fields
+        """
+        for listener in self._listeners:
+            try:
+                listener(event)
+            except Exception:
+                # Silently ignore listener errors to protect test execution
+                pass
 
     # ------------------------ formatting ------------------------
 
@@ -195,6 +237,13 @@ class TestReporter:
         # Clean up old PCAP files from previous test runs
         self._cleanup_old_pcap_files()
 
+        # Notify listeners
+        self._notify_listeners({
+            "type": "test_start",
+            "test_name": test_name,
+            "timestamp": self.test_start_time
+        })
+
     def log_test_end(self, test_name: str, result: str) -> None:
         """Mark test suite end in the log."""
         self.test_end_time = _now_ts()
@@ -206,6 +255,14 @@ class TestReporter:
         banner = self._make_result_banner(result)
         for line in banner:
             self._ulog._write_line(line)
+
+        # Notify listeners
+        self._notify_listeners({
+            "type": "test_end",
+            "test_name": test_name,
+            "result": result,
+            "timestamp": self.test_end_time
+        })
 
     @staticmethod
     def _make_result_banner(result: str) -> List[str]:  # pragma: no cover - cosmetic
@@ -244,10 +301,25 @@ class TestReporter:
         else:
             self._ulog.step_start(step_id, description)
 
+        # Notify listeners
+        self._notify_listeners({
+            "type": "step_start",
+            "step_id": step_id,
+            "description": description,
+            "negative_test": negative_test,
+            "timestamp": _now_ts()
+        })
+
     def log_step_end(self, step_id: str) -> None:
         """Optional step end marker (not timed)."""
         # Reserved for future timing if needed
-        pass
+
+        # Notify listeners
+        self._notify_listeners({
+            "type": "step_end",
+            "step_id": step_id,
+            "timestamp": _now_ts()
+        })
 
     # ------------------------ standard levels ------------------------
 
@@ -255,13 +327,37 @@ class TestReporter:
         """Log a PASS result line."""
         self._ulog.pass_(message)
 
+        # Notify listeners
+        self._notify_listeners({
+            "type": "log_message",
+            "level": "PASS",
+            "message": message,
+            "timestamp": _now_ts()
+        })
+
     def log_fail(self, message: str) -> None:
         """Log a FAIL result line."""
         self._ulog.fail(message)
 
+        # Notify listeners
+        self._notify_listeners({
+            "type": "log_message",
+            "level": "FAIL",
+            "message": message,
+            "timestamp": _now_ts()
+        })
+
     def log_info(self, message: str) -> None:
         """Log an INFO line."""
         self._ulog.info(message)
+
+        # Notify listeners
+        self._notify_listeners({
+            "type": "log_message",
+            "level": "INFO",
+            "message": message,
+            "timestamp": _now_ts()
+        })
 
     def log_warn(self, message: str) -> None:
         """Log a WARN line."""

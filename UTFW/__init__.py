@@ -14,6 +14,8 @@ A comprehensive framework for hardware device testing that provides:
 Author: DvidMakesThings
 """
 
+__version__ = "3.0.0"
+
 # Import core framework components
 from .core import (
     # Core framework
@@ -48,7 +50,6 @@ FX2 = fx2LA
 NOP = nop.NOP
 FailureMemory = failuremem
 
-__version__ = "2.2.12"
 __all__ = [
     # Core framework
     "TestFramework",
