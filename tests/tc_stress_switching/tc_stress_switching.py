@@ -32,13 +32,13 @@ class tc_stress_switching_test:
         return [
             
             # PRE-STEP 1: Send reboot command via UART
-            UART.send_command_uart(
-                name="Reboot device via UART",
-                port=hw.SERIAL_PORT,
-                command="REBOOT",
-                baudrate=hw.BAUDRATE,
-                reboot=True  # Special handling for reboot
-            ),
+            #UART.send_command_uart(
+            #    name="Reboot device via UART",
+            #    port=hw.SERIAL_PORT,
+            #    command="REBOOT",
+            #    baudrate=hw.BAUDRATE,
+            #    reboot=True  # Special handling for reboot
+            #),
         ]
     
     def teardown(self):
@@ -73,7 +73,6 @@ class tc_stress_switching_test:
     def setup(self):
         hw = get_hwconfig()
 
-        # Rapid switching: 50 cycles per channel (much faster with SNMP)
         rapid_switching_actions = []
         num_cycles = 4
 

@@ -35,6 +35,7 @@ class SuiteRunnerWidget(QWidget):
         self.tests_root = tests_root
         self.hardware_config_path = hardware_config_path
         self.running = False
+        self.stop_requested = False
         self.current_test_index = 0
         self.test_results: Dict[str, tuple] = {}  # test_name -> (exit_code, duration, report_path)
         self.all_tests_metadata: List[TestMetadata] = []
@@ -52,34 +53,84 @@ class SuiteRunnerWidget(QWidget):
     def _setup_ui(self):
         """Set up the suite runner UI."""
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(5, 2, 5, 5)
-        layout.setSpacing(2)
+        layout.setContentsMargins(5, 5, 5, 5)
 
-        # Suite info header (single line, minimal)
-        header_layout = QHBoxLayout()
-        header_layout.setSpacing(10)
-        header_layout.setContentsMargins(0, 0, 0, 0)
+        # Status bar at top (matching individual test style)
+        self.status_frame = QFrame()
+        self.status_frame.setFrameStyle(QFrame.Box | QFrame.Raised)
+        self.status_frame.setLineWidth(2)
+        self.status_frame.setMaximumHeight(60)
+        status_layout = QHBoxLayout(self.status_frame)
+        status_layout.setContentsMargins(5, 5, 5, 5)
+        status_layout.setSpacing(5)
 
+        self.status_label = QLabel("Ready to run")
+        self.status_label.setFont(QFont("Arial", 16, QFont.Bold))
+        self.status_label.setAlignment(Qt.AlignCenter)
+        self.status_label.setStyleSheet("padding: 5px;")
+        status_layout.addWidget(self.status_label, stretch=1)
+
+        # Run button
+        self.run_btn = QPushButton("▶ Run Test")
+        self.run_btn.setStyleSheet("""
+            QPushButton {
+                background-color: #50fa7b;
+                color: #000;
+                font-weight: bold;
+                font-size: 13px;
+                padding: 6px 14px;
+                border-radius: 4px;
+            }
+            QPushButton:hover {
+                background-color: #5fff8a;
+            }
+            QPushButton:disabled {
+                background-color: #555;
+                color: #888;
+            }
+        """)
+        self.run_btn.setFixedHeight(38)
+        self.run_btn.clicked.connect(self.start_suite)
+        status_layout.addWidget(self.run_btn)
+
+        # Stop button
+        self.stop_btn = QPushButton("■ Stop Run")
+        self.stop_btn.setStyleSheet("""
+            QPushButton {
+                background-color: #ff5555;
+                color: #fff;
+                font-weight: bold;
+                font-size: 13px;
+                padding: 6px 14px;
+                border-radius: 4px;
+            }
+            QPushButton:hover {
+                background-color: #ff6666;
+            }
+            QPushButton:disabled {
+                background-color: #555;
+                color: #888;
+            }
+        """)
+        self.stop_btn.setFixedHeight(38)
+        self.stop_btn.setEnabled(False)  # Disabled initially
+        self.stop_btn.clicked.connect(self.stop_suite)
+        status_layout.addWidget(self.stop_btn)
+
+        layout.addWidget(self.status_frame)
+
+        # Suite info below status bar
+        suite_info_layout = QHBoxLayout()
         # Build suite info, handle empty description gracefully
         if self.suite.description:
-            suite_info = f"<b>{self.suite.name}</b> - {self.suite.description}"
+            suite_info = f"<b>{self.suite.name}</b><br>{self.suite.description}"
         else:
             suite_info = f"<b>{self.suite.name}</b>"
         suite_label = QLabel(suite_info)
-        suite_label.setFont(QFont("Arial", 8))
-        suite_label.setStyleSheet("padding: 0px; margin: 0px;")
-        suite_label.setMaximumHeight(16)
-        header_layout.addWidget(suite_label)
-
-        header_layout.addStretch()
-
-        self.status_label = QLabel("Ready")
-        self.status_label.setFont(QFont("Arial", 8, QFont.Bold))
-        self.status_label.setStyleSheet("padding: 0px; margin: 0px;")
-        self.status_label.setMaximumHeight(16)
-        header_layout.addWidget(self.status_label)
-
-        layout.addLayout(header_layout)
+        suite_label.setWordWrap(True)
+        suite_label.setStyleSheet("color: gray; padding: 5px;")
+        suite_info_layout.addWidget(suite_label, stretch=1)
+        layout.addLayout(suite_info_layout)
 
         # Tests tree (collapsible and compact)
         tests_header_layout = QHBoxLayout()
@@ -87,7 +138,7 @@ class SuiteRunnerWidget(QWidget):
         tree_label.setFont(QFont("Arial", 9, QFont.Bold))
         tests_header_layout.addWidget(tree_label)
 
-        self.toggle_tests_btn = QPushButton("▲ Show")
+        self.toggle_tests_btn = QPushButton("▼ Hide")
         self.toggle_tests_btn.setMaximumWidth(80)
         self.toggle_tests_btn.clicked.connect(self._toggle_tests_list)
         tests_header_layout.addWidget(self.toggle_tests_btn)
@@ -101,8 +152,6 @@ class SuiteRunnerWidget(QWidget):
         self.tests_tree.setColumnWidth(1, 120)
         self.tests_tree.setColumnWidth(2, 80)
         self.tests_tree.setColumnWidth(3, 80)
-        self.tests_tree.setMaximumHeight(120)
-        self.tests_tree.setMinimumHeight(120)
         self.tests_tree.setVisible(True)  # Visible by default
         layout.addWidget(self.tests_tree)
 
@@ -115,7 +164,6 @@ class SuiteRunnerWidget(QWidget):
         # Summary (hidden initially)
         self.summary_text = QTextEdit()
         self.summary_text.setReadOnly(True)
-        self.summary_text.setMaximumHeight(260)
         self.summary_text.setVisible(False)
         layout.addWidget(self.summary_text)
 
@@ -165,17 +213,66 @@ class SuiteRunnerWidget(QWidget):
                 item.setForeground(1, QColor(150, 150, 150))
                 self.tests_tree.addTopLevelItem(item)
 
+        # Dynamically adjust height based on number of tests
+        self._adjust_tree_height()
+
+    def _adjust_tree_height(self):
+        """Adjust the tree widget height to fit all tests."""
+        if self.tests_tree.topLevelItemCount() == 0:
+            return
+
+        # Calculate height: header + (row_height * num_rows) + margins
+        header_height = self.tests_tree.header().height()
+        row_height = self.tests_tree.sizeHintForRow(0)
+        if row_height <= 0:
+            row_height = 25  # Default row height
+
+        num_rows = self.tests_tree.topLevelItemCount()
+        total_height = header_height + (row_height * num_rows) + 4  # +4 for margins
+
+        # Set reasonable min/max bounds
+        min_height = header_height + row_height + 4  # At least one row
+        max_height = 400  # Don't let it grow too large
+
+        adjusted_height = max(min_height, min(total_height, max_height))
+        self.tests_tree.setMinimumHeight(adjusted_height)
+        self.tests_tree.setMaximumHeight(adjusted_height)
+
+    def _adjust_summary_height(self):
+        """Adjust the summary text widget height to fit content."""
+        # Get the document's ideal height
+        doc = self.summary_text.document()
+        doc_height = doc.size().height()
+
+        # Add some padding for margins and scrollbar
+        content_height = int(doc_height) + 20
+
+        # Set reasonable bounds
+        min_height = 150  # Minimum readable height
+        max_height = 600  # Don't let it dominate the screen
+
+        adjusted_height = max(min_height, min(content_height, max_height))
+        self.summary_text.setMinimumHeight(adjusted_height)
+        self.summary_text.setMaximumHeight(adjusted_height)
+
     def start_suite(self):
         """Start running the test suite."""
         if self.running:
             return
 
         self.running = True
+        self.stop_requested = False
         self.current_test_index = 0
         self.test_results.clear()
         self.summary_text.setVisible(False)
         self.status_label.setText("Running...")
-        self.status_label.setStyleSheet("color: #4da6ff; padding: 0px; margin: 0px;")
+        self.status_label.setStyleSheet(
+            "background-color: #ffc107; color: black; padding: 5px; border-radius: 5px;"
+        )
+
+        # Update button states
+        self.run_btn.setEnabled(False)
+        self.stop_btn.setEnabled(True)
 
         # Show the tests tree during execution
         if not self.tests_tree.isVisible():
@@ -196,8 +293,28 @@ class SuiteRunnerWidget(QWidget):
 
         self._run_next_test()
 
+    def stop_suite(self):
+        """Stop the test suite execution.
+
+        The currently running test will complete (including teardown),
+        then the suite will stop and show results."""
+        if not self.running:
+            return
+
+        self.stop_requested = True
+        self.status_label.setText("Stopping after current test...")
+        self.status_label.setStyleSheet(
+            "background-color: #ff9f00; color: black; padding: 5px; border-radius: 5px;"
+        )
+        self.stop_btn.setEnabled(False)
+
     def _run_next_test(self):
         """Run the next test in the suite."""
+        # Check if stop was requested
+        if self.stop_requested:
+            self._finish_suite()
+            return
+
         if self.current_test_index >= len(self.all_tests_metadata):
             self._finish_suite()
             return
@@ -315,11 +432,26 @@ class SuiteRunnerWidget(QWidget):
 
         # Move to next test
         self.current_test_index += 1
-        self._run_next_test()
+
+        # Check if stop was requested
+        if self.stop_requested:
+            # Mark remaining tests as not run
+            for i in range(self.current_test_index, self.tests_tree.topLevelItemCount()):
+                remaining_item = self.tests_tree.topLevelItem(i)
+                if remaining_item:
+                    remaining_item.setText(1, "NOT RUN")
+                    remaining_item.setForeground(1, QColor(150, 150, 150))
+            self._finish_suite()
+        else:
+            self._run_next_test()
 
     def _finish_suite(self):
         """Finish suite execution and show summary."""
         self.running = False
+
+        # Reset button states
+        self.run_btn.setEnabled(True)
+        self.stop_btn.setEnabled(False)
 
         # Notify parent window that suite is complete
         parent_window = self.parent()
@@ -328,29 +460,50 @@ class SuiteRunnerWidget(QWidget):
 
         if parent_window and hasattr(parent_window, 'running_test'):
             parent_window.running_test = False
-            parent_window.run_suite_action.setEnabled(True)
-            parent_window.run_action.setEnabled(True)
+            # Trigger tab changed to update menu states
+            if hasattr(parent_window, '_on_tab_changed') and hasattr(parent_window, 'tab_widget'):
+                parent_window._on_tab_changed(parent_window.tab_widget.currentIndex())
 
         # Calculate summary
+        total_tests_in_suite = len(self.all_tests_metadata)
         total_tests = len(self.test_results)
         passed_tests = sum(1 for code, _, _ in self.test_results.values() if code == 0)
         failed_tests = total_tests - passed_tests
         total_duration = sum(dur for _, dur, _ in self.test_results.values())
 
         # Update status
-        if failed_tests == 0:
+        if self.stop_requested:
+            self.status_label.setText(f"⏹ STOPPED ({total_tests}/{total_tests_in_suite} completed)")
+            self.status_label.setStyleSheet(
+                "background-color: #ff9f00; color: black; padding: 5px; border-radius: 5px;"
+            )
+        elif failed_tests == 0:
             self.status_label.setText(f"✓ PASSED ({total_tests}/{total_tests})")
-            self.status_label.setStyleSheet("color: #50fa7b; font-weight: bold; padding: 0px; margin: 0px;")
+            self.status_label.setStyleSheet(
+                "background-color: #28a745; color: white; padding: 5px; border-radius: 5px;"
+            )
         else:
             self.status_label.setText(f"✗ FAILED ({passed_tests}/{total_tests})")
-            self.status_label.setStyleSheet("color: #ff5555; font-weight: bold; padding: 0px; margin: 0px;")
+            self.status_label.setStyleSheet(
+                "background-color: #dc3545; color: white; padding: 5px; border-radius: 5px;"
+            )
 
         # Show summary
         summary = f"<h3>Suite Summary: {self.suite.name}</h3>"
-        summary += f"<p><b>Total Tests:</b> {total_tests}<br>"
-        summary += f"<b>Passed:</b> {passed_tests}<br>"
-        summary += f"<b>Failed:</b> {failed_tests}<br>"
-        summary += f"<b>Total Duration:</b> {total_duration:.2f}s</p>"
+        if self.stop_requested:
+            not_run = total_tests_in_suite - total_tests
+            summary += '<p style="color: #ff9f00;"><b>⚠ Suite was stopped manually</b></p>'
+            summary += f"<p><b>Tests in Suite:</b> {total_tests_in_suite}<br>"
+            summary += f"<b>Tests Completed:</b> {total_tests}<br>"
+            summary += f"<b>Passed:</b> {passed_tests}<br>"
+            summary += f"<b>Failed:</b> {failed_tests}<br>"
+            summary += f"<b>Not Run:</b> {not_run}<br>"
+            summary += f"<b>Total Duration:</b> {total_duration:.2f}s</p>"
+        else:
+            summary += f"<p><b>Total Tests:</b> {total_tests}<br>"
+            summary += f"<b>Passed:</b> {passed_tests}<br>"
+            summary += f"<b>Failed:</b> {failed_tests}<br>"
+            summary += f"<b>Total Duration:</b> {total_duration:.2f}s</p>"
         summary += "<hr><h4>Test Results:</h4><ul>"
 
         for test_name, (exit_code, duration, report_path) in self.test_results.items():
@@ -362,6 +515,7 @@ class SuiteRunnerWidget(QWidget):
         summary += "</ul>"
 
         self.summary_text.setHtml(summary)
+        self._adjust_summary_height()  # Dynamically adjust height based on content
         self.summary_text.setVisible(True)
 
         # Minimize current test

@@ -1,0 +1,1746 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<title>ENERGIS Test Report - FAIL</title>
+<style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;background:#0f1216;color:#e7eaf0;margin:0}
+    header{padding:20px;background:#151a21;border-bottom:1px solid #2a2f37}
+    h1{margin:0;font-size:20px}
+    .meta{font-size:12px;color:#a6adbb;margin-top:6px}
+    .summary{display:flex;gap:16px;flex-wrap:wrap;margin:16px 0}
+    .chip{padding:8px 12px;border-radius:20px;border:1px solid #2a2f37;background:#151a21}
+    .chip.pass{border-color:#1e7f45;color:#d7ffe6;background:#0e2017}
+    .chip.fail{border-color:#a23b3b;color:#ffe1e1;background:#210e0e}
+    .chip.unknown{border-color:#6b7280;color:#e7eaf0;background:#1b2028}
+    main{padding:20px}
+    details{border:1px solid #2a2f37;border-radius:12px;margin-bottom:12px;overflow:hidden}
+    summary{padding:12px 14px;background:#151a21;cursor:pointer;font-weight:600}
+    .content{padding:12px 14px;background:#11161b}
+    .step-title{display:flex;justify-content:space-between;align-items:center}
+    .status{padding:3px 8px;border-radius:12px;border:1px solid #2a2f37;font-size:12px}
+    .status.pass{border-color:#1e7f45;color:#d7ffe6;background:#0e2017}
+    .status.fail{border-color:#a23b3b;color:#ffe1e1;background:#210e0e}
+    .status.unknown{border-color:#6b7280;background:#1b2028}
+    details.pre-step{border-left:4px solid #6366f1}
+    details.pre-step summary{background:#1a1c2e}
+    details.post-step{border-left:4px solid #22c55e}
+    details.post-step summary{background:#152419}
+    details.teardown{border-left:4px solid#f59e0b}
+    details.teardown summary{background:#2a1f0e}
+    pre{background:#0b0f14;border:1px solid #2a2f37;border-radius:8px;padding:10px;overflow:auto}
+    table{width:100%;border-collapse:collapse;margin-top:8px}
+    th,td{border-bottom:1px solid #1f2530;padding:8px 6px;text-align:left;font-size:13px}
+    th{color:#a6adbb;font-weight:600;background:#131820}
+    .kv{display:grid;grid-template-columns:180px 1fr;gap:8px}
+    a{color:#9ad0ff;text-decoration:none}
+    a:hover{text-decoration:underline}
+    .img-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:10px}
+    .img-grid figure{margin:0;padding:8px;background:#0b0f14;border:1px solid #2a2f37;border-radius:8px}
+    .img-grid img{max-width:100%;height:auto;display:block;border-radius:6px}
+    .img-grid figcaption{font-size:12px;color:#a6adbb;margin-top:6px}
+    .substeps{margin-top:10px}
+    .substeps details{margin-bottom:8px}
+    </style></head><body>
+<header>
+<h1>ENERGIS Test Report</h1>
+<div class='meta'>
+Overall: <b class='chip fail'>FAIL</b> &nbsp;
+Started: 2025-12-07 13:26:25 &nbsp;
+Session ID: bddd8582 &nbsp;
+</div>
+</header>
+<main>
+<section class='summary'>
+<div class='chip pass'>Passed: 2</div>
+<div class='chip fail'>Failed: 2</div>
+<div class='chip unknown'>Unknown: 0</div>
+<div class='chip'>Total: 4</div>
+</section>
+<section>
+<h3>Environment</h3>
+<div class='kv'>
+<div>Test Session ID</div><div><code>bddd8582</code></div>
+<div>Hostname</div><div>DPC</div>
+<div>Os</div><div>Windows 11 (10.0.26100)</div>
+<div>Python</div><div>3.13.7 (tags/v3.13.7:bcee1c3, Aug 14 2025, 14:15:11) [MSC v.1944 64 bit (AMD64)]</div>
+<div>Generated_at</div><div>2025-12-07 13:27:11</div>
+<div>Log_file</div><div>G:\_GitHub\SW_Universal-Test-Framework\tests\tc_eeprom_persistence\tc_eeprom_persistence_results.log</div>
+</div>
+</section>
+<section>
+<h3>Steps</h3>
+<details class='pre-step'>
+<summary>
+<div class='step-title'><div>PRE-STEP 1 Reboot device via UART</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-12-07 13:26:25</td><td>2025-12-07 13:26:33</td></tr>
+</table>
+<details>
+<summary><div class='step-title'><div>Step Log</div><div class='status unknown'>DETAIL</div></div></summary>
+<div class='content'>
+<h4>Log</h4>
+<pre>
+[2025-12-07 13:26:25] [PRE-STEP 1] Reboot device via UART
+[2025-12-07 13:26:25] [INFO] 
+[2025-12-07 13:26:25] [INFO] ================================================================================
+[2025-12-07 13:26:25] [INFO] [SERIAL] SEND COMMAND
+[2025-12-07 13:26:25] [INFO] ================================================================================
+[2025-12-07 13:26:25] [INFO]   Command: &#x27;REBOOT&#x27;
+[2025-12-07 13:26:25] [INFO]   Port:    COM3
+[2025-12-07 13:26:25] [INFO] 
+[2025-12-07 13:26:25] [INFO] ================================================================================
+[2025-12-07 13:26:25] [INFO] [SERIAL] OPENING CONNECTION
+[2025-12-07 13:26:25] [INFO] ================================================================================
+[2025-12-07 13:26:25] [INFO]   Port:          COM3
+[2025-12-07 13:26:25] [INFO]   Baudrate:      115200
+[2025-12-07 13:26:25] [INFO]   Timeout:       2.0s
+[2025-12-07 13:26:25] [INFO]   Write Timeout: 2.0s
+[2025-12-07 13:26:25] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-12-07 13:26:25] [INFO] ✓ Port COM3 opened successfully
+[2025-12-07 13:26:25] [INFO]   Stabilizing connection (100ms delay)...
+[2025-12-07 13:26:25] [INFO]   Resetting input and output buffers...
+[2025-12-07 13:26:25] [INFO] ✓ Connection ready and buffers cleared
+[2025-12-07 13:26:25] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:26:25] [INFO] [SERIAL TX] TRANSMITTING
+[2025-12-07 13:26:25] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:26:25] [INFO]   Command:  &#x27;REBOOT&#x27;
+[2025-12-07 13:26:25] [INFO]   Length:   8 bytes (including CR+LF)
+[2025-12-07 13:26:25] [INFO] 
+[2025-12-07 13:26:25] [INFO]   Hex Dump:
+[2025-12-07 13:26:25] [INFO]       0000  52 45 42 4F 4F 54 0D 0A                           |REBOOT..|
+[2025-12-07 13:26:25] [INFO] 
+[2025-12-07 13:26:25] [INFO] ✓ Transmitted 8 bytes
+[2025-12-07 13:26:25] [INFO]   Waiting 50ms for device processing...
+[2025-12-07 13:26:25] [INFO] 
+[2025-12-07 13:26:25] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-12-07 13:26:25] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:26:25] [INFO]   Timeout: 2.0s
+[2025-12-07 13:26:25] [INFO] 
+[2025-12-07 13:26:25] [INFO]   Chunk #1: 29 bytes | Elapsed: 0.001s | Total: 29 bytes
+[2025-12-07 13:26:25] [INFO] 
+[2025-12-07 13:26:25] [INFO]   No data for 500ms, response complete
+[2025-12-07 13:26:25] [INFO] 
+[2025-12-07 13:26:25] [INFO] ✓ Response Complete:
+[2025-12-07 13:26:25] [INFO]     Total Bytes:    29
+[2025-12-07 13:26:25] [INFO]     Chunks:         1
+[2025-12-07 13:26:25] [INFO]     Total Time:     0.510s
+[2025-12-07 13:26:25] [INFO] 
+[2025-12-07 13:26:25] [INFO]   Decoded Text:
+[2025-12-07 13:26:25] [INFO]   ------------------------------------------------------------------------------
+[2025-12-07 13:26:25] [INFO]   	[ECHO] Rebooting system...\r\n
+  
+[2025-12-07 13:26:25] [INFO]   ------------------------------------------------------------------------------
+[2025-12-07 13:26:25] [INFO] 
+[2025-12-07 13:26:25] [INFO]   Hex Dump:
+[2025-12-07 13:26:25] [INFO]       0000  09 5B 45 43 48 4F 5D 20 52 65 62 6F 6F 74 69 6E   |.[ECHO] Rebootin|
+[2025-12-07 13:26:25] [INFO]       0010  67 20 73 79 73 74 65 6D 2E 2E 2E 0D 0A            |g system.....|
+[2025-12-07 13:26:25] [INFO] 
+[2025-12-07 13:26:25] [INFO] [SERIAL] Closing connection...
+[2025-12-07 13:26:25] [INFO] ✓ Port COM3 closed
+[2025-12-07 13:26:25] [INFO] ================================================================================
+[2025-12-07 13:26:25] [INFO] 
+[2025-12-07 13:26:25] [INFO] 
+[2025-12-07 13:26:25] [INFO] ================================================================================
+[2025-12-07 13:26:25] [INFO] [SERIAL] WAIT FOR REBOOT AND READY
+[2025-12-07 13:26:25] [INFO] ================================================================================
+[2025-12-07 13:26:25] [INFO]   Port:         COM3
+[2025-12-07 13:26:25] [INFO]   Ready Token:  &#x27;SYSTEM READY&#x27;
+[2025-12-07 13:26:25] [INFO]   Baudrate:     115200
+[2025-12-07 13:26:25] [INFO]   Timeout:      20.0s
+[2025-12-07 13:26:25] [INFO] 
+[2025-12-07 13:26:25] [INFO] [REBOOT] Phase 1: Waiting for port to disappear
+[2025-12-07 13:26:25] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:26:25] [INFO]   Port exists initially: True
+[2025-12-07 13:26:31] [INFO]   ✓ Port COM3 disappeared (reboot in progress)
+[2025-12-07 13:26:31] [INFO] 
+[2025-12-07 13:26:31] [INFO] [REBOOT] Phase 2: Waiting for port to reappear
+[2025-12-07 13:26:31] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:26:32] [INFO]   ✓ Port COM3 reappeared
+[2025-12-07 13:26:32] [INFO] 
+[2025-12-07 13:26:32] [INFO] [REBOOT] Phase 3: Monitoring for ready signal
+[2025-12-07 13:26:32] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:26:32] [INFO]   Attempt #1 (timeout: 13.1s remaining)
+[2025-12-07 13:26:32] [INFO]     Connected, monitoring for &#x27;SYSTEM READY&#x27;...
+[2025-12-07 13:26:33] [INFO] [SERIAL RX] Chunk #1: 1167 bytes
+[2025-12-07 13:26:33] [INFO] [SERIAL RX] Content: &lt;CR&gt;&lt;LF&gt;\n[INFO] ========================================&lt;CR&gt;&lt;LF&gt;\n[INFO]   ENERGIS PDU - System Bring-Alive&lt;CR&gt;&lt;LF&gt;\n[INFO] ========================================&lt;CR&gt;&lt;LF&gt;\n[INFO] Firmware: 1.0.0&lt;CR&gt;&lt;LF&gt;\n[INFO] Serial: SN-0167663&lt;CR&gt;&lt;LF&gt;\n[INFO] ========================================&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ===== Phase 1: Hardware Init =====&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] GPIO configured&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] I2C buses initialized&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] SPI initialized for W5500&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ADC initialized&lt;CR&gt;&lt;LF&gt;\n[INFO] [CAT24DRV] Driver initialized &lt;CR&gt;&lt;LF&gt;\n	[ECHO] [MCP] init 0x20 OK&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [MCP] init 0x21 OK&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [MCP] init 0x23 OK&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ===== Phase 2: Peripheral Probing =====&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ✓ Relay MCP23017 detected at 0x20&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ✓ Display MCP23017 detected at 0x21&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ✓ Selection MCP23017 detected at 0x23&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ✓ All MCP23017s detected&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ✓ EEPROM CAT24C256 detected at 0x50&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ===== Phase 3: Subsystem Bring-up (deterministic) =====&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] LoggerTask ready&lt;CR&gt;&lt;LF&gt;\n[INFO] [Console] Task initialized (polling USB-CDC @ 10ms)&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ConsoleTask ready&lt;CR&gt;&lt;LF&gt;\n[INFO] [STORAGE] Task initialized&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [CONSOLE] Task started&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [LOGGER] Task started&lt;CR&gt;&lt;LF&gt;\n
+[2025-12-07 13:26:33] [INFO] [SERIAL RX] Chunk #2: 729 bytes
+[2025-12-07 13:26:33] [INFO] [SERIAL RX] Content: 	[ECHO] [STORAGE] Task started&lt;CR&gt;&lt;LF&gt;\n[INFO] [ST-FDEF] Magic value verified&lt;CR&gt;&lt;LF&gt;\n[INFO] [ST-USRPR] Loaded user prefs from EEPROM&lt;CR&gt;&lt;LF&gt;\n[INFO] [STORAGE] Config loaded from EEPROM&lt;CR&gt;&lt;LF&gt;\n[INFO] [STORAGE] Config ready&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] StorageTask ready&lt;CR&gt;&lt;LF&gt;\n[INFO] [PowerMgr] Power manager initialized (state=RUN)&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ButtonTask ready&lt;CR&gt;&lt;LF&gt;\n[INFO] [NET] Task created successfully&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] NetTask ready&lt;CR&gt;&lt;LF&gt;\n[INFO] [MeterTask]  MeterTask started&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] MeterTask ready&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ===== Phase 4: Configuration Load =====&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] Storage config ready&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [NET] Task started&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [BUTTONTASK] Task started&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [MeterTask]  Task started&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] Saved Network config: &lt;CR&gt;&lt;LF&gt;\n[INFO]                  IP  : 192.168.0.22&lt;CR&gt;&lt;LF&gt;\n
+[2025-12-07 13:26:33] [INFO] [SERIAL RX] Chunk #3: 550 bytes
+[2025-12-07 13:26:33] [INFO] [SERIAL RX] Content: [INFO]                  SM  : 255.255.255.0&lt;CR&gt;&lt;LF&gt;\n[INFO]                  GW  : 192.168.0.1&lt;CR&gt;&lt;LF&gt;\n[INFO]                  DNS : 8.8.8.8&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ===== Finalization: entering =====&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [HEALTH] Task started&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ===================================&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] 	Crash logs:&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ===================================&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] System bring-alive complete =====&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] ==========================================&lt;CR&gt;&lt;LF&gt;\n[INFO]                SYSTEM READY               &lt;CR&gt;&lt;LF&gt;\n[INFO] ==========================================&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n
+[2025-12-07 13:26:33] [INFO] 
+[2025-12-07 13:26:33] [INFO]     ✓ Ready token &#x27;SYSTEM READY&#x27; DETECTED!
+[2025-12-07 13:26:33] [INFO] [SERIAL RX] Total reboot-response bytes: 2446 in 3 chunks (elapsed 7.939s)
+[2025-12-07 13:26:33] [INFO] [SERIAL RX] Full reboot-response:
+[2025-12-07 13:26:33] [INFO] \r\n
+[INFO] ========================================\r\n
+[INFO]   ENERGIS PDU - System Bring-Alive\r\n
+[INFO] ========================================\r\n
+[INFO] Firmware: 1.0.0\r\n
+[INFO] Serial: SN-0167663\r\n
+[INFO] ========================================\r\n
+\r\n
+[INFO] [INIT] ===== Phase 1: Hardware Init =====\r\n
+\r\n
+[INFO] [INIT] GPIO configured\r\n
+[INFO] [INIT] I2C buses initialized\r\n
+[INFO] [INIT] SPI initialized for W5500\r\n
+[INFO] [INIT] ADC initialized\r\n
+[INFO] [CAT24DRV] Driver initialized \r\n
+	[ECHO] [MCP] init 0x20 OK\r\n
+	[ECHO] [MCP] init 0x21 OK\r\n
+	[ECHO] [MCP] init 0x23 OK\r\n
+\r\n
+[INFO] [INIT] ===== Phase 2: Peripheral Probing =====\r\n
+[INFO] [INIT] ✓ Relay MCP23017 detected at 0x20\r\n
+[INFO] [INIT] ✓ Display MCP23017 detected at 0x21\r\n
+[INFO] [INIT] ✓ Selection MCP23017 detected at 0x23\r\n
+[INFO] [INIT] ✓ All MCP23017s detected\r\n
+[INFO] [INIT] ✓ EEPROM CAT24C256 detected at 0x50\r\n
+\r\n
+[INFO] [INIT] ===== Phase 3: Subsystem Bring-up (deterministic) =====\r\n
+[INFO] [INIT] LoggerTask ready\r\n
+[INFO] [Console] Task initialized (polling USB-CDC @ 10ms)\r\n
+[INFO] [INIT] ConsoleTask ready\r\n
+[INFO] [STORAGE] Task initialized\r\n
+	[ECHO] [CONSOLE] Task started\r\n
+	[ECHO] [LOGGER] Task started\r\n
+	[ECHO] [STORAGE] Task started\r\n
+[INFO] [ST-FDEF] Magic value verified\r\n
+[INFO] [ST-USRPR] Loaded user prefs from EEPROM\r\n
+[INFO] [STORAGE] Config loaded from EEPROM\r\n
+[INFO] [STORAGE] Config ready\r\n
+[INFO] [INIT] StorageTask ready\r\n
+[INFO] [PowerMgr] Power manager initialized (state=RUN)\r\n
+[INFO] [INIT] ButtonTask ready\r\n
+[INFO] [NET] Task created successfully\r\n
+[INFO] [INIT] NetTask ready\r\n
+[INFO] [MeterTask]  MeterTask started\r\n
+[INFO] [INIT] MeterTask ready\r\n
+\r\n
+[INFO] [INIT] ===== Phase 4: Configuration Load =====\r\n
+[INFO] [INIT] Storage config ready\r\n
+	[ECHO] [NET] Task started\r\n
+	[ECHO] [BUTTONTASK] Task started\r\n
+	[ECHO] [MeterTask]  Task started\r\n
+[INFO] [INIT] Saved Network config: \r\n
+[INFO]                  IP  : 192.168.0.22\r\n
+[INFO]                  SM  : 255.255.255.0\r\n
+[INFO]                  GW  : 192.168.0.1\r\n
+[INFO]                  DNS : 8.8.8.8\r\n
+\r\n
+[INFO] [INIT] ===== Finalization: entering =====\r\n
+	[ECHO] [HEALTH] Task started\r\n
+[INFO] [INIT] ===================================\r\n
+[INFO] [INIT] 	Crash logs:\r\n
+[INFO] [INIT] ===================================\r\n
+\r\n
+\r\n
+[INFO] [INIT] System bring-alive complete =====\r\n
+\r\n
+[INFO] ==========================================\r\n
+[INFO]                SYSTEM READY               \r\n
+[INFO] ==========================================\r\n
+\r\n
+
+[2025-12-07 13:26:33] [INFO] 
+[2025-12-07 13:26:33] [INFO] ================================================================================
+[2025-12-07 13:26:33] [INFO] [REBOOT] DEVICE READY
+[2025-12-07 13:26:33] [INFO] ================================================================================
+[2025-12-07 13:26:33] [INFO] 
+[2025-12-07 13:26:33] [INFO] [SERIAL] Closed port COM3 after reboot-monitoring attempt
+[2025-12-07 13:26:33] [PASS] PRE-STEP 1 completed successfully
+</pre>
+</div>
+</details>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1 Test custom network configuration</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-12-07 13:26:33</td><td>2025-12-07 13:27:01</td></tr>
+</table>
+<div class='substeps'>
+<h4>Substeps</h4>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.1 Set custom network config</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-12-07 13:26:33</td><td>2025-12-07 13:26:44</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-12-07 13:26:33] [STEP 1.1] Set custom network config
+[2025-12-07 13:26:33] [INFO] 
+[2025-12-07 13:26:33] [INFO] ================================================================================
+[2025-12-07 13:26:33] [INFO] [SERIAL] SEND COMMAND
+[2025-12-07 13:26:33] [INFO] ================================================================================
+[2025-12-07 13:26:33] [INFO]   Command: &#x27;CONFIG_NETWORK 192.168.0.72$255.255.0.0$192.168.1.1$1.1.1.1&#x27;
+[2025-12-07 13:26:33] [INFO]   Port:    COM3
+[2025-12-07 13:26:33] [INFO] 
+[2025-12-07 13:26:33] [INFO] ================================================================================
+[2025-12-07 13:26:33] [INFO] [SERIAL] OPENING CONNECTION
+[2025-12-07 13:26:33] [INFO] ================================================================================
+[2025-12-07 13:26:33] [INFO]   Port:          COM3
+[2025-12-07 13:26:33] [INFO]   Baudrate:      115200
+[2025-12-07 13:26:33] [INFO]   Timeout:       2.0s
+[2025-12-07 13:26:33] [INFO]   Write Timeout: 2.0s
+[2025-12-07 13:26:33] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-12-07 13:26:33] [INFO] ✓ Port COM3 opened successfully
+[2025-12-07 13:26:33] [INFO]   Stabilizing connection (100ms delay)...
+[2025-12-07 13:26:34] [INFO]   Resetting input and output buffers...
+[2025-12-07 13:26:34] [INFO] ✓ Connection ready and buffers cleared
+[2025-12-07 13:26:34] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:26:34] [INFO] [SERIAL TX] TRANSMITTING
+[2025-12-07 13:26:34] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:26:34] [INFO]   Command:  &#x27;CONFIG_NETWORK 192.168.0.72$255.255.0.0$192.168.1.1$1.1.1.1&#x27;
+[2025-12-07 13:26:34] [INFO]   Length:   61 bytes (including CR+LF)
+[2025-12-07 13:26:34] [INFO] 
+[2025-12-07 13:26:34] [INFO]   Hex Dump:
+[2025-12-07 13:26:34] [INFO]       0000  43 4F 4E 46 49 47 5F 4E 45 54 57 4F 52 4B 20 31   |CONFIG_NETWORK 1|
+[2025-12-07 13:26:34] [INFO]       0010  39 32 2E 31 36 38 2E 30 2E 37 32 24 32 35 35 2E   |92.168.0.72$255.|
+[2025-12-07 13:26:34] [INFO]       0020  32 35 35 2E 30 2E 30 24 31 39 32 2E 31 36 38 2E   |255.0.0$192.168.|
+[2025-12-07 13:26:34] [INFO]       0030  31 2E 31 24 31 2E 31 2E 31 2E 31 0D 0A            |1.1$1.1.1.1..|
+[2025-12-07 13:26:34] [INFO] 
+[2025-12-07 13:26:34] [INFO] ✓ Transmitted 61 bytes
+[2025-12-07 13:26:34] [INFO]   Waiting 50ms for device processing...
+[2025-12-07 13:26:34] [INFO] 
+[2025-12-07 13:26:34] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-12-07 13:26:34] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:26:34] [INFO]   Timeout: 2.0s
+[2025-12-07 13:26:34] [INFO] 
+[2025-12-07 13:26:34] [INFO]   Chunk #1: 50 bytes | Elapsed: 0.001s | Total: 50 bytes
+[2025-12-07 13:26:34] [INFO]   Chunk #2: 305 bytes | Elapsed: 0.263s | Total: 355 bytes
+[2025-12-07 13:26:34] [INFO] 
+[2025-12-07 13:26:34] [INFO]   No data for 500ms, response complete
+[2025-12-07 13:26:34] [INFO] 
+[2025-12-07 13:26:34] [INFO] ✓ Response Complete:
+[2025-12-07 13:26:34] [INFO]     Total Bytes:    355
+[2025-12-07 13:26:34] [INFO]     Chunks:         2
+[2025-12-07 13:26:34] [INFO]     Total Time:     0.773s
+[2025-12-07 13:26:34] [INFO] 
+[2025-12-07 13:26:34] [INFO]   Decoded Text:
+[2025-12-07 13:26:34] [INFO]   ------------------------------------------------------------------------------
+[2025-12-07 13:26:34] [INFO]   [INFO] [ETH] Hardware initialized (SPI @ 40 MHz)\r\n
+  	[ECHO] \r\n
+  	[ECHO] === ENERGIS Console Ready ===\r\n
+  	[ECHO] Type HELP for available commands\r\n
+  	[ECHO] \r\n
+  	[ECHO] Network configured successfully:\r\n
+  	[ECHO]   IP: 192.168.0.72\r\n
+  	[ECHO]   Subnet: 255.255.0.0\r\n
+  	[ECHO]   Gateway: 192.168.1.1\r\n
+  	[ECHO]   DNS: 1.1.1.1\r\n
+  	[ECHO] Reboot required to apply changes.\r\n
+  \r\n
+  \r\n
+  
+[2025-12-07 13:26:34] [INFO]   ------------------------------------------------------------------------------
+[2025-12-07 13:26:34] [INFO] 
+[2025-12-07 13:26:34] [INFO]   Hex Dump:
+[2025-12-07 13:26:34] [INFO]       0000  5B 49 4E 46 4F 5D 20 5B 45 54 48 5D 20 48 61 72   |[INFO] [ETH] Har|
+[2025-12-07 13:26:34] [INFO]       0010  64 77 61 72 65 20 69 6E 69 74 69 61 6C 69 7A 65   |dware initialize|
+[2025-12-07 13:26:34] [INFO]       0020  64 20 28 53 50 49 20 40 20 34 30 20 4D 48 7A 29   |d (SPI @ 40 MHz)|
+[2025-12-07 13:26:34] [INFO]       0030  0D 0A 09 5B 45 43 48 4F 5D 20 0D 0A 09 5B 45 43   |...[ECHO] ...[EC|
+[2025-12-07 13:26:34] [INFO]       0040  48 4F 5D 20 3D 3D 3D 20 45 4E 45 52 47 49 53 20   |HO] === ENERGIS |
+[2025-12-07 13:26:34] [INFO]       0050  43 6F 6E 73 6F 6C 65 20 52 65 61 64 79 20 3D 3D   |Console Ready ==|
+[2025-12-07 13:26:34] [INFO]       0060  3D 0D 0A 09 5B 45 43 48 4F 5D 20 54 79 70 65 20   |=...[ECHO] Type |
+[2025-12-07 13:26:34] [INFO]       0070  48 45 4C 50 20 66 6F 72 20 61 76 61 69 6C 61 62   |HELP for availab|
+[2025-12-07 13:26:34] [INFO]       0080  6C 65 20 63 6F 6D 6D 61 6E 64 73 0D 0A 09 5B 45   |le commands...[E|
+[2025-12-07 13:26:34] [INFO]       0090  43 48 4F 5D 20 0D 0A 09 5B 45 43 48 4F 5D 20 4E   |CHO] ...[ECHO] N|
+[2025-12-07 13:26:34] [INFO]       00A0  65 74 77 6F 72 6B 20 63 6F 6E 66 69 67 75 72 65   |etwork configure|
+[2025-12-07 13:26:34] [INFO]       00B0  64 20 73 75 63 63 65 73 73 66 75 6C 6C 79 3A 0D   |d successfully:.|
+[2025-12-07 13:26:34] [INFO]       00C0  0A 09 5B 45 43 48 4F 5D 20 20 20 49 50 3A 20 31   |..[ECHO]   IP: 1|
+[2025-12-07 13:26:34] [INFO]       00D0  39 32 2E 31 36 38 2E 30 2E 37 32 0D 0A 09 5B 45   |92.168.0.72...[E|
+[2025-12-07 13:26:34] [INFO]       00E0  43 48 4F 5D 20 20 20 53 75 62 6E 65 74 3A 20 32   |CHO]   Subnet: 2|
+[2025-12-07 13:26:34] [INFO]       00F0  35 35 2E 32 35 35 2E 30 2E 30 0D 0A 09 5B 45 43   |55.255.0.0...[EC|
+[2025-12-07 13:26:34] [INFO]       0100  48 4F 5D 20 20 20 47 61 74 65 77 61 79 3A 20 31   |HO]   Gateway: 1|
+[2025-12-07 13:26:34] [INFO]       0110  39 32 2E 31 36 38 2E 31 2E 31 0D 0A 09 5B 45 43   |92.168.1.1...[EC|
+[2025-12-07 13:26:34] [INFO]       0120  48 4F 5D 20 20 20 44 4E 53 3A 20 31 2E 31 2E 31   |HO]   DNS: 1.1.1|
+[2025-12-07 13:26:34] [INFO]       0130  2E 31 0D 0A 09 5B 45 43 48 4F 5D 20 52 65 62 6F   |.1...[ECHO] Rebo|
+[2025-12-07 13:26:34] [INFO]       0140  6F 74 20 72 65 71 75 69 72 65 64 20 74 6F 20 61   |ot required to a|
+[2025-12-07 13:26:34] [INFO]       0150  70 70 6C 79 20 63 68 61 6E 67 65 73 2E 0D 0A 0D   |pply changes....|
+[2025-12-07 13:26:34] [INFO]       0160  0A 0D 0A                                          |...|
+[2025-12-07 13:26:34] [INFO] 
+[2025-12-07 13:26:34] [INFO] [SERIAL] Closing connection...
+[2025-12-07 13:26:34] [INFO] ✓ Port COM3 closed
+[2025-12-07 13:26:34] [INFO] ================================================================================
+[2025-12-07 13:26:34] [INFO] 
+[2025-12-07 13:26:34] [INFO] 
+[2025-12-07 13:26:34] [INFO] ================================================================================
+[2025-12-07 13:26:34] [INFO] [SERIAL] WAIT FOR REBOOT AND READY
+[2025-12-07 13:26:34] [INFO] ================================================================================
+[2025-12-07 13:26:34] [INFO]   Port:         COM3
+[2025-12-07 13:26:34] [INFO]   Ready Token:  &#x27;SYSTEM READY&#x27;
+[2025-12-07 13:26:34] [INFO]   Baudrate:     115200
+[2025-12-07 13:26:34] [INFO]   Timeout:      20.0s
+[2025-12-07 13:26:34] [INFO] 
+[2025-12-07 13:26:34] [INFO] [REBOOT] Phase 1: Waiting for port to disappear
+[2025-12-07 13:26:34] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:26:34] [INFO]   Port exists initially: True
+[2025-12-07 13:26:42] [INFO]   ✓ Port COM3 disappeared (reboot in progress)
+[2025-12-07 13:26:42] [INFO] 
+[2025-12-07 13:26:42] [INFO] [REBOOT] Phase 2: Waiting for port to reappear
+[2025-12-07 13:26:42] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:26:43] [INFO]   ✓ Port COM3 reappeared
+[2025-12-07 13:26:43] [INFO] 
+[2025-12-07 13:26:43] [INFO] [REBOOT] Phase 3: Monitoring for ready signal
+[2025-12-07 13:26:43] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:26:43] [INFO]   Attempt #1 (timeout: 11.2s remaining)
+[2025-12-07 13:26:43] [INFO]     Connected, monitoring for &#x27;SYSTEM READY&#x27;...
+[2025-12-07 13:26:44] [INFO] [SERIAL RX] Chunk #1: 1167 bytes
+[2025-12-07 13:26:44] [INFO] [SERIAL RX] Content: &lt;CR&gt;&lt;LF&gt;\n[INFO] ========================================&lt;CR&gt;&lt;LF&gt;\n[INFO]   ENERGIS PDU - System Bring-Alive&lt;CR&gt;&lt;LF&gt;\n[INFO] ========================================&lt;CR&gt;&lt;LF&gt;\n[INFO] Firmware: 1.0.0&lt;CR&gt;&lt;LF&gt;\n[INFO] Serial: SN-0167663&lt;CR&gt;&lt;LF&gt;\n[INFO] ========================================&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ===== Phase 1: Hardware Init =====&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] GPIO configured&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] I2C buses initialized&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] SPI initialized for W5500&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ADC initialized&lt;CR&gt;&lt;LF&gt;\n[INFO] [CAT24DRV] Driver initialized &lt;CR&gt;&lt;LF&gt;\n	[ECHO] [MCP] init 0x20 OK&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [MCP] init 0x21 OK&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [MCP] init 0x23 OK&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ===== Phase 2: Peripheral Probing =====&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ✓ Relay MCP23017 detected at 0x20&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ✓ Display MCP23017 detected at 0x21&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ✓ Selection MCP23017 detected at 0x23&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ✓ All MCP23017s detected&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ✓ EEPROM CAT24C256 detected at 0x50&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ===== Phase 3: Subsystem Bring-up (deterministic) =====&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] LoggerTask ready&lt;CR&gt;&lt;LF&gt;\n[INFO] [Console] Task initialized (polling USB-CDC @ 10ms)&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ConsoleTask ready&lt;CR&gt;&lt;LF&gt;\n[INFO] [STORAGE] Task initialized&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [CONSOLE] Task started&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [LOGGER] Task started&lt;CR&gt;&lt;LF&gt;\n
+[2025-12-07 13:26:44] [INFO] [SERIAL RX] Chunk #2: 195 bytes
+[2025-12-07 13:26:44] [INFO] [SERIAL RX] Content: 	[ECHO] [STORAGE] Task started&lt;CR&gt;&lt;LF&gt;\n[INFO] [ST-FDEF] Magic value verified&lt;CR&gt;&lt;LF&gt;\n[INFO] [ST-USRPR] Loaded user prefs from EEPROM&lt;CR&gt;&lt;LF&gt;\n[INFO] [STORAGE] Config loaded from EEPROM&lt;CR&gt;&lt;LF&gt;\n[INFO] [STORAGE] Config ready&lt;CR&gt;&lt;LF&gt;\n
+[2025-12-07 13:26:44] [INFO] [SERIAL RX] Chunk #3: 1082 bytes
+[2025-12-07 13:26:44] [INFO] [SERIAL RX] Content: [INFO] [INIT] StorageTask ready&lt;CR&gt;&lt;LF&gt;\n[INFO] [PowerMgr] Power manager initialized (state=RUN)&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ButtonTask ready&lt;CR&gt;&lt;LF&gt;\n[INFO] [NET] Task created successfully&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] NetTask ready&lt;CR&gt;&lt;LF&gt;\n[INFO] [MeterTask]  MeterTask started&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] MeterTask ready&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ===== Phase 4: Configuration Load =====&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] Storage config ready&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [NET] Task started&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [BUTTONTASK] Task started&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [MeterTask]  Task started&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] Saved Network config: &lt;CR&gt;&lt;LF&gt;\n[INFO]                  IP  : 192.168.0.72&lt;CR&gt;&lt;LF&gt;\n[INFO]                  SM  : 255.255.0.0&lt;CR&gt;&lt;LF&gt;\n[INFO]                  GW  : 192.168.1.1&lt;CR&gt;&lt;LF&gt;\n[INFO]                  DNS : 1.1.1.1&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ===== Finalization: entering =====&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [HEALTH] Task started&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ===================================&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] 	Crash logs:&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ===================================&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] System bring-alive complete =====&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] ==========================================&lt;CR&gt;&lt;LF&gt;\n[INFO]                SYSTEM READY               &lt;CR&gt;&lt;LF&gt;\n[INFO] ==========================================&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n
+[2025-12-07 13:26:44] [INFO] 
+[2025-12-07 13:26:44] [INFO]     ✓ Ready token &#x27;SYSTEM READY&#x27; DETECTED!
+[2025-12-07 13:26:44] [INFO] [SERIAL RX] Total reboot-response bytes: 2444 in 3 chunks (elapsed 9.941s)
+[2025-12-07 13:26:44] [INFO] [SERIAL RX] Full reboot-response:
+[2025-12-07 13:26:44] [INFO] \r\n
+[INFO] ========================================\r\n
+[INFO]   ENERGIS PDU - System Bring-Alive\r\n
+[INFO] ========================================\r\n
+[INFO] Firmware: 1.0.0\r\n
+[INFO] Serial: SN-0167663\r\n
+[INFO] ========================================\r\n
+\r\n
+[INFO] [INIT] ===== Phase 1: Hardware Init =====\r\n
+\r\n
+[INFO] [INIT] GPIO configured\r\n
+[INFO] [INIT] I2C buses initialized\r\n
+[INFO] [INIT] SPI initialized for W5500\r\n
+[INFO] [INIT] ADC initialized\r\n
+[INFO] [CAT24DRV] Driver initialized \r\n
+	[ECHO] [MCP] init 0x20 OK\r\n
+	[ECHO] [MCP] init 0x21 OK\r\n
+	[ECHO] [MCP] init 0x23 OK\r\n
+\r\n
+[INFO] [INIT] ===== Phase 2: Peripheral Probing =====\r\n
+[INFO] [INIT] ✓ Relay MCP23017 detected at 0x20\r\n
+[INFO] [INIT] ✓ Display MCP23017 detected at 0x21\r\n
+[INFO] [INIT] ✓ Selection MCP23017 detected at 0x23\r\n
+[INFO] [INIT] ✓ All MCP23017s detected\r\n
+[INFO] [INIT] ✓ EEPROM CAT24C256 detected at 0x50\r\n
+\r\n
+[INFO] [INIT] ===== Phase 3: Subsystem Bring-up (deterministic) =====\r\n
+[INFO] [INIT] LoggerTask ready\r\n
+[INFO] [Console] Task initialized (polling USB-CDC @ 10ms)\r\n
+[INFO] [INIT] ConsoleTask ready\r\n
+[INFO] [STORAGE] Task initialized\r\n
+	[ECHO] [CONSOLE] Task started\r\n
+	[ECHO] [LOGGER] Task started\r\n
+	[ECHO] [STORAGE] Task started\r\n
+[INFO] [ST-FDEF] Magic value verified\r\n
+[INFO] [ST-USRPR] Loaded user prefs from EEPROM\r\n
+[INFO] [STORAGE] Config loaded from EEPROM\r\n
+[INFO] [STORAGE] Config ready\r\n
+[INFO] [INIT] StorageTask ready\r\n
+[INFO] [PowerMgr] Power manager initialized (state=RUN)\r\n
+[INFO] [INIT] ButtonTask ready\r\n
+[INFO] [NET] Task created successfully\r\n
+[INFO] [INIT] NetTask ready\r\n
+[INFO] [MeterTask]  MeterTask started\r\n
+[INFO] [INIT] MeterTask ready\r\n
+\r\n
+[INFO] [INIT] ===== Phase 4: Configuration Load =====\r\n
+[INFO] [INIT] Storage config ready\r\n
+	[ECHO] [NET] Task started\r\n
+	[ECHO] [BUTTONTASK] Task started\r\n
+	[ECHO] [MeterTask]  Task started\r\n
+[INFO] [INIT] Saved Network config: \r\n
+[INFO]                  IP  : 192.168.0.72\r\n
+[INFO]                  SM  : 255.255.0.0\r\n
+[INFO]                  GW  : 192.168.1.1\r\n
+[INFO]                  DNS : 1.1.1.1\r\n
+\r\n
+[INFO] [INIT] ===== Finalization: entering =====\r\n
+	[ECHO] [HEALTH] Task started\r\n
+[INFO] [INIT] ===================================\r\n
+[INFO] [INIT] 	Crash logs:\r\n
+[INFO] [INIT] ===================================\r\n
+\r\n
+\r\n
+[INFO] [INIT] System bring-alive complete =====\r\n
+\r\n
+[INFO] ==========================================\r\n
+[INFO]                SYSTEM READY               \r\n
+[INFO] ==========================================\r\n
+\r\n
+
+[2025-12-07 13:26:44] [INFO] 
+[2025-12-07 13:26:44] [INFO] ================================================================================
+[2025-12-07 13:26:44] [INFO] [REBOOT] DEVICE READY
+[2025-12-07 13:26:44] [INFO] ================================================================================
+[2025-12-07 13:26:44] [INFO] 
+[2025-12-07 13:26:44] [INFO] [SERIAL] Closed port COM3 after reboot-monitoring attempt
+[2025-12-07 13:26:44] [PASS] STEP 1.1 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.2 Wait for device to fully boot</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-12-07 13:26:44</td><td>2025-12-07 13:26:46</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-12-07 13:26:44] [STEP 1.2] Wait for device to fully boot
+[2025-12-07 13:26:44] [INFO] Starting NOP wait for 2000ms
+[2025-12-07 13:26:45] [INFO] NOP waiting... 1.0s elapsed
+[2025-12-07 13:26:46] [INFO] NOP wait complete. Actual duration: 2000.70ms
+[2025-12-07 13:26:46] [PASS] STEP 1.2 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.3 Verify custom IP</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-12-07 13:26:46</td><td>2025-12-07 13:26:47</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-12-07 13:26:46] [STEP 1.3] Verify custom IP
+[2025-12-07 13:26:46] [INFO] 
+[2025-12-07 13:26:46] [INFO] ================================================================================
+[2025-12-07 13:26:46] [INFO] [SERIAL] SEND COMMAND
+[2025-12-07 13:26:46] [INFO] ================================================================================
+[2025-12-07 13:26:46] [INFO]   Command: &#x27;NETINFO&#x27;
+[2025-12-07 13:26:46] [INFO]   Port:    COM3
+[2025-12-07 13:26:46] [INFO] 
+[2025-12-07 13:26:46] [INFO] ================================================================================
+[2025-12-07 13:26:46] [INFO] [SERIAL] OPENING CONNECTION
+[2025-12-07 13:26:46] [INFO] ================================================================================
+[2025-12-07 13:26:46] [INFO]   Port:          COM3
+[2025-12-07 13:26:46] [INFO]   Baudrate:      115200
+[2025-12-07 13:26:46] [INFO]   Timeout:       2.0s
+[2025-12-07 13:26:46] [INFO]   Write Timeout: 2.0s
+[2025-12-07 13:26:46] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-12-07 13:26:46] [INFO] ✓ Port COM3 opened successfully
+[2025-12-07 13:26:46] [INFO]   Stabilizing connection (100ms delay)...
+[2025-12-07 13:26:46] [INFO]   Resetting input and output buffers...
+[2025-12-07 13:26:46] [INFO] ✓ Connection ready and buffers cleared
+[2025-12-07 13:26:46] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:26:46] [INFO] [SERIAL TX] TRANSMITTING
+[2025-12-07 13:26:46] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:26:46] [INFO]   Command:  &#x27;NETINFO&#x27;
+[2025-12-07 13:26:46] [INFO]   Length:   9 bytes (including CR+LF)
+[2025-12-07 13:26:46] [INFO] 
+[2025-12-07 13:26:46] [INFO]   Hex Dump:
+[2025-12-07 13:26:46] [INFO]       0000  4E 45 54 49 4E 46 4F 0D 0A                        |NETINFO..|
+[2025-12-07 13:26:46] [INFO] 
+[2025-12-07 13:26:46] [INFO] ✓ Transmitted 9 bytes
+[2025-12-07 13:26:46] [INFO]   Waiting 50ms for device processing...
+[2025-12-07 13:26:46] [INFO] 
+[2025-12-07 13:26:46] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-12-07 13:26:46] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:26:46] [INFO]   Timeout: 2.0s
+[2025-12-07 13:26:46] [INFO] 
+[2025-12-07 13:26:46] [INFO]   Chunk #1: 282 bytes | Elapsed: 0.001s | Total: 282 bytes
+[2025-12-07 13:26:47] [INFO]   Chunk #2: 91 bytes | Elapsed: 0.053s | Total: 373 bytes
+[2025-12-07 13:26:47] [INFO] 
+[2025-12-07 13:26:47] [INFO]   No data for 500ms, response complete
+[2025-12-07 13:26:47] [INFO] 
+[2025-12-07 13:26:47] [INFO] ✓ Response Complete:
+[2025-12-07 13:26:47] [INFO]     Total Bytes:    373
+[2025-12-07 13:26:47] [INFO]     Chunks:         2
+[2025-12-07 13:26:47] [INFO]     Total Time:     0.555s
+[2025-12-07 13:26:47] [INFO] 
+[2025-12-07 13:26:47] [INFO]   Decoded Text:
+[2025-12-07 13:26:47] [INFO]   ------------------------------------------------------------------------------
+[2025-12-07 13:26:47] [INFO]   	[ECHO] NETWORK INFORMATION:\r\n
+  	[ECHO] [ETH] Network Configuration:\r\n
+  	[ECHO] [ETH]  MAC  : 02:45:4E:0C:7B:1C\r\n
+  	[ECHO] [ETH]  IP   : 192.168.0.72\r\n
+  	[ECHO] [ETH]  Mask : 255.255.0.0\r\n
+  	[ECHO] [ETH]  GW   : 192.168.1.1\r\n
+  	[ECHO] [ETH]  DNS  : 1.1.1.1\r\n
+  	[ECHO] [ETH]  DHCP : Disabled\r\n
+  \r\n
+  \r\n
+  [WARNING 0x61F1] [HEALTH] GRACE PERIOD ENDED \r\n
+  [WARNING 0x61F1] [HEALTH] ARMING WATCHDOG \r\n
+  
+[2025-12-07 13:26:47] [INFO]   ------------------------------------------------------------------------------
+[2025-12-07 13:26:47] [INFO] 
+[2025-12-07 13:26:47] [INFO]   Hex Dump:
+[2025-12-07 13:26:47] [INFO]       0000  09 5B 45 43 48 4F 5D 20 4E 45 54 57 4F 52 4B 20   |.[ECHO] NETWORK |
+[2025-12-07 13:26:47] [INFO]       0010  49 4E 46 4F 52 4D 41 54 49 4F 4E 3A 0D 0A 09 5B   |INFORMATION:...[|
+[2025-12-07 13:26:47] [INFO]       0020  45 43 48 4F 5D 20 5B 45 54 48 5D 20 4E 65 74 77   |ECHO] [ETH] Netw|
+[2025-12-07 13:26:47] [INFO]       0030  6F 72 6B 20 43 6F 6E 66 69 67 75 72 61 74 69 6F   |ork Configuratio|
+[2025-12-07 13:26:47] [INFO]       0040  6E 3A 0D 0A 09 5B 45 43 48 4F 5D 20 5B 45 54 48   |n:...[ECHO] [ETH|
+[2025-12-07 13:26:47] [INFO]       0050  5D 20 20 4D 41 43 20 20 3A 20 30 32 3A 34 35 3A   |]  MAC  : 02:45:|
+[2025-12-07 13:26:47] [INFO]       0060  34 45 3A 30 43 3A 37 42 3A 31 43 0D 0A 09 5B 45   |4E:0C:7B:1C...[E|
+[2025-12-07 13:26:47] [INFO]       0070  43 48 4F 5D 20 5B 45 54 48 5D 20 20 49 50 20 20   |CHO] [ETH]  IP  |
+[2025-12-07 13:26:47] [INFO]       0080  20 3A 20 31 39 32 2E 31 36 38 2E 30 2E 37 32 0D   | : 192.168.0.72.|
+[2025-12-07 13:26:47] [INFO]       0090  0A 09 5B 45 43 48 4F 5D 20 5B 45 54 48 5D 20 20   |..[ECHO] [ETH]  |
+[2025-12-07 13:26:47] [INFO]       00A0  4D 61 73 6B 20 3A 20 32 35 35 2E 32 35 35 2E 30   |Mask : 255.255.0|
+[2025-12-07 13:26:47] [INFO]       00B0  2E 30 0D 0A 09 5B 45 43 48 4F 5D 20 5B 45 54 48   |.0...[ECHO] [ETH|
+[2025-12-07 13:26:47] [INFO]       00C0  5D 20 20 47 57 20 20 20 3A 20 31 39 32 2E 31 36   |]  GW   : 192.16|
+[2025-12-07 13:26:47] [INFO]       00D0  38 2E 31 2E 31 0D 0A 09 5B 45 43 48 4F 5D 20 5B   |8.1.1...[ECHO] [|
+[2025-12-07 13:26:47] [INFO]       00E0  45 54 48 5D 20 20 44 4E 53 20 20 3A 20 31 2E 31   |ETH]  DNS  : 1.1|
+[2025-12-07 13:26:47] [INFO]       00F0  2E 31 2E 31 0D 0A 09 5B 45 43 48 4F 5D 20 5B 45   |.1.1...[ECHO] [E|
+[2025-12-07 13:26:47] [INFO]       0100  54 48 5D 20 20 44 48 43 50 20 3A 20 44 69 73 61   |TH]  DHCP : Disa|
+[2025-12-07 13:26:47] [INFO]       0110  62 6C 65 64 0D 0A 0D 0A 0D 0A 5B 57 41 52 4E 49   |bled......[WARNI|
+[2025-12-07 13:26:47] [INFO]       0120  4E 47 20 30 78 36 31 46 31 5D 20 5B 48 45 41 4C   |NG 0x61F1] [HEAL|
+[2025-12-07 13:26:47] [INFO]       0130  54 48 5D 20 47 52 41 43 45 20 50 45 52 49 4F 44   |TH] GRACE PERIOD|
+[2025-12-07 13:26:47] [INFO]       0140  20 45 4E 44 45 44 20 0D 0A 5B 57 41 52 4E 49 4E   | ENDED ..[WARNIN|
+[2025-12-07 13:26:47] [INFO]       0150  47 20 30 78 36 31 46 31 5D 20 5B 48 45 41 4C 54   |G 0x61F1] [HEALT|
+[2025-12-07 13:26:47] [INFO]       0160  48 5D 20 41 52 4D 49 4E 47 20 57 41 54 43 48 44   |H] ARMING WATCHD|
+[2025-12-07 13:26:47] [INFO]       0170  4F 47 20 0D 0A                                    |OG ..|
+[2025-12-07 13:26:47] [INFO] 
+[2025-12-07 13:26:47] [INFO] [SERIAL] Closing connection...
+[2025-12-07 13:26:47] [INFO] ✓ Port COM3 closed
+[2025-12-07 13:26:47] [INFO] ================================================================================
+[2025-12-07 13:26:47] [INFO] 
+[2025-12-07 13:26:47] [PASS] STEP 1.3 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.4 Verify custom Gateway</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-12-07 13:26:47</td><td>2025-12-07 13:26:48</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-12-07 13:26:47] [STEP 1.4] Verify custom Gateway
+[2025-12-07 13:26:47] [INFO] 
+[2025-12-07 13:26:47] [INFO] ================================================================================
+[2025-12-07 13:26:47] [INFO] [SERIAL] SEND COMMAND
+[2025-12-07 13:26:47] [INFO] ================================================================================
+[2025-12-07 13:26:47] [INFO]   Command: &#x27;NETINFO&#x27;
+[2025-12-07 13:26:47] [INFO]   Port:    COM3
+[2025-12-07 13:26:47] [INFO] 
+[2025-12-07 13:26:47] [INFO] ================================================================================
+[2025-12-07 13:26:47] [INFO] [SERIAL] OPENING CONNECTION
+[2025-12-07 13:26:47] [INFO] ================================================================================
+[2025-12-07 13:26:47] [INFO]   Port:          COM3
+[2025-12-07 13:26:47] [INFO]   Baudrate:      115200
+[2025-12-07 13:26:47] [INFO]   Timeout:       2.0s
+[2025-12-07 13:26:47] [INFO]   Write Timeout: 2.0s
+[2025-12-07 13:26:47] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-12-07 13:26:47] [INFO] ✓ Port COM3 opened successfully
+[2025-12-07 13:26:47] [INFO]   Stabilizing connection (100ms delay)...
+[2025-12-07 13:26:47] [INFO]   Resetting input and output buffers...
+[2025-12-07 13:26:47] [INFO] ✓ Connection ready and buffers cleared
+[2025-12-07 13:26:47] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:26:47] [INFO] [SERIAL TX] TRANSMITTING
+[2025-12-07 13:26:47] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:26:47] [INFO]   Command:  &#x27;NETINFO&#x27;
+[2025-12-07 13:26:47] [INFO]   Length:   9 bytes (including CR+LF)
+[2025-12-07 13:26:47] [INFO] 
+[2025-12-07 13:26:47] [INFO]   Hex Dump:
+[2025-12-07 13:26:47] [INFO]       0000  4E 45 54 49 4E 46 4F 0D 0A                        |NETINFO..|
+[2025-12-07 13:26:47] [INFO] 
+[2025-12-07 13:26:47] [INFO] ✓ Transmitted 9 bytes
+[2025-12-07 13:26:47] [INFO]   Waiting 50ms for device processing...
+[2025-12-07 13:26:47] [INFO] 
+[2025-12-07 13:26:47] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-12-07 13:26:47] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:26:47] [INFO]   Timeout: 2.0s
+[2025-12-07 13:26:47] [INFO] 
+[2025-12-07 13:26:47] [INFO]   Chunk #1: 282 bytes | Elapsed: 0.001s | Total: 282 bytes
+[2025-12-07 13:26:48] [INFO] 
+[2025-12-07 13:26:48] [INFO]   No data for 500ms, response complete
+[2025-12-07 13:26:48] [INFO] 
+[2025-12-07 13:26:48] [INFO] ✓ Response Complete:
+[2025-12-07 13:26:48] [INFO]     Total Bytes:    282
+[2025-12-07 13:26:48] [INFO]     Chunks:         1
+[2025-12-07 13:26:48] [INFO]     Total Time:     0.509s
+[2025-12-07 13:26:48] [INFO] 
+[2025-12-07 13:26:48] [INFO]   Decoded Text:
+[2025-12-07 13:26:48] [INFO]   ------------------------------------------------------------------------------
+[2025-12-07 13:26:48] [INFO]   	[ECHO] NETWORK INFORMATION:\r\n
+  	[ECHO] [ETH] Network Configuration:\r\n
+  	[ECHO] [ETH]  MAC  : 02:45:4E:0C:7B:1C\r\n
+  	[ECHO] [ETH]  IP   : 192.168.0.72\r\n
+  	[ECHO] [ETH]  Mask : 255.255.0.0\r\n
+  	[ECHO] [ETH]  GW   : 192.168.1.1\r\n
+  	[ECHO] [ETH]  DNS  : 1.1.1.1\r\n
+  	[ECHO] [ETH]  DHCP : Disabled\r\n
+  \r\n
+  \r\n
+  
+[2025-12-07 13:26:48] [INFO]   ------------------------------------------------------------------------------
+[2025-12-07 13:26:48] [INFO] 
+[2025-12-07 13:26:48] [INFO]   Hex Dump:
+[2025-12-07 13:26:48] [INFO]       0000  09 5B 45 43 48 4F 5D 20 4E 45 54 57 4F 52 4B 20   |.[ECHO] NETWORK |
+[2025-12-07 13:26:48] [INFO]       0010  49 4E 46 4F 52 4D 41 54 49 4F 4E 3A 0D 0A 09 5B   |INFORMATION:...[|
+[2025-12-07 13:26:48] [INFO]       0020  45 43 48 4F 5D 20 5B 45 54 48 5D 20 4E 65 74 77   |ECHO] [ETH] Netw|
+[2025-12-07 13:26:48] [INFO]       0030  6F 72 6B 20 43 6F 6E 66 69 67 75 72 61 74 69 6F   |ork Configuratio|
+[2025-12-07 13:26:48] [INFO]       0040  6E 3A 0D 0A 09 5B 45 43 48 4F 5D 20 5B 45 54 48   |n:...[ECHO] [ETH|
+[2025-12-07 13:26:48] [INFO]       0050  5D 20 20 4D 41 43 20 20 3A 20 30 32 3A 34 35 3A   |]  MAC  : 02:45:|
+[2025-12-07 13:26:48] [INFO]       0060  34 45 3A 30 43 3A 37 42 3A 31 43 0D 0A 09 5B 45   |4E:0C:7B:1C...[E|
+[2025-12-07 13:26:48] [INFO]       0070  43 48 4F 5D 20 5B 45 54 48 5D 20 20 49 50 20 20   |CHO] [ETH]  IP  |
+[2025-12-07 13:26:48] [INFO]       0080  20 3A 20 31 39 32 2E 31 36 38 2E 30 2E 37 32 0D   | : 192.168.0.72.|
+[2025-12-07 13:26:48] [INFO]       0090  0A 09 5B 45 43 48 4F 5D 20 5B 45 54 48 5D 20 20   |..[ECHO] [ETH]  |
+[2025-12-07 13:26:48] [INFO]       00A0  4D 61 73 6B 20 3A 20 32 35 35 2E 32 35 35 2E 30   |Mask : 255.255.0|
+[2025-12-07 13:26:48] [INFO]       00B0  2E 30 0D 0A 09 5B 45 43 48 4F 5D 20 5B 45 54 48   |.0...[ECHO] [ETH|
+[2025-12-07 13:26:48] [INFO]       00C0  5D 20 20 47 57 20 20 20 3A 20 31 39 32 2E 31 36   |]  GW   : 192.16|
+[2025-12-07 13:26:48] [INFO]       00D0  38 2E 31 2E 31 0D 0A 09 5B 45 43 48 4F 5D 20 5B   |8.1.1...[ECHO] [|
+[2025-12-07 13:26:48] [INFO]       00E0  45 54 48 5D 20 20 44 4E 53 20 20 3A 20 31 2E 31   |ETH]  DNS  : 1.1|
+[2025-12-07 13:26:48] [INFO]       00F0  2E 31 2E 31 0D 0A 09 5B 45 43 48 4F 5D 20 5B 45   |.1.1...[ECHO] [E|
+[2025-12-07 13:26:48] [INFO]       0100  54 48 5D 20 20 44 48 43 50 20 3A 20 44 69 73 61   |TH]  DHCP : Disa|
+[2025-12-07 13:26:48] [INFO]       0110  62 6C 65 64 0D 0A 0D 0A 0D 0A                     |bled......|
+[2025-12-07 13:26:48] [INFO] 
+[2025-12-07 13:26:48] [INFO] [SERIAL] Closing connection...
+[2025-12-07 13:26:48] [INFO] ✓ Port COM3 closed
+[2025-12-07 13:26:48] [INFO] ================================================================================
+[2025-12-07 13:26:48] [INFO] 
+[2025-12-07 13:26:48] [PASS] STEP 1.4 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.5 Verify custom Subnet Mask</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-12-07 13:26:48</td><td>2025-12-07 13:26:48</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-12-07 13:26:48] [STEP 1.5] Verify custom Subnet Mask
+[2025-12-07 13:26:48] [INFO] 
+[2025-12-07 13:26:48] [INFO] ================================================================================
+[2025-12-07 13:26:48] [INFO] [SERIAL] SEND COMMAND
+[2025-12-07 13:26:48] [INFO] ================================================================================
+[2025-12-07 13:26:48] [INFO]   Command: &#x27;NETINFO&#x27;
+[2025-12-07 13:26:48] [INFO]   Port:    COM3
+[2025-12-07 13:26:48] [INFO] 
+[2025-12-07 13:26:48] [INFO] ================================================================================
+[2025-12-07 13:26:48] [INFO] [SERIAL] OPENING CONNECTION
+[2025-12-07 13:26:48] [INFO] ================================================================================
+[2025-12-07 13:26:48] [INFO]   Port:          COM3
+[2025-12-07 13:26:48] [INFO]   Baudrate:      115200
+[2025-12-07 13:26:48] [INFO]   Timeout:       2.0s
+[2025-12-07 13:26:48] [INFO]   Write Timeout: 2.0s
+[2025-12-07 13:26:48] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-12-07 13:26:48] [INFO] ✓ Port COM3 opened successfully
+[2025-12-07 13:26:48] [INFO]   Stabilizing connection (100ms delay)...
+[2025-12-07 13:26:48] [INFO]   Resetting input and output buffers...
+[2025-12-07 13:26:48] [INFO] ✓ Connection ready and buffers cleared
+[2025-12-07 13:26:48] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:26:48] [INFO] [SERIAL TX] TRANSMITTING
+[2025-12-07 13:26:48] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:26:48] [INFO]   Command:  &#x27;NETINFO&#x27;
+[2025-12-07 13:26:48] [INFO]   Length:   9 bytes (including CR+LF)
+[2025-12-07 13:26:48] [INFO] 
+[2025-12-07 13:26:48] [INFO]   Hex Dump:
+[2025-12-07 13:26:48] [INFO]       0000  4E 45 54 49 4E 46 4F 0D 0A                        |NETINFO..|
+[2025-12-07 13:26:48] [INFO] 
+[2025-12-07 13:26:48] [INFO] ✓ Transmitted 9 bytes
+[2025-12-07 13:26:48] [INFO]   Waiting 50ms for device processing...
+[2025-12-07 13:26:48] [INFO] 
+[2025-12-07 13:26:48] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-12-07 13:26:48] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:26:48] [INFO]   Timeout: 2.0s
+[2025-12-07 13:26:48] [INFO] 
+[2025-12-07 13:26:48] [INFO]   Chunk #1: 282 bytes | Elapsed: 0.000s | Total: 282 bytes
+[2025-12-07 13:26:48] [INFO] 
+[2025-12-07 13:26:48] [INFO]   No data for 500ms, response complete
+[2025-12-07 13:26:48] [INFO] 
+[2025-12-07 13:26:48] [INFO] ✓ Response Complete:
+[2025-12-07 13:26:48] [INFO]     Total Bytes:    282
+[2025-12-07 13:26:48] [INFO]     Chunks:         1
+[2025-12-07 13:26:48] [INFO]     Total Time:     0.502s
+[2025-12-07 13:26:48] [INFO] 
+[2025-12-07 13:26:48] [INFO]   Decoded Text:
+[2025-12-07 13:26:48] [INFO]   ------------------------------------------------------------------------------
+[2025-12-07 13:26:48] [INFO]   	[ECHO] NETWORK INFORMATION:\r\n
+  	[ECHO] [ETH] Network Configuration:\r\n
+  	[ECHO] [ETH]  MAC  : 02:45:4E:0C:7B:1C\r\n
+  	[ECHO] [ETH]  IP   : 192.168.0.72\r\n
+  	[ECHO] [ETH]  Mask : 255.255.0.0\r\n
+  	[ECHO] [ETH]  GW   : 192.168.1.1\r\n
+  	[ECHO] [ETH]  DNS  : 1.1.1.1\r\n
+  	[ECHO] [ETH]  DHCP : Disabled\r\n
+  \r\n
+  \r\n
+  
+[2025-12-07 13:26:48] [INFO]   ------------------------------------------------------------------------------
+[2025-12-07 13:26:48] [INFO] 
+[2025-12-07 13:26:48] [INFO]   Hex Dump:
+[2025-12-07 13:26:48] [INFO]       0000  09 5B 45 43 48 4F 5D 20 4E 45 54 57 4F 52 4B 20   |.[ECHO] NETWORK |
+[2025-12-07 13:26:48] [INFO]       0010  49 4E 46 4F 52 4D 41 54 49 4F 4E 3A 0D 0A 09 5B   |INFORMATION:...[|
+[2025-12-07 13:26:48] [INFO]       0020  45 43 48 4F 5D 20 5B 45 54 48 5D 20 4E 65 74 77   |ECHO] [ETH] Netw|
+[2025-12-07 13:26:48] [INFO]       0030  6F 72 6B 20 43 6F 6E 66 69 67 75 72 61 74 69 6F   |ork Configuratio|
+[2025-12-07 13:26:48] [INFO]       0040  6E 3A 0D 0A 09 5B 45 43 48 4F 5D 20 5B 45 54 48   |n:...[ECHO] [ETH|
+[2025-12-07 13:26:48] [INFO]       0050  5D 20 20 4D 41 43 20 20 3A 20 30 32 3A 34 35 3A   |]  MAC  : 02:45:|
+[2025-12-07 13:26:48] [INFO]       0060  34 45 3A 30 43 3A 37 42 3A 31 43 0D 0A 09 5B 45   |4E:0C:7B:1C...[E|
+[2025-12-07 13:26:48] [INFO]       0070  43 48 4F 5D 20 5B 45 54 48 5D 20 20 49 50 20 20   |CHO] [ETH]  IP  |
+[2025-12-07 13:26:48] [INFO]       0080  20 3A 20 31 39 32 2E 31 36 38 2E 30 2E 37 32 0D   | : 192.168.0.72.|
+[2025-12-07 13:26:48] [INFO]       0090  0A 09 5B 45 43 48 4F 5D 20 5B 45 54 48 5D 20 20   |..[ECHO] [ETH]  |
+[2025-12-07 13:26:48] [INFO]       00A0  4D 61 73 6B 20 3A 20 32 35 35 2E 32 35 35 2E 30   |Mask : 255.255.0|
+[2025-12-07 13:26:48] [INFO]       00B0  2E 30 0D 0A 09 5B 45 43 48 4F 5D 20 5B 45 54 48   |.0...[ECHO] [ETH|
+[2025-12-07 13:26:48] [INFO]       00C0  5D 20 20 47 57 20 20 20 3A 20 31 39 32 2E 31 36   |]  GW   : 192.16|
+[2025-12-07 13:26:48] [INFO]       00D0  38 2E 31 2E 31 0D 0A 09 5B 45 43 48 4F 5D 20 5B   |8.1.1...[ECHO] [|
+[2025-12-07 13:26:48] [INFO]       00E0  45 54 48 5D 20 20 44 4E 53 20 20 3A 20 31 2E 31   |ETH]  DNS  : 1.1|
+[2025-12-07 13:26:48] [INFO]       00F0  2E 31 2E 31 0D 0A 09 5B 45 43 48 4F 5D 20 5B 45   |.1.1...[ECHO] [E|
+[2025-12-07 13:26:48] [INFO]       0100  54 48 5D 20 20 44 48 43 50 20 3A 20 44 69 73 61   |TH]  DHCP : Disa|
+[2025-12-07 13:26:48] [INFO]       0110  62 6C 65 64 0D 0A 0D 0A 0D 0A                     |bled......|
+[2025-12-07 13:26:48] [INFO] 
+[2025-12-07 13:26:48] [INFO] [SERIAL] Closing connection...
+[2025-12-07 13:26:48] [INFO] ✓ Port COM3 closed
+[2025-12-07 13:26:48] [INFO] ================================================================================
+[2025-12-07 13:26:48] [INFO] 
+[2025-12-07 13:26:48] [PASS] STEP 1.5 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.6 Verify custom DNS</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-12-07 13:26:48</td><td>2025-12-07 13:26:49</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-12-07 13:26:48] [STEP 1.6] Verify custom DNS
+[2025-12-07 13:26:48] [INFO] 
+[2025-12-07 13:26:48] [INFO] ================================================================================
+[2025-12-07 13:26:48] [INFO] [SERIAL] SEND COMMAND
+[2025-12-07 13:26:48] [INFO] ================================================================================
+[2025-12-07 13:26:48] [INFO]   Command: &#x27;NETINFO&#x27;
+[2025-12-07 13:26:48] [INFO]   Port:    COM3
+[2025-12-07 13:26:48] [INFO] 
+[2025-12-07 13:26:48] [INFO] ================================================================================
+[2025-12-07 13:26:48] [INFO] [SERIAL] OPENING CONNECTION
+[2025-12-07 13:26:48] [INFO] ================================================================================
+[2025-12-07 13:26:48] [INFO]   Port:          COM3
+[2025-12-07 13:26:48] [INFO]   Baudrate:      115200
+[2025-12-07 13:26:48] [INFO]   Timeout:       2.0s
+[2025-12-07 13:26:48] [INFO]   Write Timeout: 2.0s
+[2025-12-07 13:26:48] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-12-07 13:26:48] [INFO] ✓ Port COM3 opened successfully
+[2025-12-07 13:26:48] [INFO]   Stabilizing connection (100ms delay)...
+[2025-12-07 13:26:48] [INFO]   Resetting input and output buffers...
+[2025-12-07 13:26:48] [INFO] ✓ Connection ready and buffers cleared
+[2025-12-07 13:26:48] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:26:48] [INFO] [SERIAL TX] TRANSMITTING
+[2025-12-07 13:26:48] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:26:48] [INFO]   Command:  &#x27;NETINFO&#x27;
+[2025-12-07 13:26:48] [INFO]   Length:   9 bytes (including CR+LF)
+[2025-12-07 13:26:48] [INFO] 
+[2025-12-07 13:26:48] [INFO]   Hex Dump:
+[2025-12-07 13:26:48] [INFO]       0000  4E 45 54 49 4E 46 4F 0D 0A                        |NETINFO..|
+[2025-12-07 13:26:48] [INFO] 
+[2025-12-07 13:26:48] [INFO] ✓ Transmitted 9 bytes
+[2025-12-07 13:26:48] [INFO]   Waiting 50ms for device processing...
+[2025-12-07 13:26:48] [INFO] 
+[2025-12-07 13:26:48] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-12-07 13:26:48] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:26:48] [INFO]   Timeout: 2.0s
+[2025-12-07 13:26:48] [INFO] 
+[2025-12-07 13:26:48] [INFO]   Chunk #1: 282 bytes | Elapsed: 0.001s | Total: 282 bytes
+[2025-12-07 13:26:49] [INFO] 
+[2025-12-07 13:26:49] [INFO]   No data for 500ms, response complete
+[2025-12-07 13:26:49] [INFO] 
+[2025-12-07 13:26:49] [INFO] ✓ Response Complete:
+[2025-12-07 13:26:49] [INFO]     Total Bytes:    282
+[2025-12-07 13:26:49] [INFO]     Chunks:         1
+[2025-12-07 13:26:49] [INFO]     Total Time:     0.509s
+[2025-12-07 13:26:49] [INFO] 
+[2025-12-07 13:26:49] [INFO]   Decoded Text:
+[2025-12-07 13:26:49] [INFO]   ------------------------------------------------------------------------------
+[2025-12-07 13:26:49] [INFO]   	[ECHO] NETWORK INFORMATION:\r\n
+  	[ECHO] [ETH] Network Configuration:\r\n
+  	[ECHO] [ETH]  MAC  : 02:45:4E:0C:7B:1C\r\n
+  	[ECHO] [ETH]  IP   : 192.168.0.72\r\n
+  	[ECHO] [ETH]  Mask : 255.255.0.0\r\n
+  	[ECHO] [ETH]  GW   : 192.168.1.1\r\n
+  	[ECHO] [ETH]  DNS  : 1.1.1.1\r\n
+  	[ECHO] [ETH]  DHCP : Disabled\r\n
+  \r\n
+  \r\n
+  
+[2025-12-07 13:26:49] [INFO]   ------------------------------------------------------------------------------
+[2025-12-07 13:26:49] [INFO] 
+[2025-12-07 13:26:49] [INFO]   Hex Dump:
+[2025-12-07 13:26:49] [INFO]       0000  09 5B 45 43 48 4F 5D 20 4E 45 54 57 4F 52 4B 20   |.[ECHO] NETWORK |
+[2025-12-07 13:26:49] [INFO]       0010  49 4E 46 4F 52 4D 41 54 49 4F 4E 3A 0D 0A 09 5B   |INFORMATION:...[|
+[2025-12-07 13:26:49] [INFO]       0020  45 43 48 4F 5D 20 5B 45 54 48 5D 20 4E 65 74 77   |ECHO] [ETH] Netw|
+[2025-12-07 13:26:49] [INFO]       0030  6F 72 6B 20 43 6F 6E 66 69 67 75 72 61 74 69 6F   |ork Configuratio|
+[2025-12-07 13:26:49] [INFO]       0040  6E 3A 0D 0A 09 5B 45 43 48 4F 5D 20 5B 45 54 48   |n:...[ECHO] [ETH|
+[2025-12-07 13:26:49] [INFO]       0050  5D 20 20 4D 41 43 20 20 3A 20 30 32 3A 34 35 3A   |]  MAC  : 02:45:|
+[2025-12-07 13:26:49] [INFO]       0060  34 45 3A 30 43 3A 37 42 3A 31 43 0D 0A 09 5B 45   |4E:0C:7B:1C...[E|
+[2025-12-07 13:26:49] [INFO]       0070  43 48 4F 5D 20 5B 45 54 48 5D 20 20 49 50 20 20   |CHO] [ETH]  IP  |
+[2025-12-07 13:26:49] [INFO]       0080  20 3A 20 31 39 32 2E 31 36 38 2E 30 2E 37 32 0D   | : 192.168.0.72.|
+[2025-12-07 13:26:49] [INFO]       0090  0A 09 5B 45 43 48 4F 5D 20 5B 45 54 48 5D 20 20   |..[ECHO] [ETH]  |
+[2025-12-07 13:26:49] [INFO]       00A0  4D 61 73 6B 20 3A 20 32 35 35 2E 32 35 35 2E 30   |Mask : 255.255.0|
+[2025-12-07 13:26:49] [INFO]       00B0  2E 30 0D 0A 09 5B 45 43 48 4F 5D 20 5B 45 54 48   |.0...[ECHO] [ETH|
+[2025-12-07 13:26:49] [INFO]       00C0  5D 20 20 47 57 20 20 20 3A 20 31 39 32 2E 31 36   |]  GW   : 192.16|
+[2025-12-07 13:26:49] [INFO]       00D0  38 2E 31 2E 31 0D 0A 09 5B 45 43 48 4F 5D 20 5B   |8.1.1...[ECHO] [|
+[2025-12-07 13:26:49] [INFO]       00E0  45 54 48 5D 20 20 44 4E 53 20 20 3A 20 31 2E 31   |ETH]  DNS  : 1.1|
+[2025-12-07 13:26:49] [INFO]       00F0  2E 31 2E 31 0D 0A 09 5B 45 43 48 4F 5D 20 5B 45   |.1.1...[ECHO] [E|
+[2025-12-07 13:26:49] [INFO]       0100  54 48 5D 20 20 44 48 43 50 20 3A 20 44 69 73 61   |TH]  DHCP : Disa|
+[2025-12-07 13:26:49] [INFO]       0110  62 6C 65 64 0D 0A 0D 0A 0D 0A                     |bled......|
+[2025-12-07 13:26:49] [INFO] 
+[2025-12-07 13:26:49] [INFO] [SERIAL] Closing connection...
+[2025-12-07 13:26:49] [INFO] ✓ Port COM3 closed
+[2025-12-07 13:26:49] [INFO] ================================================================================
+[2025-12-07 13:26:49] [INFO] 
+[2025-12-07 13:26:49] [PASS] STEP 1.6 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.7 Revert to baseline network config</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-12-07 13:26:49</td><td>2025-12-07 13:26:59</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-12-07 13:26:49] [STEP 1.7] Revert to baseline network config
+[2025-12-07 13:26:49] [INFO] 
+[2025-12-07 13:26:49] [INFO] ================================================================================
+[2025-12-07 13:26:49] [INFO] [SERIAL] SEND COMMAND
+[2025-12-07 13:26:49] [INFO] ================================================================================
+[2025-12-07 13:26:49] [INFO]   Command: &#x27;CONFIG_NETWORK 192.168.0.22$255.255.255.0$192.168.0.1$8.8.8.8&#x27;
+[2025-12-07 13:26:49] [INFO]   Port:    COM3
+[2025-12-07 13:26:49] [INFO] 
+[2025-12-07 13:26:49] [INFO] ================================================================================
+[2025-12-07 13:26:49] [INFO] [SERIAL] OPENING CONNECTION
+[2025-12-07 13:26:49] [INFO] ================================================================================
+[2025-12-07 13:26:49] [INFO]   Port:          COM3
+[2025-12-07 13:26:49] [INFO]   Baudrate:      115200
+[2025-12-07 13:26:49] [INFO]   Timeout:       2.0s
+[2025-12-07 13:26:49] [INFO]   Write Timeout: 2.0s
+[2025-12-07 13:26:49] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-12-07 13:26:49] [INFO] ✓ Port COM3 opened successfully
+[2025-12-07 13:26:49] [INFO]   Stabilizing connection (100ms delay)...
+[2025-12-07 13:26:49] [INFO]   Resetting input and output buffers...
+[2025-12-07 13:26:49] [INFO] ✓ Connection ready and buffers cleared
+[2025-12-07 13:26:49] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:26:49] [INFO] [SERIAL TX] TRANSMITTING
+[2025-12-07 13:26:49] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:26:49] [INFO]   Command:  &#x27;CONFIG_NETWORK 192.168.0.22$255.255.255.0$192.168.0.1$8.8.8.8&#x27;
+[2025-12-07 13:26:49] [INFO]   Length:   63 bytes (including CR+LF)
+[2025-12-07 13:26:49] [INFO] 
+[2025-12-07 13:26:49] [INFO]   Hex Dump:
+[2025-12-07 13:26:49] [INFO]       0000  43 4F 4E 46 49 47 5F 4E 45 54 57 4F 52 4B 20 31   |CONFIG_NETWORK 1|
+[2025-12-07 13:26:49] [INFO]       0010  39 32 2E 31 36 38 2E 30 2E 32 32 24 32 35 35 2E   |92.168.0.22$255.|
+[2025-12-07 13:26:49] [INFO]       0020  32 35 35 2E 32 35 35 2E 30 24 31 39 32 2E 31 36   |255.255.0$192.16|
+[2025-12-07 13:26:49] [INFO]       0030  38 2E 30 2E 31 24 38 2E 38 2E 38 2E 38 0D 0A      |8.0.1$8.8.8.8..|
+[2025-12-07 13:26:49] [INFO] 
+[2025-12-07 13:26:49] [INFO] ✓ Transmitted 63 bytes
+[2025-12-07 13:26:49] [INFO]   Waiting 50ms for device processing...
+[2025-12-07 13:26:49] [INFO] 
+[2025-12-07 13:26:49] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-12-07 13:26:49] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:26:49] [INFO]   Timeout: 2.0s
+[2025-12-07 13:26:49] [INFO] 
+[2025-12-07 13:26:49] [INFO]   Chunk #1: 206 bytes | Elapsed: 0.001s | Total: 206 bytes
+[2025-12-07 13:26:50] [INFO] 
+[2025-12-07 13:26:50] [INFO]   No data for 500ms, response complete
+[2025-12-07 13:26:50] [INFO] 
+[2025-12-07 13:26:50] [INFO] ✓ Response Complete:
+[2025-12-07 13:26:50] [INFO]     Total Bytes:    206
+[2025-12-07 13:26:50] [INFO]     Chunks:         1
+[2025-12-07 13:26:50] [INFO]     Total Time:     0.502s
+[2025-12-07 13:26:50] [INFO] 
+[2025-12-07 13:26:50] [INFO]   Decoded Text:
+[2025-12-07 13:26:50] [INFO]   ------------------------------------------------------------------------------
+[2025-12-07 13:26:50] [INFO]   	[ECHO] Network configured successfully:\r\n
+  	[ECHO]   IP: 192.168.0.22\r\n
+  	[ECHO]   Subnet: 255.255.255.0\r\n
+  	[ECHO]   Gateway: 192.168.0.1\r\n
+  	[ECHO]   DNS: 8.8.8.8\r\n
+  	[ECHO] Reboot required to apply changes.\r\n
+  \r\n
+  \r\n
+  
+[2025-12-07 13:26:50] [INFO]   ------------------------------------------------------------------------------
+[2025-12-07 13:26:50] [INFO] 
+[2025-12-07 13:26:50] [INFO]   Hex Dump:
+[2025-12-07 13:26:50] [INFO]       0000  09 5B 45 43 48 4F 5D 20 4E 65 74 77 6F 72 6B 20   |.[ECHO] Network |
+[2025-12-07 13:26:50] [INFO]       0010  63 6F 6E 66 69 67 75 72 65 64 20 73 75 63 63 65   |configured succe|
+[2025-12-07 13:26:50] [INFO]       0020  73 73 66 75 6C 6C 79 3A 0D 0A 09 5B 45 43 48 4F   |ssfully:...[ECHO|
+[2025-12-07 13:26:50] [INFO]       0030  5D 20 20 20 49 50 3A 20 31 39 32 2E 31 36 38 2E   |]   IP: 192.168.|
+[2025-12-07 13:26:50] [INFO]       0040  30 2E 32 32 0D 0A 09 5B 45 43 48 4F 5D 20 20 20   |0.22...[ECHO]   |
+[2025-12-07 13:26:50] [INFO]       0050  53 75 62 6E 65 74 3A 20 32 35 35 2E 32 35 35 2E   |Subnet: 255.255.|
+[2025-12-07 13:26:50] [INFO]       0060  32 35 35 2E 30 0D 0A 09 5B 45 43 48 4F 5D 20 20   |255.0...[ECHO]  |
+[2025-12-07 13:26:50] [INFO]       0070  20 47 61 74 65 77 61 79 3A 20 31 39 32 2E 31 36   | Gateway: 192.16|
+[2025-12-07 13:26:50] [INFO]       0080  38 2E 30 2E 31 0D 0A 09 5B 45 43 48 4F 5D 20 20   |8.0.1...[ECHO]  |
+[2025-12-07 13:26:50] [INFO]       0090  20 44 4E 53 3A 20 38 2E 38 2E 38 2E 38 0D 0A 09   | DNS: 8.8.8.8...|
+[2025-12-07 13:26:50] [INFO]       00A0  5B 45 43 48 4F 5D 20 52 65 62 6F 6F 74 20 72 65   |[ECHO] Reboot re|
+[2025-12-07 13:26:50] [INFO]       00B0  71 75 69 72 65 64 20 74 6F 20 61 70 70 6C 79 20   |quired to apply |
+[2025-12-07 13:26:50] [INFO]       00C0  63 68 61 6E 67 65 73 2E 0D 0A 0D 0A 0D 0A         |changes.......|
+[2025-12-07 13:26:50] [INFO] 
+[2025-12-07 13:26:50] [INFO] [SERIAL] Closing connection...
+[2025-12-07 13:26:50] [INFO] ✓ Port COM3 closed
+[2025-12-07 13:26:50] [INFO] ================================================================================
+[2025-12-07 13:26:50] [INFO] 
+[2025-12-07 13:26:50] [INFO] 
+[2025-12-07 13:26:50] [INFO] ================================================================================
+[2025-12-07 13:26:50] [INFO] [SERIAL] WAIT FOR REBOOT AND READY
+[2025-12-07 13:26:50] [INFO] ================================================================================
+[2025-12-07 13:26:50] [INFO]   Port:         COM3
+[2025-12-07 13:26:50] [INFO]   Ready Token:  &#x27;SYSTEM READY&#x27;
+[2025-12-07 13:26:50] [INFO]   Baudrate:     115200
+[2025-12-07 13:26:50] [INFO]   Timeout:      20.0s
+[2025-12-07 13:26:50] [INFO] 
+[2025-12-07 13:26:50] [INFO] [REBOOT] Phase 1: Waiting for port to disappear
+[2025-12-07 13:26:50] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:26:50] [INFO]   Port exists initially: True
+[2025-12-07 13:26:57] [INFO]   ✓ Port COM3 disappeared (reboot in progress)
+[2025-12-07 13:26:57] [INFO] 
+[2025-12-07 13:26:57] [INFO] [REBOOT] Phase 2: Waiting for port to reappear
+[2025-12-07 13:26:57] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:26:58] [INFO]   ✓ Port COM3 reappeared
+[2025-12-07 13:26:58] [INFO] 
+[2025-12-07 13:26:58] [INFO] [REBOOT] Phase 3: Monitoring for ready signal
+[2025-12-07 13:26:58] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:26:58] [INFO]   Attempt #1 (timeout: 11.3s remaining)
+[2025-12-07 13:26:58] [INFO]     Connected, monitoring for &#x27;SYSTEM READY&#x27;...
+[2025-12-07 13:26:59] [INFO] [SERIAL RX] Chunk #1: 1167 bytes
+[2025-12-07 13:26:59] [INFO] [SERIAL RX] Content: &lt;CR&gt;&lt;LF&gt;\n[INFO] ========================================&lt;CR&gt;&lt;LF&gt;\n[INFO]   ENERGIS PDU - System Bring-Alive&lt;CR&gt;&lt;LF&gt;\n[INFO] ========================================&lt;CR&gt;&lt;LF&gt;\n[INFO] Firmware: 1.0.0&lt;CR&gt;&lt;LF&gt;\n[INFO] Serial: SN-0167663&lt;CR&gt;&lt;LF&gt;\n[INFO] ========================================&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ===== Phase 1: Hardware Init =====&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] GPIO configured&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] I2C buses initialized&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] SPI initialized for W5500&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ADC initialized&lt;CR&gt;&lt;LF&gt;\n[INFO] [CAT24DRV] Driver initialized &lt;CR&gt;&lt;LF&gt;\n	[ECHO] [MCP] init 0x20 OK&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [MCP] init 0x21 OK&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [MCP] init 0x23 OK&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ===== Phase 2: Peripheral Probing =====&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ✓ Relay MCP23017 detected at 0x20&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ✓ Display MCP23017 detected at 0x21&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ✓ Selection MCP23017 detected at 0x23&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ✓ All MCP23017s detected&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ✓ EEPROM CAT24C256 detected at 0x50&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ===== Phase 3: Subsystem Bring-up (deterministic) =====&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] LoggerTask ready&lt;CR&gt;&lt;LF&gt;\n[INFO] [Console] Task initialized (polling USB-CDC @ 10ms)&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ConsoleTask ready&lt;CR&gt;&lt;LF&gt;\n[INFO] [STORAGE] Task initialized&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [CONSOLE] Task started&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [LOGGER] Task started&lt;CR&gt;&lt;LF&gt;\n
+[2025-12-07 13:26:59] [INFO] [SERIAL RX] Chunk #2: 71 bytes
+[2025-12-07 13:26:59] [INFO] [SERIAL RX] Content: 	[ECHO] [STORAGE] Task started&lt;CR&gt;&lt;LF&gt;\n[INFO] [ST-FDEF] Magic value verified&lt;CR&gt;&lt;LF&gt;\n
+[2025-12-07 13:26:59] [INFO] [SERIAL RX] Chunk #3: 1208 bytes
+[2025-12-07 13:26:59] [INFO] [SERIAL RX] Content: [INFO] [ST-USRPR] Loaded user prefs from EEPROM&lt;CR&gt;&lt;LF&gt;\n[INFO] [STORAGE] Config loaded from EEPROM&lt;CR&gt;&lt;LF&gt;\n[INFO] [STORAGE] Config ready&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] StorageTask ready&lt;CR&gt;&lt;LF&gt;\n[INFO] [PowerMgr] Power manager initialized (state=RUN)&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ButtonTask ready&lt;CR&gt;&lt;LF&gt;\n[INFO] [NET] Task created successfully&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] NetTask ready&lt;CR&gt;&lt;LF&gt;\n[INFO] [MeterTask]  MeterTask started&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] MeterTask ready&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ===== Phase 4: Configuration Load =====&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] Storage config ready&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [NET] Task started&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [BUTTONTASK] Task started&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [MeterTask]  Task started&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] Saved Network config: &lt;CR&gt;&lt;LF&gt;\n[INFO]                  IP  : 192.168.0.22&lt;CR&gt;&lt;LF&gt;\n[INFO]                  SM  : 255.255.255.0&lt;CR&gt;&lt;LF&gt;\n[INFO]                  GW  : 192.168.0.1&lt;CR&gt;&lt;LF&gt;\n[INFO]                  DNS : 8.8.8.8&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ===== Finalization: entering =====&lt;CR&gt;&lt;LF&gt;\n	[ECHO] [HEALTH] Task started&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ===================================&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] 	Crash logs:&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] ===================================&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] [INIT] System bring-alive complete =====&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n[INFO] ==========================================&lt;CR&gt;&lt;LF&gt;\n[INFO]                SYSTEM READY               &lt;CR&gt;&lt;LF&gt;\n[INFO] ==========================================&lt;CR&gt;&lt;LF&gt;\n&lt;CR&gt;&lt;LF&gt;\n
+[2025-12-07 13:26:59] [INFO] 
+[2025-12-07 13:26:59] [INFO]     ✓ Ready token &#x27;SYSTEM READY&#x27; DETECTED!
+[2025-12-07 13:26:59] [INFO] [SERIAL RX] Total reboot-response bytes: 2446 in 3 chunks (elapsed 9.733s)
+[2025-12-07 13:26:59] [INFO] [SERIAL RX] Full reboot-response:
+[2025-12-07 13:26:59] [INFO] \r\n
+[INFO] ========================================\r\n
+[INFO]   ENERGIS PDU - System Bring-Alive\r\n
+[INFO] ========================================\r\n
+[INFO] Firmware: 1.0.0\r\n
+[INFO] Serial: SN-0167663\r\n
+[INFO] ========================================\r\n
+\r\n
+[INFO] [INIT] ===== Phase 1: Hardware Init =====\r\n
+\r\n
+[INFO] [INIT] GPIO configured\r\n
+[INFO] [INIT] I2C buses initialized\r\n
+[INFO] [INIT] SPI initialized for W5500\r\n
+[INFO] [INIT] ADC initialized\r\n
+[INFO] [CAT24DRV] Driver initialized \r\n
+	[ECHO] [MCP] init 0x20 OK\r\n
+	[ECHO] [MCP] init 0x21 OK\r\n
+	[ECHO] [MCP] init 0x23 OK\r\n
+\r\n
+[INFO] [INIT] ===== Phase 2: Peripheral Probing =====\r\n
+[INFO] [INIT] ✓ Relay MCP23017 detected at 0x20\r\n
+[INFO] [INIT] ✓ Display MCP23017 detected at 0x21\r\n
+[INFO] [INIT] ✓ Selection MCP23017 detected at 0x23\r\n
+[INFO] [INIT] ✓ All MCP23017s detected\r\n
+[INFO] [INIT] ✓ EEPROM CAT24C256 detected at 0x50\r\n
+\r\n
+[INFO] [INIT] ===== Phase 3: Subsystem Bring-up (deterministic) =====\r\n
+[INFO] [INIT] LoggerTask ready\r\n
+[INFO] [Console] Task initialized (polling USB-CDC @ 10ms)\r\n
+[INFO] [INIT] ConsoleTask ready\r\n
+[INFO] [STORAGE] Task initialized\r\n
+	[ECHO] [CONSOLE] Task started\r\n
+	[ECHO] [LOGGER] Task started\r\n
+	[ECHO] [STORAGE] Task started\r\n
+[INFO] [ST-FDEF] Magic value verified\r\n
+[INFO] [ST-USRPR] Loaded user prefs from EEPROM\r\n
+[INFO] [STORAGE] Config loaded from EEPROM\r\n
+[INFO] [STORAGE] Config ready\r\n
+[INFO] [INIT] StorageTask ready\r\n
+[INFO] [PowerMgr] Power manager initialized (state=RUN)\r\n
+[INFO] [INIT] ButtonTask ready\r\n
+[INFO] [NET] Task created successfully\r\n
+[INFO] [INIT] NetTask ready\r\n
+[INFO] [MeterTask]  MeterTask started\r\n
+[INFO] [INIT] MeterTask ready\r\n
+\r\n
+[INFO] [INIT] ===== Phase 4: Configuration Load =====\r\n
+[INFO] [INIT] Storage config ready\r\n
+	[ECHO] [NET] Task started\r\n
+	[ECHO] [BUTTONTASK] Task started\r\n
+	[ECHO] [MeterTask]  Task started\r\n
+[INFO] [INIT] Saved Network config: \r\n
+[INFO]                  IP  : 192.168.0.22\r\n
+[INFO]                  SM  : 255.255.255.0\r\n
+[INFO]                  GW  : 192.168.0.1\r\n
+[INFO]                  DNS : 8.8.8.8\r\n
+\r\n
+[INFO] [INIT] ===== Finalization: entering =====\r\n
+	[ECHO] [HEALTH] Task started\r\n
+[INFO] [INIT] ===================================\r\n
+[INFO] [INIT] 	Crash logs:\r\n
+[INFO] [INIT] ===================================\r\n
+\r\n
+\r\n
+[INFO] [INIT] System bring-alive complete =====\r\n
+\r\n
+[INFO] ==========================================\r\n
+[INFO]                SYSTEM READY               \r\n
+[INFO] ==========================================\r\n
+\r\n
+
+[2025-12-07 13:26:59] [INFO] 
+[2025-12-07 13:26:59] [INFO] ================================================================================
+[2025-12-07 13:26:59] [INFO] [REBOOT] DEVICE READY
+[2025-12-07 13:26:59] [INFO] ================================================================================
+[2025-12-07 13:26:59] [INFO] 
+[2025-12-07 13:26:59] [INFO] [SERIAL] Closed port COM3 after reboot-monitoring attempt
+[2025-12-07 13:26:59] [PASS] STEP 1.7 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1.8 Wait for device to fully boot</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-12-07 13:26:59</td><td>2025-12-07 13:27:01</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-12-07 13:26:59] [STEP 1.8] Wait for device to fully boot
+[2025-12-07 13:26:59] [INFO] Starting NOP wait for 2000ms
+[2025-12-07 13:27:00] [INFO] NOP waiting... 1.0s elapsed
+[2025-12-07 13:27:01] [INFO] NOP wait complete. Actual duration: 2000.40ms
+[2025-12-07 13:27:01] [PASS] STEP 1.8 completed successfully
+</pre>
+</div>
+</details>
+</div>
+</div>
+</details>
+<details open>
+<summary>
+<div class='step-title'><div>STEP 2 Set alternating channel states (odd ON, even OFF)</div><div class='status fail'>FAIL</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-12-07 13:27:01</td><td>2025-12-07 13:27:08</td></tr>
+</table>
+<div class='substeps'>
+<h4>Substeps</h4>
+<details>
+<summary>
+<div class='step-title'><div>STEP 2.1 Set CH1 to ON</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-12-07 13:27:01</td><td>2025-12-07 13:27:02</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-12-07 13:27:01] [STEP 2.1] Set CH1 to ON
+[2025-12-07 13:27:01] [INFO] 
+[2025-12-07 13:27:01] [INFO] ================================================================================
+[2025-12-07 13:27:01] [INFO] [SERIAL] SEND COMMAND
+[2025-12-07 13:27:01] [INFO] ================================================================================
+[2025-12-07 13:27:01] [INFO]   Command: &#x27;SET_CH 1 ON&#x27;
+[2025-12-07 13:27:01] [INFO]   Port:    COM3
+[2025-12-07 13:27:01] [INFO] 
+[2025-12-07 13:27:01] [INFO] ================================================================================
+[2025-12-07 13:27:01] [INFO] [SERIAL] OPENING CONNECTION
+[2025-12-07 13:27:01] [INFO] ================================================================================
+[2025-12-07 13:27:01] [INFO]   Port:          COM3
+[2025-12-07 13:27:01] [INFO]   Baudrate:      115200
+[2025-12-07 13:27:01] [INFO]   Timeout:       2.0s
+[2025-12-07 13:27:01] [INFO]   Write Timeout: 2.0s
+[2025-12-07 13:27:01] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-12-07 13:27:01] [INFO] ✓ Port COM3 opened successfully
+[2025-12-07 13:27:01] [INFO]   Stabilizing connection (100ms delay)...
+[2025-12-07 13:27:02] [INFO]   Resetting input and output buffers...
+[2025-12-07 13:27:02] [INFO] ✓ Connection ready and buffers cleared
+[2025-12-07 13:27:02] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:27:02] [INFO] [SERIAL TX] TRANSMITTING
+[2025-12-07 13:27:02] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:27:02] [INFO]   Command:  &#x27;SET_CH 1 ON&#x27;
+[2025-12-07 13:27:02] [INFO]   Length:   13 bytes (including CR+LF)
+[2025-12-07 13:27:02] [INFO] 
+[2025-12-07 13:27:02] [INFO]   Hex Dump:
+[2025-12-07 13:27:02] [INFO]       0000  53 45 54 5F 43 48 20 31 20 4F 4E 0D 0A            |SET_CH 1 ON..|
+[2025-12-07 13:27:02] [INFO] 
+[2025-12-07 13:27:02] [INFO] ✓ Transmitted 13 bytes
+[2025-12-07 13:27:02] [INFO]   Waiting 50ms for device processing...
+[2025-12-07 13:27:02] [INFO] 
+[2025-12-07 13:27:02] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-12-07 13:27:02] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:27:02] [INFO]   Timeout: 2.0s
+[2025-12-07 13:27:02] [INFO] 
+[2025-12-07 13:27:02] [INFO]   Chunk #1: 22 bytes | Elapsed: 0.001s | Total: 22 bytes
+[2025-12-07 13:27:02] [INFO]   Chunk #2: 91 bytes | Elapsed: 0.074s | Total: 113 bytes
+[2025-12-07 13:27:02] [INFO] 
+[2025-12-07 13:27:02] [INFO]   No data for 500ms, response complete
+[2025-12-07 13:27:02] [INFO] 
+[2025-12-07 13:27:02] [INFO] ✓ Response Complete:
+[2025-12-07 13:27:02] [INFO]     Total Bytes:    113
+[2025-12-07 13:27:02] [INFO]     Chunks:         2
+[2025-12-07 13:27:02] [INFO]     Total Time:     0.584s
+[2025-12-07 13:27:02] [INFO] 
+[2025-12-07 13:27:02] [INFO]   Decoded Text:
+[2025-12-07 13:27:02] [INFO]   ------------------------------------------------------------------------------
+[2025-12-07 13:27:02] [INFO]   	[ECHO] CH1 = ON\r\n
+  \r\n
+  \r\n
+  [WARNING 0x61F1] [HEALTH] GRACE PERIOD ENDED \r\n
+  [WARNING 0x61F1] [HEALTH] ARMING WATCHDOG \r\n
+  
+[2025-12-07 13:27:02] [INFO]   ------------------------------------------------------------------------------
+[2025-12-07 13:27:02] [INFO] 
+[2025-12-07 13:27:02] [INFO]   Hex Dump:
+[2025-12-07 13:27:02] [INFO]       0000  09 5B 45 43 48 4F 5D 20 43 48 31 20 3D 20 4F 4E   |.[ECHO] CH1 = ON|
+[2025-12-07 13:27:02] [INFO]       0010  0D 0A 0D 0A 0D 0A 5B 57 41 52 4E 49 4E 47 20 30   |......[WARNING 0|
+[2025-12-07 13:27:02] [INFO]       0020  78 36 31 46 31 5D 20 5B 48 45 41 4C 54 48 5D 20   |x61F1] [HEALTH] |
+[2025-12-07 13:27:02] [INFO]       0030  47 52 41 43 45 20 50 45 52 49 4F 44 20 45 4E 44   |GRACE PERIOD END|
+[2025-12-07 13:27:02] [INFO]       0040  45 44 20 0D 0A 5B 57 41 52 4E 49 4E 47 20 30 78   |ED ..[WARNING 0x|
+[2025-12-07 13:27:02] [INFO]       0050  36 31 46 31 5D 20 5B 48 45 41 4C 54 48 5D 20 41   |61F1] [HEALTH] A|
+[2025-12-07 13:27:02] [INFO]       0060  52 4D 49 4E 47 20 57 41 54 43 48 44 4F 47 20 0D   |RMING WATCHDOG .|
+[2025-12-07 13:27:02] [INFO]       0070  0A                                                |.|
+[2025-12-07 13:27:02] [INFO] 
+[2025-12-07 13:27:02] [INFO] [SERIAL] Closing connection...
+[2025-12-07 13:27:02] [INFO] ✓ Port COM3 closed
+[2025-12-07 13:27:02] [INFO] ================================================================================
+[2025-12-07 13:27:02] [INFO] 
+[2025-12-07 13:27:02] [PASS] STEP 2.1 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 2.2 Set CH2 to OFF</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-12-07 13:27:02</td><td>2025-12-07 13:27:03</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-12-07 13:27:02] [STEP 2.2] Set CH2 to OFF
+[2025-12-07 13:27:02] [INFO] 
+[2025-12-07 13:27:02] [INFO] ================================================================================
+[2025-12-07 13:27:02] [INFO] [SERIAL] SEND COMMAND
+[2025-12-07 13:27:02] [INFO] ================================================================================
+[2025-12-07 13:27:02] [INFO]   Command: &#x27;SET_CH 2 OFF&#x27;
+[2025-12-07 13:27:02] [INFO]   Port:    COM3
+[2025-12-07 13:27:02] [INFO] 
+[2025-12-07 13:27:02] [INFO] ================================================================================
+[2025-12-07 13:27:02] [INFO] [SERIAL] OPENING CONNECTION
+[2025-12-07 13:27:02] [INFO] ================================================================================
+[2025-12-07 13:27:02] [INFO]   Port:          COM3
+[2025-12-07 13:27:02] [INFO]   Baudrate:      115200
+[2025-12-07 13:27:02] [INFO]   Timeout:       2.0s
+[2025-12-07 13:27:02] [INFO]   Write Timeout: 2.0s
+[2025-12-07 13:27:02] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-12-07 13:27:02] [INFO] ✓ Port COM3 opened successfully
+[2025-12-07 13:27:02] [INFO]   Stabilizing connection (100ms delay)...
+[2025-12-07 13:27:02] [INFO]   Resetting input and output buffers...
+[2025-12-07 13:27:02] [INFO] ✓ Connection ready and buffers cleared
+[2025-12-07 13:27:02] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:27:02] [INFO] [SERIAL TX] TRANSMITTING
+[2025-12-07 13:27:02] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:27:02] [INFO]   Command:  &#x27;SET_CH 2 OFF&#x27;
+[2025-12-07 13:27:02] [INFO]   Length:   14 bytes (including CR+LF)
+[2025-12-07 13:27:02] [INFO] 
+[2025-12-07 13:27:02] [INFO]   Hex Dump:
+[2025-12-07 13:27:02] [INFO]       0000  53 45 54 5F 43 48 20 32 20 4F 46 46 0D 0A         |SET_CH 2 OFF..|
+[2025-12-07 13:27:02] [INFO] 
+[2025-12-07 13:27:02] [INFO] ✓ Transmitted 14 bytes
+[2025-12-07 13:27:02] [INFO]   Waiting 50ms for device processing...
+[2025-12-07 13:27:02] [INFO] 
+[2025-12-07 13:27:02] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-12-07 13:27:02] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:27:02] [INFO]   Timeout: 2.0s
+[2025-12-07 13:27:02] [INFO] 
+[2025-12-07 13:27:02] [INFO]   Chunk #1: 23 bytes | Elapsed: 0.000s | Total: 23 bytes
+[2025-12-07 13:27:03] [INFO] 
+[2025-12-07 13:27:03] [INFO]   No data for 500ms, response complete
+[2025-12-07 13:27:03] [INFO] 
+[2025-12-07 13:27:03] [INFO] ✓ Response Complete:
+[2025-12-07 13:27:03] [INFO]     Total Bytes:    23
+[2025-12-07 13:27:03] [INFO]     Chunks:         1
+[2025-12-07 13:27:03] [INFO]     Total Time:     0.508s
+[2025-12-07 13:27:03] [INFO] 
+[2025-12-07 13:27:03] [INFO]   Decoded Text:
+[2025-12-07 13:27:03] [INFO]   ------------------------------------------------------------------------------
+[2025-12-07 13:27:03] [INFO]   	[ECHO] CH2 = OFF\r\n
+  \r\n
+  \r\n
+  
+[2025-12-07 13:27:03] [INFO]   ------------------------------------------------------------------------------
+[2025-12-07 13:27:03] [INFO] 
+[2025-12-07 13:27:03] [INFO]   Hex Dump:
+[2025-12-07 13:27:03] [INFO]       0000  09 5B 45 43 48 4F 5D 20 43 48 32 20 3D 20 4F 46   |.[ECHO] CH2 = OF|
+[2025-12-07 13:27:03] [INFO]       0010  46 0D 0A 0D 0A 0D 0A                              |F......|
+[2025-12-07 13:27:03] [INFO] 
+[2025-12-07 13:27:03] [INFO] [SERIAL] Closing connection...
+[2025-12-07 13:27:03] [INFO] ✓ Port COM3 closed
+[2025-12-07 13:27:03] [INFO] ================================================================================
+[2025-12-07 13:27:03] [INFO] 
+[2025-12-07 13:27:03] [PASS] STEP 2.2 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 2.3 Set CH3 to ON</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-12-07 13:27:03</td><td>2025-12-07 13:27:03</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-12-07 13:27:03] [STEP 2.3] Set CH3 to ON
+[2025-12-07 13:27:03] [INFO] 
+[2025-12-07 13:27:03] [INFO] ================================================================================
+[2025-12-07 13:27:03] [INFO] [SERIAL] SEND COMMAND
+[2025-12-07 13:27:03] [INFO] ================================================================================
+[2025-12-07 13:27:03] [INFO]   Command: &#x27;SET_CH 3 ON&#x27;
+[2025-12-07 13:27:03] [INFO]   Port:    COM3
+[2025-12-07 13:27:03] [INFO] 
+[2025-12-07 13:27:03] [INFO] ================================================================================
+[2025-12-07 13:27:03] [INFO] [SERIAL] OPENING CONNECTION
+[2025-12-07 13:27:03] [INFO] ================================================================================
+[2025-12-07 13:27:03] [INFO]   Port:          COM3
+[2025-12-07 13:27:03] [INFO]   Baudrate:      115200
+[2025-12-07 13:27:03] [INFO]   Timeout:       2.0s
+[2025-12-07 13:27:03] [INFO]   Write Timeout: 2.0s
+[2025-12-07 13:27:03] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-12-07 13:27:03] [INFO] ✓ Port COM3 opened successfully
+[2025-12-07 13:27:03] [INFO]   Stabilizing connection (100ms delay)...
+[2025-12-07 13:27:03] [INFO]   Resetting input and output buffers...
+[2025-12-07 13:27:03] [INFO] ✓ Connection ready and buffers cleared
+[2025-12-07 13:27:03] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:27:03] [INFO] [SERIAL TX] TRANSMITTING
+[2025-12-07 13:27:03] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:27:03] [INFO]   Command:  &#x27;SET_CH 3 ON&#x27;
+[2025-12-07 13:27:03] [INFO]   Length:   13 bytes (including CR+LF)
+[2025-12-07 13:27:03] [INFO] 
+[2025-12-07 13:27:03] [INFO]   Hex Dump:
+[2025-12-07 13:27:03] [INFO]       0000  53 45 54 5F 43 48 20 33 20 4F 4E 0D 0A            |SET_CH 3 ON..|
+[2025-12-07 13:27:03] [INFO] 
+[2025-12-07 13:27:03] [INFO] ✓ Transmitted 13 bytes
+[2025-12-07 13:27:03] [INFO]   Waiting 50ms for device processing...
+[2025-12-07 13:27:03] [INFO] 
+[2025-12-07 13:27:03] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-12-07 13:27:03] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:27:03] [INFO]   Timeout: 2.0s
+[2025-12-07 13:27:03] [INFO] 
+[2025-12-07 13:27:03] [INFO]   Chunk #1: 22 bytes | Elapsed: 0.001s | Total: 22 bytes
+[2025-12-07 13:27:03] [INFO] 
+[2025-12-07 13:27:03] [INFO]   No data for 500ms, response complete
+[2025-12-07 13:27:03] [INFO] 
+[2025-12-07 13:27:03] [INFO] ✓ Response Complete:
+[2025-12-07 13:27:03] [INFO]     Total Bytes:    22
+[2025-12-07 13:27:03] [INFO]     Chunks:         1
+[2025-12-07 13:27:03] [INFO]     Total Time:     0.511s
+[2025-12-07 13:27:03] [INFO] 
+[2025-12-07 13:27:03] [INFO]   Decoded Text:
+[2025-12-07 13:27:03] [INFO]   ------------------------------------------------------------------------------
+[2025-12-07 13:27:03] [INFO]   	[ECHO] CH3 = ON\r\n
+  \r\n
+  \r\n
+  
+[2025-12-07 13:27:03] [INFO]   ------------------------------------------------------------------------------
+[2025-12-07 13:27:03] [INFO] 
+[2025-12-07 13:27:03] [INFO]   Hex Dump:
+[2025-12-07 13:27:03] [INFO]       0000  09 5B 45 43 48 4F 5D 20 43 48 33 20 3D 20 4F 4E   |.[ECHO] CH3 = ON|
+[2025-12-07 13:27:03] [INFO]       0010  0D 0A 0D 0A 0D 0A                                 |......|
+[2025-12-07 13:27:03] [INFO] 
+[2025-12-07 13:27:03] [INFO] [SERIAL] Closing connection...
+[2025-12-07 13:27:03] [INFO] ✓ Port COM3 closed
+[2025-12-07 13:27:03] [INFO] ================================================================================
+[2025-12-07 13:27:03] [INFO] 
+[2025-12-07 13:27:03] [PASS] STEP 2.3 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 2.4 Set CH4 to OFF</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-12-07 13:27:03</td><td>2025-12-07 13:27:04</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-12-07 13:27:03] [STEP 2.4] Set CH4 to OFF
+[2025-12-07 13:27:03] [INFO] 
+[2025-12-07 13:27:03] [INFO] ================================================================================
+[2025-12-07 13:27:03] [INFO] [SERIAL] SEND COMMAND
+[2025-12-07 13:27:03] [INFO] ================================================================================
+[2025-12-07 13:27:03] [INFO]   Command: &#x27;SET_CH 4 OFF&#x27;
+[2025-12-07 13:27:03] [INFO]   Port:    COM3
+[2025-12-07 13:27:03] [INFO] 
+[2025-12-07 13:27:03] [INFO] ================================================================================
+[2025-12-07 13:27:03] [INFO] [SERIAL] OPENING CONNECTION
+[2025-12-07 13:27:03] [INFO] ================================================================================
+[2025-12-07 13:27:03] [INFO]   Port:          COM3
+[2025-12-07 13:27:03] [INFO]   Baudrate:      115200
+[2025-12-07 13:27:03] [INFO]   Timeout:       2.0s
+[2025-12-07 13:27:03] [INFO]   Write Timeout: 2.0s
+[2025-12-07 13:27:03] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-12-07 13:27:03] [INFO] ✓ Port COM3 opened successfully
+[2025-12-07 13:27:03] [INFO]   Stabilizing connection (100ms delay)...
+[2025-12-07 13:27:04] [INFO]   Resetting input and output buffers...
+[2025-12-07 13:27:04] [INFO] ✓ Connection ready and buffers cleared
+[2025-12-07 13:27:04] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:27:04] [INFO] [SERIAL TX] TRANSMITTING
+[2025-12-07 13:27:04] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:27:04] [INFO]   Command:  &#x27;SET_CH 4 OFF&#x27;
+[2025-12-07 13:27:04] [INFO]   Length:   14 bytes (including CR+LF)
+[2025-12-07 13:27:04] [INFO] 
+[2025-12-07 13:27:04] [INFO]   Hex Dump:
+[2025-12-07 13:27:04] [INFO]       0000  53 45 54 5F 43 48 20 34 20 4F 46 46 0D 0A         |SET_CH 4 OFF..|
+[2025-12-07 13:27:04] [INFO] 
+[2025-12-07 13:27:04] [INFO] ✓ Transmitted 14 bytes
+[2025-12-07 13:27:04] [INFO]   Waiting 50ms for device processing...
+[2025-12-07 13:27:04] [INFO] 
+[2025-12-07 13:27:04] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-12-07 13:27:04] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:27:04] [INFO]   Timeout: 2.0s
+[2025-12-07 13:27:04] [INFO] 
+[2025-12-07 13:27:04] [INFO]   Chunk #1: 23 bytes | Elapsed: 0.001s | Total: 23 bytes
+[2025-12-07 13:27:04] [INFO] 
+[2025-12-07 13:27:04] [INFO]   No data for 500ms, response complete
+[2025-12-07 13:27:04] [INFO] 
+[2025-12-07 13:27:04] [INFO] ✓ Response Complete:
+[2025-12-07 13:27:04] [INFO]     Total Bytes:    23
+[2025-12-07 13:27:04] [INFO]     Chunks:         1
+[2025-12-07 13:27:04] [INFO]     Total Time:     0.507s
+[2025-12-07 13:27:04] [INFO] 
+[2025-12-07 13:27:04] [INFO]   Decoded Text:
+[2025-12-07 13:27:04] [INFO]   ------------------------------------------------------------------------------
+[2025-12-07 13:27:04] [INFO]   	[ECHO] CH4 = OFF\r\n
+  \r\n
+  \r\n
+  
+[2025-12-07 13:27:04] [INFO]   ------------------------------------------------------------------------------
+[2025-12-07 13:27:04] [INFO] 
+[2025-12-07 13:27:04] [INFO]   Hex Dump:
+[2025-12-07 13:27:04] [INFO]       0000  09 5B 45 43 48 4F 5D 20 43 48 34 20 3D 20 4F 46   |.[ECHO] CH4 = OF|
+[2025-12-07 13:27:04] [INFO]       0010  46 0D 0A 0D 0A 0D 0A                              |F......|
+[2025-12-07 13:27:04] [INFO] 
+[2025-12-07 13:27:04] [INFO] [SERIAL] Closing connection...
+[2025-12-07 13:27:04] [INFO] ✓ Port COM3 closed
+[2025-12-07 13:27:04] [INFO] ================================================================================
+[2025-12-07 13:27:04] [INFO] 
+[2025-12-07 13:27:04] [PASS] STEP 2.4 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 2.5 Set CH5 to ON</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-12-07 13:27:04</td><td>2025-12-07 13:27:05</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-12-07 13:27:04] [STEP 2.5] Set CH5 to ON
+[2025-12-07 13:27:04] [INFO] 
+[2025-12-07 13:27:04] [INFO] ================================================================================
+[2025-12-07 13:27:04] [INFO] [SERIAL] SEND COMMAND
+[2025-12-07 13:27:04] [INFO] ================================================================================
+[2025-12-07 13:27:04] [INFO]   Command: &#x27;SET_CH 5 ON&#x27;
+[2025-12-07 13:27:04] [INFO]   Port:    COM3
+[2025-12-07 13:27:04] [INFO] 
+[2025-12-07 13:27:04] [INFO] ================================================================================
+[2025-12-07 13:27:04] [INFO] [SERIAL] OPENING CONNECTION
+[2025-12-07 13:27:04] [INFO] ================================================================================
+[2025-12-07 13:27:04] [INFO]   Port:          COM3
+[2025-12-07 13:27:04] [INFO]   Baudrate:      115200
+[2025-12-07 13:27:04] [INFO]   Timeout:       2.0s
+[2025-12-07 13:27:04] [INFO]   Write Timeout: 2.0s
+[2025-12-07 13:27:04] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-12-07 13:27:04] [INFO] ✓ Port COM3 opened successfully
+[2025-12-07 13:27:04] [INFO]   Stabilizing connection (100ms delay)...
+[2025-12-07 13:27:04] [INFO]   Resetting input and output buffers...
+[2025-12-07 13:27:04] [INFO] ✓ Connection ready and buffers cleared
+[2025-12-07 13:27:04] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:27:04] [INFO] [SERIAL TX] TRANSMITTING
+[2025-12-07 13:27:04] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:27:04] [INFO]   Command:  &#x27;SET_CH 5 ON&#x27;
+[2025-12-07 13:27:04] [INFO]   Length:   13 bytes (including CR+LF)
+[2025-12-07 13:27:04] [INFO] 
+[2025-12-07 13:27:04] [INFO]   Hex Dump:
+[2025-12-07 13:27:04] [INFO]       0000  53 45 54 5F 43 48 20 35 20 4F 4E 0D 0A            |SET_CH 5 ON..|
+[2025-12-07 13:27:04] [INFO] 
+[2025-12-07 13:27:04] [INFO] ✓ Transmitted 13 bytes
+[2025-12-07 13:27:04] [INFO]   Waiting 50ms for device processing...
+[2025-12-07 13:27:04] [INFO] 
+[2025-12-07 13:27:04] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-12-07 13:27:04] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:27:04] [INFO]   Timeout: 2.0s
+[2025-12-07 13:27:04] [INFO] 
+[2025-12-07 13:27:04] [INFO]   Chunk #1: 22 bytes | Elapsed: 0.001s | Total: 22 bytes
+[2025-12-07 13:27:05] [INFO] 
+[2025-12-07 13:27:05] [INFO]   No data for 500ms, response complete
+[2025-12-07 13:27:05] [INFO] 
+[2025-12-07 13:27:05] [INFO] ✓ Response Complete:
+[2025-12-07 13:27:05] [INFO]     Total Bytes:    22
+[2025-12-07 13:27:05] [INFO]     Chunks:         1
+[2025-12-07 13:27:05] [INFO]     Total Time:     0.502s
+[2025-12-07 13:27:05] [INFO] 
+[2025-12-07 13:27:05] [INFO]   Decoded Text:
+[2025-12-07 13:27:05] [INFO]   ------------------------------------------------------------------------------
+[2025-12-07 13:27:05] [INFO]   	[ECHO] CH5 = ON\r\n
+  \r\n
+  \r\n
+  
+[2025-12-07 13:27:05] [INFO]   ------------------------------------------------------------------------------
+[2025-12-07 13:27:05] [INFO] 
+[2025-12-07 13:27:05] [INFO]   Hex Dump:
+[2025-12-07 13:27:05] [INFO]       0000  09 5B 45 43 48 4F 5D 20 43 48 35 20 3D 20 4F 4E   |.[ECHO] CH5 = ON|
+[2025-12-07 13:27:05] [INFO]       0010  0D 0A 0D 0A 0D 0A                                 |......|
+[2025-12-07 13:27:05] [INFO] 
+[2025-12-07 13:27:05] [INFO] [SERIAL] Closing connection...
+[2025-12-07 13:27:05] [INFO] ✓ Port COM3 closed
+[2025-12-07 13:27:05] [INFO] ================================================================================
+[2025-12-07 13:27:05] [INFO] 
+[2025-12-07 13:27:05] [PASS] STEP 2.5 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 2.6 Set CH6 to OFF</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-12-07 13:27:05</td><td>2025-12-07 13:27:05</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-12-07 13:27:05] [STEP 2.6] Set CH6 to OFF
+[2025-12-07 13:27:05] [INFO] 
+[2025-12-07 13:27:05] [INFO] ================================================================================
+[2025-12-07 13:27:05] [INFO] [SERIAL] SEND COMMAND
+[2025-12-07 13:27:05] [INFO] ================================================================================
+[2025-12-07 13:27:05] [INFO]   Command: &#x27;SET_CH 6 OFF&#x27;
+[2025-12-07 13:27:05] [INFO]   Port:    COM3
+[2025-12-07 13:27:05] [INFO] 
+[2025-12-07 13:27:05] [INFO] ================================================================================
+[2025-12-07 13:27:05] [INFO] [SERIAL] OPENING CONNECTION
+[2025-12-07 13:27:05] [INFO] ================================================================================
+[2025-12-07 13:27:05] [INFO]   Port:          COM3
+[2025-12-07 13:27:05] [INFO]   Baudrate:      115200
+[2025-12-07 13:27:05] [INFO]   Timeout:       2.0s
+[2025-12-07 13:27:05] [INFO]   Write Timeout: 2.0s
+[2025-12-07 13:27:05] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-12-07 13:27:05] [INFO] ✓ Port COM3 opened successfully
+[2025-12-07 13:27:05] [INFO]   Stabilizing connection (100ms delay)...
+[2025-12-07 13:27:05] [INFO]   Resetting input and output buffers...
+[2025-12-07 13:27:05] [INFO] ✓ Connection ready and buffers cleared
+[2025-12-07 13:27:05] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:27:05] [INFO] [SERIAL TX] TRANSMITTING
+[2025-12-07 13:27:05] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:27:05] [INFO]   Command:  &#x27;SET_CH 6 OFF&#x27;
+[2025-12-07 13:27:05] [INFO]   Length:   14 bytes (including CR+LF)
+[2025-12-07 13:27:05] [INFO] 
+[2025-12-07 13:27:05] [INFO]   Hex Dump:
+[2025-12-07 13:27:05] [INFO]       0000  53 45 54 5F 43 48 20 36 20 4F 46 46 0D 0A         |SET_CH 6 OFF..|
+[2025-12-07 13:27:05] [INFO] 
+[2025-12-07 13:27:05] [INFO] ✓ Transmitted 14 bytes
+[2025-12-07 13:27:05] [INFO]   Waiting 50ms for device processing...
+[2025-12-07 13:27:05] [INFO] 
+[2025-12-07 13:27:05] [INFO] [SERIAL RX] RECEIVING RESPONSE
+[2025-12-07 13:27:05] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:27:05] [INFO]   Timeout: 2.0s
+[2025-12-07 13:27:05] [INFO] 
+[2025-12-07 13:27:05] [INFO] 
+[2025-12-07 13:27:05] [INFO]   No data for 500ms, response complete
+[2025-12-07 13:27:05] [INFO] 
+[2025-12-07 13:27:05] [INFO] ✓ Response Complete:
+[2025-12-07 13:27:05] [INFO]     Total Bytes:    0
+[2025-12-07 13:27:05] [INFO]     Chunks:         0
+[2025-12-07 13:27:05] [INFO]     Total Time:     0.501s
+[2025-12-07 13:27:05] [INFO] 
+[2025-12-07 13:27:05] [INFO]   Decoded Text:
+[2025-12-07 13:27:05] [INFO]   ------------------------------------------------------------------------------
+[2025-12-07 13:27:05] [INFO]   
+[2025-12-07 13:27:05] [INFO]   ------------------------------------------------------------------------------
+[2025-12-07 13:27:05] [INFO] 
+[2025-12-07 13:27:05] [INFO]   Hex Dump:
+[2025-12-07 13:27:05] [INFO]     [empty]
+[2025-12-07 13:27:05] [INFO] 
+[2025-12-07 13:27:05] [INFO] [SERIAL] Closing connection...
+[2025-12-07 13:27:05] [INFO] ✓ Port COM3 closed
+[2025-12-07 13:27:05] [INFO] ================================================================================
+[2025-12-07 13:27:05] [INFO] 
+[2025-12-07 13:27:05] [PASS] STEP 2.6 completed successfully
+</pre>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 2.7 Set CH7 to ON</div><div class='status fail'>FAIL</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-12-07 13:27:05</td><td>2025-12-07 13:27:08</td></tr>
+</table>
+<h4>Log</h4>
+<pre>
+[2025-12-07 13:27:05] [STEP 2.7] Set CH7 to ON
+[2025-12-07 13:27:05] [INFO] 
+[2025-12-07 13:27:05] [INFO] ================================================================================
+[2025-12-07 13:27:05] [INFO] [SERIAL] SEND COMMAND
+[2025-12-07 13:27:05] [INFO] ================================================================================
+[2025-12-07 13:27:05] [INFO]   Command: &#x27;SET_CH 7 ON&#x27;
+[2025-12-07 13:27:05] [INFO]   Port:    COM3
+[2025-12-07 13:27:05] [INFO] 
+[2025-12-07 13:27:05] [INFO] ================================================================================
+[2025-12-07 13:27:05] [INFO] [SERIAL] OPENING CONNECTION
+[2025-12-07 13:27:05] [INFO] ================================================================================
+[2025-12-07 13:27:05] [INFO]   Port:          COM3
+[2025-12-07 13:27:05] [INFO]   Baudrate:      115200
+[2025-12-07 13:27:05] [INFO]   Timeout:       2.0s
+[2025-12-07 13:27:05] [INFO]   Write Timeout: 2.0s
+[2025-12-07 13:27:05] [INFO]   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)
+[2025-12-07 13:27:05] [INFO] ✓ Port COM3 opened successfully
+[2025-12-07 13:27:05] [INFO]   Stabilizing connection (100ms delay)...
+[2025-12-07 13:27:06] [INFO]   Resetting input and output buffers...
+[2025-12-07 13:27:06] [INFO] ✓ Connection ready and buffers cleared
+[2025-12-07 13:27:06] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:27:06] [INFO] [SERIAL TX] TRANSMITTING
+[2025-12-07 13:27:06] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:27:06] [INFO]   Command:  &#x27;SET_CH 7 ON&#x27;
+[2025-12-07 13:27:06] [INFO]   Length:   13 bytes (including CR+LF)
+[2025-12-07 13:27:06] [INFO] 
+[2025-12-07 13:27:06] [INFO]   Hex Dump:
+[2025-12-07 13:27:06] [INFO]       0000  53 45 54 5F 43 48 20 37 20 4F 4E 0D 0A            |SET_CH 7 ON..|
+[2025-12-07 13:27:08] [ERROR] 
+[2025-12-07 13:27:08] [ERROR] ================================================================================
+[2025-12-07 13:27:08] [ERROR] [SERIAL ERROR] COMMUNICATION EXCEPTION
+[2025-12-07 13:27:08] [ERROR] ================================================================================
+[2025-12-07 13:27:08] [ERROR]   Type:    SerialTimeoutException
+[2025-12-07 13:27:08] [ERROR]   Message: Write timeout
+[2025-12-07 13:27:08] [ERROR]   Port:    COM3
+[2025-12-07 13:27:08] [ERROR]   Command: &#x27;SET_CH 7 ON&#x27;
+[2025-12-07 13:27:08] [ERROR] --------------------------------------------------------------------------------
+[2025-12-07 13:27:08] [INFO] [SERIAL] Closing connection...
+[2025-12-07 13:27:08] [INFO] ✓ Port COM3 closed
+[2025-12-07 13:27:08] [INFO] ================================================================================
+[2025-12-07 13:27:08] [INFO] 
+[2025-12-07 13:27:08] [FAIL] STEP 2.7 failed: Communication error on COM3: SerialTimeoutException: Write timeout
+[2025-12-07 13:27:08] [FAIL] Test failed: Communication error on COM3: SerialTimeoutException: Write timeout
+</pre>
+</div>
+</details>
+</div>
+</div>
+</details>
+<details class='teardown' open>
+<summary>
+<div class='step-title'><div>TEARDOWN 1 Ensure all outputs OFF</div><div class='status fail'>FAIL</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2025-12-07 13:27:08</td><td>2025-12-07 13:27:11</td></tr>
+</table>
+<details>
+<summary><div class='step-title'><div>Step Log</div><div class='status unknown'>DETAIL</div></div></summary>
+<div class='content'>
+<h4>Log</h4>
+<pre>
+[2025-12-07 13:27:08] [TEARDOWN 1] Ensure all outputs OFF
+[2025-12-07 13:27:08] [INFO] 
+[2025-12-07 13:27:08] [INFO] ================================================================================
+[2025-12-07 13:27:08] [INFO] [OUTLET] SET ALL OUTLETS
+[2025-12-07 13:27:08] [INFO] ================================================================================
+[2025-12-07 13:27:08] [INFO]   State:     OFF
+[2025-12-07 13:27:08] [INFO]   Target:    192.168.0.22
+[2025-12-07 13:27:08] [INFO]   OID:       1.3.6.1.4.1.19865.2.9.0
+[2025-12-07 13:27:08] [INFO] 
+[2025-12-07 13:27:08] [INFO] 
+[2025-12-07 13:27:08] [INFO] ================================================================================
+[2025-12-07 13:27:08] [INFO] [SNMP] SET INTEGER
+[2025-12-07 13:27:08] [INFO] ================================================================================
+[2025-12-07 13:27:08] [INFO]   Target:    192.168.0.22
+[2025-12-07 13:27:08] [INFO]   OID:       1.3.6.1.4.1.19865.2.9.0
+[2025-12-07 13:27:08] [INFO]   Value:     1
+[2025-12-07 13:27:08] [INFO]   Community: public
+[2025-12-07 13:27:08] [INFO]   Timeout:   3.0s
+[2025-12-07 13:27:08] [INFO] 
+[2025-12-07 13:27:11] [INFO] [SNMP CMD] Executing command
+[2025-12-07 13:27:11] [INFO] --------------------------------------------------------------------------------
+[2025-12-07 13:27:11] [INFO]   Command: snmpset -v1 -c public 192.168.0.22 1.3.6.1.4.1.19865.2.9.0 i 1
+[2025-12-07 13:27:11] [INFO]   Return:  124
+[2025-12-07 13:27:11] [INFO] 
+[2025-12-07 13:27:11] [INFO]   Errors:
+[2025-12-07 13:27:11] [INFO]     Command timed out
+[2025-12-07 13:27:11] [INFO] 
+[2025-12-07 13:27:11] [ERROR] 
+[2025-12-07 13:27:11] [ERROR] ✗ Failed to set value
+[2025-12-07 13:27:11] [ERROR]   Return Code: 124
+[2025-12-07 13:27:11] [ERROR] ================================================================================
+[2025-12-07 13:27:11] [ERROR] 
+[2025-12-07 13:27:11] [ERROR] 
+[2025-12-07 13:27:11] [ERROR] ✗ Failed to set all outlets
+[2025-12-07 13:27:11] [ERROR]   State: OFF
+[2025-12-07 13:27:11] [ERROR] ================================================================================
+[2025-12-07 13:27:11] [ERROR] 
+[2025-12-07 13:27:11] [FAIL] TEARDOWN 1 failed: Failed to set ALL outlets OFF
+[2025-12-07 13:27:11] [FAIL] Teardown failed: Failed to set ALL outlets OFF
+[2025-12-07 13:27:11] ===== tc_eeprom_persistence: RESULT: FAIL =====
+[2025-12-07 13:27:11] +-----------------------------+
+[2025-12-07 13:27:11] | ███████  █████  ██ ██       |
+[2025-12-07 13:27:11] | ██      ██   ██ ██ ██       |
+[2025-12-07 13:27:11] | █████   ███████ ██ ██       |
+[2025-12-07 13:27:11] | ██      ██   ██ ██ ██       |
+[2025-12-07 13:27:11] | ██      ██   ██ ██ ███████  |
+[2025-12-07 13:27:11] +-----------------------------+
+</pre>
+</div>
+</details>
+</div>
+</details>
+</section>
+<section>
+<h3>EEPROM Artifacts</h3>
+<ul>
+<li><a href='EEPROM/eeprom_dump_ascii.log' target='_blank'>ASCII dump</a></li>
+<li><a href='EEPROM/eeprom_dump_raw.log' target='_blank'>Hex dump</a></li>
+</ul>
+</section>
+</main>
+</body></html>

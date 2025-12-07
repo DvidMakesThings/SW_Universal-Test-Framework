@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ENERGIS Functional Test" tests="33" failures="2" skipped="0" time="0.0" session_id="40e33f03">
+  <testcase classname="UTFW" name="STEP 1 Rapid SNMP switching test - 4 cycles per channel" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.1 Cycle 1 - CH1 ON" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.2 Cycle 1 - Verify CH1 ON" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.3 Cycle 1 - CH1 OFF" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.4 Cycle 1 - Verify CH1 OFF" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.5 Cycle 1 - CH2 ON" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.6 Cycle 1 - Verify CH2 ON" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.7 Cycle 1 - CH2 OFF" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.8 Cycle 1 - Verify CH2 OFF" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.9 Cycle 1 - CH3 ON" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.10 Cycle 1 - Verify CH3 ON" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.11 Cycle 1 - CH3 OFF" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.12 Cycle 1 - Verify CH3 OFF" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.13 Cycle 1 - CH4 ON" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.14 Cycle 1 - Verify CH4 ON" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.15 Cycle 1 - CH4 OFF" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.16 Cycle 1 - Verify CH4 OFF" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.17 Cycle 1 - CH5 ON" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.18 Cycle 1 - Verify CH5 ON" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.19 Cycle 1 - CH5 OFF" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.20 Cycle 1 - Verify CH5 OFF" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.21 Cycle 1 - CH6 ON" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.22 Cycle 1 - Verify CH6 ON" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.23 Cycle 1 - CH6 OFF" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.24 Cycle 1 - Verify CH6 OFF" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.25 Cycle 1 - CH7 ON" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.26 Cycle 1 - Verify CH7 ON" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.27 Cycle 1 - CH7 OFF" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.28 Cycle 1 - Verify CH7 OFF" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.29 Cycle 1 - CH8 ON" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.30 Cycle 1 - Verify CH8 ON" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.31 Cycle 1 - CH8 OFF" time="0.0">
+    <failure message="Test failed: Failed to set channel 8 to OFF"/>
+  </testcase>
+  <testcase classname="UTFW" name="TEARDOWN 1 Ensure all outputs OFF" time="0.0">
+    <failure message="Teardown failed: Failed to set ALL outlets OFF"/>
+  </testcase>
+</testsuite>

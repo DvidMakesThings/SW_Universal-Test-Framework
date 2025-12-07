@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ENERGIS Functional Test" tests="19" failures="2" skipped="0" time="0.0" session_id="bddd8582">
+  <testcase classname="UTFW" name="PRE-STEP 1 Reboot device via UART" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1 Test custom network configuration" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.1 Set custom network config" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.2 Wait for device to fully boot" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.3 Verify custom IP" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.4 Verify custom Gateway" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.5 Verify custom Subnet Mask" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.6 Verify custom DNS" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.7 Revert to baseline network config" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.8 Wait for device to fully boot" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 2 Set alternating channel states (odd ON, even OFF)" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 2.1 Set CH1 to ON" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 2.2 Set CH2 to OFF" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 2.3 Set CH3 to ON" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 2.4 Set CH4 to OFF" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 2.5 Set CH5 to ON" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 2.6 Set CH6 to OFF" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 2.7 Set CH7 to ON" time="0.0">
+    <failure message="Test failed: Communication error on COM3: SerialTimeoutException: Write timeout"/>
+  </testcase>
+  <testcase classname="UTFW" name="TEARDOWN 1 Ensure all outputs OFF" time="0.0">
+    <failure message="Teardown failed: Failed to set ALL outlets OFF"/>
+  </testcase>
+</testsuite>

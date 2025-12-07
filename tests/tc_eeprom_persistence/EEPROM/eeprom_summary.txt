@@ -1,0 +1,45 @@
+EEPROM Parse Summary - Analyze EEPROM dump after all tests
+Source lines parsed: 2048
+Address span: 0x0000 - 0x7FFF (32768 bytes)
+Dump (raw)   : eeprom_dump_raw.log
+Dump (ascii) : eeprom_dump_ascii.log
+Checks file  : eeprom_checks.json
+
+-- Findings --
+[OK] Device Serial @ 0x0000 len=10
+    ASCII: SN-0167662
+[OK] FW Version @ 0x000B len=5
+    ASCII: 1.0.0
+[OK] Relay Defaults (8x bytes) @ 0x0200 len=8
+    HEX  : 00 00 00 00 00 00 00 00
+[MISS] User MAC @ 0x0300 len=6
+    HEX  : 02 45 4E 0C 7C AF
+    Notes: expect mismatch
+[MISS] User IP @ 0x0306 len=4
+    HEX  : C0 A8 00 0C
+    Notes: expect mismatch
+[OK] User Subnet Mask @ 0x030A len=4
+    HEX  : FF FF FF 00
+[OK] User Gateway @ 0x030E len=4
+    HEX  : C0 A8 00 01
+[OK] User DNS @ 0x0312 len=4
+    HEX  : 08 08 08 08
+[OK] DHCP Flag @ 0x0316 len=1
+    HEX  : 00
+[MISS] Network CRC-8 @ 0x0317 len=1
+    HEX  : CF
+    Notes: expect mismatch
+[OK] Device Name @ 0x2000 len=13
+    ASCII: ENERGIS-1.0.0
+[OK] Device Location @ 0x2020 len=8
+    ASCII: Location
+[OK] Temp Unit + CRC @ 0x2040 len=2
+    HEX  : 00 FC
+[OK] Magic A55A Present @ 0x7FF0 len=16
+    HEX  : FF FF FF FF FF FF FF FF FF FF FF FF FF FF 5A A5
+
+-- Extracted --
+Serial  : SN-0167662
+Firmware: 1.0.0
+Name    : ENERGIS-1.0.0
+Location: Location

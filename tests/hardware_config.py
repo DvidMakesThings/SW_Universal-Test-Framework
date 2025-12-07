@@ -5,7 +5,7 @@ Hardware-specific configuration for ENERGIS device testing
 """
 
 # Network Configuration
-BASELINE_IP = "192.168.0.12"
+BASELINE_IP = "192.168.0.22"
 BASELINE_SUBNET = "255.255.255.0"
 BASELINE_GATEWAY = "192.168.0.1"
 BASELINE_DNS = "8.8.8.8"
@@ -27,7 +27,7 @@ CONTROL_PATH = "/control"     # Added: form endpoint for outlet control
 SETTINGS_PATH = "/settings"   # Added: form endpoint for network settings
 
 # Serial Configuration
-SERIAL_PORT = "COM9"
+SERIAL_PORT = "COM3"
 BAUDRATE = 115200
 SERIAL_TIMEOUT = 3.0
 WRITE_TIMEOUT = 1.0

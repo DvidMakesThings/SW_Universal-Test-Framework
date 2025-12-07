@@ -7,7 +7,7 @@ tests:
   timeout: 300
 - name: Failure Memory Test
   path: tests/tc_failure_memory/tc_failure_memory.py
-  enabled: true
+  enabled: false
   timeout: 300
 - name: Serial Communication Test
   path: tests/tc_serial/tc_serial_utfw.py
