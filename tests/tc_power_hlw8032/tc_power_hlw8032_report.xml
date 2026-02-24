@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ENERGIS Functional Test" tests="39" failures="2" skipped="0" time="0.0" session_id="3480ee19">
+<testsuite name="ENERGIS Functional Test" tests="48" failures="0" skipped="0" time="0.0" session_id="37bc092a">
   <testcase classname="UTFW" name="PRE-STEP 1 Reboot device via UART" time="0.0">
   </testcase>
   <testcase classname="UTFW" name="STEP 1 Test power monitoring per channel with ON/OFF cycles" time="0.0">
@@ -75,9 +75,25 @@
   <testcase classname="UTFW" name="STEP 2.2 Read power data for Channel 2" time="0.0">
   </testcase>
   <testcase classname="UTFW" name="STEP 2.3 Read power data for Channel 3" time="0.0">
-    <failure message="Test failed: Communication error on COM3: SerialTimeoutException: Write timeout"/>
+  </testcase>
+  <testcase classname="UTFW" name="STEP 2.4 Read power data for Channel 4" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 2.5 Read power data for Channel 5" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 2.6 Read power data for Channel 6" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 2.7 Read power data for Channel 7" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 2.8 Read power data for Channel 8" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 3 Test bulk power monitoring command" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 3.1 Read all power data at once" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 3.2 Validate bulk power response" time="0.0">
   </testcase>
   <testcase classname="UTFW" name="TEARDOWN 1 Ensure all outputs OFF" time="0.0">
-    <failure message="Teardown failed: Failed to set ALL outlets OFF"/>
+  </testcase>
+  <testcase classname="UTFW" name="TEARDOWN 2 Final verify all outputs OFF" time="0.0">
   </testcase>
 </testsuite>

@@ -106,11 +106,7 @@ def _match_payload_patterns(
 ) -> Optional[str]:
     """
     Return None if all patterns satisfied, else error string.
-    Pattern entries support:
-      - {"contains_hex": "AA11BB"}             # substring in hex bytes
-      - {"contains_ascii": "literal"}          # substring in ascii-decoded (errors='replace')
-      - {"regex_hex": r"..."}                  # regex over hex string (lowercase, no separators)
-      - {"regex_ascii": r"..."}                # regex over decoded ascii
+    Supports tolerant matching for fragmented IP and MAC strings.
     """
     hex_str = payload.hex()
     asc = payload.decode("utf-8", errors="replace")
@@ -120,19 +116,44 @@ def _match_payload_patterns(
             needle = re.sub(r"[^0-9A-Fa-f]", "", str(p["contains_hex"]))
             if needle.lower() not in hex_str.lower():
                 return f"payload missing hex substring '{needle}'"
+
         if "contains_ascii" in p:
             needle = str(p["contains_ascii"])
-            if needle not in asc:
-                return f"payload missing ascii substring '{needle}'"
+            if needle in asc:
+                continue
+
+            # IPv4 tolerant match: allow arbitrary separators between octets
+            if re.fullmatch(r"\d{1,3}(?:\.\d{1,3}){3}", needle):
+                parts = needle.split(".")
+                relaxed = r"(?:^|[^0-9])" + r"[^0-9]*".join(
+                    re.escape(p) for p in parts
+                ) + r"(?:$|[^0-9])"
+                if not re.search(relaxed, asc):
+                    return f"payload missing fragmented IP '{needle}'"
+                continue
+
+            # MAC tolerant match
+            if re.fullmatch(r"[0-9A-Fa-f]{2}(?:[:-][0-9A-Fa-f]{2}){5}", needle):
+                parts = re.split(r"[:-]", needle)
+                relaxed = r"(?i)(?:^|[^0-9A-Fa-f])" + r"[^0-9A-Fa-f]*".join(
+                    re.escape(p) for p in parts
+                ) + r"(?:$|[^0-9A-Fa-f])"
+                if not re.search(relaxed, asc):
+                    return f"payload missing fragmented MAC '{needle}'"
+                continue
+
+            return f"payload missing ascii substring '{needle}'"
+
         if "regex_hex" in p:
-            rgx = re.compile(str(p["regex_hex"]))
-            if not rgx.search(hex_str):
+            if not re.search(str(p["regex_hex"]), hex_str):
                 return f"payload hex regex not matched: {p['regex_hex']}"
+
         if "regex_ascii" in p:
-            rgx = re.compile(str(p["regex_ascii"]))
-            if not rgx.search(asc):
+            if not re.search(str(p["regex_ascii"]), asc):
                 return f"payload ascii regex not matched: {p['regex_ascii']}"
+
     return None
+
 
 
 # ======================== tshark readers ========================

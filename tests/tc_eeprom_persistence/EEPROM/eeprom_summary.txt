@@ -6,18 +6,19 @@ Dump (ascii) : eeprom_dump_ascii.log
 Checks file  : eeprom_checks.json
 
 -- Findings --
-[OK] Device Serial @ 0x0000 len=10
-    ASCII: SN-0167662
-[OK] FW Version @ 0x000B len=5
-    ASCII: 1.0.0
+[MISS] Device Serial @ 0x0000 len=5
+    ASCII: 1.1.0
+    Notes: pattern 'SN-' not found; regex '^SN-[0-9]{7}$' not matched
+[MISS] FW Version @ 0x000B len=6
+    ASCII: 
+    Notes: regex '^1\.0\.0$' not matched
 [OK] Relay Defaults (8x bytes) @ 0x0200 len=8
     HEX  : 00 00 00 00 00 00 00 00
 [MISS] User MAC @ 0x0300 len=6
-    HEX  : 02 45 4E 0C 7C AF
+    HEX  : 02 45 4E 0C 79 89
     Notes: expect mismatch
-[MISS] User IP @ 0x0306 len=4
-    HEX  : C0 A8 00 0C
-    Notes: expect mismatch
+[OK] User IP @ 0x0306 len=4
+    HEX  : C0 A8 00 16
 [OK] User Subnet Mask @ 0x030A len=4
     HEX  : FF FF FF 00
 [OK] User Gateway @ 0x030E len=4
@@ -27,19 +28,21 @@ Checks file  : eeprom_checks.json
 [OK] DHCP Flag @ 0x0316 len=1
     HEX  : 00
 [MISS] Network CRC-8 @ 0x0317 len=1
-    HEX  : CF
+    HEX  : 65
     Notes: expect mismatch
-[OK] Device Name @ 0x2000 len=13
-    ASCII: ENERGIS-1.0.0
+[MISS] Device Name @ 0x2000 len=13
+    ASCII: ENERGIS-1.1.0
+    Notes: exact string mismatch
 [OK] Device Location @ 0x2020 len=8
     ASCII: Location
-[OK] Temp Unit + CRC @ 0x2040 len=2
-    HEX  : 00 FC
+[MISS] Temp Unit + CRC @ 0x2040 len=2
+    HEX  : 00 16
+    Notes: expect mismatch
 [OK] Magic A55A Present @ 0x7FF0 len=16
     HEX  : FF FF FF FF FF FF FF FF FF FF FF FF FF FF 5A A5
 
 -- Extracted --
-Serial  : SN-0167662
-Firmware: 1.0.0
-Name    : ENERGIS-1.0.0
+Serial  : 1.1.0
+Firmware: 
+Name    : ENERGIS-1.1.0
 Location: Location

@@ -3,13 +3,15 @@ ENERGIS Hardware Configuration
 ==============================
 Hardware-specific configuration for ENERGIS device testing
 """
+BASELINE_IP = "10.10.10.22"
+SERIAL_PORT = "COM12"
 
 # Network Configuration
-BASELINE_IP = "192.168.0.22"
 BASELINE_SUBNET = "255.255.255.0"
-BASELINE_GATEWAY = "192.168.0.1"
+BASELINE_GATEWAY = "10.10.10.1"
 BASELINE_DNS = "8.8.8.8"
 BASELINE_DHCP = "Disabled"
+BASELINE_MAC = "02:45:4E:0C:79:89"
 SNMP_COMMUNITY = "public"
 HTTP_TIMEOUT = 3.0
 HTTP_PORT = 80  # Added: used by Ethernet tests to build base URL
@@ -19,7 +21,7 @@ TEMP_NEW_SN = "255.255.0.0"
 TEMP_NEW_GW = "192.168.1.1"
 TEMP_NEW_DNS = "1.1.1.1"
 
-DEVICE_NAME = "ENERGIS-1.0.0"
+DEVICE_NAME = "ENERGIS-1.1.0"
 DEVICE_LOCATION = "Location"
 
 # Web UI paths & dumps (used by universal Ethernet test)
@@ -27,7 +29,6 @@ CONTROL_PATH = "/control"     # Added: form endpoint for outlet control
 SETTINGS_PATH = "/settings"   # Added: form endpoint for network settings
 
 # Serial Configuration
-SERIAL_PORT = "COM3"
 BAUDRATE = 115200
 SERIAL_TIMEOUT = 3.0
 WRITE_TIMEOUT = 1.0
@@ -143,7 +144,7 @@ NETINFO_TOKENS = [
     "[ECHO] [ETH] Network Configuration:",
 
     # Just make sure there is a MAC line (value itself is not critical here)
-    "[ECHO] [ETH]  MAC  :",
+    f"[ECHO] [ETH]  MAC  : {BASELINE_MAC}",
 
     # These check both the label and the actual configured values
     f"[ECHO] [ETH]  IP   : {BASELINE_IP}",
@@ -161,13 +162,13 @@ FIRMWARE_REGEX = r"^\d+\.\d+\.\d+(?:[-+].*)?$"
 CORE_VOLTAGE_RANGE = [0.9, 1.5]
 
 # Frequency expectations
-SYS_HZ_MIN = 125000000
+SYS_HZ_MIN = 200000000
 USB_HZ_EXPECT = 48000000
-PER_HZ_EXPECT = 48000000
+PER_HZ_EXPECT = 200000000
 ADC_HZ_EXPECT = 48000000
 
 # System Info Expected Values
-SYS_DESCR_EXPECTED = "^ENERGIS 8 CHANNEL MANAGED PDU$"
+SYS_DESCR_EXPECTED = "^ENERGIS 10IN MANAGED PDU$"
 SYS_CONTACT_EXPECTED = "^dvidmakesthings@gmail.com$"
 SYS_SN_EXPECTED = r"^SN-[A-Za-z0-9]{7,}.*$"
 SYS_LOCATION_EXPECTED = "^Wien$"

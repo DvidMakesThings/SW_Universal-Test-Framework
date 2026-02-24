@@ -14,6 +14,7 @@ from UTFW.core import get_hwconfig
 from UTFW.core import STE
 from UTFW.modules import snmp as SNMP
 from UTFW.modules import serial as UART
+from UTFW.modules import nop as NOP
 
 
 class tc_stress_switching_test:
@@ -30,15 +31,14 @@ class tc_stress_switching_test:
         hw = get_hwconfig()
 
         return [
-            
             # PRE-STEP 1: Send reboot command via UART
-            #UART.send_command_uart(
-            #    name="Reboot device via UART",
-            #    port=hw.SERIAL_PORT,
-            #    command="REBOOT",
-            #    baudrate=hw.BAUDRATE,
-            #    reboot=True  # Special handling for reboot
-            #),
+            UART.send_command_uart(
+                name="Reboot device via UART",
+                port=hw.SERIAL_PORT,
+                command="REBOOT",
+                baudrate=hw.BAUDRATE,
+                reboot=True  # Special handling for reboot
+            ),
         ]
     
     def teardown(self):
@@ -110,7 +110,7 @@ class tc_stress_switching_test:
                         expected_state=False,
                         outlet_base_oid=hw.OUTLET_BASE_OID,
                         community=hw.SNMP_COMMUNITY
-                    )
+                    ),
                 ])
 
         # All channels simultaneous switching

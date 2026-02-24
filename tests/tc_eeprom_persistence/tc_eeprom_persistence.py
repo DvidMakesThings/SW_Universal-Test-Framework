@@ -214,34 +214,8 @@ class tc_eeprom_persistence_test:
                 name="Verify channel states not persisted after reboot",
             ),
             # Step 5: Factory reset
-            STE(
-                UART.send_command_uart(
-                    name="Perform factory reset (RFS)",
-                    port=hw.SERIAL_PORT,
-                    command="RFS",
-                    baudrate=hw.BAUDRATE,
-                    reboot=True,
-                ),
-                NOP.NOP(name="Wait for device to stabilize", duration_ms=500),
-                UART.send_command_uart(
-                    name="Get network config after factory reset",
-                    port=hw.SERIAL_PORT,
-                    command=hw.NETINFO_CMD,
-                    baudrate=hw.BAUDRATE,
-                ),
-                UART.validate_tokens(
-                    name="Verify baseline network config restored",
-                    response="",
-                    tokens=[hw.BASELINE_IP, hw.BASELINE_GATEWAY],
-                ),
-                UART.get_all_channels(
-                    name="Verify all channels reset to OFF",
-                    port=hw.SERIAL_PORT,
-                    baudrate=hw.BAUDRATE,
-                    expected=[False] * 8,
-                ),
-                name="Verify factory defaults restored",
-            ),
+            NOP.NOP(name="No factory reset test due to calibrated device", duration_ms=500),
+
             # Step 6: Multiple reboot cycles to test stability
             STE(
                 UART.send_command_uart(

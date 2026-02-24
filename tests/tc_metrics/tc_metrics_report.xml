@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ENERGIS Functional Test" tests="56" failures="0" skipped="0" time="0.0" session_id="ec047ac7">
-  <testcase classname="UTFW" name="PRE-STEP 1 Reboot device via UART" time="0.0">
-  </testcase>
+<testsuite name="ENERGIS Functional Test" tests="24" failures="1" skipped="0" time="0.0" session_id="51affc15">
   <testcase classname="UTFW" name="STEP 1 Verify system metrics" time="0.0">
   </testcase>
-  <testcase classname="UTFW" name="STEP 1.1 Verify health metric exists" time="0.0">
+  <testcase classname="UTFW" name="STEP 1.1 Pause briefly to allow metrics endpoint to stabilize" time="0.0">
   </testcase>
-  <testcase classname="UTFW" name="STEP 1.2 Verify uptime metric exists" time="0.0">
+  <testcase classname="UTFW" name="STEP 1.2 Verify health metric exists" time="0.0">
   </testcase>
-  <testcase classname="UTFW" name="STEP 1.3 Verify build info exists" time="0.0">
+  <testcase classname="UTFW" name="STEP 1.3 Verify uptime metric exists" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1.4 Verify build info exists" time="0.0">
   </testcase>
   <testcase classname="UTFW" name="STEP 2 Validate system health status" time="0.0">
   </testcase>
@@ -40,73 +40,10 @@
   </testcase>
   <testcase classname="UTFW" name="STEP 7 Verify channel 1 measurements (OFF state)" time="0.0">
   </testcase>
-  <testcase classname="UTFW" name="STEP 7.1 Verify CH1 voltage is zero" time="0.0">
+  <testcase classname="UTFW" name="STEP 7.1 Verify CH1 voltage is near zero" time="0.0">
   </testcase>
-  <testcase classname="UTFW" name="STEP 7.2 Verify CH1 current is zero" time="0.0">
-  </testcase>
-  <testcase classname="UTFW" name="STEP 7.3 Verify CH1 power is zero" time="0.0">
-  </testcase>
-  <testcase classname="UTFW" name="STEP 8 Compare channel voltages" time="0.0">
-  </testcase>
-  <testcase classname="UTFW" name="STEP 8.1 Verify CH1 and CH2 voltages match" time="0.0">
-  </testcase>
-  <testcase classname="UTFW" name="STEP 9 Validate voltage relationships" time="0.0">
-  </testcase>
-  <testcase classname="UTFW" name="STEP 9.1 Verify 12V supply &gt; USB voltage" time="0.0">
-  </testcase>
-  <testcase classname="UTFW" name="STEP 10 Wait for device boot (uptime &gt; 5s)" time="0.0">
-  </testcase>
-  <testcase classname="UTFW" name="STEP 11 Verify temperature stabilized" time="0.0">
-  </testcase>
-  <testcase classname="UTFW" name="STEP 12 Record system telemetry" time="0.0">
-  </testcase>
-  <testcase classname="UTFW" name="STEP 12.1 Record system uptime" time="0.0">
-  </testcase>
-  <testcase classname="UTFW" name="STEP 12.2 Record internal temperature" time="0.0">
-  </testcase>
-  <testcase classname="UTFW" name="STEP 12.3 Record USB voltage" time="0.0">
-  </testcase>
-  <testcase classname="UTFW" name="STEP 12.4 Record supply voltage" time="0.0">
-  </testcase>
-  <testcase classname="UTFW" name="STEP 13 Record channel power consumption" time="0.0">
-  </testcase>
-  <testcase classname="UTFW" name="STEP 13.1 Record CH1 power" time="0.0">
-  </testcase>
-  <testcase classname="UTFW" name="STEP 13.2 Record CH2 power" time="0.0">
-  </testcase>
-  <testcase classname="UTFW" name="STEP 13.3 Record CH3 power" time="0.0">
-  </testcase>
-  <testcase classname="UTFW" name="STEP 14 Verify all channels initially OFF" time="0.0">
-  </testcase>
-  <testcase classname="UTFW" name="STEP 15 Comprehensive system health check" time="0.0">
-  </testcase>
-  <testcase classname="UTFW" name="STEP 15.1 System health UP" time="0.0">
-  </testcase>
-  <testcase classname="UTFW" name="STEP 15.2 Temperature nominal" time="0.0">
-  </testcase>
-  <testcase classname="UTFW" name="STEP 15.3 USB voltage nominal" time="0.0">
-  </testcase>
-  <testcase classname="UTFW" name="STEP 15.4 Supply voltage nominal" time="0.0">
-  </testcase>
-  <testcase classname="UTFW" name="STEP 15.5 Temperature calibration enabled" time="0.0">
-  </testcase>
-  <testcase classname="UTFW" name="STEP 16 Verify all channel telemetry valid" time="0.0">
-  </testcase>
-  <testcase classname="UTFW" name="STEP 16.1 CH1 telemetry valid" time="0.0">
-  </testcase>
-  <testcase classname="UTFW" name="STEP 16.2 CH2 telemetry valid" time="0.0">
-  </testcase>
-  <testcase classname="UTFW" name="STEP 16.3 CH3 telemetry valid" time="0.0">
-  </testcase>
-  <testcase classname="UTFW" name="STEP 16.4 CH4 telemetry valid" time="0.0">
-  </testcase>
-  <testcase classname="UTFW" name="STEP 16.5 CH5 telemetry valid" time="0.0">
-  </testcase>
-  <testcase classname="UTFW" name="STEP 16.6 CH6 telemetry valid" time="0.0">
-  </testcase>
-  <testcase classname="UTFW" name="STEP 16.7 CH7 telemetry valid" time="0.0">
-  </testcase>
-  <testcase classname="UTFW" name="STEP 16.8 CH8 telemetry valid" time="0.0">
+  <testcase classname="UTFW" name="STEP 7.2 Verify CH1 current is near zero" time="0.0">
+    <failure message="Test failed: Metric &apos;energis_channel_current_amps&apos; with labels {&apos;ch&apos;: &apos;1&apos;} value does not match expected"/>
   </testcase>
   <testcase classname="UTFW" name="TEARDOWN 1 Ensure all outputs OFF" time="0.0">
   </testcase>

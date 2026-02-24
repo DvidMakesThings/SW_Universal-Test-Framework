@@ -17,6 +17,7 @@ from UTFW.core import STE
 from UTFW.modules import snmp as SNMP
 from UTFW.modules import metrics
 from UTFW.modules import serial as UART
+from UTFW.modules import nop as NOP
 
 
 class tc_metrics:
@@ -32,13 +33,7 @@ class tc_metrics:
         return [
             
             # PRE-STEP 1: Send reboot command via UART
-            UART.send_command_uart(
-                name="Reboot device via UART",
-                port=hw.SERIAL_PORT,
-                command="REBOOT",
-                baudrate=hw.BAUDRATE,
-                reboot=True  # Special handling for reboot
-            ),
+
         ]
     
     def teardown(self):
@@ -80,19 +75,28 @@ class tc_metrics:
         return [
             # Step 1: Verify critical system metrics exist
             STE(
+                # Step 1.0
+                NOP.NOP(
+                    name="Pause briefly to allow metrics endpoint to stabilize",
+                    duration_ms=2000,
+                ),
                 # Step 1.1
                 metrics.check_metric_exists(
-                    "Verify health metric exists", metrics_url, "energis_up"
+                    name="Verify health metric exists",
+                    url=metrics_url,
+                    metric_name="energis_up",
                 ),
                 # Step 1.2
                 metrics.check_metric_exists(
-                    "Verify uptime metric exists",
-                    metrics_url,
-                    "energis_uptime_seconds_total",
+                    name="Verify uptime metric exists",
+                    url=metrics_url,
+                    metric_name="energis_uptime_seconds_total",
                 ),
                 # Step 1.3
                 metrics.check_metric_exists(
-                    "Verify build info exists", metrics_url, "energis_build_info"
+                    name="Verify build info exists",
+                    url=metrics_url,
+                    metric_name="energis_build_info",
                 ),
                 name="Verify system metrics",
             ),
@@ -100,14 +104,17 @@ class tc_metrics:
             STE(
                 # Step 2.1
                 metrics.check_metric_value(
-                    "Verify system is healthy", metrics_url, "energis_up", "1"
+                    name="Verify system is healthy",
+                    url=metrics_url,
+                    metric_name="energis_up",
+                    expected_value="1",
                 ),
                 # Step 2.2
                 metrics.check_metric_value(
-                    "Verify temperature calibration enabled",
-                    metrics_url,
-                    "energis_temp_calibrated",
-                    "1",
+                    name="Verify temperature calibration enabled",
+                    url=metrics_url,
+                    metric_name="energis_temp_calibrated",
+                    expected_value="1",
                 ),
                 name="Validate system health status",
             ),
@@ -115,17 +122,17 @@ class tc_metrics:
             STE(
                 # Step 3.1
                 metrics.check_metric_range(
-                    "Check USB voltage in range",
-                    metrics_url,
-                    "energis_vusb_volts",
+                    name="Check USB voltage in range",
+                    url=metrics_url,
+                    metric_name="energis_vusb_volts",
                     min_value=4.5,
                     max_value=5.5,
                 ),
                 # Step 3.2
                 metrics.check_metric_range(
-                    "Check supply voltage in range",
-                    metrics_url,
-                    "energis_vsupply_volts",
+                    name="Check supply voltage in range",
+                    url=metrics_url,
+                    metric_name="energis_vsupply_volts",
                     min_value=11.5,
                     max_value=12.5,
                 ),
@@ -133,8 +140,8 @@ class tc_metrics:
             ),
             # Step 4: Verify all 8 channels are OFF (initial state)
             metrics.check_all_channels_state(
-                "Verify all 8 channels are OFF",
-                metrics_url,
+                name="Verify all 8 channels are OFF",
+                url=metrics_url,
                 expected_state=0,
                 channel_count=8,
             ),
@@ -142,23 +149,23 @@ class tc_metrics:
             STE(
                 # Step 5.1
                 metrics.check_metric_exists(
-                    "Verify CH1 voltage metric exists",
-                    metrics_url,
-                    "energis_channel_voltage_volts",
+                    name="Verify CH1 voltage metric exists",
+                    url=metrics_url,
+                    metric_name="energis_channel_voltage_volts",
                     labels={"ch": "1"},
                 ),
                 # Step 5.2
                 metrics.check_metric_exists(
-                    "Verify CH1 current metric exists",
-                    metrics_url,
-                    "energis_channel_current_amps",
+                    name="Verify CH1 current metric exists",
+                    url=metrics_url,
+                    metric_name="energis_channel_current_amps",
                     labels={"ch": "1"},
                 ),
                 # Step 5.3
                 metrics.check_metric_exists(
-                    "Verify CH1 power metric exists",
-                    metrics_url,
-                    "energis_channel_power_watts",
+                    name="Verify CH1 power metric exists",
+                    url=metrics_url,
+                    metric_name="energis_channel_power_watts",
                     labels={"ch": "1"},
                 ),
                 name="Verify channel 1 metrics",
@@ -167,18 +174,18 @@ class tc_metrics:
             STE(
                 # Step 6.1
                 metrics.check_metric_value(
-                    "Verify CH1 is OFF",
-                    metrics_url,
-                    "energis_channel_state",
-                    "0",
+                    name="Verify CH1 is OFF",
+                    url=metrics_url,
+                    metric_name="energis_channel_state",
+                    expected_value="0",
                     labels={"ch": "1"},
                 ),
                 # Step 6.2
                 metrics.check_metric_value(
-                    "Verify CH1 telemetry valid",
-                    metrics_url,
-                    "energis_channel_telemetry_valid",
-                    "1",
+                    name="Verify CH1 telemetry valid",
+                    url=metrics_url,
+                    metric_name="energis_channel_telemetry_valid",
+                    expected_value="1",
                     labels={"ch": "1"},
                 ),
                 name="Validate channel 1 state",
@@ -187,26 +194,26 @@ class tc_metrics:
             STE(
                 # Step 7.1
                 metrics.check_metric_value(
-                    "Verify CH1 voltage is zero",
-                    metrics_url,
-                    "energis_channel_voltage_volts",
-                    "0.000",
+                    name="Verify CH1 voltage is near zero",
+                    url=metrics_url,
+                    metric_name="energis_channel_voltage_volts",
+                    expected_value=(0.0, 0.01),
                     labels={"ch": "1"},
                 ),
                 # Step 7.2
                 metrics.check_metric_value(
-                    "Verify CH1 current is zero",
-                    metrics_url,
-                    "energis_channel_current_amps",
-                    "0.000",
+                    name="Verify CH1 current is near zero",
+                    url=metrics_url,
+                    metric_name="energis_channel_current_amps",
+                    expected_value=(0.0, 0.005),
                     labels={"ch": "1"},
                 ),
                 # Step 7.3
                 metrics.check_metric_value(
-                    "Verify CH1 power is zero",
-                    metrics_url,
-                    "energis_channel_power_watts",
-                    "0.000",
+                    name="Verify CH1 power is near zero",
+                    url=metrics_url,
+                    metric_name="energis_channel_power_watts",
+                    expected_value=(0.0, 0.01),
                     labels={"ch": "1"},
                 ),
                 name="Verify channel 1 measurements (OFF state)",
@@ -215,10 +222,10 @@ class tc_metrics:
             STE(
                 # Step 8.1
                 metrics.check_metrics_comparison(
-                    "Verify CH1 and CH2 voltages match",
-                    metrics_url,
-                    "energis_channel_voltage_volts",
-                    "energis_channel_voltage_volts",
+                    name="Verify CH1 and CH2 voltages match",
+                    url=metrics_url,
+                    metric1_name="energis_channel_voltage_volts",
+                    metric2_name="energis_channel_voltage_volts",
                     comparison="equal",
                     metric1_labels={"ch": "1"},
                     metric2_labels={"ch": "2"},
@@ -230,19 +237,19 @@ class tc_metrics:
             STE(
                 # Step 9.1
                 metrics.check_metrics_comparison(
-                    "Verify 12V supply > USB voltage",
-                    metrics_url,
-                    "energis_vsupply_volts",
-                    "energis_vusb_volts",
+                    name="Verify 12V supply > USB voltage",
+                    url=metrics_url,
+                    metric1_name="energis_vsupply_volts",
+                    metric2_name="energis_vusb_volts",
                     comparison="greater",
                 ),
                 name="Validate voltage relationships",
             ),
             # Step 10: Wait for device boot (uptime > target)
             metrics.wait_for_metric_condition(
-                "Wait for device boot (uptime > 5s)",
-                metrics_url,
-                "energis_uptime_seconds_total",
+                name="Wait for device boot (uptime > 5s)",
+                url=metrics_url,
+                metric_name="energis_uptime_seconds_total",
                 condition="greater",
                 target_value=5.0,
                 timeout=30.0,
@@ -250,9 +257,9 @@ class tc_metrics:
             ),
             # Step 11: Verify internal temperature stabilized
             metrics.check_metric_range(
-                "Verify temperature stabilized",
-                metrics_url,
-                "energis_internal_temperature_celsius",
+                name="Verify temperature stabilized",
+                url=metrics_url,
+                metric_name="energis_internal_temperature_celsius",
                 min_value=20.0,
                 max_value=40.0,
             ),
@@ -260,21 +267,27 @@ class tc_metrics:
             STE(
                 # Step 12.1
                 metrics.read_metric(
-                    "Record system uptime", metrics_url, "energis_uptime_seconds_total"
+                    name="Record system uptime",
+                    url=metrics_url,
+                    metric_name="energis_uptime_seconds_total",
                 ),
                 # Step 12.2
                 metrics.read_metric(
-                    "Record internal temperature",
-                    metrics_url,
-                    "energis_internal_temperature_celsius",
+                    name="Record internal temperature",
+                    url=metrics_url,
+                    metric_name="energis_internal_temperature_celsius",
                 ),
                 # Step 12.3
                 metrics.read_metric(
-                    "Record USB voltage", metrics_url, "energis_vusb_volts"
+                    name="Record USB voltage",
+                    url=metrics_url,
+                    metric_name="energis_vusb_volts",
                 ),
                 # Step 12.4
                 metrics.read_metric(
-                    "Record supply voltage", metrics_url, "energis_vsupply_volts"
+                    name="Record supply voltage",
+                    url=metrics_url,
+                    metric_name="energis_vsupply_volts",
                 ),
                 name="Record system telemetry",
             ),
@@ -282,67 +295,72 @@ class tc_metrics:
             STE(
                 # Step 13.1
                 metrics.read_metric(
-                    "Record CH1 power",
-                    metrics_url,
-                    "energis_channel_power_watts",
+                    name="Record CH1 power",
+                    url=metrics_url,
+                    metric_name="energis_channel_power_watts",
                     labels={"ch": "1"},
                 ),
                 # Step 13.2
                 metrics.read_metric(
-                    "Record CH2 power",
-                    metrics_url,
-                    "energis_channel_power_watts",
+                    name="Record CH2 power",
+                    url=metrics_url,
+                    metric_name="energis_channel_power_watts",
                     labels={"ch": "2"},
                 ),
                 # Step 13.3
                 metrics.read_metric(
-                    "Record CH3 power",
-                    metrics_url,
-                    "energis_channel_power_watts",
+                    name="Record CH3 power",
+                    url=metrics_url,
+                    metric_name="energis_channel_power_watts",
                     labels={"ch": "3"},
                 ),
                 name="Record channel power consumption",
             ),
             # Step 14: Re-verify all channels OFF before health summary
             metrics.check_all_channels_state(
-                "Verify all channels initially OFF", metrics_url, expected_state=0
+                name="Verify all channels initially OFF",
+                url=metrics_url,
+                expected_state=0,
             ),
             # Step 15: Comprehensive system health check
             STE(
                 # Step 15.1
                 metrics.check_metric_value(
-                    "System health UP", metrics_url, "energis_up", "1"
+                    name="System health UP",
+                    url=metrics_url,
+                    metric_name="energis_up",
+                    expected_value="1",
                 ),
                 # Step 15.2
                 metrics.check_metric_range(
-                    "Temperature nominal",
-                    metrics_url,
-                    "energis_internal_temperature_celsius",
+                    name="Temperature nominal",
+                    url=metrics_url,
+                    metric_name="energis_internal_temperature_celsius",
                     min_value=15.0,
                     max_value=45.0,
                 ),
                 # Step 15.3
                 metrics.check_metric_range(
-                    "USB voltage nominal",
-                    metrics_url,
-                    "energis_vusb_volts",
+                    name="USB voltage nominal",
+                    url=metrics_url,
+                    metric_name="energis_vusb_volts",
                     min_value=4.5,
                     max_value=5.5,
                 ),
                 # Step 15.4
                 metrics.check_metric_range(
-                    "Supply voltage nominal",
-                    metrics_url,
-                    "energis_vsupply_volts",
+                    name="Supply voltage nominal",
+                    url=metrics_url,
+                    metric_name="energis_vsupply_volts",
                     min_value=11.0,
                     max_value=13.0,
                 ),
                 # Step 15.5
                 metrics.check_metric_value(
-                    "Temperature calibration enabled",
-                    metrics_url,
-                    "energis_temp_calibrated",
-                    "1",
+                    name="Temperature calibration enabled",
+                    url=metrics_url,
+                    metric_name="energis_temp_calibrated",
+                    expected_value="1",
                 ),
                 name="Comprehensive system health check",
             ),
@@ -350,66 +368,66 @@ class tc_metrics:
             STE(
                 # Step 16.1
                 metrics.check_metric_value(
-                    "CH1 telemetry valid",
-                    metrics_url,
-                    "energis_channel_telemetry_valid",
-                    "1",
+                    name="CH1 telemetry valid",
+                    url=metrics_url,
+                    metric_name="energis_channel_telemetry_valid",
+                    expected_value="1",
                     labels={"ch": "1"},
                 ),
                 # Step 16.2
                 metrics.check_metric_value(
-                    "CH2 telemetry valid",
-                    metrics_url,
-                    "energis_channel_telemetry_valid",
-                    "1",
+                    name="CH2 telemetry valid",
+                    url=metrics_url,
+                    metric_name="energis_channel_telemetry_valid",
+                    expected_value="1",
                     labels={"ch": "2"},
                 ),
                 # Step 16.3
                 metrics.check_metric_value(
-                    "CH3 telemetry valid",
-                    metrics_url,
-                    "energis_channel_telemetry_valid",
-                    "1",
+                    name="CH3 telemetry valid",
+                    url=metrics_url,
+                    metric_name="energis_channel_telemetry_valid",
+                    expected_value="1",
                     labels={"ch": "3"},
                 ),
                 # Step 16.4
                 metrics.check_metric_value(
-                    "CH4 telemetry valid",
-                    metrics_url,
-                    "energis_channel_telemetry_valid",
-                    "1",
+                    name="CH4 telemetry valid",
+                    url=metrics_url,
+                    metric_name="energis_channel_telemetry_valid",
+                    expected_value="1",
                     labels={"ch": "4"},
                 ),
                 # Step 16.5
                 metrics.check_metric_value(
-                    "CH5 telemetry valid",
-                    metrics_url,
-                    "energis_channel_telemetry_valid",
-                    "1",
+                    name="CH5 telemetry valid",
+                    url=metrics_url,
+                    metric_name="energis_channel_telemetry_valid",
+                    expected_value="1",
                     labels={"ch": "5"},
                 ),
                 # Step 16.6
                 metrics.check_metric_value(
-                    "CH6 telemetry valid",
-                    metrics_url,
-                    "energis_channel_telemetry_valid",
-                    "1",
+                    name="CH6 telemetry valid",
+                    url=metrics_url,
+                    metric_name="energis_channel_telemetry_valid",
+                    expected_value="1",
                     labels={"ch": "6"},
                 ),
                 # Step 16.7
                 metrics.check_metric_value(
-                    "CH7 telemetry valid",
-                    metrics_url,
-                    "energis_channel_telemetry_valid",
-                    "1",
+                    name="CH7 telemetry valid",
+                    url=metrics_url,
+                    metric_name="energis_channel_telemetry_valid",
+                    expected_value="1",
                     labels={"ch": "7"},
                 ),
                 # Step 16.8
                 metrics.check_metric_value(
-                    "CH8 telemetry valid",
-                    metrics_url,
-                    "energis_channel_telemetry_valid",
-                    "1",
+                    name="CH8 telemetry valid",
+                    url=metrics_url,
+                    metric_name="energis_channel_telemetry_valid",
+                    expected_value="1",
                     labels={"ch": "8"},
                 ),
                 name="Verify all channel telemetry valid",

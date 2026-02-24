@@ -362,27 +362,32 @@ def validate_metric_exists(
 def validate_metric_value(
     url: str,
     metric_name: str,
-    expected_value: str,
+    expected_value: Union[str, Tuple[Optional[float], Optional[float]]],
     labels: Optional[Dict[str, str]] = None,
     timeout: float = 5.0
 ) -> bool:
     """Validate that a metric has an expected value.
     
     This function fetches metrics and validates that a specific metric has
-    the expected string value. String comparison is case-sensitive.
+    the expected value. If `expected_value` is a string, performs an exact
+    case-sensitive comparison. If `expected_value` is a (min, max) tuple,
+    parses the metric as float and validates it is within the inclusive range.
     
     Args:
         url (str): Metrics endpoint URL.
         metric_name (str): Name of the metric to check.
-        expected_value (str): Expected value as string.
+        expected_value (Union[str, Tuple[Optional[float], Optional[float]]]):
+            Either an exact expected string value, or a (min, max) numeric
+            range. Provide None for min or max to make it one-sided.
         labels (Optional[Dict[str, str]], optional): Label filters. Defaults to None.
         timeout (float, optional): Request timeout in seconds. Defaults to 5.0.
     
     Returns:
-        bool: True if the metric exists and has the expected value.
+        bool: True if the metric exists and matches the expected value/range.
     
     Raises:
-        MetricsTestError: If fetching/parsing fails or metric doesn't exist.
+        MetricsTestError: If fetching/parsing fails, metric doesn't exist,
+            cannot be parsed as float for range comparison, or is out of range.
     """
     logger = get_active_logger()
     
@@ -402,14 +407,60 @@ def validate_metric_value(
             logger.error(f"[METRICS ERROR] Metric '{metric_name}' not found")
         raise MetricsTestError(f"Metric '{metric_name}' not found")
     
-    matches = value == expected_value
-    
+    # Range comparison if a tuple was provided
+    if isinstance(expected_value, tuple):
+        min_value, max_value = expected_value
+        try:
+            numeric_value = float(value)
+        except ValueError:
+            if logger:
+                logger.error(
+                    f"[METRICS ERROR] Cannot parse metric '{metric_name}' value '{value}' as float for range comparison"
+                )
+            raise MetricsTestError(
+                f"Cannot parse metric value '{value}' as float for range comparison"
+            )
+
+        # Validate range boundaries
+        if min_value is None and max_value is None:
+            raise MetricsTestError(
+                "At least one of min or max must be specified for range comparison"
+            )
+
+        in_range = True
+        if min_value is not None and numeric_value < min_value:
+            in_range = False
+        if max_value is not None and numeric_value > max_value:
+            in_range = False
+
+        if logger:
+            range_str = (
+                f"[{min_value}, {max_value}]" if (min_value is not None and max_value is not None)
+                else f">= {min_value}" if min_value is not None
+                else f"<= {max_value}"
+            )
+            if in_range:
+                logger.info(
+                    f"[METRICS]  Metric value {numeric_value} within range {range_str}"
+                )
+            else:
+                logger.error(
+                    f"[METRICS ERROR] Value {numeric_value} not within range {range_str}"
+                )
+
+        return in_range
+
+    # String comparison
+    matches = value == str(expected_value)
+
     if logger:
         if matches:
             logger.info(f"[METRICS]  Metric value matches: {value}")
         else:
-            logger.error(f"[METRICS ERROR] Value mismatch: expected '{expected_value}', got '{value}'")
-    
+            logger.error(
+                f"[METRICS ERROR] Value mismatch: expected '{expected_value}', got '{value}'"
+            )
+
     return matches
 
 
@@ -751,7 +802,7 @@ def check_metric_value(
     name: str,
     url: str,
     metric_name: str,
-    expected_value: str,
+    expected_value: Union[str, Tuple[Optional[float], Optional[float]]],
     labels: Optional[Dict[str, str]] = None,
     timeout: float = 5.0,
     negative_test: bool = False
@@ -759,14 +810,16 @@ def check_metric_value(
     """Create a TestAction that validates a metric has an expected value.
     
     This TestAction factory creates an action that fetches metrics and validates
-    that a specific metric has the expected string value. Comparison is
-    case-sensitive and exact.
+    that a specific metric has the expected value. If `expected_value` is a
+    string, performs exact case-sensitive comparison. If it is a (min, max)
+    tuple, performs numeric range validation (inclusive bounds).
     
     Args:
         name (str): Human-readable name for the test action.
         url (str): Metrics endpoint URL.
         metric_name (str): Name of the metric to validate.
-        expected_value (str): Expected value as string (will be compared exactly).
+        expected_value (Union[str, Tuple[Optional[float], Optional[float]]]):
+            Either an exact expected string value, or a (min, max) numeric range.
         labels (Optional[Dict[str, str]], optional): Label filters. Defaults to None.
         timeout (float, optional): HTTP request timeout in seconds. Defaults to 5.0.
         negative_test (bool, optional): If True, expect the test to fail.
@@ -806,7 +859,19 @@ def check_metric_value(
         return True
 
     labels_desc = f" {labels}" if labels else ""
-    metadata = {'sent': f"GET {url} (check {metric_name}{labels_desc}={expected_value})"}
+    if isinstance(expected_value, tuple):
+        min_v, max_v = expected_value
+        if min_v is not None and max_v is not None:
+            exp_desc = f" in [{min_v}, {max_v}]"
+        elif min_v is not None:
+            exp_desc = f" >= {min_v}"
+        elif max_v is not None:
+            exp_desc = f" <= {max_v}"
+        else:
+            exp_desc = " (range unspecified)"
+    else:
+        exp_desc = f"={expected_value}"
+    metadata = {'sent': f"GET {url} (check {metric_name}{labels_desc}{exp_desc})"}
     return TestAction(name, execute, metadata=metadata, negative_test=negative_test)
 
 

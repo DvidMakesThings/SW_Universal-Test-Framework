@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ENERGIS Functional Test" tests="37" failures="1" skipped="0" time="0.0" session_id="cabecad3">
+<testsuite name="ENERGIS Functional Test" tests="45" failures="0" skipped="0" time="0.0" session_id="a0be8bc1">
   <testcase classname="UTFW" name="PRE-STEP 1 Reboot device via UART" time="0.0">
   </testcase>
   <testcase classname="UTFW" name="PRE-STEP 2 Pre-clear ERROR log" time="0.0">
@@ -65,7 +65,22 @@
   <testcase classname="UTFW" name="STEP 7.4 Verify new warning was logged" time="0.0">
   </testcase>
   <testcase classname="UTFW" name="STEP 7.5 Verify multiple warning codes present" time="0.0">
-    <failure message="Test failed: Missing 2 expected code(s) in WARNING log: 0x22B0, 0x22F5. Found 0 entries: none"/>
+  </testcase>
+  <testcase classname="UTFW" name="STEP 8 Final cleanup" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 8.1 Wait for the Ethernet cable to be reconnected" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 8.2 Final clear ERROR log" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 8.3 Final clear WARNING log" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 8.4 Wait" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 9 Final verification - clean state" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 9.1 Final verify ERROR log empty" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 9.2 Final verify WARNING log empty" time="0.0">
   </testcase>
   <testcase classname="UTFW" name="TEARDOWN 1 Ensure all outputs OFF" time="0.0">
   </testcase>
