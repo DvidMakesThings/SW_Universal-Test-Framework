@@ -38,7 +38,7 @@ from .core import (
 )
 
 # Import test modules directly (lazy loader in UTFW.modules prevents circulars)
-from .modules import serial, snmp, network, ethernet, fx2LA, nop, failuremem
+from .modules import serial, snmp, network, ethernet, fx2LA, nop, failuremem, ext_tools
 from .tools import generate_test_report as REPORT_HELPER
 
 # Convenient aliases exposed at top-level
@@ -49,6 +49,7 @@ Ethernet = ethernet
 FX2 = fx2LA
 NOP = nop.NOP
 FailureMemory = failuremem
+waveshare = ext_tools.waveshare
 
 __all__ = [
     # Core framework
@@ -81,6 +82,7 @@ __all__ = [
     "NOP",
     "Metrics",
     "FailureMemory",
+    "waveshare",
 
     # Module package
     "modules",

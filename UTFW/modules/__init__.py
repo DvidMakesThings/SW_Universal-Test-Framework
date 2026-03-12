@@ -14,6 +14,7 @@ Available modules:
 - fx2LA: Logic analyzer integration (experimental)
 - nop: No Operation / Wait utilities
 - failuremem: Failure memory decode & validation
+- ext_tools: External hardware tool drivers (Waveshare USB adapter, etc.)
 
 Author: DvidMakesThings
 """
@@ -32,6 +33,7 @@ __all__ = [
     "nop",
     "failuremem",
     "metrics",
+    "ext_tools",
     "REPORT_HELPER",
 ]
 
