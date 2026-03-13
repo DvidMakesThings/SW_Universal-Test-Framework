@@ -21,8 +21,8 @@ to OpenOCD, providing high-level wrappers for:
 - Arbitrary OpenOCD command execution
 - Device detection and verification
 
-Pre-built target configs for STM32F1x and STM32F4x are included
-alongside the ch347.cfg adapter configuration.
+A bundled OpenOCD distribution with the full standard target config
+library is included, supporting any OpenOCD-compatible MCU/FPGA.
 
 All operations are logged using the UTFW logging system with full
 OpenOCD command/response capture.
