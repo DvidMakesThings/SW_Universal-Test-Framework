@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ENERGIS Functional Test" tests="13" failures="0" skipped="0" time="0.0" session_id="68e38fb2">
+  <testcase classname="UTFW" name="PRE-STEP 1 Halt and resume target" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 1 SWD scan — find target" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 2 Read SWD DPIDR" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 3 Halt target" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 4 Read DBGMCU_IDCODE register" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 5 Read flash size register" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 6 Write test pattern to SRAM" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 7 Read back SRAM — verify write" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 8 Flash Blinky firmware" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 9 Verify flash contents" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="STEP 10 Run target command — read CPU registers" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="TEARDOWN 1 Assert TRST (GPIO5 LOW → NRST LOW)" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="TEARDOWN 2 Deassert TRST (GPIO5 HIGH → NRST released)" time="0.0">
+  </testcase>
+</testsuite>

@@ -1501,7 +1501,7 @@ def verify_hlw8032_all_channels(
         ...     settle_time_s=8.0
         ... )
     """
-    from tests import hardware_config as hw
+    from _ENERGIS_Tests import hardware_config as hw
 
     def execute():
         logger = get_active_logger()

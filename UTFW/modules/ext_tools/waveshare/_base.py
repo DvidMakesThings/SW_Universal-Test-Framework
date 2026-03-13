@@ -1,6 +1,6 @@
 # _base.py
 """
-UTFW Waveshare Adapter – Shared Base Module
+UTFW Waveshare Adapter - Shared Base Module
 ============================================
 Device discovery, connection management, and shared utilities for the
 Waveshare USB TO UART/I2C/SPI/JTAG adapter (WCH CH347 chipset).
@@ -18,7 +18,7 @@ Operating Modes:
 - Mode 1: UART1 + SPI + I2C
 - Mode 2: HID UART1 + SPI + I2C
 - Mode 3: UART1 + JTAG + I2C
-- Mode 4 (CH347F only): UART×2 + JTAG/SPI/I2C
+- Mode 4 (CH347F only): UARTx2 + JTAG/SPI/I2C
 
 Author: DvidMakesThings
 """
@@ -35,7 +35,9 @@ DEBUG = False  # Set to True to enable debug prints
 # ======================== CH347 Constants ========================
 
 CH347_VID = 0x1A86  # WCH vendor ID
-CH347T_PID = 0x55DD  # CH347T product ID (Mode 3)
+CH347T_PID = 0x55DD  # CH347T product ID (Mode 1/3)
+CH347T_UART_PID = 0x55DA  # CH347T product ID (Mode 0: dual UART)
+CH347T_HID_PID = 0x55DC  # CH347T product ID (Mode 2: HID)
 CH347F_PID = 0x55DE  # CH347F product ID
 
 CH347_MODES = {
@@ -43,7 +45,7 @@ CH347_MODES = {
     1: "Mode 1: UART1 + SPI + I2C",
     2: "Mode 2: HID UART1 + SPI + I2C",
     3: "Mode 3: UART1 + JTAG + I2C",
-    4: "Mode 4 (CH347F): UART×2 + JTAG/SPI/I2C",
+    4: "Mode 4 (CH347F): UARTx2 + JTAG/SPI/I2C",
 }
 
 # USB endpoint addresses used by the CH347 chip
@@ -54,13 +56,13 @@ CH347_EP_IN = 0x86   # Bulk IN endpoint
 USB_WRITE_TIMEOUT_MS = 500
 USB_READ_TIMEOUT_MS = 500
 
-# Path to bundled OpenOCD binary (shipped in ext_tools/ch347/OpenOCD_CH347)
+# Path to bundled OpenOCD binary (shipped alongside this package)
 _MODULE_DIR = Path(__file__).resolve().parent
-_EXT_TOOLS_DIR = _MODULE_DIR.parent
-OPENOCD_DIR = _EXT_TOOLS_DIR / "ch347" / "OpenOCD_CH347"
+OPENOCD_DIR = _MODULE_DIR / "openocd"
 OPENOCD_BIN = OPENOCD_DIR / "bin" / ("openocd.exe" if platform.system() == "Windows" else "openocd")
 OPENOCD_SCRIPTS = OPENOCD_DIR / "scripts"
 OPENOCD_CFG = OPENOCD_DIR / "bin" / "ch347.cfg"
+OPENOCD_SWD_CFG = OPENOCD_DIR / "bin" / "ch347_swd.cfg"
 
 
 class WaveshareError(Exception):
@@ -174,6 +176,10 @@ def find_devices() -> List[Dict[str, Any]]:
 
         if pid == CH347T_PID:
             variant = "CH347T"
+        elif pid == CH347T_UART_PID:
+            variant = "CH347T (Mode 0)"
+        elif pid == CH347T_HID_PID:
+            variant = "CH347T (HID)"
         elif pid == CH347F_PID:
             variant = "CH347F"
         else:
@@ -255,7 +261,7 @@ def get_device_info(port: str) -> Dict[str, Any]:
             vid = port_info.vid or 0
             pid = port_info.pid or 0
 
-            if vid == CH347_VID and pid == CH347T_PID:
+            if vid == CH347_VID and pid in (CH347T_PID, CH347T_UART_PID, CH347T_HID_PID):
                 variant = "CH347T"
             elif vid == CH347_VID and pid == CH347F_PID:
                 variant = "CH347F"

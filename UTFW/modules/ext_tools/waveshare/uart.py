@@ -87,7 +87,9 @@ def _use_response(explicit: str) -> str:
 
 # ======================== Core UART Functions ========================
 
-def open_connection(port: str, baudrate: int = 115200, timeout: float = 2.0):
+def open_connection(port: str, baudrate: int = 115200, timeout: float = 2.0,
+                    databits: int = 8, parity: str = "N", stopbits: float = 1,
+                    byte_timeout: Optional[float] = None):
     """Open a UART connection through the Waveshare CH347 adapter.
 
     Opens the serial port exposed by the CH347 adapter with the specified
@@ -97,6 +99,14 @@ def open_connection(port: str, baudrate: int = 115200, timeout: float = 2.0):
         port (str): Serial port identifier (e.g., "COM3", "/dev/ttyUSB0").
         baudrate (int, optional): Communication baud rate. Defaults to 115200.
         timeout (float, optional): Read timeout in seconds. Defaults to 2.0.
+        databits (int, optional): Data bits per frame (5, 6, 7, 8).
+            Defaults to 8.
+        parity (str, optional): Parity mode -- "N" (none), "O" (odd), "E" (even),
+            "M" (mark), "S" (space). Defaults to "N".
+        stopbits (float, optional): Stop bits -- 1, 1.5, or 2.
+            Defaults to 1.
+        byte_timeout (float, optional): Inter-byte timeout in seconds.
+            If None, defaults to pyserial behaviour (no inter-byte timeout).
 
     Returns:
         serial.Serial: Configured and opened serial port object.
@@ -107,6 +117,48 @@ def open_connection(port: str, baudrate: int = 115200, timeout: float = 2.0):
     _ensure_pyserial()
     import serial as pyserial
 
+    # Map parity string to pyserial constants
+    _PARITY_MAP = {
+        "N": pyserial.PARITY_NONE,
+        "O": pyserial.PARITY_ODD,
+        "E": pyserial.PARITY_EVEN,
+        "M": pyserial.PARITY_MARK,
+        "S": pyserial.PARITY_SPACE,
+    }
+
+    # Map stopbits to pyserial constants
+    _STOPBITS_MAP = {
+        1: pyserial.STOPBITS_ONE,
+        1.5: pyserial.STOPBITS_ONE_POINT_FIVE,
+        2: pyserial.STOPBITS_TWO,
+    }
+
+    # Map databits to pyserial constants
+    _BYTESIZE_MAP = {
+        5: pyserial.FIVEBITS,
+        6: pyserial.SIXBITS,
+        7: pyserial.SEVENBITS,
+        8: pyserial.EIGHTBITS,
+    }
+
+    parity_const = _PARITY_MAP.get(parity.upper())
+    if parity_const is None:
+        raise WaveshareUARTError(
+            f"Invalid parity '{parity}'. Must be one of: N, O, E, M, S"
+        )
+
+    stopbits_const = _STOPBITS_MAP.get(stopbits)
+    if stopbits_const is None:
+        raise WaveshareUARTError(
+            f"Invalid stopbits {stopbits}. Must be one of: 1, 1.5, 2"
+        )
+
+    bytesize_const = _BYTESIZE_MAP.get(databits)
+    if bytesize_const is None:
+        raise WaveshareUARTError(
+            f"Invalid databits {databits}. Must be one of: 5, 6, 7, 8"
+        )
+
     logger = get_active_logger()
 
     if logger:
@@ -115,7 +167,11 @@ def open_connection(port: str, baudrate: int = 115200, timeout: float = 2.0):
         logger.info("=" * 80)
         logger.info(f"  Port:          {port}")
         logger.info(f"  Baudrate:      {baudrate}")
+        logger.info(f"  Data bits:     {databits}")
+        logger.info(f"  Parity:        {parity.upper()}")
+        logger.info(f"  Stop bits:     {stopbits}")
         logger.info(f"  Timeout:       {timeout}s")
+        logger.info(f"  Byte Timeout:  {byte_timeout}s" if byte_timeout else "  Byte Timeout:  None")
         logger.info(f"  Write Timeout: 2.0s")
         logger.info(f"  Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)")
 
@@ -123,15 +179,19 @@ def open_connection(port: str, baudrate: int = 115200, timeout: float = 2.0):
         ser = pyserial.Serial(
             port=port,
             baudrate=baudrate,
+            bytesize=bytesize_const,
+            parity=parity_const,
+            stopbits=stopbits_const,
             timeout=timeout,
             write_timeout=2.0,
+            inter_byte_timeout=byte_timeout,
             xonxoff=False,
             rtscts=False,
             dsrdtr=False
         )
 
         if logger:
-            logger.info(f"✓ Port {port} opened successfully")
+            logger.info(f"[OK] Port {port} opened successfully")
             logger.info("  Stabilizing connection (100ms delay)...")
 
         time.sleep(0.1)
@@ -142,7 +202,7 @@ def open_connection(port: str, baudrate: int = 115200, timeout: float = 2.0):
         ser.reset_output_buffer()
 
         if logger:
-            logger.info(f"✓ Connection ready and buffers cleared")
+            logger.info(f"[OK] Connection ready and buffers cleared")
             logger.info("-" * 80)
 
         return ser
@@ -195,7 +255,7 @@ def close_connection(ser) -> None:
             logger.info("[WAVESHARE UART] Closing connection...")
         ser.close()
         if logger:
-            logger.info(f"✓ Port closed")
+            logger.info(f"[OK] Port closed")
     except Exception as e:
         if logger:
             logger.error(f"[WAVESHARE UART ERROR] Failed to close port: {e}")
@@ -253,7 +313,7 @@ def send_command(port: str, command: str, baudrate: int = 115200,
 
         if logger:
             logger.info("")
-            logger.info(f"✓ Transmitted {bytes_written} bytes")
+            logger.info(f"[OK] Transmitted {bytes_written} bytes")
             logger.info("  Waiting 50ms for device processing...")
             logger.info("")
 
@@ -296,7 +356,7 @@ def send_command(port: str, command: str, baudrate: int = 115200,
 
         if logger:
             logger.info("")
-            logger.info(f"✓ Response Complete:")
+            logger.info(f"[OK] Response Complete:")
             logger.info(f"    Total Bytes:    {len(response_bytes)}")
             logger.info(f"    Chunks:         {chunk_count}")
             logger.info(f"    Total Time:     {total_time:.3f}s")
@@ -338,7 +398,7 @@ def send_command(port: str, command: str, baudrate: int = 115200,
         try:
             ser.close()
             if logger:
-                logger.info(f"✓ Port {port} closed")
+                logger.info(f"[OK] Port {port} closed")
                 logger.info("=" * 80)
                 logger.info("")
         except Exception as e:
@@ -387,7 +447,7 @@ def send_raw(port: str, data: bytes, baudrate: int = 115200,
         ser.flush()
 
         if logger:
-            logger.info(f"✓ Transmitted {bytes_written} bytes")
+            logger.info(f"[OK] Transmitted {bytes_written} bytes")
             logger.info("")
 
         time.sleep(0.05)
@@ -406,7 +466,7 @@ def send_raw(port: str, data: bytes, baudrate: int = 115200,
             time.sleep(0.01)
 
         if logger:
-            logger.info(f"✓ Received {len(response_bytes)} bytes")
+            logger.info(f"[OK] Received {len(response_bytes)} bytes")
             logger.info("")
             logger.info("  RX Hex Dump:")
             for line in _format_hex_dump(bytes(response_bytes)).split('\n'):
@@ -427,6 +487,219 @@ def send_raw(port: str, data: bytes, baudrate: int = 115200,
             ser.close()
         except Exception:
             pass
+
+
+def loopback(
+        name: str,
+        port: str,
+        payload: bytes,
+        expected: Optional[bytes] = None,
+        baudrate: int = 115200,
+        timeout: float = 2.0,
+        negative_test: bool = False
+) -> TestAction:
+    """Create a TestAction that validates UART loopback on the same adapter.
+
+    This action is intended for a physical jumper test where UART TX and RX are
+    tied together (for example UART0-TX <-> UART1-RX and UART1-TX <-> UART0-RX,
+    depending on adapter mode/wiring). It sends raw bytes and verifies the echo.
+
+    Args:
+        name (str): Human-readable name for the test action.
+        port (str): Serial port identifier.
+        payload (bytes): Raw bytes to transmit.
+        expected (Optional[bytes], optional): Expected echo bytes. If None,
+            payload is used as the expected value.
+        baudrate (int, optional): Baud rate. Defaults to 115200.
+        timeout (float, optional): Response timeout in seconds. Defaults to 2.0.
+        negative_test (bool, optional): Mark as negative test. Defaults to False.
+
+    Returns:
+        TestAction: TestAction that returns the received bytes.
+    """
+
+    expected_bytes = payload if expected is None else expected
+
+    def execute():
+        logger = get_active_logger()
+
+        if logger:
+            logger.info("")
+            logger.info("=" * 80)
+            logger.info("[WAVESHARE UART] LOOPBACK TEST")
+            logger.info("=" * 80)
+            logger.info(f"  Port:     {port}")
+            logger.info(f"  Baudrate: {baudrate}")
+            logger.info(f"  TX Size:  {len(payload)} bytes")
+            logger.info(f"  Timeout:  {timeout}s")
+            logger.info("")
+
+        rx = send_raw(port=port, data=payload, baudrate=baudrate, timeout=timeout)
+
+        if rx != expected_bytes:
+            if logger:
+                logger.error("")
+                logger.error("=" * 80)
+                logger.error("[WAVESHARE UART] LOOPBACK VALIDATION FAILED")
+                logger.error("=" * 80)
+                logger.error(f"  Expected ({len(expected_bytes)}B): {expected_bytes.hex(' ').upper()}")
+                logger.error(f"  Actual   ({len(rx)}B): {rx.hex(' ').upper()}")
+                logger.error("-" * 80)
+            raise WaveshareUARTError(
+                "UART loopback mismatch: "
+                f"expected {expected_bytes.hex(' ').upper()}, got {rx.hex(' ').upper()}"
+            )
+
+        if logger:
+            logger.info(f"  Loopback verified ({len(rx)} bytes)")
+            logger.info("=" * 80)
+            logger.info("")
+
+        return rx
+
+    metadata = {
+        'display_command': f"UART loopback {len(payload)}B",
+        'display_expected': expected_bytes.hex(' ').upper(),
+    }
+
+    return TestAction(name, execute, negative_test=negative_test, metadata=metadata)
+
+
+def cross_loopback(
+        name: str,
+        tx_port: str,
+        rx_port: str,
+        payload: bytes,
+        expected: Optional[bytes] = None,
+        baudrate: int = 115200,
+        timeout: float = 2.0,
+        databits: int = 8,
+        parity: str = "N",
+        stopbits: float = 1,
+        negative_test: bool = False
+) -> TestAction:
+    """Create a TestAction that validates cross-port UART loopback.
+
+    Hardware setup: TX of *tx_port* wired to RX of *rx_port*.
+    Opens both ports, transmits on tx_port, and reads from rx_port.
+
+    Args:
+        name: Human-readable name for the test action.
+        tx_port: Serial port used for transmitting (e.g. "COM12").
+        rx_port: Serial port used for receiving  (e.g. "COM13").
+        payload: Raw bytes to transmit.
+        expected: Expected bytes on rx_port.  Defaults to *payload*.
+        baudrate: Baud rate for both ports.  Defaults to 115200.
+        timeout: Receive timeout in seconds.  Defaults to 2.0.
+        databits: Data bits per frame (5-8).  Defaults to 8.
+        parity: Parity mode ("N","O","E","M","S"). Defaults to "N".
+        stopbits: Stop bits (1, 1.5, 2). Defaults to 1.
+        negative_test: Mark as negative test.
+
+    Returns:
+        TestAction that returns the received bytes.
+    """
+
+    expected_bytes = payload if expected is None else expected
+
+    def execute():
+        logger = get_active_logger()
+
+        if logger:
+            logger.info("")
+            logger.info("=" * 80)
+            logger.info("[WAVESHARE UART] CROSS-PORT LOOPBACK TEST")
+            logger.info("=" * 80)
+            logger.info(f"  TX Port:  {tx_port}")
+            logger.info(f"  RX Port:  {rx_port}")
+            logger.info(f"  Baudrate: {baudrate}")
+            logger.info(f"  Config:   {databits}{parity}{stopbits}")
+            logger.info(f"  TX Size:  {len(payload)} bytes")
+            logger.info(f"  Timeout:  {timeout}s")
+            logger.info("")
+
+        # Open receiver first so it is ready before we transmit
+        ser_rx = open_connection(rx_port, baudrate, timeout,
+                                databits=databits, parity=parity,
+                                stopbits=stopbits)
+        ser_tx = open_connection(tx_port, baudrate, timeout,
+                                databits=databits, parity=parity,
+                                stopbits=stopbits)
+
+        try:
+            # Transmit
+            bytes_written = ser_tx.write(payload)
+            ser_tx.flush()
+
+            if logger:
+                logger.info(f"  [OK] Transmitted {bytes_written} bytes on {tx_port}")
+                logger.info("    Hex Dump:")
+                for line in _format_hex_dump(payload).split('\n'):
+                    logger.info(f"      {line}")
+                logger.info("")
+
+            # Receive
+            rx_buf = bytearray()
+            start = time.time()
+            last_data = start
+
+            while (time.time() - start) < timeout:
+                if ser_rx.in_waiting > 0:
+                    chunk = ser_rx.read(ser_rx.in_waiting)
+                    rx_buf.extend(chunk)
+                    last_data = time.time()
+                    if len(rx_buf) >= len(expected_bytes):
+                        break
+                elif (time.time() - last_data) > 0.5:
+                    break
+                time.sleep(0.01)
+
+            rx = bytes(rx_buf)
+
+            if logger:
+                logger.info(f"  [OK] Received {len(rx)} bytes on {rx_port}")
+                logger.info("    Hex Dump:")
+                for line in _format_hex_dump(rx).split('\n'):
+                    logger.info(f"      {line}")
+                logger.info("")
+
+            if rx != expected_bytes:
+                if logger:
+                    logger.error("=" * 80)
+                    logger.error("[WAVESHARE UART] CROSS-LOOPBACK VALIDATION FAILED")
+                    logger.error("=" * 80)
+                    logger.error(f"  Expected ({len(expected_bytes)}B): {expected_bytes.hex(' ').upper()}")
+                    logger.error(f"  Actual   ({len(rx)}B): {rx.hex(' ').upper()}")
+                    logger.error("-" * 80)
+                raise WaveshareUARTError(
+                    f"Cross-loopback mismatch ({tx_port}->{rx_port}): "
+                    f"expected {expected_bytes.hex(' ').upper()}, "
+                    f"got {rx.hex(' ').upper()}"
+                )
+
+            if logger:
+                logger.info(f"  [OK] Cross-loopback verified ({len(rx)} bytes, {tx_port}->{rx_port})")
+                logger.info("=" * 80)
+                logger.info("")
+
+            return rx
+
+        finally:
+            try:
+                ser_tx.close()
+            except Exception:
+                pass
+            try:
+                ser_rx.close()
+            except Exception:
+                pass
+
+    metadata = {
+        'display_command': f"UART cross-loopback {tx_port}->{rx_port} [{len(payload)}B]",
+        'display_expected': expected_bytes.hex(' ').upper(),
+    }
+
+    return TestAction(name, execute, negative_test=negative_test, metadata=metadata)
 
 
 # ======================== TestAction Factories ========================
@@ -531,7 +804,7 @@ def send_receive(
                 )
 
             if logger:
-                logger.info(f"✓ Token '{expected_token}' found in response")
+                logger.info(f"[OK] Token '{expected_token}' found in response")
 
         return response
 
@@ -587,7 +860,7 @@ def detect(
         ser = open_connection(port, baudrate, timeout=1.0)
         try:
             if logger:
-                logger.info(f"✓ Waveshare adapter detected on {port}")
+                logger.info(f"[OK] Waveshare adapter detected on {port}")
                 logger.info("=" * 80)
                 logger.info("")
             return True
