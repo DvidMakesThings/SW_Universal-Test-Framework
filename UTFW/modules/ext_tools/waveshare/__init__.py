@@ -36,6 +36,9 @@ from ._base import (
     find_devices,
     get_device_info,
     get_chip_mode_description,
+    get_current_mode,
+    get_current_mode_by_pid,
+    ensure_mode,
     CH347_VID,
     CH347T_PID,
     CH347T_UART_PID,
@@ -64,10 +67,13 @@ __all__ = [
     # Base exception
     "WaveshareError",
 
-    # Device discovery
+    # Device discovery & mode management
     "find_devices",
     "get_device_info",
     "get_chip_mode_description",
+    "get_current_mode",
+    "get_current_mode_by_pid",
+    "ensure_mode",
 
     # Constants
     "CH347_VID",

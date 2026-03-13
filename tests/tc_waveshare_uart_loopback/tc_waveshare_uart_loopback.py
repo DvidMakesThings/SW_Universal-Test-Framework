@@ -20,6 +20,15 @@ class tc_waveshare_uart_loopback:
     def __init__(self):
         pass
 
+    def pre(self):
+        """Pre-step: Verify adapter is in Mode 0 (dual UART)."""
+        return [
+            waveshare.ensure_mode(
+                name="Verify CH347 is in Mode 0 (dual UART)",
+                expected_mode=0,
+            ),
+        ]
+
     def setup(self):
         hw = get_hwconfig()
 

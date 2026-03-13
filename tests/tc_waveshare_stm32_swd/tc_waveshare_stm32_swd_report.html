@@ -1,0 +1,1010 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<title>ENERGIS Test Report - PASS</title>
+<style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;background:#0f1216;color:#e7eaf0;margin:0}
+    header{padding:20px;background:#151a21;border-bottom:1px solid #2a2f37}
+    h1{margin:0;font-size:20px}
+    .meta{font-size:12px;color:#a6adbb;margin-top:6px}
+    .summary{display:flex;gap:16px;flex-wrap:wrap;margin:16px 0}
+    .chip{padding:8px 12px;border-radius:20px;border:1px solid #2a2f37;background:#151a21}
+    .chip.pass{border-color:#1e7f45;color:#d7ffe6;background:#0e2017}
+    .chip.fail{border-color:#a23b3b;color:#ffe1e1;background:#210e0e}
+    .chip.unknown{border-color:#6b7280;color:#e7eaf0;background:#1b2028}
+    main{padding:20px}
+    details{border:1px solid #2a2f37;border-radius:12px;margin-bottom:12px;overflow:hidden}
+    summary{padding:12px 14px;background:#151a21;cursor:pointer;font-weight:600}
+    .content{padding:12px 14px;background:#11161b}
+    .step-title{display:flex;justify-content:space-between;align-items:center}
+    .status{padding:3px 8px;border-radius:12px;border:1px solid #2a2f37;font-size:12px}
+    .status.pass{border-color:#1e7f45;color:#d7ffe6;background:#0e2017}
+    .status.fail{border-color:#a23b3b;color:#ffe1e1;background:#210e0e}
+    .status.unknown{border-color:#6b7280;background:#1b2028}
+    details.pre-step{border-left:4px solid #6366f1}
+    details.pre-step summary{background:#1a1c2e}
+    details.post-step{border-left:4px solid #22c55e}
+    details.post-step summary{background:#152419}
+    details.teardown{border-left:4px solid#f59e0b}
+    details.teardown summary{background:#2a1f0e}
+    pre{background:#0b0f14;border:1px solid #2a2f37;border-radius:8px;padding:10px;overflow:auto}
+    table{width:100%;border-collapse:collapse;margin-top:8px}
+    th,td{border-bottom:1px solid #1f2530;padding:8px 6px;text-align:left;font-size:13px}
+    th{color:#a6adbb;font-weight:600;background:#131820}
+    .kv{display:grid;grid-template-columns:180px 1fr;gap:8px}
+    a{color:#9ad0ff;text-decoration:none}
+    a:hover{text-decoration:underline}
+    .img-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:10px}
+    .img-grid figure{margin:0;padding:8px;background:#0b0f14;border:1px solid #2a2f37;border-radius:8px}
+    .img-grid img{max-width:100%;height:auto;display:block;border-radius:6px}
+    .img-grid figcaption{font-size:12px;color:#a6adbb;margin-top:6px}
+    .substeps{margin-top:10px}
+    .substeps details{margin-bottom:8px}
+    </style></head><body>
+<header>
+<h1>ENERGIS Test Report</h1>
+<div class='meta'>
+Overall: <b class='chip pass'>PASS</b> &nbsp;
+Started: 2026-03-14 00:53:18 &nbsp;
+Session ID: 1a4bed8a &nbsp;
+</div>
+</header>
+<main>
+<section class='summary'>
+<div class='chip pass'>Passed: 14</div>
+<div class='chip fail'>Failed: 0</div>
+<div class='chip unknown'>Unknown: 0</div>
+<div class='chip'>Total: 14</div>
+</section>
+<section>
+<h3>Environment</h3>
+<div class='kv'>
+<div>Test Session ID</div><div><code>1a4bed8a</code></div>
+<div>Hostname</div><div>DPC</div>
+<div>Os</div><div>Windows 11 (10.0.26100)</div>
+<div>Python</div><div>3.13.7 (tags/v3.13.7:bcee1c3, Aug 14 2025, 14:15:11) [MSC v.1944 64 bit (AMD64)]</div>
+<div>Generated_at</div><div>2026-03-14 00:53:19</div>
+<div>Log_file</div><div>G:\_GitHub\SW_Universal-Test-Framework\tests\tc_waveshare_stm32_swd\tc_waveshare_stm32_swd_results.log</div>
+</div>
+</section>
+<section>
+<h3>Steps</h3>
+<details class='pre-step'>
+<summary>
+<div class='step-title'><div>PRE-STEP 1 Verify CH347 is in Mode 3 (JTAG/SWD)</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2026-03-14 00:53:18</td><td>2026-03-14 00:53:18</td></tr>
+</table>
+<details>
+<summary><div class='step-title'><div>Step Log</div><div class='status unknown'>DETAIL</div></div></summary>
+<div class='content'>
+<h4>Log</h4>
+<pre>
+[2026-03-14 00:53:18] [PRE-STEP 1] Verify CH347 is in Mode 3 (JTAG/SWD)
+[2026-03-14 00:53:18] [INFO] 
+[2026-03-14 00:53:18] [INFO] ============================================================
+[2026-03-14 00:53:18] [INFO] [WAVESHARE] CH347 MODE CHECK
+[2026-03-14 00:53:18] [INFO] ============================================================
+[2026-03-14 00:53:18] [INFO]   Current mode:  Mode 3: UART1 + JTAG + I2C
+[2026-03-14 00:53:18] [INFO]   Expected mode: Mode 3: UART1 + JTAG + I2C
+[2026-03-14 00:53:18] [INFO]   Status: OK
+[2026-03-14 00:53:18] [INFO] ============================================================
+[2026-03-14 00:53:18] [INFO] 
+[2026-03-14 00:53:18] [PASS] PRE-STEP 1 completed successfully
+</pre>
+</div>
+</details>
+</div>
+</details>
+<details class='pre-step'>
+<summary>
+<div class='step-title'><div>PRE-STEP 2 Halt and resume target</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2026-03-14 00:53:18</td><td>2026-03-14 00:53:18</td></tr>
+</table>
+<details>
+<summary><div class='step-title'><div>Step Log</div><div class='status unknown'>DETAIL</div></div></summary>
+<div class='content'>
+<h4>Log</h4>
+<pre>
+[2026-03-14 00:53:18] [PRE-STEP 2] Halt and resume target
+[2026-03-14 00:53:18] [INFO] [WAVESHARE JTAG] OpenOCD binary: G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\openocd.exe
+[2026-03-14 00:53:18] [INFO] 
+[2026-03-14 00:53:18] [INFO] ================================================================================
+[2026-03-14 00:53:18] [INFO] [WAVESHARE JTAG] OPENOCD + TARGET EXECUTION
+[2026-03-14 00:53:18] [INFO] ================================================================================
+[2026-03-14 00:53:18] [INFO]   Binary:    G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\openocd.exe
+[2026-03-14 00:53:18] [INFO]   Adapter:   G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\ch347_swd.cfg
+[2026-03-14 00:53:18] [INFO]   Target:    G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\stm32f1x.cfg
+[2026-03-14 00:53:18] [INFO]   Transport: swd
+[2026-03-14 00:53:18] [INFO]   Timeout:   30s
+[2026-03-14 00:53:18] [INFO] 
+[2026-03-14 00:53:18] [INFO]   Commands:
+[2026-03-14 00:53:18] [INFO]     [1] halt
+[2026-03-14 00:53:18] [INFO]     [2] resume
+[2026-03-14 00:53:18] [INFO] 
+[2026-03-14 00:53:18] [INFO] --------------------------------------------------------------------------------
+[2026-03-14 00:53:18] [INFO]   OpenOCD Output:
+[2026-03-14 00:53:18] [INFO] --------------------------------------------------------------------------------
+[2026-03-14 00:53:18] [INFO]     ch347_swd_switch_seq 1 
+[2026-03-14 00:53:18] [INFO]     
+[2026-03-14 00:53:18] [INFO]     ch347_swd_switch_seq 3 
+[2026-03-14 00:53:18] [INFO]     
+[2026-03-14 00:53:18] [INFO]     Open On-Chip Debugger 0.12.0+dev (2023-06-02-20:00)
+[2026-03-14 00:53:18] [INFO]     Licensed under GNU GPL v2
+[2026-03-14 00:53:18] [INFO]     For bug reports, read
+[2026-03-14 00:53:18] [INFO]     	http://openocd.org/doc/doxygen/bugs.html
+[2026-03-14 00:53:18] [INFO]     Info : CH347 SWD mode enabled
+[2026-03-14 00:53:18] [INFO]     none separate
+[2026-03-14 00:53:18] [INFO]     none separate
+[2026-03-14 00:53:18] [INFO]     Info : CH347 Open Succ.
+[2026-03-14 00:53:18] [INFO]     Info : clock speed 1000 kHz
+[2026-03-14 00:53:18] [INFO]     Info : SWD DPIDR 0x1ba01477
+[2026-03-14 00:53:18] [INFO]     Info : [stm32f1x.cpu] Cortex-M3 r1p1 processor detected
+[2026-03-14 00:53:18] [INFO]     Info : [stm32f1x.cpu] target has 6 breakpoints, 4 watchpoints
+[2026-03-14 00:53:18] [INFO]     Info : starting gdb server for stm32f1x.cpu on 3333
+[2026-03-14 00:53:18] [INFO]     Info : Listening on port 3333 for gdb connections
+[2026-03-14 00:53:18] [INFO]     Warn : [stm32f1x.cpu] target was in unknown state when halt was requested
+[2026-03-14 00:53:18] [INFO]     shutdown command invoked
+[2026-03-14 00:53:18] [INFO]     Info : Close the CH347.
+[2026-03-14 00:53:18] [INFO] --------------------------------------------------------------------------------
+[2026-03-14 00:53:18] [INFO]   Exit code: 0
+[2026-03-14 00:53:18] [INFO] ================================================================================
+[2026-03-14 00:53:18] [PASS] PRE-STEP 2 completed successfully
+</pre>
+</div>
+</details>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 1 SWD scan — find target</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2026-03-14 00:53:18</td><td>2026-03-14 00:53:18</td></tr>
+</table>
+<details>
+<summary><div class='step-title'><div>Step Log</div><div class='status unknown'>DETAIL</div></div></summary>
+<div class='content'>
+<h4>Log</h4>
+<pre>
+[2026-03-14 00:53:18] [STEP 1] SWD scan — find target
+[2026-03-14 00:53:18] [INFO] [WAVESHARE JTAG] OpenOCD binary: G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\openocd.exe
+[2026-03-14 00:53:18] [INFO] 
+[2026-03-14 00:53:18] [INFO] ================================================================================
+[2026-03-14 00:53:18] [INFO] [WAVESHARE JTAG] OPENOCD + TARGET EXECUTION
+[2026-03-14 00:53:18] [INFO] ================================================================================
+[2026-03-14 00:53:18] [INFO]   Binary:    G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\openocd.exe
+[2026-03-14 00:53:18] [INFO]   Adapter:   G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\ch347_swd.cfg
+[2026-03-14 00:53:18] [INFO]   Target:    G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\stm32f1x.cfg
+[2026-03-14 00:53:18] [INFO]   Transport: swd
+[2026-03-14 00:53:18] [INFO]   Timeout:   30s
+[2026-03-14 00:53:18] [INFO] 
+[2026-03-14 00:53:18] [INFO]   Commands:
+[2026-03-14 00:53:18] [INFO]     [1] dap info
+[2026-03-14 00:53:18] [INFO] 
+[2026-03-14 00:53:18] [INFO] --------------------------------------------------------------------------------
+[2026-03-14 00:53:18] [INFO]   OpenOCD Output:
+[2026-03-14 00:53:18] [INFO] --------------------------------------------------------------------------------
+[2026-03-14 00:53:18] [INFO]     ch347_swd_switch_seq 1 
+[2026-03-14 00:53:18] [INFO]     
+[2026-03-14 00:53:18] [INFO]     ch347_swd_switch_seq 3 
+[2026-03-14 00:53:18] [INFO]     
+[2026-03-14 00:53:18] [INFO]     Open On-Chip Debugger 0.12.0+dev (2023-06-02-20:00)
+[2026-03-14 00:53:18] [INFO]     Licensed under GNU GPL v2
+[2026-03-14 00:53:18] [INFO]     For bug reports, read
+[2026-03-14 00:53:18] [INFO]     	http://openocd.org/doc/doxygen/bugs.html
+[2026-03-14 00:53:18] [INFO]     Info : CH347 SWD mode enabled
+[2026-03-14 00:53:18] [INFO]     none separate
+[2026-03-14 00:53:18] [INFO]     none separate
+[2026-03-14 00:53:18] [INFO]     Info : CH347 Open Succ.
+[2026-03-14 00:53:18] [INFO]     Info : clock speed 1000 kHz
+[2026-03-14 00:53:18] [INFO]     Info : SWD DPIDR 0x1ba01477
+[2026-03-14 00:53:18] [INFO]     Info : [stm32f1x.cpu] Cortex-M3 r1p1 processor detected
+[2026-03-14 00:53:18] [INFO]     Info : [stm32f1x.cpu] target has 6 breakpoints, 4 watchpoints
+[2026-03-14 00:53:18] [INFO]     Info : starting gdb server for stm32f1x.cpu on 3333
+[2026-03-14 00:53:18] [INFO]     Info : Listening on port 3333 for gdb connections
+[2026-03-14 00:53:18] [INFO]     AP # 0x0
+[2026-03-14 00:53:18] [INFO]     		AP ID register 0x14770011
+[2026-03-14 00:53:18] [INFO]     		Type is MEM-AP AHB3
+[2026-03-14 00:53:18] [INFO]     MEM-AP BASE 0xe00ff003
+[2026-03-14 00:53:18] [INFO]     		Valid ROM table present
+[2026-03-14 00:53:18] [INFO]     		Component base address 0xe00ff000
+[2026-03-14 00:53:18] [INFO]     		Peripheral ID 0x00000a0410
+[2026-03-14 00:53:18] [INFO]     		Designer is 0x020, STMicroelectronics
+[2026-03-14 00:53:18] [INFO]     		Part is 0x410, Unrecognized 
+[2026-03-14 00:53:18] [INFO]     		Component class is 0x1, ROM table
+[2026-03-14 00:53:18] [INFO]     		MEMTYPE system memory present on bus
+[2026-03-14 00:53:18] [INFO]     	ROMTABLE[0x0] = 0xfff0f003
+[2026-03-14 00:53:18] [INFO]     		Component base address 0xe000e000
+[2026-03-14 00:53:18] [INFO]     		Peripheral ID 0x04001bb000
+[2026-03-14 00:53:18] [INFO]     		Designer is 0x23b, ARM Ltd
+[2026-03-14 00:53:18] [INFO]     		Part is 0x000, Cortex-M3 SCS (System Control Space)
+[2026-03-14 00:53:18] [INFO]     		Component class is 0xe, Generic IP component
+[2026-03-14 00:53:18] [INFO]     	ROMTABLE[0x4] = 0xfff02003
+[2026-03-14 00:53:18] [INFO]     		Component base address 0xe0001000
+[2026-03-14 00:53:18] [INFO]     		Peripheral ID 0x04001bb002
+[2026-03-14 00:53:18] [INFO]     		Designer is 0x23b, ARM Ltd
+[2026-03-14 00:53:18] [INFO]     		Part is 0x002, Cortex-M3 DWT (Data Watchpoint and Trace)
+[2026-03-14 00:53:18] [INFO]     		Component class is 0xe, Generic IP component
+[2026-03-14 00:53:18] [INFO]     	ROMTABLE[0x8] = 0xfff03003
+[2026-03-14 00:53:18] [INFO]     		Component base address 0xe0002000
+[2026-03-14 00:53:18] [INFO]     		Peripheral ID 0x04000bb003
+[2026-03-14 00:53:18] [INFO]     		Designer is 0x23b, ARM Ltd
+[2026-03-14 00:53:18] [INFO]     		Part is 0x003, Cortex-M3 FPB (Flash Patch and Breakpoint)
+[2026-03-14 00:53:18] [INFO]     		Component class is 0xe, Generic IP component
+[2026-03-14 00:53:18] [INFO]     	ROMTABLE[0xc] = 0xfff01003
+[2026-03-14 00:53:18] [INFO]     		Component base address 0xe0000000
+[2026-03-14 00:53:18] [INFO]     		Peripheral ID 0x04001bb001
+[2026-03-14 00:53:18] [INFO]     		Designer is 0x23b, ARM Ltd
+[2026-03-14 00:53:18] [INFO]     		Part is 0x001, Cortex-M3 ITM (Instrumentation Trace Module)
+[2026-03-14 00:53:18] [INFO]     		Component class is 0xe, Generic IP component
+[2026-03-14 00:53:18] [INFO]     	ROMTABLE[0x10] = 0xfff41003
+[2026-03-14 00:53:18] [INFO]     		Component base address 0xe0040000
+[2026-03-14 00:53:18] [INFO]     		Peripheral ID 0x04001bb923
+[2026-03-14 00:53:18] [INFO]     		Designer is 0x23b, ARM Ltd
+[2026-03-14 00:53:18] [INFO]     		Part is 0x923, Cortex-M3 TPIU (Trace Port Interface Unit)
+[2026-03-14 00:53:18] [INFO]     		Component class is 0x9, CoreSight component
+[2026-03-14 00:53:18] [INFO]     		Type is 0x11, Trace Sink, Port
+[2026-03-14 00:53:18] [INFO]     	ROMTABLE[0x14] = 0xfff42002
+[2026-03-14 00:53:18] [INFO]     		Component not present
+[2026-03-14 00:53:18] [INFO]     	ROMTABLE[0x18] = 0x00000000
+[2026-03-14 00:53:18] [INFO]     		End of ROM table
+[2026-03-14 00:53:18] [INFO]     shutdown command invoked
+[2026-03-14 00:53:18] [INFO]     Info : Close the CH347.
+[2026-03-14 00:53:18] [INFO] --------------------------------------------------------------------------------
+[2026-03-14 00:53:18] [INFO]   Exit code: 0
+[2026-03-14 00:53:18] [INFO] ================================================================================
+[2026-03-14 00:53:18] [INFO] [OK] SWD scan complete (1 device(s))
+[2026-03-14 00:53:18] [INFO]   DPIDR: 0x1ba01477
+[2026-03-14 00:53:18] [PASS] STEP 1 completed successfully
+</pre>
+</div>
+</details>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 2 Read SWD DPIDR</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2026-03-14 00:53:18</td><td>2026-03-14 00:53:18</td></tr>
+</table>
+<details>
+<summary><div class='step-title'><div>Step Log</div><div class='status unknown'>DETAIL</div></div></summary>
+<div class='content'>
+<h4>Log</h4>
+<pre>
+[2026-03-14 00:53:18] [STEP 2] Read SWD DPIDR
+[2026-03-14 00:53:18] [INFO] [WAVESHARE JTAG] OpenOCD binary: G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\openocd.exe
+[2026-03-14 00:53:18] [INFO] 
+[2026-03-14 00:53:18] [INFO] ================================================================================
+[2026-03-14 00:53:18] [INFO] [WAVESHARE JTAG] OPENOCD + TARGET EXECUTION
+[2026-03-14 00:53:18] [INFO] ================================================================================
+[2026-03-14 00:53:18] [INFO]   Binary:    G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\openocd.exe
+[2026-03-14 00:53:18] [INFO]   Adapter:   G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\ch347_swd.cfg
+[2026-03-14 00:53:18] [INFO]   Target:    G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\stm32f1x.cfg
+[2026-03-14 00:53:18] [INFO]   Transport: swd
+[2026-03-14 00:53:18] [INFO]   Timeout:   30s
+[2026-03-14 00:53:18] [INFO] 
+[2026-03-14 00:53:18] [INFO]   Commands:
+[2026-03-14 00:53:18] [INFO]     [1] dap info
+[2026-03-14 00:53:18] [INFO] 
+[2026-03-14 00:53:18] [INFO] --------------------------------------------------------------------------------
+[2026-03-14 00:53:18] [INFO]   OpenOCD Output:
+[2026-03-14 00:53:18] [INFO] --------------------------------------------------------------------------------
+[2026-03-14 00:53:18] [INFO]     ch347_swd_switch_seq 1 
+[2026-03-14 00:53:18] [INFO]     
+[2026-03-14 00:53:18] [INFO]     ch347_swd_switch_seq 3 
+[2026-03-14 00:53:18] [INFO]     
+[2026-03-14 00:53:18] [INFO]     Open On-Chip Debugger 0.12.0+dev (2023-06-02-20:00)
+[2026-03-14 00:53:18] [INFO]     Licensed under GNU GPL v2
+[2026-03-14 00:53:18] [INFO]     For bug reports, read
+[2026-03-14 00:53:18] [INFO]     	http://openocd.org/doc/doxygen/bugs.html
+[2026-03-14 00:53:18] [INFO]     Info : CH347 SWD mode enabled
+[2026-03-14 00:53:18] [INFO]     none separate
+[2026-03-14 00:53:18] [INFO]     none separate
+[2026-03-14 00:53:18] [INFO]     Info : CH347 Open Succ.
+[2026-03-14 00:53:18] [INFO]     Info : clock speed 1000 kHz
+[2026-03-14 00:53:18] [INFO]     Info : SWD DPIDR 0x1ba01477
+[2026-03-14 00:53:18] [INFO]     Info : [stm32f1x.cpu] Cortex-M3 r1p1 processor detected
+[2026-03-14 00:53:18] [INFO]     Info : [stm32f1x.cpu] target has 6 breakpoints, 4 watchpoints
+[2026-03-14 00:53:18] [INFO]     Info : starting gdb server for stm32f1x.cpu on 3333
+[2026-03-14 00:53:18] [INFO]     Info : Listening on port 3333 for gdb connections
+[2026-03-14 00:53:18] [INFO]     AP # 0x0
+[2026-03-14 00:53:18] [INFO]     		AP ID register 0x14770011
+[2026-03-14 00:53:18] [INFO]     		Type is MEM-AP AHB3
+[2026-03-14 00:53:18] [INFO]     MEM-AP BASE 0xe00ff003
+[2026-03-14 00:53:18] [INFO]     		Valid ROM table present
+[2026-03-14 00:53:18] [INFO]     		Component base address 0xe00ff000
+[2026-03-14 00:53:18] [INFO]     		Peripheral ID 0x00000a0410
+[2026-03-14 00:53:18] [INFO]     		Designer is 0x020, STMicroelectronics
+[2026-03-14 00:53:18] [INFO]     		Part is 0x410, Unrecognized 
+[2026-03-14 00:53:18] [INFO]     		Component class is 0x1, ROM table
+[2026-03-14 00:53:18] [INFO]     		MEMTYPE system memory present on bus
+[2026-03-14 00:53:18] [INFO]     	ROMTABLE[0x0] = 0xfff0f003
+[2026-03-14 00:53:18] [INFO]     		Component base address 0xe000e000
+[2026-03-14 00:53:18] [INFO]     		Peripheral ID 0x04001bb000
+[2026-03-14 00:53:18] [INFO]     		Designer is 0x23b, ARM Ltd
+[2026-03-14 00:53:18] [INFO]     		Part is 0x000, Cortex-M3 SCS (System Control Space)
+[2026-03-14 00:53:18] [INFO]     		Component class is 0xe, Generic IP component
+[2026-03-14 00:53:18] [INFO]     	ROMTABLE[0x4] = 0xfff02003
+[2026-03-14 00:53:18] [INFO]     		Component base address 0xe0001000
+[2026-03-14 00:53:18] [INFO]     		Peripheral ID 0x04001bb002
+[2026-03-14 00:53:18] [INFO]     		Designer is 0x23b, ARM Ltd
+[2026-03-14 00:53:18] [INFO]     		Part is 0x002, Cortex-M3 DWT (Data Watchpoint and Trace)
+[2026-03-14 00:53:18] [INFO]     		Component class is 0xe, Generic IP component
+[2026-03-14 00:53:18] [INFO]     	ROMTABLE[0x8] = 0xfff03003
+[2026-03-14 00:53:18] [INFO]     		Component base address 0xe0002000
+[2026-03-14 00:53:18] [INFO]     		Peripheral ID 0x04000bb003
+[2026-03-14 00:53:18] [INFO]     		Designer is 0x23b, ARM Ltd
+[2026-03-14 00:53:18] [INFO]     		Part is 0x003, Cortex-M3 FPB (Flash Patch and Breakpoint)
+[2026-03-14 00:53:18] [INFO]     		Component class is 0xe, Generic IP component
+[2026-03-14 00:53:18] [INFO]     	ROMTABLE[0xc] = 0xfff01003
+[2026-03-14 00:53:18] [INFO]     		Component base address 0xe0000000
+[2026-03-14 00:53:18] [INFO]     		Peripheral ID 0x04001bb001
+[2026-03-14 00:53:18] [INFO]     		Designer is 0x23b, ARM Ltd
+[2026-03-14 00:53:18] [INFO]     		Part is 0x001, Cortex-M3 ITM (Instrumentation Trace Module)
+[2026-03-14 00:53:18] [INFO]     		Component class is 0xe, Generic IP component
+[2026-03-14 00:53:18] [INFO]     	ROMTABLE[0x10] = 0xfff41003
+[2026-03-14 00:53:18] [INFO]     		Component base address 0xe0040000
+[2026-03-14 00:53:18] [INFO]     		Peripheral ID 0x04001bb923
+[2026-03-14 00:53:18] [INFO]     		Designer is 0x23b, ARM Ltd
+[2026-03-14 00:53:18] [INFO]     		Part is 0x923, Cortex-M3 TPIU (Trace Port Interface Unit)
+[2026-03-14 00:53:18] [INFO]     		Component class is 0x9, CoreSight component
+[2026-03-14 00:53:18] [INFO]     		Type is 0x11, Trace Sink, Port
+[2026-03-14 00:53:18] [INFO]     	ROMTABLE[0x14] = 0xfff42002
+[2026-03-14 00:53:18] [INFO]     		Component not present
+[2026-03-14 00:53:18] [INFO]     	ROMTABLE[0x18] = 0x00000000
+[2026-03-14 00:53:18] [INFO]     		End of ROM table
+[2026-03-14 00:53:18] [INFO]     shutdown command invoked
+[2026-03-14 00:53:18] [INFO]     Info : Close the CH347.
+[2026-03-14 00:53:18] [INFO] --------------------------------------------------------------------------------
+[2026-03-14 00:53:18] [INFO]   Exit code: 0
+[2026-03-14 00:53:18] [INFO] ================================================================================
+[2026-03-14 00:53:18] [INFO] [OK] SWD DPIDR verified: 0x1ba01477
+[2026-03-14 00:53:18] [PASS] STEP 2 completed successfully
+</pre>
+</div>
+</details>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 3 Halt target</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2026-03-14 00:53:18</td><td>2026-03-14 00:53:18</td></tr>
+</table>
+<details>
+<summary><div class='step-title'><div>Step Log</div><div class='status unknown'>DETAIL</div></div></summary>
+<div class='content'>
+<h4>Log</h4>
+<pre>
+[2026-03-14 00:53:18] [STEP 3] Halt target
+[2026-03-14 00:53:18] [INFO] [WAVESHARE JTAG] OpenOCD binary: G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\openocd.exe
+[2026-03-14 00:53:18] [INFO] 
+[2026-03-14 00:53:18] [INFO] ================================================================================
+[2026-03-14 00:53:18] [INFO] [WAVESHARE JTAG] OPENOCD + TARGET EXECUTION
+[2026-03-14 00:53:18] [INFO] ================================================================================
+[2026-03-14 00:53:18] [INFO]   Binary:    G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\openocd.exe
+[2026-03-14 00:53:18] [INFO]   Adapter:   G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\ch347_swd.cfg
+[2026-03-14 00:53:18] [INFO]   Target:    G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\stm32f1x.cfg
+[2026-03-14 00:53:18] [INFO]   Transport: swd
+[2026-03-14 00:53:18] [INFO]   Timeout:   30s
+[2026-03-14 00:53:18] [INFO] 
+[2026-03-14 00:53:18] [INFO]   Commands:
+[2026-03-14 00:53:18] [INFO]     [1] halt
+[2026-03-14 00:53:18] [INFO] 
+[2026-03-14 00:53:18] [INFO] --------------------------------------------------------------------------------
+[2026-03-14 00:53:18] [INFO]   OpenOCD Output:
+[2026-03-14 00:53:18] [INFO] --------------------------------------------------------------------------------
+[2026-03-14 00:53:18] [INFO]     ch347_swd_switch_seq 1 
+[2026-03-14 00:53:18] [INFO]     
+[2026-03-14 00:53:18] [INFO]     ch347_swd_switch_seq 3 
+[2026-03-14 00:53:18] [INFO]     
+[2026-03-14 00:53:18] [INFO]     Open On-Chip Debugger 0.12.0+dev (2023-06-02-20:00)
+[2026-03-14 00:53:18] [INFO]     Licensed under GNU GPL v2
+[2026-03-14 00:53:18] [INFO]     For bug reports, read
+[2026-03-14 00:53:18] [INFO]     	http://openocd.org/doc/doxygen/bugs.html
+[2026-03-14 00:53:18] [INFO]     Info : CH347 SWD mode enabled
+[2026-03-14 00:53:18] [INFO]     none separate
+[2026-03-14 00:53:18] [INFO]     none separate
+[2026-03-14 00:53:18] [INFO]     Info : CH347 Open Succ.
+[2026-03-14 00:53:18] [INFO]     Info : clock speed 1000 kHz
+[2026-03-14 00:53:18] [INFO]     Info : SWD DPIDR 0x1ba01477
+[2026-03-14 00:53:18] [INFO]     Info : [stm32f1x.cpu] Cortex-M3 r1p1 processor detected
+[2026-03-14 00:53:18] [INFO]     Info : [stm32f1x.cpu] target has 6 breakpoints, 4 watchpoints
+[2026-03-14 00:53:18] [INFO]     Info : starting gdb server for stm32f1x.cpu on 3333
+[2026-03-14 00:53:18] [INFO]     Info : Listening on port 3333 for gdb connections
+[2026-03-14 00:53:18] [INFO]     Warn : [stm32f1x.cpu] target was in unknown state when halt was requested
+[2026-03-14 00:53:18] [INFO]     shutdown command invoked
+[2026-03-14 00:53:18] [INFO]     Info : Close the CH347.
+[2026-03-14 00:53:18] [INFO] --------------------------------------------------------------------------------
+[2026-03-14 00:53:18] [INFO]   Exit code: 0
+[2026-03-14 00:53:18] [INFO] ================================================================================
+[2026-03-14 00:53:18] [INFO] [OK] Target halted
+[2026-03-14 00:53:18] [PASS] STEP 3 completed successfully
+</pre>
+</div>
+</details>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 4 Read DBGMCU_IDCODE register</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2026-03-14 00:53:18</td><td>2026-03-14 00:53:18</td></tr>
+</table>
+<details>
+<summary><div class='step-title'><div>Step Log</div><div class='status unknown'>DETAIL</div></div></summary>
+<div class='content'>
+<h4>Log</h4>
+<pre>
+[2026-03-14 00:53:18] [STEP 4] Read DBGMCU_IDCODE register
+[2026-03-14 00:53:18] [INFO] [WAVESHARE JTAG] OpenOCD binary: G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\openocd.exe
+[2026-03-14 00:53:18] [INFO] 
+[2026-03-14 00:53:18] [INFO] ================================================================================
+[2026-03-14 00:53:18] [INFO] [WAVESHARE JTAG] OPENOCD + TARGET EXECUTION
+[2026-03-14 00:53:18] [INFO] ================================================================================
+[2026-03-14 00:53:18] [INFO]   Binary:    G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\openocd.exe
+[2026-03-14 00:53:18] [INFO]   Adapter:   G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\ch347_swd.cfg
+[2026-03-14 00:53:18] [INFO]   Target:    G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\stm32f1x.cfg
+[2026-03-14 00:53:18] [INFO]   Transport: swd
+[2026-03-14 00:53:18] [INFO]   Timeout:   30s
+[2026-03-14 00:53:18] [INFO] 
+[2026-03-14 00:53:18] [INFO]   Commands:
+[2026-03-14 00:53:18] [INFO]     [1] halt
+[2026-03-14 00:53:18] [INFO]     [2] mdw 0xE0042000 1
+[2026-03-14 00:53:18] [INFO] 
+[2026-03-14 00:53:18] [INFO] --------------------------------------------------------------------------------
+[2026-03-14 00:53:18] [INFO]   OpenOCD Output:
+[2026-03-14 00:53:18] [INFO] --------------------------------------------------------------------------------
+[2026-03-14 00:53:18] [INFO]     ch347_swd_switch_seq 1 
+[2026-03-14 00:53:18] [INFO]     
+[2026-03-14 00:53:18] [INFO]     ch347_swd_switch_seq 3 
+[2026-03-14 00:53:18] [INFO]     
+[2026-03-14 00:53:18] [INFO]     Open On-Chip Debugger 0.12.0+dev (2023-06-02-20:00)
+[2026-03-14 00:53:18] [INFO]     Licensed under GNU GPL v2
+[2026-03-14 00:53:18] [INFO]     For bug reports, read
+[2026-03-14 00:53:18] [INFO]     	http://openocd.org/doc/doxygen/bugs.html
+[2026-03-14 00:53:18] [INFO]     Info : CH347 SWD mode enabled
+[2026-03-14 00:53:18] [INFO]     none separate
+[2026-03-14 00:53:18] [INFO]     none separate
+[2026-03-14 00:53:18] [INFO]     Info : CH347 Open Succ.
+[2026-03-14 00:53:18] [INFO]     Info : clock speed 1000 kHz
+[2026-03-14 00:53:18] [INFO]     Info : SWD DPIDR 0x1ba01477
+[2026-03-14 00:53:18] [INFO]     Info : [stm32f1x.cpu] Cortex-M3 r1p1 processor detected
+[2026-03-14 00:53:18] [INFO]     Info : [stm32f1x.cpu] target has 6 breakpoints, 4 watchpoints
+[2026-03-14 00:53:18] [INFO]     Info : starting gdb server for stm32f1x.cpu on 3333
+[2026-03-14 00:53:18] [INFO]     Info : Listening on port 3333 for gdb connections
+[2026-03-14 00:53:18] [INFO]     Warn : [stm32f1x.cpu] target was in unknown state when halt was requested
+[2026-03-14 00:53:18] [INFO]     0xe0042000: 20036410 
+[2026-03-14 00:53:18] [INFO]     shutdown command invoked
+[2026-03-14 00:53:18] [INFO]     Info : Close the CH347.
+[2026-03-14 00:53:18] [INFO] --------------------------------------------------------------------------------
+[2026-03-14 00:53:18] [INFO]   Exit code: 0
+[2026-03-14 00:53:18] [INFO] ================================================================================
+[2026-03-14 00:53:18] [INFO] [OK] Memory read complete at 0xE0042000
+[2026-03-14 00:53:18] [PASS] STEP 4 completed successfully
+</pre>
+</div>
+</details>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 5 Read flash size register</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2026-03-14 00:53:18</td><td>2026-03-14 00:53:19</td></tr>
+</table>
+<details>
+<summary><div class='step-title'><div>Step Log</div><div class='status unknown'>DETAIL</div></div></summary>
+<div class='content'>
+<h4>Log</h4>
+<pre>
+[2026-03-14 00:53:18] [STEP 5] Read flash size register
+[2026-03-14 00:53:18] [INFO] [WAVESHARE JTAG] OpenOCD binary: G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\openocd.exe
+[2026-03-14 00:53:18] [INFO] 
+[2026-03-14 00:53:18] [INFO] ================================================================================
+[2026-03-14 00:53:18] [INFO] [WAVESHARE JTAG] OPENOCD + TARGET EXECUTION
+[2026-03-14 00:53:18] [INFO] ================================================================================
+[2026-03-14 00:53:18] [INFO]   Binary:    G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\openocd.exe
+[2026-03-14 00:53:18] [INFO]   Adapter:   G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\ch347_swd.cfg
+[2026-03-14 00:53:18] [INFO]   Target:    G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\stm32f1x.cfg
+[2026-03-14 00:53:18] [INFO]   Transport: swd
+[2026-03-14 00:53:18] [INFO]   Timeout:   30s
+[2026-03-14 00:53:18] [INFO] 
+[2026-03-14 00:53:18] [INFO]   Commands:
+[2026-03-14 00:53:18] [INFO]     [1] halt
+[2026-03-14 00:53:18] [INFO]     [2] mdh 0x1FFFF7E0 1
+[2026-03-14 00:53:18] [INFO] 
+[2026-03-14 00:53:19] [INFO] --------------------------------------------------------------------------------
+[2026-03-14 00:53:19] [INFO]   OpenOCD Output:
+[2026-03-14 00:53:19] [INFO] --------------------------------------------------------------------------------
+[2026-03-14 00:53:19] [INFO]     ch347_swd_switch_seq 1 
+[2026-03-14 00:53:19] [INFO]     
+[2026-03-14 00:53:19] [INFO]     ch347_swd_switch_seq 3 
+[2026-03-14 00:53:19] [INFO]     
+[2026-03-14 00:53:19] [INFO]     Open On-Chip Debugger 0.12.0+dev (2023-06-02-20:00)
+[2026-03-14 00:53:19] [INFO]     Licensed under GNU GPL v2
+[2026-03-14 00:53:19] [INFO]     For bug reports, read
+[2026-03-14 00:53:19] [INFO]     	http://openocd.org/doc/doxygen/bugs.html
+[2026-03-14 00:53:19] [INFO]     Info : CH347 SWD mode enabled
+[2026-03-14 00:53:19] [INFO]     none separate
+[2026-03-14 00:53:19] [INFO]     none separate
+[2026-03-14 00:53:19] [INFO]     Info : CH347 Open Succ.
+[2026-03-14 00:53:19] [INFO]     Info : clock speed 1000 kHz
+[2026-03-14 00:53:19] [INFO]     Info : SWD DPIDR 0x1ba01477
+[2026-03-14 00:53:19] [INFO]     Info : [stm32f1x.cpu] Cortex-M3 r1p1 processor detected
+[2026-03-14 00:53:19] [INFO]     Info : [stm32f1x.cpu] target has 6 breakpoints, 4 watchpoints
+[2026-03-14 00:53:19] [INFO]     Info : starting gdb server for stm32f1x.cpu on 3333
+[2026-03-14 00:53:19] [INFO]     Info : Listening on port 3333 for gdb connections
+[2026-03-14 00:53:19] [INFO]     Warn : [stm32f1x.cpu] target was in unknown state when halt was requested
+[2026-03-14 00:53:19] [INFO]     0x1ffff7e0: 0040 
+[2026-03-14 00:53:19] [INFO]     shutdown command invoked
+[2026-03-14 00:53:19] [INFO]     Info : Close the CH347.
+[2026-03-14 00:53:19] [INFO] --------------------------------------------------------------------------------
+[2026-03-14 00:53:19] [INFO]   Exit code: 0
+[2026-03-14 00:53:19] [INFO] ================================================================================
+[2026-03-14 00:53:19] [INFO] [OK] Memory read complete at 0x1FFFF7E0
+[2026-03-14 00:53:19] [PASS] STEP 5 completed successfully
+</pre>
+</div>
+</details>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 6 Write test pattern to SRAM</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2026-03-14 00:53:19</td><td>2026-03-14 00:53:19</td></tr>
+</table>
+<details>
+<summary><div class='step-title'><div>Step Log</div><div class='status unknown'>DETAIL</div></div></summary>
+<div class='content'>
+<h4>Log</h4>
+<pre>
+[2026-03-14 00:53:19] [STEP 6] Write test pattern to SRAM
+[2026-03-14 00:53:19] [INFO] [WAVESHARE JTAG] OpenOCD binary: G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\openocd.exe
+[2026-03-14 00:53:19] [INFO] 
+[2026-03-14 00:53:19] [INFO] ================================================================================
+[2026-03-14 00:53:19] [INFO] [WAVESHARE JTAG] OPENOCD + TARGET EXECUTION
+[2026-03-14 00:53:19] [INFO] ================================================================================
+[2026-03-14 00:53:19] [INFO]   Binary:    G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\openocd.exe
+[2026-03-14 00:53:19] [INFO]   Adapter:   G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\ch347_swd.cfg
+[2026-03-14 00:53:19] [INFO]   Target:    G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\stm32f1x.cfg
+[2026-03-14 00:53:19] [INFO]   Transport: swd
+[2026-03-14 00:53:19] [INFO]   Timeout:   30s
+[2026-03-14 00:53:19] [INFO] 
+[2026-03-14 00:53:19] [INFO]   Commands:
+[2026-03-14 00:53:19] [INFO]     [1] halt
+[2026-03-14 00:53:19] [INFO]     [2] mww 0x20004FF0 0xDEADBEEF
+[2026-03-14 00:53:19] [INFO]     [3] mww 0x20004FF4 0xCAFEBABE
+[2026-03-14 00:53:19] [INFO] 
+[2026-03-14 00:53:19] [INFO] --------------------------------------------------------------------------------
+[2026-03-14 00:53:19] [INFO]   OpenOCD Output:
+[2026-03-14 00:53:19] [INFO] --------------------------------------------------------------------------------
+[2026-03-14 00:53:19] [INFO]     ch347_swd_switch_seq 1 
+[2026-03-14 00:53:19] [INFO]     
+[2026-03-14 00:53:19] [INFO]     ch347_swd_switch_seq 3 
+[2026-03-14 00:53:19] [INFO]     
+[2026-03-14 00:53:19] [INFO]     Open On-Chip Debugger 0.12.0+dev (2023-06-02-20:00)
+[2026-03-14 00:53:19] [INFO]     Licensed under GNU GPL v2
+[2026-03-14 00:53:19] [INFO]     For bug reports, read
+[2026-03-14 00:53:19] [INFO]     	http://openocd.org/doc/doxygen/bugs.html
+[2026-03-14 00:53:19] [INFO]     Info : CH347 SWD mode enabled
+[2026-03-14 00:53:19] [INFO]     none separate
+[2026-03-14 00:53:19] [INFO]     none separate
+[2026-03-14 00:53:19] [INFO]     Info : CH347 Open Succ.
+[2026-03-14 00:53:19] [INFO]     Info : clock speed 1000 kHz
+[2026-03-14 00:53:19] [INFO]     Info : SWD DPIDR 0x1ba01477
+[2026-03-14 00:53:19] [INFO]     Info : [stm32f1x.cpu] Cortex-M3 r1p1 processor detected
+[2026-03-14 00:53:19] [INFO]     Info : [stm32f1x.cpu] target has 6 breakpoints, 4 watchpoints
+[2026-03-14 00:53:19] [INFO]     Info : starting gdb server for stm32f1x.cpu on 3333
+[2026-03-14 00:53:19] [INFO]     Info : Listening on port 3333 for gdb connections
+[2026-03-14 00:53:19] [INFO]     Warn : [stm32f1x.cpu] target was in unknown state when halt was requested
+[2026-03-14 00:53:19] [INFO]     shutdown command invoked
+[2026-03-14 00:53:19] [INFO]     Info : Close the CH347.
+[2026-03-14 00:53:19] [INFO] --------------------------------------------------------------------------------
+[2026-03-14 00:53:19] [INFO]   Exit code: 0
+[2026-03-14 00:53:19] [INFO] ================================================================================
+[2026-03-14 00:53:19] [INFO] [OK] Memory write complete at 0x20004FF0 (2 values)
+[2026-03-14 00:53:19] [PASS] STEP 6 completed successfully
+</pre>
+</div>
+</details>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 7 Read back SRAM — verify write</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2026-03-14 00:53:19</td><td>2026-03-14 00:53:19</td></tr>
+</table>
+<details>
+<summary><div class='step-title'><div>Step Log</div><div class='status unknown'>DETAIL</div></div></summary>
+<div class='content'>
+<h4>Log</h4>
+<pre>
+[2026-03-14 00:53:19] [STEP 7] Read back SRAM — verify write
+[2026-03-14 00:53:19] [INFO] [WAVESHARE JTAG] OpenOCD binary: G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\openocd.exe
+[2026-03-14 00:53:19] [INFO] 
+[2026-03-14 00:53:19] [INFO] ================================================================================
+[2026-03-14 00:53:19] [INFO] [WAVESHARE JTAG] OPENOCD + TARGET EXECUTION
+[2026-03-14 00:53:19] [INFO] ================================================================================
+[2026-03-14 00:53:19] [INFO]   Binary:    G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\openocd.exe
+[2026-03-14 00:53:19] [INFO]   Adapter:   G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\ch347_swd.cfg
+[2026-03-14 00:53:19] [INFO]   Target:    G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\stm32f1x.cfg
+[2026-03-14 00:53:19] [INFO]   Transport: swd
+[2026-03-14 00:53:19] [INFO]   Timeout:   30s
+[2026-03-14 00:53:19] [INFO] 
+[2026-03-14 00:53:19] [INFO]   Commands:
+[2026-03-14 00:53:19] [INFO]     [1] halt
+[2026-03-14 00:53:19] [INFO]     [2] mdw 0x20004FF0 2
+[2026-03-14 00:53:19] [INFO] 
+[2026-03-14 00:53:19] [INFO] --------------------------------------------------------------------------------
+[2026-03-14 00:53:19] [INFO]   OpenOCD Output:
+[2026-03-14 00:53:19] [INFO] --------------------------------------------------------------------------------
+[2026-03-14 00:53:19] [INFO]     ch347_swd_switch_seq 1 
+[2026-03-14 00:53:19] [INFO]     
+[2026-03-14 00:53:19] [INFO]     ch347_swd_switch_seq 3 
+[2026-03-14 00:53:19] [INFO]     
+[2026-03-14 00:53:19] [INFO]     Open On-Chip Debugger 0.12.0+dev (2023-06-02-20:00)
+[2026-03-14 00:53:19] [INFO]     Licensed under GNU GPL v2
+[2026-03-14 00:53:19] [INFO]     For bug reports, read
+[2026-03-14 00:53:19] [INFO]     	http://openocd.org/doc/doxygen/bugs.html
+[2026-03-14 00:53:19] [INFO]     Info : CH347 SWD mode enabled
+[2026-03-14 00:53:19] [INFO]     none separate
+[2026-03-14 00:53:19] [INFO]     none separate
+[2026-03-14 00:53:19] [INFO]     Info : CH347 Open Succ.
+[2026-03-14 00:53:19] [INFO]     Info : clock speed 1000 kHz
+[2026-03-14 00:53:19] [INFO]     Info : SWD DPIDR 0x1ba01477
+[2026-03-14 00:53:19] [INFO]     Info : [stm32f1x.cpu] Cortex-M3 r1p1 processor detected
+[2026-03-14 00:53:19] [INFO]     Info : [stm32f1x.cpu] target has 6 breakpoints, 4 watchpoints
+[2026-03-14 00:53:19] [INFO]     Info : starting gdb server for stm32f1x.cpu on 3333
+[2026-03-14 00:53:19] [INFO]     Info : Listening on port 3333 for gdb connections
+[2026-03-14 00:53:19] [INFO]     Warn : [stm32f1x.cpu] target was in unknown state when halt was requested
+[2026-03-14 00:53:19] [INFO]     0x20004ff0: deadbeef cafebabe 
+[2026-03-14 00:53:19] [INFO]     shutdown command invoked
+[2026-03-14 00:53:19] [INFO]     Info : Close the CH347.
+[2026-03-14 00:53:19] [INFO] --------------------------------------------------------------------------------
+[2026-03-14 00:53:19] [INFO]   Exit code: 0
+[2026-03-14 00:53:19] [INFO] ================================================================================
+[2026-03-14 00:53:19] [INFO] [OK] Memory read complete at 0x20004FF0
+[2026-03-14 00:53:19] [PASS] STEP 7 completed successfully
+</pre>
+</div>
+</details>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 8 Flash Blinky firmware</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2026-03-14 00:53:19</td><td>2026-03-14 00:53:19</td></tr>
+</table>
+<details>
+<summary><div class='step-title'><div>Step Log</div><div class='status unknown'>DETAIL</div></div></summary>
+<div class='content'>
+<h4>Log</h4>
+<pre>
+[2026-03-14 00:53:19] [STEP 8] Flash Blinky firmware
+[2026-03-14 00:53:19] [INFO] 
+[2026-03-14 00:53:19] [INFO] ================================================================================
+[2026-03-14 00:53:19] [INFO] [WAVESHARE JTAG] FLASH IMAGE
+[2026-03-14 00:53:19] [INFO] ================================================================================
+[2026-03-14 00:53:19] [INFO]   Image:   G:\_GitHub\SW_Universal-Test-Framework\tests\tc_waveshare_stm32_swd\STM32F103-BluePill-Blinky.elf
+[2026-03-14 00:53:19] [INFO]   Target:  stm32f1x
+[2026-03-14 00:53:19] [INFO]   Erase:   True  Verify: True
+[2026-03-14 00:53:19] [INFO] 
+[2026-03-14 00:53:19] [INFO] [WAVESHARE JTAG] OpenOCD binary: G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\openocd.exe
+[2026-03-14 00:53:19] [INFO] 
+[2026-03-14 00:53:19] [INFO] ================================================================================
+[2026-03-14 00:53:19] [INFO] [WAVESHARE JTAG] OPENOCD + TARGET EXECUTION
+[2026-03-14 00:53:19] [INFO] ================================================================================
+[2026-03-14 00:53:19] [INFO]   Binary:    G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\openocd.exe
+[2026-03-14 00:53:19] [INFO]   Adapter:   G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\ch347_swd.cfg
+[2026-03-14 00:53:19] [INFO]   Target:    G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\stm32f1x.cfg
+[2026-03-14 00:53:19] [INFO]   Transport: swd
+[2026-03-14 00:53:19] [INFO]   Timeout:   120s
+[2026-03-14 00:53:19] [INFO] 
+[2026-03-14 00:53:19] [INFO]   Commands:
+[2026-03-14 00:53:19] [INFO]     [1] reset init
+[2026-03-14 00:53:19] [INFO]     [2] flash write_image erase {G:\_GitHub\SW_Universal-Test-Framework\tests\tc_waveshare_stm32_swd\STM32F103-BluePill-Blinky.elf}
+[2026-03-14 00:53:19] [INFO]     [3] verify_image {G:\_GitHub\SW_Universal-Test-Framework\tests\tc_waveshare_stm32_swd\STM32F103-BluePill-Blinky.elf}
+[2026-03-14 00:53:19] [INFO] 
+[2026-03-14 00:53:19] [INFO] --------------------------------------------------------------------------------
+[2026-03-14 00:53:19] [INFO]   OpenOCD Output:
+[2026-03-14 00:53:19] [INFO] --------------------------------------------------------------------------------
+[2026-03-14 00:53:19] [INFO]     ch347_swd_switch_seq 1 
+[2026-03-14 00:53:19] [INFO]     
+[2026-03-14 00:53:19] [INFO]     ch347: trst:0, srst:0
+[2026-03-14 00:53:19] [INFO]     ch347_swd_switch_seq 3 
+[2026-03-14 00:53:19] [INFO]     
+[2026-03-14 00:53:19] [INFO]     Open On-Chip Debugger 0.12.0+dev (2023-06-02-20:00)
+[2026-03-14 00:53:19] [INFO]     Licensed under GNU GPL v2
+[2026-03-14 00:53:19] [INFO]     For bug reports, read
+[2026-03-14 00:53:19] [INFO]     	http://openocd.org/doc/doxygen/bugs.html
+[2026-03-14 00:53:19] [INFO]     Info : CH347 SWD mode enabled
+[2026-03-14 00:53:19] [INFO]     none separate
+[2026-03-14 00:53:19] [INFO]     none separate
+[2026-03-14 00:53:19] [INFO]     Info : CH347 Open Succ.
+[2026-03-14 00:53:19] [INFO]     Info : clock speed 1000 kHz
+[2026-03-14 00:53:19] [INFO]     Info : SWD DPIDR 0x1ba01477
+[2026-03-14 00:53:19] [INFO]     Info : [stm32f1x.cpu] Cortex-M3 r1p1 processor detected
+[2026-03-14 00:53:19] [INFO]     Info : [stm32f1x.cpu] target has 6 breakpoints, 4 watchpoints
+[2026-03-14 00:53:19] [INFO]     Info : starting gdb server for stm32f1x.cpu on 3333
+[2026-03-14 00:53:19] [INFO]     Info : Listening on port 3333 for gdb connections
+[2026-03-14 00:53:19] [INFO]     [stm32f1x.cpu] halted due to debug-request, current mode: Thread 
+[2026-03-14 00:53:19] [INFO]     xPSR: 0x61000000 pc: 0x08000218 msp: 0x20004fec
+[2026-03-14 00:53:19] [INFO]     Info : device id = 0x20036410
+[2026-03-14 00:53:19] [INFO]     Info : flash size = 64 KiB
+[2026-03-14 00:53:19] [INFO]     Warn : Adding extra erase range, 0x08000754 .. 0x080007ff
+[2026-03-14 00:53:19] [INFO]     auto erase enabled
+[2026-03-14 00:53:19] [INFO]     wrote 1876 bytes from file G:\_GitHub\SW_Universal-Test-Framework\tests\tc_waveshare_stm32_swd\STM32F103-BluePill-Blinky.elf in 0.156240s (11.726 KiB/s)
+[2026-03-14 00:53:19] [INFO]     verified 1876 bytes in 0.023480s (78.025 KiB/s)
+[2026-03-14 00:53:19] [INFO]     shutdown command invoked
+[2026-03-14 00:53:19] [INFO]     Info : Close the CH347.
+[2026-03-14 00:53:19] [INFO] --------------------------------------------------------------------------------
+[2026-03-14 00:53:19] [INFO]   Exit code: 0
+[2026-03-14 00:53:19] [INFO] ================================================================================
+[2026-03-14 00:53:19] [INFO] [OK] Flash programming complete
+[2026-03-14 00:53:19] [PASS] STEP 8 completed successfully
+</pre>
+</div>
+</details>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 9 Verify flash contents</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2026-03-14 00:53:19</td><td>2026-03-14 00:53:19</td></tr>
+</table>
+<details>
+<summary><div class='step-title'><div>Step Log</div><div class='status unknown'>DETAIL</div></div></summary>
+<div class='content'>
+<h4>Log</h4>
+<pre>
+[2026-03-14 00:53:19] [STEP 9] Verify flash contents
+[2026-03-14 00:53:19] [INFO] [WAVESHARE JTAG] OpenOCD binary: G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\openocd.exe
+[2026-03-14 00:53:19] [INFO] 
+[2026-03-14 00:53:19] [INFO] ================================================================================
+[2026-03-14 00:53:19] [INFO] [WAVESHARE JTAG] OPENOCD + TARGET EXECUTION
+[2026-03-14 00:53:19] [INFO] ================================================================================
+[2026-03-14 00:53:19] [INFO]   Binary:    G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\openocd.exe
+[2026-03-14 00:53:19] [INFO]   Adapter:   G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\ch347_swd.cfg
+[2026-03-14 00:53:19] [INFO]   Target:    G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\stm32f1x.cfg
+[2026-03-14 00:53:19] [INFO]   Transport: swd
+[2026-03-14 00:53:19] [INFO]   Timeout:   60s
+[2026-03-14 00:53:19] [INFO] 
+[2026-03-14 00:53:19] [INFO]   Commands:
+[2026-03-14 00:53:19] [INFO]     [1] reset init
+[2026-03-14 00:53:19] [INFO]     [2] verify_image {G:\_GitHub\SW_Universal-Test-Framework\tests\tc_waveshare_stm32_swd\STM32F103-BluePill-Blinky.elf}
+[2026-03-14 00:53:19] [INFO] 
+[2026-03-14 00:53:19] [INFO] --------------------------------------------------------------------------------
+[2026-03-14 00:53:19] [INFO]   OpenOCD Output:
+[2026-03-14 00:53:19] [INFO] --------------------------------------------------------------------------------
+[2026-03-14 00:53:19] [INFO]     ch347_swd_switch_seq 1 
+[2026-03-14 00:53:19] [INFO]     
+[2026-03-14 00:53:19] [INFO]     ch347: trst:0, srst:0
+[2026-03-14 00:53:19] [INFO]     ch347_swd_switch_seq 3 
+[2026-03-14 00:53:19] [INFO]     
+[2026-03-14 00:53:19] [INFO]     Open On-Chip Debugger 0.12.0+dev (2023-06-02-20:00)
+[2026-03-14 00:53:19] [INFO]     Licensed under GNU GPL v2
+[2026-03-14 00:53:19] [INFO]     For bug reports, read
+[2026-03-14 00:53:19] [INFO]     	http://openocd.org/doc/doxygen/bugs.html
+[2026-03-14 00:53:19] [INFO]     Info : CH347 SWD mode enabled
+[2026-03-14 00:53:19] [INFO]     none separate
+[2026-03-14 00:53:19] [INFO]     none separate
+[2026-03-14 00:53:19] [INFO]     Info : CH347 Open Succ.
+[2026-03-14 00:53:19] [INFO]     Info : clock speed 1000 kHz
+[2026-03-14 00:53:19] [INFO]     Info : SWD DPIDR 0x1ba01477
+[2026-03-14 00:53:19] [INFO]     Info : [stm32f1x.cpu] Cortex-M3 r1p1 processor detected
+[2026-03-14 00:53:19] [INFO]     Info : [stm32f1x.cpu] target has 6 breakpoints, 4 watchpoints
+[2026-03-14 00:53:19] [INFO]     Info : starting gdb server for stm32f1x.cpu on 3333
+[2026-03-14 00:53:19] [INFO]     Info : Listening on port 3333 for gdb connections
+[2026-03-14 00:53:19] [INFO]     [stm32f1x.cpu] halted due to debug-request, current mode: Thread 
+[2026-03-14 00:53:19] [INFO]     xPSR: 0x61000000 pc: 0x2000002e msp: 0x20004fec
+[2026-03-14 00:53:19] [INFO]     verified 1876 bytes in 0.021281s (86.088 KiB/s)
+[2026-03-14 00:53:19] [INFO]     shutdown command invoked
+[2026-03-14 00:53:19] [INFO]     Info : Close the CH347.
+[2026-03-14 00:53:19] [INFO] --------------------------------------------------------------------------------
+[2026-03-14 00:53:19] [INFO]   Exit code: 0
+[2026-03-14 00:53:19] [INFO] ================================================================================
+[2026-03-14 00:53:19] [INFO] [OK] Flash verification passed
+[2026-03-14 00:53:19] [PASS] STEP 9 completed successfully
+</pre>
+</div>
+</details>
+</div>
+</details>
+<details>
+<summary>
+<div class='step-title'><div>STEP 10 Run target command — read CPU registers</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2026-03-14 00:53:19</td><td>2026-03-14 00:53:19</td></tr>
+</table>
+<details>
+<summary><div class='step-title'><div>Step Log</div><div class='status unknown'>DETAIL</div></div></summary>
+<div class='content'>
+<h4>Log</h4>
+<pre>
+[2026-03-14 00:53:19] [STEP 10] Run target command — read CPU registers
+[2026-03-14 00:53:19] [INFO] [WAVESHARE JTAG] OpenOCD binary: G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\openocd.exe
+[2026-03-14 00:53:19] [INFO] 
+[2026-03-14 00:53:19] [INFO] ================================================================================
+[2026-03-14 00:53:19] [INFO] [WAVESHARE JTAG] OPENOCD + TARGET EXECUTION
+[2026-03-14 00:53:19] [INFO] ================================================================================
+[2026-03-14 00:53:19] [INFO]   Binary:    G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\openocd.exe
+[2026-03-14 00:53:19] [INFO]   Adapter:   G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\ch347_swd.cfg
+[2026-03-14 00:53:19] [INFO]   Target:    G:\_GitHub\SW_Universal-Test-Framework\UTFW\modules\ext_tools\waveshare\openocd\bin\stm32f1x.cfg
+[2026-03-14 00:53:19] [INFO]   Transport: swd
+[2026-03-14 00:53:19] [INFO]   Timeout:   30s
+[2026-03-14 00:53:19] [INFO] 
+[2026-03-14 00:53:19] [INFO]   Commands:
+[2026-03-14 00:53:19] [INFO]     [1] halt
+[2026-03-14 00:53:19] [INFO]     [2] reg
+[2026-03-14 00:53:19] [INFO] 
+[2026-03-14 00:53:19] [INFO] --------------------------------------------------------------------------------
+[2026-03-14 00:53:19] [INFO]   OpenOCD Output:
+[2026-03-14 00:53:19] [INFO] --------------------------------------------------------------------------------
+[2026-03-14 00:53:19] [INFO]     ch347_swd_switch_seq 1 
+[2026-03-14 00:53:19] [INFO]     
+[2026-03-14 00:53:19] [INFO]     ch347_swd_switch_seq 3 
+[2026-03-14 00:53:19] [INFO]     
+[2026-03-14 00:53:19] [INFO]     Open On-Chip Debugger 0.12.0+dev (2023-06-02-20:00)
+[2026-03-14 00:53:19] [INFO]     Licensed under GNU GPL v2
+[2026-03-14 00:53:19] [INFO]     For bug reports, read
+[2026-03-14 00:53:19] [INFO]     	http://openocd.org/doc/doxygen/bugs.html
+[2026-03-14 00:53:19] [INFO]     Info : CH347 SWD mode enabled
+[2026-03-14 00:53:19] [INFO]     none separate
+[2026-03-14 00:53:19] [INFO]     none separate
+[2026-03-14 00:53:19] [INFO]     Info : CH347 Open Succ.
+[2026-03-14 00:53:19] [INFO]     Info : clock speed 1000 kHz
+[2026-03-14 00:53:19] [INFO]     Info : SWD DPIDR 0x1ba01477
+[2026-03-14 00:53:19] [INFO]     Info : [stm32f1x.cpu] Cortex-M3 r1p1 processor detected
+[2026-03-14 00:53:19] [INFO]     Info : [stm32f1x.cpu] target has 6 breakpoints, 4 watchpoints
+[2026-03-14 00:53:19] [INFO]     Info : starting gdb server for stm32f1x.cpu on 3333
+[2026-03-14 00:53:19] [INFO]     Info : Listening on port 3333 for gdb connections
+[2026-03-14 00:53:19] [INFO]     Warn : [stm32f1x.cpu] target was in unknown state when halt was requested
+[2026-03-14 00:53:19] [INFO]     ===== arm v7m registers
+[2026-03-14 00:53:19] [INFO]     (0) r0 (/32)
+[2026-03-14 00:53:19] [INFO]     (1) r1 (/32)
+[2026-03-14 00:53:19] [INFO]     (2) r2 (/32)
+[2026-03-14 00:53:19] [INFO]     (3) r3 (/32)
+[2026-03-14 00:53:19] [INFO]     (4) r4 (/32)
+[2026-03-14 00:53:19] [INFO]     (5) r5 (/32)
+[2026-03-14 00:53:19] [INFO]     (6) r6 (/32)
+[2026-03-14 00:53:19] [INFO]     (7) r7 (/32)
+[2026-03-14 00:53:19] [INFO]     (8) r8 (/32)
+[2026-03-14 00:53:19] [INFO]     (9) r9 (/32)
+[2026-03-14 00:53:19] [INFO]     (10) r10 (/32)
+[2026-03-14 00:53:19] [INFO]     (11) r11 (/32)
+[2026-03-14 00:53:19] [INFO]     (12) r12 (/32)
+[2026-03-14 00:53:19] [INFO]     (13) sp (/32)
+[2026-03-14 00:53:19] [INFO]     (14) lr (/32)
+[2026-03-14 00:53:19] [INFO]     (15) pc (/32)
+[2026-03-14 00:53:19] [INFO]     (16) xpsr (/32)
+[2026-03-14 00:53:19] [INFO]     (17) msp (/32)
+[2026-03-14 00:53:19] [INFO]     (18) psp (/32)
+[2026-03-14 00:53:19] [INFO]     (20) primask (/1)
+[2026-03-14 00:53:19] [INFO]     (21) basepri (/8)
+[2026-03-14 00:53:19] [INFO]     (22) faultmask (/1)
+[2026-03-14 00:53:19] [INFO]     (23) control (/3)
+[2026-03-14 00:53:19] [INFO]     ===== Cortex-M DWT registers
+[2026-03-14 00:53:19] [INFO]     shutdown command invoked
+[2026-03-14 00:53:19] [INFO]     Info : Close the CH347.
+[2026-03-14 00:53:19] [INFO] --------------------------------------------------------------------------------
+[2026-03-14 00:53:19] [INFO]   Exit code: 0
+[2026-03-14 00:53:19] [INFO] ================================================================================
+[2026-03-14 00:53:19] [PASS] STEP 10 completed successfully
+</pre>
+</div>
+</details>
+</div>
+</details>
+<details class='teardown'>
+<summary>
+<div class='step-title'><div>TEARDOWN 1 Assert TRST (GPIO5 LOW → NRST LOW)</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2026-03-14 00:53:19</td><td>2026-03-14 00:53:19</td></tr>
+</table>
+<details>
+<summary><div class='step-title'><div>Step Log</div><div class='status unknown'>DETAIL</div></div></summary>
+<div class='content'>
+<h4>Log</h4>
+<pre>
+[2026-03-14 00:53:19] [TEARDOWN 1] Assert TRST (GPIO5 LOW → NRST LOW)
+[2026-03-14 00:53:19] [INFO] 
+[2026-03-14 00:53:19] [INFO] ================================================================================
+[2026-03-14 00:53:19] [INFO] [WAVESHARE GPIO] SET PIN
+[2026-03-14 00:53:19] [INFO] ================================================================================
+[2026-03-14 00:53:19] [INFO]   Device: #0  Pin: 5
+[2026-03-14 00:53:19] [INFO]   Dir:    OUTPUT  Level: 0
+[2026-03-14 00:53:19] [INFO] 
+[2026-03-14 00:53:19] [INFO]   [OK] GPIO5 -&gt; OUTPUT LOW
+[2026-03-14 00:53:19] [INFO] ================================================================================
+[2026-03-14 00:53:19] [PASS] TEARDOWN 1 completed successfully
+</pre>
+</div>
+</details>
+</div>
+</details>
+<details class='teardown'>
+<summary>
+<div class='step-title'><div>TEARDOWN 2 Deassert TRST (GPIO5 HIGH → NRST released)</div><div class='status pass'>PASS</div></div>
+</summary>
+<div class='content'>
+<table>
+<tr><th>Started</th><th>Finished</th></tr>
+<tr><td>2026-03-14 00:53:19</td><td>2026-03-14 00:53:19</td></tr>
+</table>
+<details>
+<summary><div class='step-title'><div>Step Log</div><div class='status unknown'>DETAIL</div></div></summary>
+<div class='content'>
+<h4>Log</h4>
+<pre>
+[2026-03-14 00:53:19] [TEARDOWN 2] Deassert TRST (GPIO5 HIGH → NRST released)
+[2026-03-14 00:53:19] [INFO] 
+[2026-03-14 00:53:19] [INFO] ================================================================================
+[2026-03-14 00:53:19] [INFO] [WAVESHARE GPIO] SET PIN
+[2026-03-14 00:53:19] [INFO] ================================================================================
+[2026-03-14 00:53:19] [INFO]   Device: #0  Pin: 5
+[2026-03-14 00:53:19] [INFO]   Dir:    OUTPUT  Level: 1
+[2026-03-14 00:53:19] [INFO] 
+[2026-03-14 00:53:19] [INFO]   [OK] GPIO5 -&gt; OUTPUT HIGH
+[2026-03-14 00:53:19] [INFO] ================================================================================
+[2026-03-14 00:53:19] [PASS] TEARDOWN 2 completed successfully
+[2026-03-14 00:53:19] ===== tc_waveshare_stm32_swd: RESULT: PASS =====
+[2026-03-14 00:53:19] +----------------------------------+
+[2026-03-14 00:53:19] | ██████   █████  ███████ ███████  |
+[2026-03-14 00:53:19] | ██   ██ ██   ██ ██      ██       |
+[2026-03-14 00:53:19] | ██████  ███████ ███████ ███████  |
+[2026-03-14 00:53:19] | ██      ██   ██      ██      ██  |
+[2026-03-14 00:53:19] | ██      ██   ██ ███████ ███████  |
+[2026-03-14 00:53:19] +----------------------------------+
+</pre>
+</div>
+</details>
+</div>
+</details>
+</section>
+</main>
+</body></html>

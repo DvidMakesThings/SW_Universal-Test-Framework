@@ -39,15 +39,22 @@ class tc_waveshare_stm32_swd:
         pass
 
     def pre(self):
-        """Pre-step: Ensure the target is running before the test.
+        """Pre-step: Verify adapter mode, then clear stale debug state.
 
-        Connects to the target, halts it (no-op if already halted),
-        then resumes execution.  This clears stale debug state from
-        prior sessions without needing SRST or SYSRESETREQ.
+        1. Check that the CH347 is in Mode 3 (JTAG/SWD + I2C).
+           If not, trigger a USB reset and re-check.
+        2. Connect to the target, halt it (no-op if already halted),
+           then resume execution.
         """
         hw = get_hwconfig()
 
         return [
+            # Mode 3 = UART1 + JTAG + I2C (required for SWD)
+            waveshare.ensure_mode(
+                name="Verify CH347 is in Mode 3 (JTAG/SWD)",
+                expected_mode=3,
+                dev_index=hw.CH347_DEV_INDEX,
+            ),
             waveshare.swd.run_target_command(
                 name="Halt and resume target",
                 target_cfg=hw.SWD_TARGET_CFG,

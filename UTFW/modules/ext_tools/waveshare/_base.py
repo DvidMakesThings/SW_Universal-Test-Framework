@@ -308,3 +308,123 @@ def get_chip_mode_description(mode: int) -> str:
         str: Mode description string.
     """
     return CH347_MODES.get(mode, f"Unknown mode: {mode}")
+
+
+# ======================== Mode Detection ========================
+
+def get_current_mode(dev_index: int = 0) -> Optional[int]:
+    """Query the current operating mode of the CH347 via the vendor DLL.
+
+    Args:
+        dev_index: USB device index (default 0).
+
+    Returns:
+        The chip_mode integer (0-4), or None if the device cannot be
+        reached (e.g. wrong mode exposes no DLL-compatible interface).
+    """
+    try:
+        from ._dll import enumerate_devices
+        for dev in enumerate_devices():
+            if dev["index"] == dev_index:
+                return dev["chip_mode"]
+    except Exception:
+        pass
+    return None
+
+
+def get_current_mode_by_pid() -> Optional[int]:
+    """Detect the approximate CH347 operating mode from the USB PID.
+
+    This works even when the vendor DLL cannot open the device (e.g.
+    the chip is in Mode 0 dual-UART and the JTAG DLL interface is
+    unavailable).
+
+    Returns:
+        0 if PID indicates Mode 0 (dual UART),
+        3 if PID indicates Mode 1/3 (SPI/JTAG + I2C),
+        None if no CH347 device is found.
+    """
+    _ensure_pyserial()
+    import serial.tools.list_ports
+
+    for port_info in serial.tools.list_ports.comports():
+        if port_info.vid != CH347_VID:
+            continue
+        if port_info.pid == CH347T_UART_PID:
+            return 0
+        if port_info.pid in (CH347T_PID, CH347F_PID):
+            return 3
+    return None
+
+
+def ensure_mode(
+        name: str,
+        expected_mode: int,
+        dev_index: int = 0,
+        negative_test: bool = False,
+) -> "TestAction":
+    """Create a TestAction that verifies the CH347 operating mode.
+
+    Tries DLL-based mode detection first; falls back to PID-based
+    heuristic.  Raises on mismatch.
+
+    Args:
+        name: Human-readable name for the test action.
+        expected_mode: Required CH347 operating mode (0-4).
+        dev_index: USB device index (default 0).
+        negative_test: Mark as negative test.
+
+    Returns:
+        TestAction: TestAction that verifies the mode.
+    """
+    from ....core.core import TestAction
+
+    expected_desc = get_chip_mode_description(expected_mode)
+
+    def execute():
+        logger = get_active_logger()
+
+        current = get_current_mode(dev_index)
+        if current is None:
+            current = get_current_mode_by_pid()
+
+        current_desc = get_chip_mode_description(current) if current is not None else "not detected"
+
+        if logger:
+            logger.info("")
+            logger.info("=" * 60)
+            logger.info("[WAVESHARE] CH347 MODE CHECK")
+            logger.info("=" * 60)
+            logger.info(f"  Current mode:  {current_desc}")
+            logger.info(f"  Expected mode: {expected_desc}")
+
+        if current == expected_mode:
+            if logger:
+                logger.info(f"  Status: OK")
+                logger.info("=" * 60)
+                logger.info("")
+            return True
+
+        if logger:
+            logger.error("")
+            logger.error("=" * 60)
+            logger.error("[WAVESHARE] MODE MISMATCH")
+            logger.error("=" * 60)
+            logger.error(f"  Device is in:    {current_desc}")
+            logger.error(f"  Test requires:   {expected_desc}")
+            logger.error("")
+            logger.error("  --> Switch the mode selector and replug the adapter.")
+            logger.error("=" * 60)
+            logger.error("")
+
+        raise WaveshareError(
+            f"CH347 is in {current_desc}, but this test requires {expected_desc}. "
+            f"Switch the mode selector and replug the adapter."
+        )
+
+    metadata = {
+        'display_command': f"Verify CH347 mode {expected_mode}",
+        'display_expected': expected_desc,
+    }
+
+    return TestAction(name, execute, negative_test=negative_test, metadata=metadata)

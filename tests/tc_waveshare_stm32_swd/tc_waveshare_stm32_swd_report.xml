@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="ENERGIS Functional Test" tests="13" failures="0" skipped="0" time="0.0" session_id="9d05877d">
-  <testcase classname="UTFW" name="PRE-STEP 1 Halt and resume target" time="0.0">
+<testsuite name="ENERGIS Functional Test" tests="14" failures="0" skipped="0" time="0.0" session_id="1a4bed8a">
+  <testcase classname="UTFW" name="PRE-STEP 1 Verify CH347 is in Mode 3 (JTAG/SWD)" time="0.0">
+  </testcase>
+  <testcase classname="UTFW" name="PRE-STEP 2 Halt and resume target" time="0.0">
   </testcase>
   <testcase classname="UTFW" name="STEP 1 SWD scan — find target" time="0.0">
   </testcase>
