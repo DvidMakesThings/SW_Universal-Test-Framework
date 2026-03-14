@@ -9,6 +9,8 @@ Hardware tool drivers for USB-based multi-protocol adapters.
 Available tools:
 - waveshare: Waveshare USB TO UART/I2C/SPI/JTAG adapter driver
              (WCH CH347 chipset, sub-modules: uart, i2c, spi, jtag)
+- PU2CANFD: Pibiger USB TO CAN FD adapter driver
+            (SavvyCAN-FD series, sub-modules: can, canopen)
 
 Author: DvidMakesThings
 """
@@ -17,6 +19,7 @@ import importlib
 
 __all__ = [
     "waveshare",
+    "PU2CANFD",
 ]
 
 

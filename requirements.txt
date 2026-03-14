@@ -12,6 +12,9 @@ pysnmp>=4.4.12
 # Network Packet Analysis (scapy for packet generation and analysis)
 scapy>=2.5.0
 
+# CAN Bus Communication (PU2CANFD adapter support)
+python-can>=4.0.0
+
 # HTTP/HTTPS Requests
 requests>=2.31.0
 

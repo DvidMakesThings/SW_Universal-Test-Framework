@@ -1,0 +1,547 @@
+<!DOCTYPE html><html lang='en'><head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<title>Tc Waveshare Uart Loopback &mdash; PASS</title>
+<style>
+    *,*::before,*::after{box-sizing:border-box}
+    :root{
+      --bg-primary:#f8f9fc;--bg-secondary:#ffffff;--bg-card:#ffffff;--bg-card-hover:#f3f4f8;
+      --bg-surface:#e8eaef;--border:#d4d8e0;--border-light:#c4c8d0;
+      --text-primary:#1a1d26;--text-secondary:#4b5264;--text-muted:#7a8194;
+      --accent:#4361ee;--accent-dim:#8da0f5;
+      --green:#059669;--green-bg:rgba(5,150,105,0.08);--green-border:rgba(5,150,105,0.25);
+      --red:#dc2626;--red-bg:rgba(220,38,38,0.06);--red-border:rgba(220,38,38,0.22);
+      --amber:#d97706;--amber-bg:rgba(217,119,6,0.06);--amber-border:rgba(217,119,6,0.22);
+      --blue:#2563eb;--blue-bg:rgba(37,99,235,0.05);
+      --purple:#7c3aed;--purple-bg:rgba(124,58,237,0.06);--purple-border:rgba(124,58,237,0.2);
+      --gray:#6b7280;
+      --radius:10px;--radius-lg:14px;
+      --font-mono:'SF Mono','Cascadia Code','Fira Code',Consolas,monospace;
+    }
+    body{font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+         background:var(--bg-primary);color:var(--text-primary);margin:0;line-height:1.6;
+         -webkit-font-smoothing:antialiased}
+
+    /* ── Header ── */
+    .report-header{background:var(--bg-secondary);border-bottom:1px solid var(--border);padding:0}
+    .header-inner{max-width:1200px;margin:0 auto;padding:28px 32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px}
+    .header-left{display:flex;flex-direction:column;gap:6px}
+    .header-left h1{margin:0;font-size:22px;font-weight:700;letter-spacing:-0.3px;color:var(--text-primary)}
+    .header-subtitle{font-size:13px;color:var(--text-secondary);display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+    .header-subtitle span{display:inline-flex;align-items:center;gap:5px}
+    .header-subtitle .dot{width:3px;height:3px;border-radius:50%;background:var(--text-muted);display:inline-block}
+    .overall-badge{display:flex;align-items:center;gap:10px;padding:12px 22px;border-radius:var(--radius-lg);font-size:15px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase}
+    .overall-badge.pass{background:var(--green-bg);border:1.5px solid var(--green-border);color:var(--green)}
+    .overall-badge.fail{background:var(--red-bg);border:1.5px solid var(--red-border);color:var(--red)}
+    .overall-badge.unknown{background:var(--amber-bg);border:1.5px solid var(--amber-border);color:var(--amber)}
+    .overall-badge .badge-icon{font-size:20px}
+
+    /* ── Main layout ── */
+    main{max-width:1200px;margin:0 auto;padding:24px 32px 48px}
+    section{margin-bottom:28px}
+    section>h3{font-size:13px;text-transform:uppercase;letter-spacing:1.2px;color:var(--text-muted);margin:0 0 14px;font-weight:600}
+
+    /* ── Dashboard cards ── */
+    .dashboard{display:flex;flex-direction:column;gap:20px;margin-bottom:28px}
+
+    .stats-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;display:flex;flex-direction:column;gap:18px}
+    .stat-row{display:flex;gap:12px;flex-wrap:wrap}
+    .stat-item{flex:1;min-width:100px;padding:14px 16px;border-radius:var(--radius);background:var(--bg-secondary);border:1px solid var(--border);text-align:center}
+    .stat-item .stat-value{font-size:28px;font-weight:700;line-height:1;margin-bottom:4px;font-family:var(--font-mono)}
+    .stat-item .stat-label{font-size:11px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-secondary)}
+    .stat-item.pass .stat-value{color:var(--green)}
+    .stat-item.fail .stat-value{color:var(--red)}
+    .stat-item.unknown .stat-value{color:var(--amber)}
+    .stat-item.total .stat-value{color:var(--accent)}
+
+    /* Progress bar */
+    .progress-bar{height:10px;border-radius:6px;background:var(--bg-surface);overflow:hidden;display:flex}
+    .progress-bar .seg-pass{background:var(--green);transition:width 0.5s}
+    .progress-bar .seg-fail{background:var(--red);transition:width 0.5s}
+    .progress-bar .seg-unknown{background:var(--amber);transition:width 0.5s}
+    .progress-legend{display:flex;gap:16px;font-size:12px;color:var(--text-secondary);margin-top:6px}
+    .progress-legend span{display:inline-flex;align-items:center;gap:5px}
+    .progress-legend .swatch{width:10px;height:10px;border-radius:3px;display:inline-block}
+
+    /* Environment card */
+    .env-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px}
+    .env-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+    .env-item{padding:10px 14px;border-radius:var(--radius);background:var(--bg-secondary);border:1px solid var(--border)}
+    .env-item .env-label{font-size:10px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-muted);margin-bottom:3px}
+    .env-item .env-value{font-size:13px;color:var(--text-primary);word-break:break-all;font-family:var(--font-mono)}
+
+    /* ── Step cards ── */
+    details.step-card{border:1px solid var(--border);border-radius:var(--radius-lg);margin-bottom:10px;overflow:hidden;background:var(--bg-card);transition:border-color 0.2s}
+    details.step-card[open]{border-color:var(--border-light)}
+    details.step-card>summary{padding:14px 18px;background:var(--bg-card);cursor:pointer;font-weight:600;font-size:14px;list-style:none;transition:background 0.15s}
+    details.step-card>summary::-webkit-details-marker{display:none}
+    details.step-card>summary::before{content:'';display:inline-block;width:6px;height:6px;border-right:2px solid var(--text-muted);border-bottom:2px solid var(--text-muted);transform:rotate(-45deg);margin-right:12px;transition:transform 0.2s;flex-shrink:0}
+    details.step-card[open]>summary::before{transform:rotate(45deg)}
+    details.step-card>summary:hover{background:var(--bg-card-hover)}
+    .step-header{display:flex;justify-content:space-between;align-items:center;width:100%}
+    .step-header .step-name{display:flex;align-items:center;gap:8px;min-width:0}
+    .step-header .step-name .step-num{font-family:var(--font-mono);font-size:12px;color:var(--text-muted);white-space:nowrap}
+    .step-header .step-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+    .step-header .step-time{font-size:11px;color:var(--text-muted);font-family:var(--font-mono)}
+    .badge{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:0.4px;text-transform:uppercase}
+    .badge.pass{background:var(--green-bg);border:1px solid var(--green-border);color:var(--green)}
+    .badge.fail{background:var(--red-bg);border:1px solid var(--red-border);color:var(--red)}
+    .badge.unknown{background:var(--amber-bg);border:1px solid var(--amber-border);color:var(--amber)}
+    .badge.detail{background:var(--blue-bg);border:1px solid var(--border);color:var(--blue)}
+
+    /* Step type left-border accents */
+    details.step-card.pre-step{border-left:3px solid var(--purple)}
+    details.step-card.post-step{border-left:3px solid var(--green)}
+    details.step-card.teardown{border-left:3px solid var(--amber)}
+
+    .step-content{padding:16px 18px;background:var(--bg-secondary);border-top:1px solid var(--border)}
+    .step-meta{display:flex;gap:24px;font-size:12px;color:var(--text-secondary);margin-bottom:14px;flex-wrap:wrap}
+    .step-meta span{display:inline-flex;align-items:center;gap:5px}
+
+    /* ── Substeps ── */
+    .substeps{margin-top:14px}
+    .substeps h4{font-size:12px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-muted);margin:0 0 10px;font-weight:600}
+    .substeps details.step-card{background:var(--bg-primary);border-color:var(--border)}
+    .substeps details.step-card>summary{background:var(--bg-primary);font-size:13px;padding:10px 14px}
+    .substeps details.step-card>summary:hover{background:var(--bg-secondary)}
+    .substeps .step-content{background:var(--bg-card)}
+
+    /* ── Log output ── */
+    .log-output{background:var(--bg-primary);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;overflow-x:auto;
+                font-family:var(--font-mono);font-size:12px;line-height:1.7;color:var(--text-secondary);margin-top:10px;max-height:600px;overflow-y:auto}
+    .log-output .log-ts{color:var(--text-muted)}
+    .log-output .log-pass{color:var(--green);font-weight:600}
+    .log-output .log-fail{color:var(--red);font-weight:600}
+    .log-output .log-warn{color:var(--amber);font-weight:600}
+    .log-output .log-info{color:var(--blue)}
+    .log-output .log-debug{color:var(--text-muted)}
+    .log-output .log-skip{color:var(--purple)}
+    .log-output .log-result{color:var(--accent);font-weight:700}
+
+    /* ── Tables (timing) ── */
+    table{width:100%;border-collapse:collapse;margin:0}
+    th,td{padding:8px 12px;text-align:left;font-size:13px}
+    th{color:var(--text-muted);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:0.6px;border-bottom:1px solid var(--border)}
+    td{color:var(--text-primary);border-bottom:1px solid var(--border);font-family:var(--font-mono);font-size:12px}
+
+    /* ── Image grid ── */
+    .img-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:12px}
+    .img-grid figure{margin:0;padding:10px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:var(--radius);transition:border-color 0.2s}
+    .img-grid figure:hover{border-color:var(--border-light)}
+    .img-grid img{max-width:100%;height:auto;display:block;border-radius:6px}
+    .img-grid figcaption{font-size:11px;color:var(--text-muted);margin-top:8px;font-family:var(--font-mono)}
+
+    /* ── Links & lists ── */
+    a{color:var(--accent);text-decoration:none;transition:color 0.15s}
+    a:hover{color:#8aa4ff;text-decoration:underline}
+    ul{padding-left:20px}
+    li{margin-bottom:6px;font-size:13px}
+    .file-link{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;background:var(--bg-secondary);border:1px solid var(--border);border-radius:var(--radius);font-size:13px;transition:background 0.15s}
+    .file-link:hover{background:var(--bg-surface);text-decoration:none}
+
+    /* ── Footer ── */
+    .report-footer{text-align:center;padding:20px 32px;font-size:11px;color:var(--text-muted);border-top:1px solid var(--border);margin-top:20px}
+
+    /* ── Dark mode ── */
+    body.dark{
+      --bg-primary:#0c0e12;--bg-secondary:#12151b;--bg-card:#161a22;--bg-card-hover:#1a1f28;
+      --bg-surface:#1e2330;--border:#252a35;--border-light:#2f3542;
+      --text-primary:#e8ecf4;--text-secondary:#8b95a8;--text-muted:#5e667a;
+      --accent:#6c8aff;--accent-dim:#3d4f8a;
+      --green:#34d399;--green-bg:rgba(52,211,153,0.08);--green-border:rgba(52,211,153,0.25);
+      --red:#f87171;--red-bg:rgba(248,113,113,0.08);--red-border:rgba(248,113,113,0.25);
+      --amber:#fbbf24;--amber-bg:rgba(251,191,36,0.08);--amber-border:rgba(251,191,36,0.25);
+      --blue:#60a5fa;--blue-bg:rgba(96,165,250,0.06);
+      --purple:#a78bfa;--purple-bg:rgba(167,139,250,0.08);--purple-border:rgba(167,139,250,0.25);
+      --gray:#6b7280;
+    }
+    body.dark .log-output .log-debug{color:#5e667a}
+
+    /* ── Theme toggle ── */
+    .theme-toggle{background:var(--bg-surface);border:1px solid var(--border);border-radius:8px;padding:7px 10px;cursor:pointer;color:var(--text-secondary);font-size:16px;line-height:1;display:flex;align-items:center;gap:6px;transition:background 0.15s,border-color 0.15s}
+    .theme-toggle:hover{background:var(--bg-card-hover);border-color:var(--border-light)}
+    .theme-toggle .toggle-label{font-size:11px;text-transform:uppercase;letter-spacing:0.5px}
+    .header-right{display:flex;align-items:center;gap:14px}
+
+    /* ── Print styles ── */
+    @media print{
+      .theme-toggle{display:none}
+      body{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+      .log-output{max-height:none}
+      details.step-card{break-inside:avoid}
+    }
+    </style></head><body>
+<div class='report-header'><div class='header-inner'>
+<div class='header-left'>
+<h1>Tc Waveshare Uart Loopback</h1>
+<div class='header-subtitle'>
+<span>Session <code>ef7daa6c</code></span><span class='dot'></span>
+<span>2026-03-14 14:26:13</span>
+</div></div>
+<div class='header-right'>
+<div class='overall-badge pass'><span class='badge-icon'>&#10003;</span>PASS</div>
+<button class='theme-toggle' onclick='toggleTheme()' title='Toggle light/dark mode'>
+<span class='toggle-icon'>&#9788;</span><span class='toggle-label'>Theme</span></button>
+</div>
+</div></div>
+<main>
+<div class='dashboard'>
+<div class='stats-card'>
+<div class='stat-row'>
+<div class='stat-item pass'><div class='stat-value'>5</div><div class='stat-label'>Passed</div></div>
+<div class='stat-item fail'><div class='stat-value'>0</div><div class='stat-label'>Failed</div></div>
+<div class='stat-item unknown'><div class='stat-value'>0</div><div class='stat-label'>Unknown</div></div>
+<div class='stat-item total'><div class='stat-value'>5</div><div class='stat-label'>Total</div></div>
+</div>
+<div class='progress-bar'>
+<div class='seg-pass' style='width:100%'></div>
+<div class='seg-fail' style='width:0%'></div>
+<div class='seg-unknown' style='width:0%'></div>
+</div>
+<div class='progress-legend'>
+<span><span class='swatch' style='background:var(--green)'></span>Pass 100%</span>
+<span><span class='swatch' style='background:var(--red)'></span>Fail 0%</span>
+</div>
+</div>
+<div class='env-card'>
+<div class='env-grid'>
+<div class='env-item'><div class='env-label'>Session ID</div><div class='env-value'>ef7daa6c</div></div>
+<div class='env-item'><div class='env-label'>Host</div><div class='env-value'>DPC</div></div>
+<div class='env-item'><div class='env-label'>Operating System</div><div class='env-value'>Windows 11 (10.0.26100)</div></div>
+<div class='env-item'><div class='env-label'>Python</div><div class='env-value'>3.13.7 (tags/v3.13.7:bcee1c3, Aug 14 2025, 14:15:11) [MSC v.1944 64 bit (AMD64)]</div></div>
+<div class='env-item'><div class='env-label'>Report Generated</div><div class='env-value'>2026-03-14 14:26:14</div></div>
+<div class='env-item'><div class='env-label'>Log File</div><div class='env-value'>G:\_GitHub\SW_Universal-Test-Framework\tests\tc_waveshare_uart_loopback\report_tc_waveshare_uart_loopback\tc_waveshare_uart_loopback_results.log</div></div>
+</div></div>
+</div>
+<section>
+<h3>Test Steps</h3>
+<details class='step-card pre-step'>
+<summary>
+<div class='step-header'><div class='step-name'>PRE-STEP 1 Verify CH347 is in Mode 0 (dual UART)</div>
+<div class='step-right'>
+<span class='step-time'>14:26:13</span>
+<span class='badge pass'>PASS</span>
+</div></div>
+</summary>
+<div class='step-content'>
+<div class='step-meta'>
+<span>Started: 2026-03-14 14:26:13</span>
+<span>Finished: 2026-03-14 14:26:13</span>
+</div>
+<details class='step-card'>
+<summary><div class='step-header'><div class='step-name'>Step Log</div>
+<div class='step-right'><span class='badge detail'>DETAIL</span></div></div></summary>
+<div class='step-content'>
+<div class='log-output'>
+<span class='log-ts'>[2026-03-14 14:26:13]</span> [PRE-STEP 1] Verify CH347 is in Mode 0 (dual UART)<br>
+<span class='log-ts'>[2026-03-14 14:26:13]</span> <span class='log-info'>[INFO]</span> <br>
+<span class='log-ts'>[2026-03-14 14:26:13]</span> <span class='log-info'>[INFO]</span> ============================================================<br>
+<span class='log-ts'>[2026-03-14 14:26:13]</span> <span class='log-info'>[INFO]</span> [WAVESHARE] CH347 MODE CHECK<br>
+<span class='log-ts'>[2026-03-14 14:26:13]</span> <span class='log-info'>[INFO]</span> ============================================================<br>
+<span class='log-ts'>[2026-03-14 14:26:13]</span> <span class='log-info'>[INFO]</span>   Current mode:  Mode 0: UART0 + UART1<br>
+<span class='log-ts'>[2026-03-14 14:26:13]</span> <span class='log-info'>[INFO]</span>   Expected mode: Mode 0: UART0 + UART1<br>
+<span class='log-ts'>[2026-03-14 14:26:13]</span> <span class='log-info'>[INFO]</span>   Status: OK<br>
+<span class='log-ts'>[2026-03-14 14:26:13]</span> <span class='log-info'>[INFO]</span> ============================================================<br>
+<span class='log-ts'>[2026-03-14 14:26:13]</span> <span class='log-info'>[INFO]</span> <br>
+<span class='log-ts'>[2026-03-14 14:26:13]</span> <span class='log-pass'>[PASS]</span> PRE-STEP 1 completed successfully<br>
+</div>
+</div>
+</details>
+</div>
+</details>
+<details class='step-card'>
+<summary>
+<div class='step-header'><div class='step-name'>STEP 1 Detect UART0</div>
+<div class='step-right'>
+<span class='step-time'>14:26:13</span>
+<span class='badge pass'>PASS</span>
+</div></div>
+</summary>
+<div class='step-content'>
+<div class='step-meta'>
+<span>Started: 2026-03-14 14:26:13</span>
+<span>Finished: 2026-03-14 14:26:14</span>
+</div>
+<details class='step-card'>
+<summary><div class='step-header'><div class='step-name'>Step Log</div>
+<div class='step-right'><span class='badge detail'>DETAIL</span></div></div></summary>
+<div class='step-content'>
+<div class='log-output'>
+<span class='log-ts'>[2026-03-14 14:26:13]</span> [STEP 1] Detect UART0<br>
+<span class='log-ts'>[2026-03-14 14:26:13]</span> <span class='log-info'>[INFO]</span> <br>
+<span class='log-ts'>[2026-03-14 14:26:13]</span> <span class='log-info'>[INFO]</span> ================================================================================<br>
+<span class='log-ts'>[2026-03-14 14:26:13]</span> <span class='log-info'>[INFO]</span> [WAVESHARE UART] DETECT ADAPTER<br>
+<span class='log-ts'>[2026-03-14 14:26:13]</span> <span class='log-info'>[INFO]</span> ================================================================================<br>
+<span class='log-ts'>[2026-03-14 14:26:13]</span> <span class='log-info'>[INFO]</span>   Port:     COM20<br>
+<span class='log-ts'>[2026-03-14 14:26:13]</span> <span class='log-info'>[INFO]</span>   Baudrate: 115200<br>
+<span class='log-ts'>[2026-03-14 14:26:13]</span> <span class='log-info'>[INFO]</span> <br>
+<span class='log-ts'>[2026-03-14 14:26:13]</span> <span class='log-info'>[INFO]</span> ================================================================================<br>
+<span class='log-ts'>[2026-03-14 14:26:13]</span> <span class='log-info'>[INFO]</span> [WAVESHARE UART] OPENING CONNECTION<br>
+<span class='log-ts'>[2026-03-14 14:26:13]</span> <span class='log-info'>[INFO]</span> ================================================================================<br>
+<span class='log-ts'>[2026-03-14 14:26:13]</span> <span class='log-info'>[INFO]</span>   Port:          COM20<br>
+<span class='log-ts'>[2026-03-14 14:26:13]</span> <span class='log-info'>[INFO]</span>   Baudrate:      115200<br>
+<span class='log-ts'>[2026-03-14 14:26:13]</span> <span class='log-info'>[INFO]</span>   Data bits:     8<br>
+<span class='log-ts'>[2026-03-14 14:26:13]</span> <span class='log-info'>[INFO]</span>   Parity:        N<br>
+<span class='log-ts'>[2026-03-14 14:26:13]</span> <span class='log-info'>[INFO]</span>   Stop bits:     1<br>
+<span class='log-ts'>[2026-03-14 14:26:13]</span> <span class='log-info'>[INFO]</span>   Timeout:       1.0s<br>
+<span class='log-ts'>[2026-03-14 14:26:13]</span> <span class='log-info'>[INFO]</span>   Byte Timeout:  None<br>
+<span class='log-ts'>[2026-03-14 14:26:13]</span> <span class='log-info'>[INFO]</span>   Write Timeout: 2.0s<br>
+<span class='log-ts'>[2026-03-14 14:26:13]</span> <span class='log-info'>[INFO]</span>   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)<br>
+<span class='log-ts'>[2026-03-14 14:26:13]</span> <span class='log-info'>[INFO]</span> [OK] Port COM20 opened successfully<br>
+<span class='log-ts'>[2026-03-14 14:26:13]</span> <span class='log-info'>[INFO]</span>   Stabilizing connection (100ms delay)...<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Resetting input and output buffers...<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> [OK] Connection ready and buffers cleared<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> --------------------------------------------------------------------------------<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> [OK] Waveshare adapter detected on COM20<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> ================================================================================<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> <br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-pass'>[PASS]</span> STEP 1 completed successfully<br>
+</div>
+</div>
+</details>
+</div>
+</details>
+<details class='step-card'>
+<summary>
+<div class='step-header'><div class='step-name'>STEP 2 Detect UART1</div>
+<div class='step-right'>
+<span class='step-time'>14:26:14</span>
+<span class='badge pass'>PASS</span>
+</div></div>
+</summary>
+<div class='step-content'>
+<div class='step-meta'>
+<span>Started: 2026-03-14 14:26:14</span>
+<span>Finished: 2026-03-14 14:26:14</span>
+</div>
+<details class='step-card'>
+<summary><div class='step-header'><div class='step-name'>Step Log</div>
+<div class='step-right'><span class='badge detail'>DETAIL</span></div></div></summary>
+<div class='step-content'>
+<div class='log-output'>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> [STEP 2] Detect UART1<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> <br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> ================================================================================<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> [WAVESHARE UART] DETECT ADAPTER<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> ================================================================================<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Port:     COM21<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Baudrate: 115200<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> <br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> ================================================================================<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> [WAVESHARE UART] OPENING CONNECTION<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> ================================================================================<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Port:          COM21<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Baudrate:      115200<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Data bits:     8<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Parity:        N<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Stop bits:     1<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Timeout:       1.0s<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Byte Timeout:  None<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Write Timeout: 2.0s<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> [OK] Port COM21 opened successfully<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Stabilizing connection (100ms delay)...<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Resetting input and output buffers...<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> [OK] Connection ready and buffers cleared<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> --------------------------------------------------------------------------------<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> [OK] Waveshare adapter detected on COM21<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> ================================================================================<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> <br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-pass'>[PASS]</span> STEP 2 completed successfully<br>
+</div>
+</div>
+</details>
+</div>
+</details>
+<details class='step-card'>
+<summary>
+<div class='step-header'><div class='step-name'>STEP 3 Loopback UART0 → UART1</div>
+<div class='step-right'>
+<span class='step-time'>14:26:14</span>
+<span class='badge pass'>PASS</span>
+</div></div>
+</summary>
+<div class='step-content'>
+<div class='step-meta'>
+<span>Started: 2026-03-14 14:26:14</span>
+<span>Finished: 2026-03-14 14:26:14</span>
+</div>
+<details class='step-card'>
+<summary><div class='step-header'><div class='step-name'>Step Log</div>
+<div class='step-right'><span class='badge detail'>DETAIL</span></div></div></summary>
+<div class='step-content'>
+<div class='log-output'>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> [STEP 3] Loopback UART0 → UART1<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> <br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> ================================================================================<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> [WAVESHARE UART] CROSS-PORT LOOPBACK TEST<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> ================================================================================<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   TX Port:  COM20<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   RX Port:  COM21<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Baudrate: 115200<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Config:   8N1<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   TX Size:  18 bytes<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Timeout:  2.0s<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> <br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> ================================================================================<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> [WAVESHARE UART] OPENING CONNECTION<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> ================================================================================<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Port:          COM21<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Baudrate:      115200<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Data bits:     8<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Parity:        N<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Stop bits:     1<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Timeout:       2.0s<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Byte Timeout:  None<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Write Timeout: 2.0s<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> [OK] Port COM21 opened successfully<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Stabilizing connection (100ms delay)...<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Resetting input and output buffers...<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> [OK] Connection ready and buffers cleared<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> --------------------------------------------------------------------------------<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> ================================================================================<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> [WAVESHARE UART] OPENING CONNECTION<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> ================================================================================<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Port:          COM20<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Baudrate:      115200<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Data bits:     8<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Parity:        N<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Stop bits:     1<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Timeout:       2.0s<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Byte Timeout:  None<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Write Timeout: 2.0s<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> [OK] Port COM20 opened successfully<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Stabilizing connection (100ms delay)...<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Resetting input and output buffers...<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> [OK] Connection ready and buffers cleared<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> --------------------------------------------------------------------------------<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   [OK] Transmitted 18 bytes on COM20<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>     Hex Dump:<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>         0000  55 54 46 57 5F 4C 4F 4F 50 42 41 43 4B 5F 30 31   |UTFW_LOOPBACK_01|<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>         0010  55 AA                                             |U.|<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> <br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   [OK] Received 18 bytes on COM21<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>     Hex Dump:<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>         0000  55 54 46 57 5F 4C 4F 4F 50 42 41 43 4B 5F 30 31   |UTFW_LOOPBACK_01|<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>         0010  55 AA                                             |U.|<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> <br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   [OK] Cross-loopback verified (18 bytes, COM20-&gt;COM21)<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> ================================================================================<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> <br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-pass'>[PASS]</span> STEP 3 completed successfully<br>
+</div>
+</div>
+</details>
+</div>
+</details>
+<details class='step-card'>
+<summary>
+<div class='step-header'><div class='step-name'>STEP 4 Loopback UART1 → UART0</div>
+<div class='step-right'>
+<span class='step-time'>14:26:14</span>
+<span class='badge pass'>PASS</span>
+</div></div>
+</summary>
+<div class='step-content'>
+<div class='step-meta'>
+<span>Started: 2026-03-14 14:26:14</span>
+<span>Finished: 2026-03-14 14:26:14</span>
+</div>
+<details class='step-card'>
+<summary><div class='step-header'><div class='step-name'>Step Log</div>
+<div class='step-right'><span class='badge detail'>DETAIL</span></div></div></summary>
+<div class='step-content'>
+<div class='log-output'>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> [STEP 4] Loopback UART1 → UART0<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> <br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> ================================================================================<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> [WAVESHARE UART] CROSS-PORT LOOPBACK TEST<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> ================================================================================<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   TX Port:  COM21<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   RX Port:  COM20<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Baudrate: 115200<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Config:   8N1<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   TX Size:  18 bytes<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Timeout:  2.0s<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> <br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> ================================================================================<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> [WAVESHARE UART] OPENING CONNECTION<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> ================================================================================<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Port:          COM20<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Baudrate:      115200<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Data bits:     8<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Parity:        N<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Stop bits:     1<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Timeout:       2.0s<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Byte Timeout:  None<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Write Timeout: 2.0s<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> [OK] Port COM20 opened successfully<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Stabilizing connection (100ms delay)...<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Resetting input and output buffers...<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> [OK] Connection ready and buffers cleared<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> --------------------------------------------------------------------------------<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> ================================================================================<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> [WAVESHARE UART] OPENING CONNECTION<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> ================================================================================<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Port:          COM21<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Baudrate:      115200<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Data bits:     8<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Parity:        N<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Stop bits:     1<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Timeout:       2.0s<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Byte Timeout:  None<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Write Timeout: 2.0s<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Flow Control:  None (xonxoff=False, rtscts=False, dsrdtr=False)<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> [OK] Port COM21 opened successfully<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Stabilizing connection (100ms delay)...<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   Resetting input and output buffers...<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> [OK] Connection ready and buffers cleared<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> --------------------------------------------------------------------------------<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   [OK] Transmitted 18 bytes on COM21<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>     Hex Dump:<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>         0000  55 54 46 57 5F 4C 4F 4F 50 42 41 43 4B 5F 30 31   |UTFW_LOOPBACK_01|<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>         0010  55 AA                                             |U.|<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> <br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   [OK] Received 18 bytes on COM20<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>     Hex Dump:<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>         0000  55 54 46 57 5F 4C 4F 4F 50 42 41 43 4B 5F 30 31   |UTFW_LOOPBACK_01|<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>         0010  55 AA                                             |U.|<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> <br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span>   [OK] Cross-loopback verified (18 bytes, COM21-&gt;COM20)<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> ================================================================================<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-info'>[INFO]</span> <br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> <span class='log-pass'>[PASS]</span> STEP 4 completed successfully<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> ===== tc_waveshare_uart_loopback: RESULT: PASS =====<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> +----------------------------------+<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> | ██████   █████  ███████ ███████  |<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> | ██   ██ ██   ██ ██      ██       |<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> | ██████  ███████ ███████ ███████  |<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> | ██      ██   ██      ██      ██  |<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> | ██      ██   ██ ███████ ███████  |<br>
+<span class='log-ts'>[2026-03-14 14:26:14]</span> +----------------------------------+<br>
+</div>
+</div>
+</details>
+</div>
+</details>
+</section>
+<div class='report-footer'>Generated by UTFW Report Engine &mdash; 2026-03-14 14:26:14</div>
+</main>
+<script>
+function toggleTheme(){
+  document.body.classList.toggle('dark');
+  var icon=document.querySelector('.toggle-icon');
+  var isDark=document.body.classList.contains('dark');
+  icon.innerHTML=isDark?'☆':'☾';
+  try{localStorage.setItem('utfw-theme',isDark?'dark':'light')}catch(e){}
+}
+(function(){
+  try{if(localStorage.getItem('utfw-theme')==='dark'){
+    document.body.classList.add('dark');
+    var i=document.querySelector('.toggle-icon');if(i)i.innerHTML='☆';
+  }}catch(e){}
+})();
+</script>
+</body></html>

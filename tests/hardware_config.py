@@ -30,3 +30,9 @@ STM32F1_TEST_FIRMWARE = "STM32F103-BluePill-Blinky.elf"
 # CH347 adapter settings
 CH347_DEV_INDEX = 0                         # USB device index
 CH347_TRST_PIN = 5                          # GPIO5 = TRST (Pin9) → wired to NRST
+
+# ── PU2CANFD / eWald CAN Configuration ──────────────────────────────
+# CAN_CHANNEL = "can0"                        # SocketCAN interface (Linux)
+CAN_CHANNEL = "PCAN_USBBUS1"                   # PCAN channel (Windows, requires PEAK driver)
+CAN_BITRATE = 1000000                          # 1 Mbit/s (matches eWald CONFIG.h)
+EWALD_NODE_ID = 0                              # eWald CANopen node ID 

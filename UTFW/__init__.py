@@ -14,7 +14,7 @@ A comprehensive framework for hardware device testing that provides:
 Author: DvidMakesThings
 """
 
-__version__ = "3.0.0"
+__version__ = "4.0.0"
 
 # Import core framework components
 from .core import (
